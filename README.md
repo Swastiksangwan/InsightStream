@@ -18,4 +18,4 @@ It helps users decide what to watch by combining:
 - External API: TMDb
 
 ## Current Phase
-Starter project setup.
+PostgreSQL database schema created and sample data tested. Next step is FastAPI backend setup and database connection.
