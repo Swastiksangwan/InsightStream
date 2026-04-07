@@ -101,3 +101,4 @@ CREATE TABLE watch_later (
     FOREIGN KEY (content_id) REFERENCES content(id) ON DELETE CASCADE,
     UNIQUE (user_id, content_id)
 );
+

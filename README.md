@@ -19,3 +19,6 @@ It helps users decide what to watch by combining:
 
 ## Current Phase
 PostgreSQL database schema created and sample data tested. Next step is FastAPI backend setup and database connection.
+
+PostgreSQL database schema created and sample data tested. Next step is FastAPI backend setup and database connection.
+(Set up backend structure with PostgreSQL config and content API)

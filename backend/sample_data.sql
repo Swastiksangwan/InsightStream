@@ -101,4 +101,5 @@ INSERT INTO watch_later (user_id, content_id)
 VALUES (1, 1);
 
 INSERT INTO watched (user_id, content_id)
+
 VALUES (1, 1);
