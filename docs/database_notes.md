@@ -1,133 +1,83 @@
-
-
 # Database Notes
 
 ## Database
 PostgreSQL
 
-## MVP Tables Created
-- users
-- content
-- genres
-- content_genres
-- platforms
-- content_platforms
-- ratings
-- content_summary
-- watched
-- watch_later
+---
 
-## Purpose of Important Tables
+## MVP Tables
+
+- users  
+- content  
+- genres  
+- content_genres  
+- platforms  
+- content_platforms  
+- ratings  
+- content_summary  
+- watched  
+- watch_later  
+
+---
+
+## Table Descriptions
 
 ### users
 Stores user account information.
 
 ### content
-Main table for movies and series.
+Primary table containing movies and series data.
 
 ### genres
-Stores genre names.
+Stores genre categories.
 
 ### content_genres
-Links content with genres.
+Maps content items to their respective genres.
 
 ### platforms
 Stores OTT platforms and rating sources.
 
 ### content_platforms
-Links content with OTT availability.
+Maps content availability across platforms.
 
 ### ratings
-Stores ratings from multiple sources and normalized scores.
+Stores ratings from multiple sources along with normalized scores.
 
 ### content_summary
-Stores InsightStream’s final platform summary, unified score, pros, cons, and verdict.
+Stores InsightStream’s aggregated insights including:
+- unified score  
+- pros  
+- cons  
+- final verdict  
 
 ### watched
-Stores content marked as watched by a user.
+Tracks content marked as watched by users.
 
 ### watch_later
-Stores content saved by a user for later viewing.
+Tracks content saved for future viewing.
 
-## Key Relationships
-- one content item can have many genres
-- one content item can be available on many platforms
-- one content item can have many source ratings
-- one user can have many watched items
-- one user can have many watch-later items
+---
 
-## Product Logic Note
-A title should ideally not remain in both watched and watch_later at the same time.
-This rule will be handled in backend logic later.
-Database Notes
+## Relationships
 
-Database
+- One content item can have multiple genres  
+- One content item can be available on multiple platforms  
+- One content item can have multiple ratings  
+- One user can have multiple watched items  
+- One user can have multiple watch-later items  
 
-PostgreSQL
+---
 
-MVP Tables Created
+## Business Logic Note
 
-users
-content
-genres
-content_genres
-platforms
-content_platforms
-ratings
-content_summary
-watched
-watch_later
-Purpose of Important Tables
+A content item should not exist in both **watched** and **watch_later** simultaneously.  
+This constraint will be enforced at the backend level.
 
-users
+---
 
-Stores user account information.
+## Current Status
 
-content
-
-Main table for movies and series.
-
-genres
-
-Stores genre names.
-
-content_genres
-
-Links content with genres.
-
-platforms
-
-Stores OTT platforms and rating sources.
-
-content_platforms
-
-Links content with OTT availability.
-
-ratings
-
-Stores ratings from multiple sources and normalized scores.
-
-content_summary
-
-Stores InsightStream’s final platform summary, unified score, pros, cons, and verdict.
-
-watched
-
-Stores content marked as watched by a user.
-
-watch_later
-
-Stores content saved by a user for later viewing.
-
-Key Relationships
-
-one content item can have many genres
-one content item can be available on many platforms
-one content item can have many source ratings
-one user can have many watched items
-one user can have many watch-later items
-Product Logic Note
-
-A title should ideally not remain in both watched and watch_later at the same time. This rule will be handled in backend logic later.
-
-(Set up backend structure with PostgreSQL config and content API)
+- Database schema designed and implemented  
+- Sample data inserted and tested  
+- Backend structure connected with PostgreSQL  
+- Content API initialized for data access  
