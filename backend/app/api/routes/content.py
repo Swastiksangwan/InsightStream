@@ -48,7 +48,9 @@ def get_content_details(content_id: int, db: Session = Depends(get_db)):
     genres = [row["name"] for row in genres_rows]
 
     platforms_query = text("""
-        SELECT p.name
+        SELECT
+            p.name AS platform_name,
+            cp.availability_type
         FROM content_platforms cp
         JOIN platforms p ON cp.platform_id = p.id
         WHERE cp.content_id = :content_id
@@ -56,27 +58,51 @@ def get_content_details(content_id: int, db: Session = Depends(get_db)):
     """)
     platforms_result = db.execute(platforms_query, {"content_id": content_id})
     platforms_rows = platforms_result.mappings().all()
-    platforms = [row["name"] for row in platforms_rows]
+    platforms = [dict(row) for row in platforms_rows]
 
     ratings_query = text("""
-        SELECT *
-        FROM ratings
-        WHERE content_id = :content_id
-        ORDER BY id;
+        SELECT
+            p.name AS platform_name,
+            r.original_score,
+            r.original_scale,
+            r.normalized_score,
+            r.rating_count,
+            r.reviewer_group
+        FROM ratings r
+        JOIN platforms p ON r.platform_id = p.id
+        WHERE r.content_id = :content_id
+        ORDER BY p.name;
     """)
     ratings_result = db.execute(ratings_query, {"content_id": content_id})
     ratings_rows = ratings_result.mappings().all()
     ratings = [dict(row) for row in ratings_rows]
 
     summary_query = text("""
-        SELECT content_id, unified_score, critic_score, audience_score, review_summary
+        SELECT
+            unified_score,
+            critic_score,
+            audience_score,
+            review_summary,
+            pros,
+            cons,
+            verdict
         FROM content_summary
         WHERE content_id = :content_id;
     """)
     summary_result = db.execute(summary_query, {"content_id": content_id})
     summary_row = summary_result.mappings().first()
 
-    summary = dict(summary_row) if summary_row else None
+    summary = None
+    if summary_row:
+        summary = {
+            "unified_score": summary_row["unified_score"],
+            "critic_score": summary_row["critic_score"],
+            "audience_score": summary_row["audience_score"],
+            "review_summary": summary_row["review_summary"],
+            "pros": summary_row["pros"],
+            "cons": summary_row["cons"],
+            "verdict": summary_row["verdict"],
+        }
 
     return {
         "content": dict(content_row),
