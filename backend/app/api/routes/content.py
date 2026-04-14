@@ -1,31 +1,30 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import text
+from typing import List
 from app.db.session import get_db
-from app.schemas.content import ContentDetailsResponse
-from app.services.content_service import get_content_details_service
+from app.schemas.content import Content, ContentDetailsResponse
+from app.services.content_service import (
+    get_all_content_service,
+    get_content_by_id_service,
+    get_content_details_service
+)
 
 router = APIRouter()
 
 
-@router.get("/content")
+@router.get("/content", response_model=List[Content])
 def get_all_content(db: Session = Depends(get_db)):
-    query = text("SELECT * FROM content ORDER BY id;")
-    result = db.execute(query)
-    rows = result.mappings().all()
-    return rows
+    return get_all_content_service(db)
 
 
-@router.get("/content/{content_id}")
+@router.get("/content/{content_id}", response_model=Content)
 def get_content_by_id(content_id: int, db: Session = Depends(get_db)):
-    query = text("SELECT * FROM content WHERE id = :content_id;")
-    result = db.execute(query, {"content_id": content_id})
-    row = result.mappings().first()
+    content = get_content_by_id_service(content_id, db)
 
-    if not row:
+    if not content:
         raise HTTPException(status_code=404, detail="Content not found")
 
-    return row
+    return content
 
 
 @router.get("/content/{content_id}/details", response_model=ContentDetailsResponse)

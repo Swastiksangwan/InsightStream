@@ -2,6 +2,71 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 
 
+def build_content_object(content_row):
+    return {
+        "id": content_row["id"],
+        "title": content_row["title"],
+        "type": content_row["content_type"],
+        "overview": content_row["overview"],
+        "poster": content_row["poster_url"],
+        "backdrop": content_row["backdrop_url"],
+        "release_date": content_row["release_date"],
+        "year": content_row["year"],
+        "runtime": content_row["runtime"],
+        "language": content_row["language"],
+        "age_rating": content_row["age_rating"]
+    }
+
+
+def get_all_content_service(db: Session):
+    query = text("""
+        SELECT
+            id,
+            title,
+            content_type,
+            overview,
+            poster_url,
+            backdrop_url,
+            release_date,
+            year,
+            runtime,
+            language,
+            age_rating
+        FROM content
+        ORDER BY id;
+    """)
+    result = db.execute(query)
+    rows = result.mappings().all()
+
+    return [build_content_object(row) for row in rows]
+
+
+def get_content_by_id_service(content_id: int, db: Session):
+    query = text("""
+        SELECT
+            id,
+            title,
+            content_type,
+            overview,
+            poster_url,
+            backdrop_url,
+            release_date,
+            year,
+            runtime,
+            language,
+            age_rating
+        FROM content
+        WHERE id = :content_id;
+    """)
+    result = db.execute(query, {"content_id": content_id})
+    row = result.mappings().first()
+
+    if not row:
+        return None
+
+    return build_content_object(row)
+
+
 def get_content_details_service(content_id: int, db: Session):
     content_query = text("""
         SELECT
@@ -25,19 +90,7 @@ def get_content_details_service(content_id: int, db: Session):
     if not content_row:
         return None
 
-    content = {
-        "id": content_row["id"],
-        "title": content_row["title"],
-        "type": content_row["content_type"],
-        "overview": content_row["overview"],
-        "poster": content_row["poster_url"],
-        "backdrop": content_row["backdrop_url"],
-        "release_date": content_row["release_date"],
-        "year": content_row["year"],
-        "runtime": content_row["runtime"],
-        "language": content_row["language"],
-        "age_rating": content_row["age_rating"]
-    }
+    content = build_content_object(content_row)
 
     genres_query = text("""
         SELECT g.name
