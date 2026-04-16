@@ -71,9 +71,9 @@ def add_to_watched_service(user_id: int, content_id: int, db: Session):
         DELETE FROM watch_later
         WHERE user_id = :user_id AND content_id = :content_id;
     """)
-    db.execute(delete_watch_later_query, {
-        "user_id": user_id,
-        "content_id": content_id
+    delete_result = db.execute(delete_watch_later_query, {
+    "user_id": user_id,
+    "content_id": content_id
     })
 
     insert_query = text("""
