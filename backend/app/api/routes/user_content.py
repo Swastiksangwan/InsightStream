@@ -9,6 +9,8 @@ from app.services.user_content_service import (
     add_to_watched_service,
     get_watch_later_service,
     get_watched_service,
+    remove_from_watch_later_service,
+    remove_from_watched_service,
 ) 
 
 router = APIRouter()
@@ -42,3 +44,14 @@ def get_watch_later(user_id: int, db: Session = Depends(get_db)):
 @router.get("/watched/{user_id}", response_model=List[Content])
 def get_watched(user_id: int, db: Session = Depends(get_db)):
     return get_watched_service(user_id, db)
+
+
+@router.delete("/watch-later")
+def remove_from_watch_later(data: UserContentAction, db: Session = Depends(get_db)):
+    return remove_from_watch_later_service(data.user_id, data.content_id, db)
+
+
+@router.delete("/watched")
+def remove_from_watched(data: UserContentAction, db: Session = Depends(get_db)):
+    return remove_from_watched_service(data.user_id, data.content_id, db)
+

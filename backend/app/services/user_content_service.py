@@ -138,3 +138,58 @@ def get_watched_service(user_id: int, db: Session):
     rows = result.mappings().all()
 
     return [build_content_object(row) for row in rows]
+
+def remove_from_watch_later_service(user_id: int, content_id: int, db: Session):
+    existing_query = text("""
+        SELECT id
+        FROM watch_later
+        WHERE user_id = :user_id AND content_id = :content_id;
+    """)
+    existing_result = db.execute(existing_query, {
+        "user_id": user_id,
+        "content_id": content_id
+    })
+    existing_row = existing_result.mappings().first()
+
+    if not existing_row:
+        return {"message": "Content not found in watch later"}
+
+    delete_query = text("""
+        DELETE FROM watch_later
+        WHERE user_id = :user_id AND content_id = :content_id;
+    """)
+    db.execute(delete_query, {
+        "user_id": user_id,
+        "content_id": content_id
+    })
+    db.commit()
+
+    return {"message": "Removed from watch later"}
+
+
+def remove_from_watched_service(user_id: int, content_id: int, db: Session):
+    existing_query = text("""
+        SELECT id
+        FROM watched
+        WHERE user_id = :user_id AND content_id = :content_id;
+    """)
+    existing_result = db.execute(existing_query, {
+        "user_id": user_id,
+        "content_id": content_id
+    })
+    existing_row = existing_result.mappings().first()
+
+    if not existing_row:
+        return {"message": "Content not found in watched"}
+
+    delete_query = text("""
+        DELETE FROM watched
+        WHERE user_id = :user_id AND content_id = :content_id;
+    """)
+    db.execute(delete_query, {
+        "user_id": user_id,
+        "content_id": content_id
+    })
+    db.commit()
+
+    return {"message": "Removed from watched"}
