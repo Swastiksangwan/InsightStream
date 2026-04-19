@@ -21,9 +21,32 @@ def build_content_object(content_row):
 def get_all_content_service(
     db: Session,
     content_type: str = None,
-    search: str = None
+    search: str = None,
+    limit: int = 10,
+    offset: int = 0
 ):
-    base_query = """
+    base_from_query = """
+        FROM content
+    """
+
+    conditions = []
+    params = {
+        "limit": limit,
+        "offset": offset
+    }
+
+    if content_type:
+        conditions.append("content_type = :content_type")
+        params["content_type"] = content_type
+
+    if search:
+        conditions.append("title ILIKE :search")
+        params["search"] = f"%{search}%"
+
+    if conditions:
+        base_from_query += " WHERE " + " AND ".join(conditions)
+
+    data_query = text(f"""
         SELECT
             id,
             title,
@@ -36,30 +59,30 @@ def get_all_content_service(
             runtime,
             language,
             age_rating
-        FROM content
-    """
+        {base_from_query}
+        ORDER BY release_date DESC
+        LIMIT :limit OFFSET :offset;
+    """)
 
-    conditions = []
-    params = {}
+    count_query = text(f"""
+        SELECT COUNT(*) AS total
+        {base_from_query};
+    """)
 
-    if content_type:
-        conditions.append("content_type = :content_type")
-        params["content_type"] = content_type
+    data_result = db.execute(data_query, params)
+    rows = data_result.mappings().all()
 
-    if search:
-        conditions.append("title ILIKE :search")
-        params["search"] = f"%{search}%"
+    count_result = db.execute(count_query, params)
+    total = count_result.mappings().first()["total"]
 
-    if conditions:
-        base_query += " WHERE " + " AND ".join(conditions)
+    items = [build_content_object(row) for row in rows]
 
-    base_query += " ORDER BY release_date DESC;"
-
-    query = text(base_query)
-    result = db.execute(query, params)
-    rows = result.mappings().all()
-
-    return [build_content_object(row) for row in rows]
+    return {
+        "items": items,
+        "total": total,
+        "limit": limit,
+        "offset": offset
+    }
 
 
 def get_content_by_id_service(content_id: int, db: Session):

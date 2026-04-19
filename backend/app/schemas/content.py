@@ -15,6 +15,13 @@ class Content(BaseModel):
     runtime: Optional[int]
     language: Optional[str]
     age_rating: Optional[str]
+    
+
+class PaginatedContentResponse(BaseModel):
+    items: List[Content]
+    total: int
+    limit: int
+    offset: int
 
 
 # Platform
