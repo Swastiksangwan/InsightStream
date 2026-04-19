@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional, Literal
 from app.db.session import get_db
 from app.schemas.content import Content, ContentDetailsResponse
 from app.services.content_service import (
@@ -13,8 +13,12 @@ router = APIRouter()
 
 
 @router.get("/content", response_model=List[Content])
-def get_all_content(db: Session = Depends(get_db)):
-    return get_all_content_service(db)
+def get_all_content(
+    content_type: Optional[Literal["movie", "series"]] = Query(default=None),
+    search: Optional[str] = Query(default=None),
+    db: Session = Depends(get_db)
+):
+    return get_all_content_service(db, content_type, search)
 
 
 @router.get("/content/{content_id}", response_model=Content)
