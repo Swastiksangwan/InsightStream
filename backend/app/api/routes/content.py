@@ -14,10 +14,25 @@ router = APIRouter()
 
 @router.get("/content", response_model=PaginatedContentResponse)
 def get_all_content(
-    content_type: Optional[Literal["movie", "series"]] = Query(default=None),
-    search: Optional[str] = Query(default=None),
-    limit: int = Query(default=10, ge=1, le=100),
-    offset: int = Query(default=0, ge=0),
+    content_type: Optional[Literal["movie", "series"]] = Query(
+        default=None,
+        description="Filter content by type. Allowed values: movie, series."
+    ),
+    search: Optional[str] = Query(
+        default=None,
+        description="Case-insensitive search by title."
+    ),
+    limit: int = Query(
+        default=10,
+        ge=1,
+        le=100,
+        description="Maximum number of items to return."
+    ),
+    offset: int = Query(
+        default=0,
+        ge=0,
+        description="Number of items to skip before returning results."
+    ),
     db: Session = Depends(get_db)
 ):
     return get_all_content_service(db, content_type, search, limit, offset)

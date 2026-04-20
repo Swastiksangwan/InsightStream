@@ -26,10 +26,10 @@ def add_to_watch_later(data: UserContentAction, db: Session = Depends(get_db)):
     if result.get("error") == "Content not found":
         raise HTTPException(status_code=404, detail="Content not found")
 
-    if result.get("error") == "Already marked as watched":
-        raise HTTPException(status_code=400, detail="Content is already marked as watched")
+    if result.get("error") == "Content is already in watched":
+        raise HTTPException(status_code=400, detail="Content is already in watched")
 
-    if result.get("error") == "Already in watch later":
+    if result.get("error") == "Content is already in watch later":
         raise HTTPException(status_code=409, detail="Content is already in watch later")
 
     return result
@@ -45,7 +45,7 @@ def add_to_watched(data: UserContentAction, db: Session = Depends(get_db)):
     if result.get("error") == "Content not found":
         raise HTTPException(status_code=404, detail="Content not found")
 
-    if result.get("error") == "Already in watched":
+    if result.get("error") == "Content is already in watched":
         raise HTTPException(status_code=409, detail="Content is already in watched")
 
     return result
@@ -78,8 +78,8 @@ def remove_from_watch_later(data: UserContentAction, db: Session = Depends(get_d
     if result.get("error") == "User not found":
         raise HTTPException(status_code=404, detail="User not found")
 
-    if result.get("error") == "Content not found in watch later":
-        raise HTTPException(status_code=404, detail="Content not found in watch later")
+    if result.get("error") == "Content is not in watch later":
+        raise HTTPException(status_code=404, detail="Content is not in watch later")
 
     return result
 
@@ -91,7 +91,7 @@ def remove_from_watched(data: UserContentAction, db: Session = Depends(get_db)):
     if result.get("error") == "User not found":
         raise HTTPException(status_code=404, detail="User not found")
 
-    if result.get("error") == "Content not found in watched":
-        raise HTTPException(status_code=404, detail="Content not found in watched")
+    if result.get("error") == "Content is not in watched":
+        raise HTTPException(status_code=404, detail="Content is not in watched")
 
     return result

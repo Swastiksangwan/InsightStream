@@ -15,7 +15,7 @@ class Content(BaseModel):
     runtime: Optional[int]
     language: Optional[str]
     age_rating: Optional[str]
-    
+
 
 class PaginatedContentResponse(BaseModel):
     items: List[Content]
@@ -57,4 +57,4 @@ class ContentDetailsResponse(BaseModel):
     genres: List[str]
     platforms: List[Platform]
     ratings: List[Rating]
-    summary: Optional[Summary]
+    summary: Optional[Summary] = None

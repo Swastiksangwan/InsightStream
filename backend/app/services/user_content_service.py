@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from app.services.content_service import build_content_object
 
+
 def check_user_exists(user_id: int, db: Session):
     query = text("""
         SELECT id
@@ -11,8 +12,8 @@ def check_user_exists(user_id: int, db: Session):
     result = db.execute(query, {"user_id": user_id})
     return result.mappings().first()
 
-def add_to_watch_later_service(user_id: int, content_id: int, db: Session):
 
+def add_to_watch_later_service(user_id: int, content_id: int, db: Session):
     user_row = check_user_exists(user_id, db)
     if not user_row:
         return {"error": "User not found"}
@@ -40,7 +41,7 @@ def add_to_watch_later_service(user_id: int, content_id: int, db: Session):
     watched_row = watched_result.mappings().first()
 
     if watched_row:
-        return {"error": "Already marked as watched"}
+        return {"error": "Content is already in watched"}
 
     existing_query = text("""
         SELECT id
@@ -54,7 +55,7 @@ def add_to_watch_later_service(user_id: int, content_id: int, db: Session):
     existing_row = existing_result.mappings().first()
 
     if existing_row:
-        return {"error": "Already in watch later"}
+        return {"error": "Content is already in watch later"}
 
     insert_query = text("""
         INSERT INTO watch_later (user_id, content_id)
@@ -70,7 +71,6 @@ def add_to_watch_later_service(user_id: int, content_id: int, db: Session):
 
 
 def add_to_watched_service(user_id: int, content_id: int, db: Session):
-
     user_row = check_user_exists(user_id, db)
     if not user_row:
         return {"error": "User not found"}
@@ -98,7 +98,7 @@ def add_to_watched_service(user_id: int, content_id: int, db: Session):
     existing_row = existing_result.mappings().first()
 
     if existing_row:
-        return {"error": "Already in watched"}
+        return {"error": "Content is already in watched"}
 
     delete_watch_later_query = text("""
         DELETE FROM watch_later
@@ -123,7 +123,6 @@ def add_to_watched_service(user_id: int, content_id: int, db: Session):
 
 
 def get_watch_later_service(user_id: int, db: Session):
-
     user_row = check_user_exists(user_id, db)
     if not user_row:
         return {"error": "User not found"}
@@ -153,7 +152,6 @@ def get_watch_later_service(user_id: int, db: Session):
 
 
 def get_watched_service(user_id: int, db: Session):
-
     user_row = check_user_exists(user_id, db)
     if not user_row:
         return {"error": "User not found"}
@@ -183,7 +181,6 @@ def get_watched_service(user_id: int, db: Session):
 
 
 def remove_from_watch_later_service(user_id: int, content_id: int, db: Session):
-
     user_row = check_user_exists(user_id, db)
     if not user_row:
         return {"error": "User not found"}
@@ -200,7 +197,7 @@ def remove_from_watch_later_service(user_id: int, content_id: int, db: Session):
     existing_row = existing_result.mappings().first()
 
     if not existing_row:
-        return {"error": "Content not found in watch later"}
+        return {"error": "Content is not in watch later"}
 
     delete_query = text("""
         DELETE FROM watch_later
@@ -216,7 +213,6 @@ def remove_from_watch_later_service(user_id: int, content_id: int, db: Session):
 
 
 def remove_from_watched_service(user_id: int, content_id: int, db: Session):
-
     user_row = check_user_exists(user_id, db)
     if not user_row:
         return {"error": "User not found"}
@@ -233,7 +229,7 @@ def remove_from_watched_service(user_id: int, content_id: int, db: Session):
     existing_row = existing_result.mappings().first()
 
     if not existing_row:
-        return {"error": "Content not found in watched"}
+        return {"error": "Content is not in watched"}
 
     delete_query = text("""
         DELETE FROM watched
