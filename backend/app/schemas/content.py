@@ -26,13 +26,13 @@ class PaginatedContentResponse(BaseModel):
 
 # Platform
 class Platform(BaseModel):
-    platform_name: str
+    name: str
     availability_type: str
 
 
 # Rating
 class Rating(BaseModel):
-    platform_name: str
+    platform: str
     original_score: float
     original_scale: float
     normalized_score: float

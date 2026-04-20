@@ -2,6 +2,21 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 
 
+CONTENT_SELECT_FIELDS = """
+    id,
+    title,
+    content_type,
+    overview,
+    poster_url,
+    backdrop_url,
+    release_date,
+    year,
+    runtime,
+    language,
+    age_rating
+"""
+
+
 def build_content_object(content_row):
     return {
         "id": content_row["id"],
@@ -48,17 +63,7 @@ def get_all_content_service(
 
     data_query = text(f"""
         SELECT
-            id,
-            title,
-            content_type,
-            overview,
-            poster_url,
-            backdrop_url,
-            release_date,
-            year,
-            runtime,
-            language,
-            age_rating
+            {CONTENT_SELECT_FIELDS}
         {base_from_query}
         ORDER BY release_date DESC
         LIMIT :limit OFFSET :offset;
@@ -86,19 +91,9 @@ def get_all_content_service(
 
 
 def get_content_by_id_service(content_id: int, db: Session):
-    query = text("""
+    query = text(f"""
         SELECT
-            id,
-            title,
-            content_type,
-            overview,
-            poster_url,
-            backdrop_url,
-            release_date,
-            year,
-            runtime,
-            language,
-            age_rating
+            {CONTENT_SELECT_FIELDS}
         FROM content
         WHERE id = :content_id;
     """)
@@ -112,19 +107,9 @@ def get_content_by_id_service(content_id: int, db: Session):
 
 
 def get_content_details_service(content_id: int, db: Session):
-    content_query = text("""
+    content_query = text(f"""
         SELECT
-            id,
-            title,
-            content_type,
-            overview,
-            poster_url,
-            backdrop_url,
-            release_date,
-            year,
-            runtime,
-            language,
-            age_rating
+            {CONTENT_SELECT_FIELDS}
         FROM content
         WHERE id = :content_id;
     """)
@@ -149,7 +134,7 @@ def get_content_details_service(content_id: int, db: Session):
 
     platforms_query = text("""
         SELECT
-            p.name AS platform_name,
+            p.name AS name,
             cp.availability_type
         FROM content_platforms cp
         JOIN platforms p ON cp.platform_id = p.id
@@ -169,7 +154,7 @@ def get_content_details_service(content_id: int, db: Session):
 
     ratings_query = text("""
         SELECT
-            p.name AS platform_name,
+            p.name AS platform,
             r.original_score,
             r.original_scale,
             r.normalized_score,
