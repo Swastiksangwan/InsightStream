@@ -15,6 +15,7 @@ Instead of browsing endlessly across platforms, InsightStream provides:
 * Normalized scoring system
 * Simplified review insights
 * Personal watch tracking (watch later / watched)
+* Structured browsing, filtering, and search
 
 ---
 
@@ -83,26 +84,59 @@ Core tables:
 
 ## ⚙️ Backend Features (Current)
 
-### Content APIs
+### 🎯 Content APIs
 
-* `GET /content`
-  → Returns list of content (clean, structured)
+#### 1. `GET /content`
 
-* `GET /content/{content_id}`
-  → Returns single content object
+A fully polished listing endpoint supporting:
 
-* `GET /content/{content_id}/details`
-  → Returns full details including:
+* Ordering by latest release date
+* Filtering by content type (`movie`, `series`)
+* Search by title (case-insensitive)
+* Combined filtering (search + type)
+* Pagination (`limit`, `offset`)
+* Total count for frontend pagination
 
-  * Content info
-  * Genres
-  * Platforms
-  * Ratings (normalized)
-  * Summary insights (pros, cons, verdict)
+Response format:
+
+```
+{
+  "items": [...],
+  "total": 25,
+  "limit": 10,
+  "offset": 0
+}
+```
 
 ---
 
-### User Interaction APIs
+#### 2. `GET /content/{content_id}`
+
+* Returns a clean, structured content object
+* Proper 404 handling if content does not exist
+
+---
+
+#### 3. `GET /content/{content_id}/details`
+
+Returns a fully enriched, frontend-ready response:
+
+* Content information
+* Genres
+* Platform availability (ordered logically)
+* Ratings (ordered by reviewer type)
+* Summary insights
+
+Key improvements:
+
+* Platform ordering: streaming → rent → buy
+* Ratings ordering: critic → audience → general
+* Clean field naming
+* Stable `summary: null` contract
+
+---
+
+### 👤 User Interaction APIs
 
 #### Add Actions
 
@@ -121,37 +155,54 @@ Core tables:
 
 ---
 
-## 🧠 Backend Design Decisions
+### ✅ Watch System Behavior
 
-* **Service Layer Architecture**
+* Prevents duplicates (409 Conflict)
+* Prevents invalid actions (e.g. already watched)
+* Proper validation:
 
-  * Business logic separated from routes
-  * Improves scalability and maintainability
-
-* **Reusable Content Formatter**
-
-  * Consistent response structure across APIs
-
-* **Raw SQL with SQLAlchemy**
-
-  * Full control over queries
-  * Better understanding of database behavior
-
-* **Structured Pydantic Schemas**
-
-  * Clean API contracts
-  * Automatic validation and Swagger documentation
-
-* **Proper Error Handling**
-
-  * 404 responses for missing content
-  * Safe handling of empty lists
+  * User not found → 404
+  * Content not found → 404
+* Empty lists return `200 OK` (not errors)
 
 ---
 
-## 📊 Example Response (Simplified)
+## 🧠 Backend Design Decisions
 
-```json
+### Service Layer Architecture
+
+* Business logic separated from routes
+* Cleaner, scalable structure
+
+### Reusable Content Builder
+
+* Consistent response formatting across APIs
+
+### Raw SQL with SQLAlchemy
+
+* Full control over queries
+* Optimized and predictable behavior
+
+### Structured Pydantic Schemas
+
+* Strong API contracts
+* Automatic validation
+* Clean Swagger documentation
+
+### Pagination-first Design
+
+* Designed for real frontend scalability
+
+### Consistent API Contracts
+
+* Stable error messages
+* Predictable empty/null behavior
+
+---
+
+## 📊 Example Response (Details API)
+
+```
 {
   "content": {
     "id": 1,
@@ -171,38 +222,33 @@ Core tables:
 ## 🔄 Current Status
 
 * Backend core architecture complete
-* Content APIs stable and structured
-* User watch tracking system implemented (CRUD)
+* API Polish Phase completed
+* Content APIs production-ready
+* Advanced filtering + search + pagination implemented
+* Watch tracking system fully implemented
+* API responses standardized and frontend-friendly
 * Swagger documentation fully working
 
 ---
 
-## ⏳ Upcoming Work
+## 🚀 Upcoming Work
 
-### Immediate Next Steps
+### Next Phase (Backend Expansion)
 
-* Add business rules:
+* Recommendation system foundation
+* Trending / popular content endpoints
+* Analytics-ready data pipelines
+* Performance optimizations (indexing, query tuning)
 
-  * Prevent duplicate entries
-  * Prevent adding to watch_later if already watched
+---
 
-### Near Future
-
-* Improve API formatting (polish phase)
-
-  * Better ordering (ratings/platforms)
-  * Cleaner summary handling
-
-### Mid-Term
+### Future Work
 
 * Frontend integration (Next.js)
 * User authentication system
-
-### Long-Term
-
-* Recommendation engine
-* Advanced analytics
-* NLP-based review insights
+* Personalized recommendations
+* Advanced analytics & insights
+* NLP-based review processing
 
 ---
 
@@ -210,21 +256,21 @@ Core tables:
 
 ### 1. Clone the repository
 
-```bash
-git clone <your-repo-url>
+```
+git clone https://github.com/Swastiksangwan/InsightStream.git
 cd InsightStream/backend
 ```
 
 ### 2. Create virtual environment
 
-```bash
+```
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
 ### 3. Install dependencies
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
@@ -238,7 +284,7 @@ DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<db_name>
 
 ### 5. Run server
 
-```bash
+```
 uvicorn app.main:app --reload
 ```
 
@@ -258,7 +304,8 @@ InsightStream is not just a content browser — it aims to become a **decision e
 
 ## 👨‍💻 Author
 
-Swastik Sangwan 
+Swastik Sangwan
 B.Tech CSE | Backend + Data-driven Systems
 
 ---
+
