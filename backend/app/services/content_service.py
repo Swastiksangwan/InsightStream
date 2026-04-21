@@ -3,17 +3,17 @@ from sqlalchemy import text
 
 
 CONTENT_SELECT_FIELDS = """
-    id,
-    title,
-    content_type,
-    overview,
-    poster_url,
-    backdrop_url,
-    release_date,
-    year,
-    runtime,
-    language,
-    age_rating
+    c.id,
+    c.title,
+    c.content_type,
+    c.overview,
+    c.poster_url,
+    c.backdrop_url,
+    c.release_date,
+    c.year,
+    c.runtime,
+    c.language,
+    c.age_rating
 """
 
 
@@ -63,9 +63,69 @@ def get_all_content_service(
 
     data_query = text(f"""
         SELECT
-            {CONTENT_SELECT_FIELDS}
+            id,
+            title,
+            content_type,
+            overview,
+            poster_url,
+            backdrop_url,
+            release_date,
+            year,
+            runtime,
+            language,
+            age_rating
         {base_from_query}
         ORDER BY release_date DESC
+        LIMIT :limit OFFSET :offset;
+    """)
+
+    count_query = text(f"""
+        SELECT COUNT(*) AS total
+        {base_from_query};
+    """)
+
+    data_result = db.execute(data_query, params)
+    rows = data_result.mappings().all()
+
+    count_result = db.execute(count_query, params)
+    total = count_result.mappings().first()["total"]
+
+    items = [build_content_object(row) for row in rows]
+
+    return {
+        "items": items,
+        "total": total,
+        "limit": limit,
+        "offset": offset
+    }
+
+
+def get_top_rated_content_service(
+    db: Session,
+    content_type: str = None,
+    limit: int = 10,
+    offset: int = 0
+):
+    base_from_query = """
+        FROM content c
+        JOIN content_summary cs ON cs.content_id = c.id
+        WHERE cs.unified_score IS NOT NULL
+    """
+
+    params = {
+        "limit": limit,
+        "offset": offset
+    }
+
+    if content_type:
+        base_from_query += " AND c.content_type = :content_type"
+        params["content_type"] = content_type
+
+    data_query = text(f"""
+        SELECT
+            {CONTENT_SELECT_FIELDS}
+        {base_from_query}
+        ORDER BY cs.unified_score DESC, c.release_date DESC, c.title ASC
         LIMIT :limit OFFSET :offset;
     """)
 
@@ -94,8 +154,8 @@ def get_content_by_id_service(content_id: int, db: Session):
     query = text(f"""
         SELECT
             {CONTENT_SELECT_FIELDS}
-        FROM content
-        WHERE id = :content_id;
+        FROM content c
+        WHERE c.id = :content_id;
     """)
     result = db.execute(query, {"content_id": content_id})
     row = result.mappings().first()
@@ -110,8 +170,8 @@ def get_content_details_service(content_id: int, db: Session):
     content_query = text(f"""
         SELECT
             {CONTENT_SELECT_FIELDS}
-        FROM content
-        WHERE id = :content_id;
+        FROM content c
+        WHERE c.id = :content_id;
     """)
     content_result = db.execute(content_query, {"content_id": content_id})
     content_row = content_result.mappings().first()

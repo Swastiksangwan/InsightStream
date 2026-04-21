@@ -5,6 +5,7 @@ from app.db.session import get_db
 from app.schemas.content import Content, ContentDetailsResponse, PaginatedContentResponse
 from app.services.content_service import (
     get_all_content_service,
+    get_top_rated_content_service,
     get_content_by_id_service,
     get_content_details_service
 )
@@ -36,6 +37,28 @@ def get_all_content(
     db: Session = Depends(get_db)
 ):
     return get_all_content_service(db, content_type, search, limit, offset)
+
+
+@router.get("/content/top-rated", response_model=PaginatedContentResponse)
+def get_top_rated_content(
+    content_type: Optional[Literal["movie", "series"]] = Query(
+        default=None,
+        description="Filter top-rated content by type. Allowed values: movie, series."
+    ),
+    limit: int = Query(
+        default=10,
+        ge=1,
+        le=100,
+        description="Maximum number of items to return."
+    ),
+    offset: int = Query(
+        default=0,
+        ge=0,
+        description="Number of items to skip before returning results."
+    ),
+    db: Session = Depends(get_db)
+):
+    return get_top_rated_content_service(db, content_type, limit, offset)
 
 
 @router.get("/content/{content_id}", response_model=Content)
