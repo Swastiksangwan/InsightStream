@@ -150,6 +150,166 @@ def get_top_rated_content_service(
     }
 
 
+def get_recent_content_service(
+    db: Session,
+    content_type: str = None,
+    limit: int = 10,
+    offset: int = 0
+):
+    base_from_query = """
+        FROM content c
+        WHERE c.release_date IS NOT NULL
+    """
+
+    params = {
+        "limit": limit,
+        "offset": offset
+    }
+
+    if content_type:
+        base_from_query += " AND c.content_type = :content_type"
+        params["content_type"] = content_type
+
+    data_query = text(f"""
+        SELECT
+            {CONTENT_SELECT_FIELDS}
+        {base_from_query}
+        ORDER BY c.release_date DESC, c.title ASC
+        LIMIT :limit OFFSET :offset;
+    """)
+
+    count_query = text(f"""
+        SELECT COUNT(*) AS total
+        {base_from_query};
+    """)
+
+    data_result = db.execute(data_query, params)
+    rows = data_result.mappings().all()
+
+    count_result = db.execute(count_query, params)
+    total = count_result.mappings().first()["total"]
+
+    items = [build_content_object(row) for row in rows]
+
+    return {
+        "items": items,
+        "total": total,
+        "limit": limit,
+        "offset": offset
+    }
+
+
+def get_content_by_genre_service(
+    db: Session,
+    genre_name: str,
+    content_type: str = None,
+    limit: int = 10,
+    offset: int = 0
+):
+    base_from_query = """
+        FROM content c
+        JOIN content_genres cg ON cg.content_id = c.id
+        JOIN genres g ON g.id = cg.genre_id
+        WHERE g.name ILIKE :genre_name
+    """
+
+    params = {
+        "genre_name": genre_name,
+        "limit": limit,
+        "offset": offset
+    }
+
+    if content_type:
+        base_from_query += " AND c.content_type = :content_type"
+        params["content_type"] = content_type
+
+    data_query = text(f"""
+        SELECT DISTINCT
+            {CONTENT_SELECT_FIELDS}
+        {base_from_query}
+        ORDER BY c.release_date DESC, c.title ASC
+        LIMIT :limit OFFSET :offset;
+    """)
+
+    count_query = text(f"""
+        SELECT COUNT(DISTINCT c.id) AS total
+        {base_from_query};
+    """)
+
+    data_result = db.execute(data_query, params)
+    rows = data_result.mappings().all()
+
+    count_result = db.execute(count_query, params)
+    total = count_result.mappings().first()["total"]
+
+    items = [build_content_object(row) for row in rows]
+
+    return {
+        "items": items,
+        "total": total,
+        "limit": limit,
+        "offset": offset
+    }
+
+
+def get_content_by_platform_service(
+    db: Session,
+    platform_name: str,
+    content_type: str = None,
+    availability_type: str = None,
+    limit: int = 10,
+    offset: int = 0
+):
+    base_from_query = """
+        FROM content c
+        JOIN content_platforms cp ON cp.content_id = c.id
+        JOIN platforms p ON p.id = cp.platform_id
+        WHERE p.name ILIKE :platform_name
+    """
+
+    params = {
+        "platform_name": platform_name,
+        "limit": limit,
+        "offset": offset
+    }
+
+    if content_type:
+        base_from_query += " AND c.content_type = :content_type"
+        params["content_type"] = content_type
+
+    if availability_type:
+        base_from_query += " AND cp.availability_type = :availability_type"
+        params["availability_type"] = availability_type
+
+    data_query = text(f"""
+        SELECT DISTINCT
+            {CONTENT_SELECT_FIELDS}
+        {base_from_query}
+        ORDER BY c.release_date DESC, c.title ASC
+        LIMIT :limit OFFSET :offset;
+    """)
+
+    count_query = text(f"""
+        SELECT COUNT(DISTINCT c.id) AS total
+        {base_from_query};
+    """)
+
+    data_result = db.execute(data_query, params)
+    rows = data_result.mappings().all()
+
+    count_result = db.execute(count_query, params)
+    total = count_result.mappings().first()["total"]
+
+    items = [build_content_object(row) for row in rows]
+
+    return {
+        "items": items,
+        "total": total,
+        "limit": limit,
+        "offset": offset
+    }
+
+
 def get_content_by_id_service(content_id: int, db: Session):
     query = text(f"""
         SELECT
