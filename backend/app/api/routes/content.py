@@ -2,7 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import Optional, Literal
 from app.db.session import get_db
-from app.schemas.content import Content, ContentDetailsResponse, PaginatedContentResponse
+from app.schemas.content import (
+    Content,
+    ContentDetailsResponse,
+    PaginatedContentResponse,
+    Genre,
+    PlatformMetadata
+)
 from app.services.content_service import (
     get_all_content_service,
     get_all_genres_service,
@@ -44,12 +50,12 @@ def get_all_content(
     return get_all_content_service(db, content_type, search, limit, offset)
 
 
-@router.get("/genres")
+@router.get("/genres", response_model=list[Genre])
 def get_all_genres(db: Session = Depends(get_db)):
     return get_all_genres_service(db)
 
 
-@router.get("/platforms")
+@router.get("/platforms", response_model=list[PlatformMetadata])
 def get_all_platforms(
     platform_type: Optional[Literal["ott", "rating_source", "review_source"]] = Query(
         default=None,

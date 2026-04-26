@@ -51,6 +51,17 @@ class Summary(BaseModel):
     verdict: Optional[str]
 
 
+class Genre(BaseModel):
+    id: int
+    name: str
+
+
+class PlatformMetadata(BaseModel):
+    id: int
+    name: str
+    platform_type: str
+
+    
 # Final Response Model
 class ContentDetailsResponse(BaseModel):
     content: Content
