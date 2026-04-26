@@ -5,6 +5,8 @@ from app.db.session import get_db
 from app.schemas.content import Content, ContentDetailsResponse, PaginatedContentResponse
 from app.services.content_service import (
     get_all_content_service,
+    get_all_genres_service,
+    get_all_platforms_service,
     get_top_rated_content_service,
     get_recent_content_service,
     get_content_by_genre_service,
@@ -40,6 +42,22 @@ def get_all_content(
     db: Session = Depends(get_db)
 ):
     return get_all_content_service(db, content_type, search, limit, offset)
+
+
+@router.get("/genres")
+def get_all_genres(db: Session = Depends(get_db)):
+    return get_all_genres_service(db)
+
+
+@router.get("/platforms")
+def get_all_platforms(
+    platform_type: Optional[Literal["ott", "rating_source", "review_source"]] = Query(
+        default=None,
+        description="Filter platforms by type. Allowed values: ott, rating_source, review_source."
+    ),
+    db: Session = Depends(get_db)
+):
+    return get_all_platforms_service(db, platform_type)
 
 
 @router.get("/content/top-rated", response_model=PaginatedContentResponse)

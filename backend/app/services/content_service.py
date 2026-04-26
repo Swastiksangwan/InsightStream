@@ -100,6 +100,49 @@ def get_all_content_service(
     }
 
 
+def get_all_genres_service(db: Session):
+    query = text("""
+        SELECT
+            id,
+            name
+        FROM genres
+        ORDER BY name ASC;
+    """)
+
+    result = db.execute(query)
+    rows = result.mappings().all()
+
+    return [dict(row) for row in rows]
+
+
+def get_all_platforms_service(
+    db: Session,
+    platform_type: str = None
+):
+    base_query = """
+        SELECT
+            id,
+            name,
+            platform_type
+        FROM platforms
+    """
+
+    params = {}
+
+    if platform_type:
+        base_query += " WHERE platform_type = :platform_type"
+        params["platform_type"] = platform_type
+
+    base_query += " ORDER BY platform_type ASC, name ASC;"
+
+    query = text(base_query)
+
+    result = db.execute(query, params)
+    rows = result.mappings().all()
+
+    return [dict(row) for row in rows]
+
+
 def get_top_rated_content_service(
     db: Session,
     content_type: str = None,
