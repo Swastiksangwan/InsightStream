@@ -17,6 +17,7 @@ from app.services.content_service import (
     get_recent_content_service,
     get_content_by_genre_service,
     get_content_by_platform_service,
+    get_discover_content_service,
     get_content_by_id_service,
     get_content_details_service
 )
@@ -108,6 +109,53 @@ def get_recent_content(
     db: Session = Depends(get_db)
 ):
     return get_recent_content_service(db, content_type, limit, offset)
+
+
+@router.get("/content/discover", response_model=PaginatedContentResponse)
+def discover_content(
+    content_type: Optional[Literal["movie", "series"]] = Query(
+        default=None,
+        description="Filter content by type. Allowed values: movie, series."
+    ),
+    genre: Optional[str] = Query(
+        default=None,
+        description="Filter by genre name, for example: Sci-Fi, Drama, Action."
+    ),
+    platform: Optional[str] = Query(
+        default=None,
+        description="Filter by platform name, for example: Netflix, Prime Video."
+    ),
+    availability_type: Optional[Literal["streaming", "rent", "buy"]] = Query(
+        default=None,
+        description="Filter by availability type. Allowed values: streaming, rent, buy."
+    ),
+    sort_by: Literal["recent", "top_rated"] = Query(
+        default="recent",
+        description="Sort discovery results. Allowed values: recent, top_rated."
+    ),
+    limit: int = Query(
+        default=10,
+        ge=1,
+        le=100,
+        description="Maximum number of items to return."
+    ),
+    offset: int = Query(
+        default=0,
+        ge=0,
+        description="Number of items to skip before returning results."
+    ),
+    db: Session = Depends(get_db)
+):
+    return get_discover_content_service(
+        db,
+        content_type,
+        genre,
+        platform,
+        availability_type,
+        sort_by,
+        limit,
+        offset
+    )
 
 
 @router.get("/content/by-genre/{genre_name}", response_model=PaginatedContentResponse)

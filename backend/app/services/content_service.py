@@ -353,6 +353,95 @@ def get_content_by_platform_service(
     }
 
 
+def get_discover_content_service(
+    db: Session,
+    content_type: str = None,
+    genre: str = None,
+    platform: str = None,
+    availability_type: str = None,
+    sort_by: str = "recent",
+    limit: int = 10,
+    offset: int = 0
+):
+    base_from_query = """
+        FROM content c
+        LEFT JOIN content_summary cs ON cs.content_id = c.id
+    """
+
+    conditions = []
+    params = {
+        "limit": limit,
+        "offset": offset
+    }
+
+    if genre:
+        base_from_query += """
+            JOIN content_genres cg ON cg.content_id = c.id
+            JOIN genres g ON g.id = cg.genre_id
+        """
+        conditions.append("g.name ILIKE :genre")
+        params["genre"] = genre
+
+    if platform:
+        base_from_query += """
+            JOIN content_platforms cp ON cp.content_id = c.id
+            JOIN platforms p ON p.id = cp.platform_id
+        """
+        conditions.append("p.name ILIKE :platform")
+        params["platform"] = platform
+
+        if availability_type:
+            conditions.append("cp.availability_type = :availability_type")
+            params["availability_type"] = availability_type
+
+    elif availability_type:
+        base_from_query += """
+            JOIN content_platforms cp ON cp.content_id = c.id
+        """
+        conditions.append("cp.availability_type = :availability_type")
+        params["availability_type"] = availability_type
+
+    if content_type:
+        conditions.append("c.content_type = :content_type")
+        params["content_type"] = content_type
+
+    if conditions:
+        base_from_query += " WHERE " + " AND ".join(conditions)
+
+    if sort_by == "top_rated":
+        order_by = "ORDER BY cs.unified_score DESC NULLS LAST, c.release_date DESC, c.title ASC"
+    else:
+        order_by = "ORDER BY c.release_date DESC, c.title ASC"
+
+    data_query = text(f"""
+        SELECT DISTINCT
+            {CONTENT_SELECT_FIELDS}
+        {base_from_query}
+        {order_by}
+        LIMIT :limit OFFSET :offset;
+    """)
+
+    count_query = text(f"""
+        SELECT COUNT(DISTINCT c.id) AS total
+        {base_from_query};
+    """)
+
+    data_result = db.execute(data_query, params)
+    rows = data_result.mappings().all()
+
+    count_result = db.execute(count_query, params)
+    total = count_result.mappings().first()["total"]
+
+    items = [build_content_object(row) for row in rows]
+
+    return {
+        "items": items,
+        "total": total,
+        "limit": limit,
+        "offset": offset
+    }
+
+
 def get_content_by_id_service(content_id: int, db: Session):
     query = text(f"""
         SELECT
