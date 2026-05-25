@@ -332,7 +332,7 @@ It is designed for the current backend state and includes sample data for:
 
 The seed file avoids hardcoded generated IDs by using stable lookups such as `tmdb_id`, genre name, platform name, and user email.
 
-`backend/updated_sample_data.sql` also exists, but it is now a legacy/reference file from earlier manual pgAdmin testing. It hardcodes generated IDs and should not be used as the clean reset seed source.
+Do not use legacy/manual seed files for local setup. `backend/sample_data.sql` is the single canonical seed source.
 
 ## Recommended Future Improvements
 
