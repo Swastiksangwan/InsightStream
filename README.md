@@ -65,6 +65,7 @@ backend/
 │
 ├── schema.sql             # Database schema
 ├── sample_data.sql        # Sample test data
+├── indexes.sql            # Database indexes
 ├── requirements.txt
 └── .env                   # Environment variables
 ```
@@ -630,16 +631,18 @@ DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<db_name>
 
 ### 5. Setup database
 
-Run the schema file in PostgreSQL:
+For detailed setup, reset, and verification steps, see this guide from the repository root:
 
 ```text
-schema.sql
+docs/backend_database_setup.md
 ```
 
-Then insert sample data:
+Run the database files in this order:
 
 ```text
-sample_data.sql
+backend/schema.sql
+backend/sample_data.sql
+backend/indexes.sql
 ```
 
 ### 6. Run server
@@ -663,4 +666,3 @@ InsightStream is not just a content browser.
 It aims to become a **decision engine** that helps users confidently choose what to watch using **data, not noise**.
 
 ---
-

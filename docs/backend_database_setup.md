@@ -315,19 +315,29 @@ Expected result for a clean current-state dataset: no rows.
 
 If this query returns rows in local development, the sample or manually inserted data has conflicting watch states.
 
-## Known Current Note
+## Current Seed Data Note
 
-`backend/sample_data.sql` may not yet fully match the expanded discovery sample dataset documented later in the project notes.
+`backend/sample_data.sql` is the canonical local development seed file.
 
-`backend/updated_sample_data.sql` also exists, but it currently hardcodes generated IDs and should not yet be treated as the clean reset seed source.
+It is designed for the current backend state and includes sample data for:
 
-A later task should reconcile the sample data into one clean, reset-safe seed file.
+- content listing
+- content details
+- top-rated discovery
+- recent discovery
+- genre/platform discovery
+- combined discovery
+- metadata endpoints
+- watch later and watched examples
+
+The seed file avoids hardcoded generated IDs by using stable lookups such as `tmdb_id`, genre name, platform name, and user email.
+
+`backend/updated_sample_data.sql` also exists, but it is now a legacy/reference file from earlier manual pgAdmin testing. It hardcodes generated IDs and should not be used as the clean reset seed source.
 
 ## Recommended Future Improvements
 
 Recommended future database setup improvements:
 
-- Create one clean reset-safe seed file for local development.
-- Make seed data avoid hardcoded generated IDs where possible.
-- Keep watch-state sample data consistent with backend mutual-exclusivity rules.
+- Continue expanding `backend/sample_data.sql` as the single clean local seed source.
+- Add more sample titles only when needed for real endpoint or frontend testing.
 - Optionally add database migrations later, for example with Alembic.
