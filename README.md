@@ -17,7 +17,20 @@ Instead of browsing endlessly across platforms, InsightStream provides:
 * Personal watch tracking (watch later / watched)
 * Structured browsing, filtering, and search
 * Discovery-based content exploration
-* Flexible content filtering by genre, platform, rating, and release recency
+* Flexible filtering by genre, platform, content type, availability type, and release recency/top-rated sorting
+* Analytics-backed decision support
+
+---
+
+## Product Direction
+
+InsightStream is an information-first entertainment decision-support platform.
+
+The current MVP focuses on movies and series. It helps users understand what is trending, what is worth watching, where content is available, and how it is rated across sources.
+
+Public user reviews, posts, comments, communities, and social feeds are not part of the MVP. User interaction is limited to personal utility actions like watch later and watched for now.
+
+Public reviews and community features may be reconsidered later only if they clearly fit after the core film/series MVP, analytics foundation, and frontend are stable.
 
 ---
 
@@ -37,16 +50,23 @@ Instead of browsing endlessly across platforms, InsightStream provides:
 * React
 * Tailwind CSS
 
-### Analytics (Planned)
+### Analytics
 
-* Pandas
-* NumPy
-* scikit-learn
-* NLP using NLTK / spaCy
+* Analytics planning documented
+* Future tools: Pandas, NumPy, scikit-learn, NLTK / spaCy
+* Future focus: data collection, rating normalization, unified scoring, review summarization, trending logic, and recommendations
 
 ### External APIs (Planned)
 
 * TMDb
+
+---
+
+## Documentation
+
+* `docs/product_direction.md` — MVP boundary and product direction
+* `docs/analytics_data_collection_plan.md` — analytics and data collection roadmap
+* `docs/backend_database_setup.md` — local database setup/reset/verification guide
 
 ---
 
@@ -289,11 +309,11 @@ Example response:
 ```json
 [
   {
-    "id": 40,
+    "id": 1,
     "name": "Action"
   },
   {
-    "id": 51,
+    "id": 12,
     "name": "Sci-Fi"
   }
 ]
@@ -320,12 +340,12 @@ Example response:
 ```json
 [
   {
-    "id": 21,
+    "id": 1,
     "name": "Netflix",
     "platform_type": "ott"
   },
   {
-    "id": 28,
+    "id": 8,
     "name": "IMDb",
     "platform_type": "rating_source"
   }
@@ -454,7 +474,7 @@ The backend follows stable response behavior:
 ```json
 {
   "content": {
-    "id": 9,
+    "id": 1,
     "title": "Interstellar",
     "type": "movie",
     "overview": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
@@ -479,12 +499,12 @@ The backend follows stable response behavior:
   ],
   "ratings": [
     {
-      "platform": "Prime Video",
-      "original_score": 8.7,
-      "original_scale": 10.0,
-      "normalized_score": 87.0,
-      "rating_count": 2000000,
-      "reviewer_group": "general"
+      "platform": "Metacritic",
+      "original_score": 74.0,
+      "original_scale": 100.0,
+      "normalized_score": 74.0,
+      "rating_count": 60,
+      "reviewer_group": "critic"
     }
   ],
   "summary": {
@@ -503,7 +523,7 @@ The backend follows stable response behavior:
 
 ## 🧪 Sample Data Status
 
-The database sample data has been expanded and verified.
+`backend/sample_data.sql` is the single canonical reset-safe seed source for local development.
 
 Current sample data includes:
 
@@ -525,6 +545,8 @@ The sample data supports testing for:
 * Combined discovery filters
 * Watch later / watched behavior
 
+Legacy/manual seed files have been removed and should not be used. The next data step is to analyze sample data gaps before expanding the seed dataset.
+
 ---
 
 ## 🔄 Current Status
@@ -540,9 +562,14 @@ Current backend status:
 * Combined discovery endpoint completed
 * Metadata endpoints completed
 * Genre and platform metadata schemas added
-* Sample data expanded and verified
+* Database indexes completed through `backend/indexes.sql`
+* Canonical sample data completed through `backend/sample_data.sql`
+* Product direction documented
+* Analytics/data collection plan documented
 * Swagger documentation working
 * API responses standardized and frontend-friendly
+* Frontend still planned / not meaningfully implemented
+* Analytics scripts and API-based data collection still planned / not implemented
 
 Current discovery endpoints:
 
@@ -564,11 +591,11 @@ GET /platforms
 
 Possible next steps:
 
-* Add indexes for frequently queried fields
-* Improve database scalability for discovery queries
-* Refactor repeated pagination/query patterns if needed
-* Add more sample data for stronger endpoint testing
-* Begin frontend integration for content discovery sections
+* Review current sample data and document data gaps
+* Plan sample data expansion before editing SQL
+* Continue analytics/data collection foundation
+* Begin frontend integration planning after data direction is clearer
+* Add backend tests when appropriate
 
 ---
 
@@ -577,9 +604,10 @@ Possible next steps:
 Planned future backend work:
 
 * Recommendation system foundation
-* Trending / popular content logic
+* True trending / popularity logic
 * Analytics-ready data pipelines
 * Query optimization
+* TMDb ingestion
 * Migration setup
 * Testing setup
 * Authentication system
