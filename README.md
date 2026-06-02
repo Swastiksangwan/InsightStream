@@ -67,6 +67,8 @@ Public reviews and community features may be reconsidered later only if they cle
 * `docs/product_direction.md` — MVP boundary and product direction
 * `docs/analytics_data_collection_plan.md` — analytics and data collection roadmap
 * `docs/backend_database_setup.md` — local database setup/reset/verification guide
+* `docs/sample_data_gap_analysis.md` — current seed coverage and remaining data gaps
+* `docs/sample_data_expansion_plan.md` — completed seed expansion plan
 
 ---
 
@@ -525,14 +527,14 @@ The backend follows stable response behavior:
 
 `backend/sample_data.sql` is the single canonical reset-safe seed source for local development.
 
-Current sample data includes:
+Current sample data includes 15 seeded titles:
 
-* Multiple content items
-* Movies and series
+* 8 movies
+* 7 series
 * Multiple genres
 * Multiple platforms
-* Platform availability mappings
-* Ratings
+* Streaming, rent, and buy availability examples
+* Cross-source ratings, including `audience` reviewer-group rows
 * Content summaries
 * Watch later / watched test data
 
@@ -544,8 +546,9 @@ The sample data supports testing for:
 * Platform-based discovery
 * Combined discovery filters
 * Watch later / watched behavior
+* Pagination, analytics planning, and future frontend card/detail testing
 
-Legacy/manual seed files have been removed and should not be used. The next data step is to analyze sample data gaps before expanding the seed dataset.
+Legacy/manual seed files have been removed and should not be used. The expanded seed supports stronger discovery, analytics, pagination, and frontend testing.
 
 ---
 
@@ -564,8 +567,10 @@ Current backend status:
 * Genre and platform metadata schemas added
 * Database indexes completed through `backend/indexes.sql`
 * Canonical sample data completed through `backend/sample_data.sql`
+* Expanded canonical sample seed data completed and tested
 * Product direction documented
 * Analytics/data collection plan documented
+* Swagger verification passed for expanded sample data
 * Swagger documentation working
 * API responses standardized and frontend-friendly
 * Frontend still planned / not meaningfully implemented
@@ -591,11 +596,11 @@ GET /platforms
 
 Possible next steps:
 
-* Review current sample data and document data gaps
-* Plan sample data expansion before editing SQL
-* Continue analytics/data collection foundation
-* Begin frontend integration planning after data direction is clearer
-* Add backend tests when appropriate
+* Add backend tests for current endpoints
+* Begin frontend integration planning against the current API contracts
+* Continue analytics script planning
+* Plan future TMDb ingestion before implementing it
+* Use the expanded seed to identify remaining data edge cases
 
 ---
 
@@ -631,59 +636,46 @@ Planned future backend work:
 
 ### 1. Clone the repository
 
-```bash
-git clone https://github.com/Swastiksangwan/InsightStream.git
-cd InsightStream/backend
-```
+    git clone https://github.com/Swastiksangwan/InsightStream.git
+    cd InsightStream
 
-### 2. Create virtual environment
+### 2. Move into backend and create virtual environment
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-```
+    cd backend
+    python3 -m venv .venv
+    source .venv/bin/activate
 
 ### 3. Install dependencies
 
-```bash
-pip install -r requirements.txt
-```
+    pip install -r requirements.txt
 
 ### 4. Setup environment variables
 
-Create a `.env` file:
+Create a `.env` file inside `backend/`:
 
-```env
-DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<db_name>
-```
+    DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<db_name>
 
 ### 5. Setup database
 
-For detailed setup, reset, and verification steps, see this guide from the repository root:
+From the repository root, run the database files in this order:
 
-```text
-docs/backend_database_setup.md
-```
+    backend/schema.sql
+    backend/sample_data.sql
+    backend/indexes.sql
 
-Run the database files in this order:
+For detailed setup, reset, and verification steps, see:
 
-```text
-backend/schema.sql
-backend/sample_data.sql
-backend/indexes.sql
-```
+    docs/backend_database_setup.md
 
 ### 6. Run server
 
-```bash
-uvicorn app.main:app --reload
-```
+From inside `backend/`:
+
+    uvicorn app.main:app --reload
 
 ### 7. Open API docs
 
-```text
-http://127.0.0.1:8000/docs
-```
+    http://127.0.0.1:8000/docs
 
 ---
 

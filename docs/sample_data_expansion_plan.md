@@ -1,29 +1,31 @@
 # InsightStream Sample Data Expansion Plan
 
+Status: Completed. `backend/sample_data.sql` was expanded according to this plan, and the first seed target was reached with 15 total titles.
+
 ## 1. Purpose
 
-This document plans the next seed data expansion before editing `backend/sample_data.sql`.
+This document planned the first seed data expansion before editing `backend/sample_data.sql`.
 
-The goal is to improve testing for discovery, analytics, frontend planning, and future recommendations without randomly adding SQL rows. The expansion should be deliberate, readable, and connected to the current MVP direction.
+The goal was to improve testing for discovery, analytics, frontend planning, and future recommendations without randomly adding SQL rows. Future seed changes should remain deliberate, readable, and connected to the current MVP direction.
 
 ## 2. Current Decision: Seed Expansion Before TMDb Ingestion
 
-The immediate next step is to expand planned seed data to around 10–20 titles.
+The immediate next step at the time of writing was to expand planned seed data to around 10–20 titles. That first expansion has now been completed with 15 titles.
 
 Full TMDb/API ingestion should come later. TMDb will be useful, but it requires API key handling, field mapping, duplicate handling, rate-limit awareness, and ingestion design.
 
 For now, seed data can be manually curated. It should still stay compatible with future TMDb IDs and metadata so the project can move from manual seed data to API-backed ingestion later without rethinking the whole structure.
 
-## 3. Current Seed Baseline
+## 3. Original Seed Baseline
 
-The current canonical seed in `backend/sample_data.sql` includes four titles:
+Before the expansion, the canonical seed in `backend/sample_data.sql` included four titles:
 
 - Interstellar
 - Inception
 - Breaking Bad
 - The Mandalorian
 
-This baseline already tests:
+This baseline already tested:
 
 - movies and series
 - genres
@@ -50,11 +52,11 @@ The expanded sample data should support:
 
 ## 5. Recommended Dataset Size
 
-The first expansion should target around 12–16 titles, not the full 20 immediately.
+The completed first expansion targeted around 12–16 titles, not the full 20 immediately.
 
 This size is enough for useful testing while still being readable and maintainable. It is easier to verify manually, keeps SQL review manageable, and reduces the risk of messy seed data.
 
-After the first expansion is verified in pgAdmin and Swagger, the dataset can grow to 20+ titles if needed.
+The first expansion has been verified in pgAdmin and Swagger. The dataset can grow to 20+ titles later if a clear testing, analytics, or frontend need appears.
 
 ## 6. Title Selection Criteria
 
@@ -258,7 +260,7 @@ Before editing SQL, prepare these fields for each title:
 
 `normalized_score` should use the 0–100 scale.
 
-Each title should preferably have multiple rating rows. Future expansion should add at least some `audience` reviewer-group rows if possible, because the current seed mostly uses critic and general reviewer groups.
+Each title should preferably have multiple rating rows. The completed expansion added `audience` reviewer-group rows, because the previous seed mostly used critic and general reviewer groups.
 
 `content_summary` should have realistic `unified_score`, `critic_score`, `audience_score`, `review_summary`, `pros`, `cons`, and `verdict`.
 
@@ -288,9 +290,9 @@ Preserve mutual exclusivity between `watch_later` and `watched`.
 
 Add a few watched and watch-later examples only if useful for frontend and API testing. Do not put the same user/content pair in both tables.
 
-## 13. SQL Update Rules for Later
+## 13. SQL Update Rules
 
-The later SQL update should follow these rules:
+The completed SQL update followed these rules, and future SQL seed updates should continue to follow them:
 
 - Use stable natural-key lookups.
 - Do not hardcode generated IDs.
@@ -300,16 +302,21 @@ The later SQL update should follow these rules:
 - Do not create schema changes unless required.
 - Keep `backend/sample_data.sql` the single canonical seed file.
 
-## 14. Recommended Next Task After This Plan
+## 14. Completed Status and Recommended Next Tasks
 
-After this document is reviewed manually, the next task should be:
+This plan has been reviewed and implemented in:
 
 ```text
-Update backend/sample_data.sql based on this expansion plan.
+backend/sample_data.sql
 ```
 
-The SQL update should happen only after the title list, data fields, platform patterns, and rating/summary patterns are approved.
+Recommended next tasks now include:
+
+- backend tests for current endpoints
+- frontend integration planning
+- analytics script planning
+- future TMDb ingestion design
 
 ## 15. Final Summary
 
-The next data step is not full TMDb ingestion yet. The correct next step is a controlled seed-data expansion plan, followed by a careful update to `backend/sample_data.sql`. TMDb ingestion should come later after the sample format, mapping rules, and analytics needs are clearer.
+The first controlled seed-data expansion has been completed. The next data step is still not full TMDb ingestion by default; TMDb ingestion should come later after testing, frontend needs, sample format, mapping rules, and analytics needs are clearer.

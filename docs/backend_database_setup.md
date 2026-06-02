@@ -93,6 +93,8 @@ Expected result: tables are created successfully.
 
 Expected result: sample rows are inserted successfully.
 
+Current expected seed state: `backend/sample_data.sql` loads 15 content titles, split into 8 movies and 7 series.
+
 ### 4. Run Indexes
 
 1. Open `backend/indexes.sql`.
@@ -245,6 +247,24 @@ FROM content
 ORDER BY id;
 ```
 
+Expected current seed count: 15 total content rows.
+
+### Verify Content Count by Type
+
+```sql
+SELECT
+    content_type,
+    COUNT(*) AS total
+FROM content
+GROUP BY content_type
+ORDER BY content_type;
+```
+
+Expected current result:
+
+- `movie`: 8
+- `series`: 7
+
 ### Inspect Genres
 
 ```sql
@@ -319,6 +339,8 @@ If this query returns rows in local development, the sample or manually inserted
 
 `backend/sample_data.sql` is the canonical local development seed file.
 
+The current canonical seed contains 15 titles: 8 movies and 7 series.
+
 It is designed for the current backend state and includes sample data for:
 
 - content listing
@@ -340,4 +362,5 @@ Recommended future database setup improvements:
 
 - Continue expanding `backend/sample_data.sql` as the single clean local seed source.
 - Add more sample titles only when needed for real endpoint or frontend testing.
+- Plan any future seed expansion before editing SQL.
 - Optionally add database migrations later, for example with Alembic.
