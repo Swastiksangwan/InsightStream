@@ -408,14 +408,21 @@ def get_discover_content_service(
     if conditions:
         base_from_query += " WHERE " + " AND ".join(conditions)
 
+    # PostgreSQL requires ORDER BY fields to appear in SELECT when using SELECT DISTINCT.
+    # So for top-rated sorting, include cs.unified_score only as an internal sort field.
     if sort_by == "top_rated":
-        order_by = "ORDER BY cs.unified_score DESC NULLS LAST, c.release_date DESC, c.title ASC"
+        select_fields = f"""
+            {CONTENT_SELECT_FIELDS},
+            cs.unified_score AS sort_unified_score
+        """
+        order_by = "ORDER BY sort_unified_score DESC NULLS LAST, c.release_date DESC, c.title ASC"
     else:
+        select_fields = CONTENT_SELECT_FIELDS
         order_by = "ORDER BY c.release_date DESC, c.title ASC"
 
     data_query = text(f"""
         SELECT DISTINCT
-            {CONTENT_SELECT_FIELDS}
+            {select_fields}
         {base_from_query}
         {order_by}
         LIMIT :limit OFFSET :offset;
@@ -432,6 +439,8 @@ def get_discover_content_service(
     count_result = db.execute(count_query, params)
     total = count_result.mappings().first()["total"]
 
+    # build_content_object ignores the internal sort_unified_score field,
+    # so the API response shape stays unchanged.
     items = [build_content_object(row) for row in rows]
 
     return {
@@ -440,7 +449,6 @@ def get_discover_content_service(
         "limit": limit,
         "offset": offset
     }
-
 
 def get_content_by_id_service(content_id: int, db: Session):
     query = text(f"""
