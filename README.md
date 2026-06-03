@@ -67,6 +67,7 @@ Public reviews and community features may be reconsidered later only if they cle
 * `docs/product_direction.md` — MVP boundary and product direction
 * `docs/analytics_data_collection_plan.md` — analytics and data collection roadmap
 * `docs/backend_database_setup.md` — local database setup/reset/verification guide
+* `docs/backend_testing.md` — backend test setup and current test coverage
 * `docs/sample_data_gap_analysis.md` — current seed coverage and remaining data gaps
 * `docs/sample_data_expansion_plan.md` — completed seed expansion plan
 
@@ -552,6 +553,22 @@ Legacy/manual seed files have been removed and should not be used. The expanded 
 
 ---
 
+## Backend Testing
+
+A pytest testing foundation has been added for the current read-only backend endpoints.
+
+Current result: 18 passing tests.
+
+Tests assume the local database is prepared with:
+
+1. `backend/schema.sql`
+2. `backend/sample_data.sql`
+3. `backend/indexes.sql`
+
+The full testing guide is in `docs/backend_testing.md`.
+
+---
+
 ## 🔄 Current Status
 
 Current backend status:
@@ -568,6 +585,7 @@ Current backend status:
 * Database indexes completed through `backend/indexes.sql`
 * Canonical sample data completed through `backend/sample_data.sql`
 * Expanded canonical sample seed data completed and tested
+* Backend read endpoint testing foundation added with 18 passing pytest tests
 * Product direction documented
 * Analytics/data collection plan documented
 * Swagger verification passed for expanded sample data
@@ -596,7 +614,7 @@ GET /platforms
 
 Possible next steps:
 
-* Add backend tests for current endpoints
+* Expand backend tests to mutation endpoints and edge cases
 * Begin frontend integration planning against the current API contracts
 * Continue analytics script planning
 * Plan future TMDb ingestion before implementing it
