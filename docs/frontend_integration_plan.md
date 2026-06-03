@@ -124,6 +124,9 @@ Sections:
 - title and metadata
 - overview
 - genres
+- cast
+- crew
+- important people connected to the content
 - platform availability
 - ratings
 - unified score
@@ -131,6 +134,8 @@ Sections:
 - review summary
 - pros/cons/verdict
 - watch later/watched actions later
+
+The desired eventual detail page should include cast, crew, and important person information. The first implementation should only use fields currently available from `GET /content/{content_id}/details`.
 
 Important: do not add public user review sections. If an inspiration design has reviews, replace that area with InsightStream rating summaries and decision-support information.
 
@@ -260,14 +265,25 @@ Avoid:
 
 ## 11. Detail Page MVP Boundary
 
-Some entertainment screens show cast, crew, production house, and user reviews.
+Cast, crew, and person information are important for the desired content detail page experience. They are not part of the first frontend implementation only because the current backend schema/API does not support them yet. They should be planned as a future backend + frontend enhancement.
 
-For InsightStream MVP:
+Future backend support may require:
 
-- cast/crew/person data is future work because the current backend schema does not support it yet
-- production house data is future work
-- user reviews are excluded from MVP
-- current detail page should focus on content metadata, genres, availability, ratings, summary, pros, cons, and verdict
+- `persons` table
+- content-person relationship table
+- role fields such as actor, director, writer, creator, and showrunner
+- person profile/image fields
+- extending the content details API to return cast and crew
+
+For the first InsightStream frontend implementation:
+
+- current detail pages should focus on content metadata, genres, availability, ratings, summary, pros, cons, and verdict
+- production house data is future work because the current backend schema/API does not support it yet
+- public user reviews are excluded from the MVP
+- posts are excluded from the MVP
+- comments are excluded from the MVP
+- communities are excluded from the MVP
+- social feeds are excluded from the MVP
 
 ## 12. Demo User Handling
 
