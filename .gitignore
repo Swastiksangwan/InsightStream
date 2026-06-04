@@ -1,6 +1,8 @@
 # Environment files
 .env
 backend/.env
+frontend/.env
+frontend/.env.local
 
 # Python
 __pycache__/
@@ -11,6 +13,12 @@ __pycache__/
 # Virtual environments
 venv/
 .venv/
+
+# Frontend dependencies/build output
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
 
 # OS / editor
 .DS_Store
