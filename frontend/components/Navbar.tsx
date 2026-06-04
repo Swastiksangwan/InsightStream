@@ -23,6 +23,8 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
+
+        <span className="navbar__status">API-powered MVP</span>
       </div>
     </header>
   );

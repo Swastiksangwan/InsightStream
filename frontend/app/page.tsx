@@ -16,23 +16,24 @@ async function HomepageContent() {
         <section className="catalog-summary" aria-label="Catalog summary">
           <div>
             <span className="summary-label">Catalog</span>
-            <strong>{recentContent.total}</strong>
-            <span>seeded titles</span>
+            <strong>{recentContent.total} titles</strong>
+            <span>movies and series ready for browsing</span>
           </div>
           <div>
             <span className="summary-label">Browse</span>
             <strong>Recent</strong>
-            <span>release ordering</span>
+            <span>release-date discovery feed</span>
           </div>
           <div>
             <span className="summary-label">Decision Signal</span>
             <strong>Top Rated</strong>
-            <span>unified score ranking</span>
+            <span>ranked by unified score</span>
           </div>
         </section>
 
         <ContentSection
           title="Recent Releases"
+          eyebrow="Fresh from the catalog"
           description="Newer movies and series from the current canonical seed data."
           items={recentContent.items}
           emptyMessage="No recent content is available yet."
@@ -40,6 +41,7 @@ async function HomepageContent() {
 
         <ContentSection
           title="Top Rated Picks"
+          eyebrow="Decision support"
           description="High-scoring titles ordered by InsightStream's unified score."
           items={topRatedContent.items}
           emptyMessage="No top-rated content is available yet."
@@ -66,10 +68,10 @@ export default function HomePage() {
     <main>
       <section className="hero-section">
         <div className="eyebrow">Movies and series decision support</div>
-        <h1>Find what is worth watching without digging through the noise.</h1>
+        <h1>Decide what to watch next.</h1>
         <p>
-          InsightStream brings recent releases, top-rated titles, availability,
-          ratings, and summaries into one focused entertainment dashboard.
+          Browse recent releases and top-rated picks with a clean, data-first
+          view of entertainment signals.
         </p>
       </section>
 

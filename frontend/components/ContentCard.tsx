@@ -20,13 +20,25 @@ function formatType(type: Content["type"]) {
 }
 
 function getFallbackText(title: string) {
-  return title
+  const initials = title
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 3)
     .map((word) => word[0])
     .join("")
     .toUpperCase();
+
+  return initials || "IS";
+}
+
+function getShortTitle(title: string) {
+  const words = title.split(/\s+/).filter(Boolean);
+
+  if (words.length <= 3) {
+    return title;
+  }
+
+  return `${words.slice(0, 3).join(" ")}...`;
 }
 
 export function ContentCard({ content }: ContentCardProps) {
@@ -43,7 +55,12 @@ export function ContentCard({ content }: ContentCardProps) {
     <article className="content-card">
       <div className="content-card__poster">
         <div className="content-card__fallback" aria-hidden={showPoster}>
-          {getFallbackText(content.title)}
+          <span className="content-card__fallback-mark">
+            {getFallbackText(content.title)}
+          </span>
+          <span className="content-card__fallback-title">
+            {getShortTitle(content.title)}
+          </span>
         </div>
 
         {showPoster && content.poster ? (
