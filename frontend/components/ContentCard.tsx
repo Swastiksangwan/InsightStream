@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import type { Content } from "@/types/content";
 
@@ -52,7 +53,11 @@ export function ContentCard({ content }: ContentCardProps) {
   ].filter(Boolean);
 
   return (
-    <article className="content-card">
+    <Link
+      className="content-card"
+      href={`/content/${content.id}`}
+      aria-label={`View details for ${content.title}`}
+    >
       <div className="content-card__poster">
         <div className="content-card__fallback" aria-hidden={showPoster}>
           <span className="content-card__fallback-mark">
@@ -84,6 +89,6 @@ export function ContentCard({ content }: ContentCardProps) {
           {content.overview || "No overview is available yet."}
         </p>
       </div>
-    </article>
+    </Link>
   );
 }

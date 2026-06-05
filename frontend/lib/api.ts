@@ -1,4 +1,7 @@
-import type { PaginatedContentResponse } from "@/types/content";
+import type {
+  ContentDetailsResponse,
+  PaginatedContentResponse,
+} from "@/types/content";
 
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
 
@@ -41,5 +44,11 @@ export function getRecentContent(limit = 8) {
 export function getTopRatedContent(limit = 8) {
   return fetchFromApi<PaginatedContentResponse>(
     buildUrl("/content/top-rated", { limit: normalizeLimit(limit) }),
+  );
+}
+
+export function getContentDetails(contentId: number | string) {
+  return fetchFromApi<ContentDetailsResponse>(
+    buildUrl(`/content/${contentId}/details`, {}),
   );
 }
