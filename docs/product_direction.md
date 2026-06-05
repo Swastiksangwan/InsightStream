@@ -55,6 +55,8 @@ The following features belong in the MVP:
 - Basic recommendation logic later: recommendations can be added after the current data and API foundation is stable.
 - Data collection and analytics foundation: the project should continue building toward richer data ingestion, scoring, and analysis.
 
+Current implementation note: the frontend content detail page is now implemented as v1. Future detail-page improvements should focus on stronger analytics, real data, and cast/crew/person support after backend schema/API expansion.
+
 ## 4. MVP Features Excluded For Now
 
 The following features are excluded from the current MVP:

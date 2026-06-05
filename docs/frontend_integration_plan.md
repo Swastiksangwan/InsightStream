@@ -6,6 +6,14 @@ This document plans how the Next.js frontend should connect to the existing Fast
 
 The goal is to build a clean frontend around the already-working backend APIs instead of randomly creating pages. The backend already provides stable content, discovery, metadata, ratings, summaries, and watch-state read contracts, so the frontend should start by presenting those capabilities clearly.
 
+Current status: partially implemented.
+
+- Homepage v1 completed
+- Homepage card polish completed
+- Content detail page v1 completed
+- Discovery page pending
+- Watch later and watched frontend pages pending
+
 ## 2. Current Backend Readiness
 
 The backend already supports:
@@ -70,9 +78,17 @@ The design can be inspired by modern entertainment discovery platforms, but it s
 
 ## 5. Recommended First Frontend Pages
 
-### Phase 1: Homepage
+### Phase 1: Homepage (Completed)
 
 Purpose: show product value immediately.
+
+Completed status:
+
+- recent content section implemented
+- top-rated content section implemented
+- polished content cards implemented
+- fallback poster UI implemented for placeholder or missing images
+- uses the existing `GET /content/recent` and `GET /content/top-rated` backend APIs
 
 Sections:
 
@@ -109,9 +125,16 @@ Backend APIs:
 
 UI idea: use filter controls at the top or side and a poster-card grid below.
 
-### Phase 3: Content Detail Page
+### Phase 3: Content Detail Page (v1 Completed)
 
 Purpose: show full organized information for one title.
+
+Completed v1 status:
+
+- dynamic `/content/[id]` route implemented
+- uses `GET /content/{content_id}/details`
+- shows metadata, genres, overview, availability, ratings, unified/critic/audience scores, review summary, pros, cons, and verdict
+- cast, crew, and person data remain future backend + frontend enhancements
 
 Backend API:
 
@@ -188,11 +211,12 @@ frontend/
   components/
     Navbar.tsx
     ContentCard.tsx
-    ContentGrid.tsx
-    SectionRow.tsx
-    RatingBadge.tsx
-    ScoreSummary.tsx
+    ContentSection.tsx
+    DetailHero.tsx
+    ScoreBadge.tsx
+    SummaryPanel.tsx
     PlatformList.tsx
+    RatingList.tsx
     LoadingState.tsx
     ErrorState.tsx
   lib/
@@ -203,7 +227,7 @@ frontend/
     content.ts
 ```
 
-Do not create all of these at once unless the implementation task needs them. Add files gradually as pages are built.
+Do not create all planned files at once unless the implementation task needs them. Add files gradually as pages are built.
 
 ## 8. Frontend API Client Plan
 
@@ -213,13 +237,13 @@ The frontend should use a small API helper file:
 frontend/lib/api.ts
 ```
 
-This helper should:
+This helper currently supports homepage and content detail reads. It should continue to:
 
 - use `NEXT_PUBLIC_API_BASE_URL`
 - centralize fetch calls
 - keep endpoint URLs in one place
 - handle common errors
-- return typed data later
+- return typed data
 
 Example environment variable:
 
@@ -227,7 +251,7 @@ Example environment variable:
 NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
 ```
 
-Do not implement code in this planning task.
+Extend this helper gradually as new frontend pages are implemented.
 
 ## 9. TypeScript Type Plan
 
@@ -241,7 +265,7 @@ The frontend should define types matching backend responses:
 - `Rating`
 - `Summary`
 
-These types should mirror the backend Pydantic schemas in `backend/app/schemas/content.py` and `backend/app/schemas/user_content.py`.
+The current content and details types are implemented and should continue to mirror the backend Pydantic schemas in `backend/app/schemas/content.py` and `backend/app/schemas/user_content.py`.
 
 ## 10. UI/UX Direction
 
@@ -296,16 +320,17 @@ Notes:
 - frontend should not pretend full auth exists
 - demo user handling should be isolated in a constant, not scattered through page code
 
-## 13. Immediate First Frontend Implementation Task
+## 13. Next Recommended Frontend Implementation Task
 
-The first coding task after this plan should be:
+The next recommended coding task is:
 
-Set up the frontend API client and a basic homepage using:
+Build the discovery page using:
 
-- `GET /content/recent`
-- `GET /content/top-rated`
+- `GET /content/discover`
+- `GET /genres`
+- `GET /platforms`
 
-Do not implement it in this task.
+This should add filter controls and a content grid without introducing public reviews, posts, comments, communities, or social feed features.
 
 ## 14. Risks / Notes
 
@@ -319,4 +344,4 @@ Do not implement it in this task.
 
 ## 15. Final Summary
 
-The frontend should be built around the current stable backend API contract. The first implementation should start with a simple dark, poster-focused homepage using recent and top-rated content, then move to discovery and content details. Public reviews, posts, and communities remain outside the MVP.
+The frontend should stay built around the current stable backend API contract. Homepage v1 and content detail page v1 are now implemented, so the next major frontend step is discovery with filters. Public reviews, posts, and communities remain outside the MVP.

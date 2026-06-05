@@ -44,11 +44,13 @@ Public reviews and community features may be reconsidered later only if they cle
 * **Queries:** SQLAlchemy using raw SQL via `text()`
 * **Validation:** Pydantic schemas
 
-### Frontend (Planned)
+### Frontend
 
-* Next.js
-* React
-* Tailwind CSS
+* **Framework:** Next.js
+* **UI:** React
+* **Language:** TypeScript
+* **Styling:** Dark cinematic global CSS currently; Tailwind CSS may be adopted later if the styling system is standardized
+* **Current implementation:** homepage and content detail page v1
 
 ### Analytics
 
@@ -70,6 +72,7 @@ Public reviews and community features may be reconsidered later only if they cle
 * `docs/backend_testing.md` — backend test setup and current test coverage
 * `docs/sample_data_gap_analysis.md` — current seed coverage and remaining data gaps
 * `docs/sample_data_expansion_plan.md` — completed seed expansion plan
+* `docs/frontend_integration_plan.md` — frontend API/page/component integration plan and implementation status
 
 ---
 
@@ -91,6 +94,14 @@ backend/
 ├── indexes.sql            # Database indexes
 ├── requirements.txt
 └── .env                   # Environment variables
+
+frontend/
+├── app/                   # Next.js app routes
+├── components/            # Reusable UI components
+├── lib/                   # Frontend API helpers
+└── types/                 # TypeScript response types
+
+docs/                      # Product, backend, data, testing, and frontend planning docs
 ```
 
 ---
@@ -569,6 +580,23 @@ The full testing guide is in `docs/backend_testing.md`.
 
 ---
 
+## Frontend Features (Current)
+
+The frontend foundation is now partially implemented:
+
+* Next.js setup completed
+* Homepage implemented with a dark cinematic UI foundation
+* Recent Releases section uses `GET /content/recent`
+* Top Rated Picks section uses `GET /content/top-rated`
+* Content cards are polished, include fallback poster states, and route to `/content/[id]`
+* Dynamic content detail page v1 uses `GET /content/{content_id}/details`
+* Detail page shows metadata, genres, overview, availability, ratings, unified score, critic/audience scores, review summary, pros, cons, and verdict
+* Frontend production build passes
+
+Current seed poster/backdrop URLs are placeholders, so real media data remains future work through TMDb or another ingestion source.
+
+---
+
 ## 🔄 Current Status
 
 Current backend status:
@@ -591,7 +619,10 @@ Current backend status:
 * Swagger verification passed for expanded sample data
 * Swagger documentation working
 * API responses standardized and frontend-friendly
-* Frontend still planned / not meaningfully implemented
+* Frontend foundation implemented with homepage, polished content cards, and content detail page v1
+* Frontend production build passes
+* Discovery page still pending
+* Watch later / watched frontend pages still pending
 * Analytics scripts and API-based data collection still planned / not implemented
 
 Current discovery endpoints:
@@ -614,8 +645,10 @@ GET /platforms
 
 Possible next steps:
 
+* Build frontend discovery page with filters using existing discovery and metadata APIs
+* Add frontend watch later / watched pages for the seeded demo user
+* Polish the detail page over time as data quality improves
 * Expand backend tests to mutation endpoints and edge cases
-* Begin frontend integration planning against the current API contracts
 * Continue analytics script planning
 * Plan future TMDb ingestion before implementing it
 * Use the expanded seed to identify remaining data edge cases
@@ -632,16 +665,19 @@ Planned future backend work:
 * Query optimization
 * TMDb ingestion
 * Migration setup
-* Testing setup
+* Additional mutation and edge-case testing
 * Authentication system
 
 ---
 
 ### Future Product Work
 
-* Frontend integration with Next.js
-* Homepage discovery sections
 * Filter-based discovery UI
+* Watch later / watched frontend pages
+* Content detail page refinements
+* Real poster/backdrop data through future TMDb ingestion
+* Cast, crew, and person support after backend schema/API expansion
+* Frontend integration testing later
 * User authentication
 * Personalized recommendations
 * Advanced analytics and insights

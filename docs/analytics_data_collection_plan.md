@@ -70,6 +70,8 @@ The MVP needs simplified decision-support fields:
 - cons
 - verdict
 
+Current frontend note: the content detail page v1 already displays these backend summary fields and scores. Deeper analytics scripts, real external data collection, and automated score generation are still future work.
+
 ### User Action Data
 
 The MVP needs personal user activity data:
@@ -276,12 +278,12 @@ Analytics scripts should be added gradually and should not be mixed randomly wit
 
 Small practical next tasks:
 
-1. Review current `backend/sample_data.sql` and identify missing fields for better testing.
+1. Review the expanded `backend/sample_data.sql` and document remaining gaps for analytics testing.
 2. Decide the first external data source, likely TMDb for metadata.
 3. Create a small sample metadata collection script later.
 4. Create a rating normalization script later.
 5. Define a first unified score calculation script later.
-6. Expand sample data to 10-20 titles only after the data format is clear.
+6. Plan real poster/backdrop and cast/crew/person data ingestion after the schema/API needs are clear.
 
 ## 15. Final Direction
 
