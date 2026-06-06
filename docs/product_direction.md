@@ -55,7 +55,7 @@ The following features belong in the MVP:
 - Basic recommendation logic later: recommendations can be added after the current data and API foundation is stable.
 - Data collection and analytics foundation: the project should continue building toward richer data ingestion, scoring, and analysis.
 
-Current implementation note: the frontend content detail page is now implemented as v1. Future detail-page improvements should focus on stronger analytics, real data, and cast/crew/person support after backend schema/API expansion.
+Current implementation note: the frontend MVP loop now supports browsing, discovery, detail viewing, reversible personal watch actions, and Watch Later/Watched pages using temporary demo user state. This remains personal utility behavior, not public or social behavior. Future detail-page improvements should focus on stronger analytics, real data, and cast/crew/person support after backend schema/API expansion.
 
 ## 4. MVP Features Excluded For Now
 

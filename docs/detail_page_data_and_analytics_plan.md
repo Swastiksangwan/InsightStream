@@ -22,6 +22,7 @@ The current frontend already includes:
 - pros
 - cons
 - verdict
+- reversible personal watch actions for Watch Later and Watched
 - fallback poster and backdrop UI for placeholder or missing images
 
 The current backend detail response includes `content`, `genres`, `platforms`, `ratings`, and `summary`. It does not yet include cast, crew, person data, similar titles, real external media assets, or deeper analytics explanations.
@@ -178,14 +179,9 @@ Collection and analytics scripts should stay separate from route logic. Backend 
 
 ## 12. Immediate Next Product Decision
 
-Discovery page v1 is now complete, so the next immediate frontend task should be:
+Discovery page v1, Watch Later page v1, and Watched page v1 are now complete. Reversible watch actions are also part of the detail page v1.
 
-- Watch Later page using `GET /watch-later/{user_id}`
-- Watched page using `GET /watched/{user_id}`
-
-These pages should use the seeded/demo user temporarily until authentication is planned. They should not add full authentication or mutation buttons unless those are handled as separate tasks.
-
-After that, future work can return to detail page polish, backend/data improvements, real poster/backdrop ingestion, and cast/crew/person support planning.
+The next detail-page-related work should be gradual polish and deeper backend/data/analytics improvements. Future work can return to stronger rating explanations, real poster/backdrop ingestion, cast/crew/person support planning, and richer decision-support displays after the current frontend loop is polished.
 
 ## 13. Final Summary
 

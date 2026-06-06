@@ -50,7 +50,7 @@ Public reviews and community features may be reconsidered later only if they cle
 * **UI:** React
 * **Language:** TypeScript
 * **Styling:** Dark cinematic global CSS currently; Tailwind CSS may be adopted later if the styling system is standardized
-* **Current implementation:** homepage, content detail page v1, and discovery page v1
+* **Current implementation:** homepage, discovery page v1, content detail page v1, reversible watch actions, Watch Later page v1, and Watched page v1
 
 ### Analytics
 
@@ -582,17 +582,18 @@ The full testing guide is in `docs/backend_testing.md`.
 
 ## Frontend Features (Current)
 
-The frontend foundation is now partially implemented:
+The frontend foundation is now functionally connected as a v1 MVP loop:
 
 * Next.js setup completed
-* Homepage implemented with a dark cinematic UI foundation
-* Recent Releases section uses `GET /content/recent`
-* Top Rated Picks section uses `GET /content/top-rated`
+* Homepage implemented with Recent Releases using `GET /content/recent` and Top Rated Picks using `GET /content/top-rated`
+* Discovery page v1 uses `GET /content/discover`, `GET /genres`, and `GET /platforms`
+* Discovery filters include content type, genre, platform, availability type, and recent/top-rated sorting
 * Content cards are polished, include fallback poster states, and route to `/content/[id]`
 * Dynamic content detail page v1 uses `GET /content/{content_id}/details`
 * Detail page shows metadata, genres, overview, availability, ratings, unified score, critic/audience scores, review summary, pros, cons, and verdict
-* Discovery page v1 uses `GET /content/discover`, `GET /genres`, and `GET /platforms`
-* Discovery filters include content type, genre, platform, availability type, and recent/top-rated sorting
+* Detail page has reversible personal watch actions using `POST /watch-later`, `DELETE /watch-later`, `POST /watched`, and `DELETE /watched`
+* Watch Later page v1 uses `GET /watch-later/{user_id}`
+* Watched page v1 uses `GET /watched/{user_id}`
 * Frontend production build passes
 
 Current seed poster/backdrop URLs are placeholders, so real media data remains future work through TMDb or another ingestion source.
@@ -621,12 +622,13 @@ Current backend status:
 * Swagger verification passed for expanded sample data
 * Swagger documentation working
 * API responses standardized and frontend-friendly
-* Frontend foundation implemented with homepage, polished content cards, content detail page v1, and discovery page v1
-* Discovery page filters are working using existing backend APIs
+* Frontend foundation implemented with homepage, discovery page, content detail page, reversible watch actions, Watch Later page, and Watched page
+* Basic frontend MVP loop is now connected: browse, view details, save/mark watched, view saved lists, and return to detail pages
+* Frontend still uses a temporary demo user until authentication exists
 * Frontend production build passes
-* Watch later / watched frontend pages still pending
 * Frontend UI polish will continue over time
 * Real poster/backdrop data is still future work through TMDb/data ingestion
+* Cast/crew/person support remains future backend + frontend work
 * Analytics scripts and API-based data collection still planned / not implemented
 
 Current discovery endpoints:
@@ -649,9 +651,10 @@ GET /platforms
 
 Possible next steps:
 
-* Add frontend watch later / watched pages for the seeded demo user
+* Frontend MVP polish pass across homepage, discovery, detail, Watch Later, and Watched pages
 * Polish the detail page over time as data quality improves
 * Polish discovery page UI over time
+* Plan frontend integration testing
 * Expand backend tests to mutation endpoints and edge cases
 * Continue analytics script planning
 * Plan future TMDb ingestion before implementing it
@@ -676,13 +679,13 @@ Planned future backend work:
 
 ### Future Product Work
 
-* Watch later / watched frontend pages
 * Content detail page refinements
 * Discovery page UI refinements
 * Real poster/backdrop data through future TMDb ingestion
 * Cast, crew, and person support after backend schema/API expansion
 * Frontend integration testing later
 * User authentication
+* Backend/data/analytics improvements for scoring, labels, summaries, and ingestion
 * Personalized recommendations
 * Advanced analytics and insights
 * NLP-based review processing

@@ -6,13 +6,16 @@ This document plans how the Next.js frontend should connect to the existing Fast
 
 The goal is to build a clean frontend around the already-working backend APIs instead of randomly creating pages. The backend already provides stable content, discovery, metadata, ratings, summaries, and watch-state read contracts, so the frontend should start by presenting those capabilities clearly.
 
-Current status: partially implemented.
+Current status: partially implemented; frontend MVP loop v1 is connected.
 
 - Homepage v1 completed
 - Homepage card polish completed
 - Content detail page v1 completed
 - Discovery page v1 completed
-- Watch later and watched frontend pages pending
+- Reversible detail-page watch actions completed
+- Watch Later page v1 completed
+- Watched page v1 completed
+- Authentication and deeper polish are still pending
 
 ## 2. Current Backend Readiness
 
@@ -144,6 +147,8 @@ Completed v1 status:
 - dynamic `/content/[id]` route implemented
 - uses `GET /content/{content_id}/details`
 - shows metadata, genres, overview, availability, ratings, unified/critic/audience scores, review summary, pros, cons, and verdict
+- supports reversible personal watch actions: add/remove Watch Later and mark/remove Watched
+- backend maintains mutual exclusivity between `watch_later` and `watched`
 - cast, crew, and person data remain future backend + frontend enhancements
 
 Backend API:
@@ -166,15 +171,22 @@ Sections:
 - critic/audience/general scores
 - review summary
 - pros/cons/verdict
-- watch later/watched actions later
+- reversible watch later/watched actions
 
 The desired eventual detail page should include cast, crew, and important person information. The first implementation should only use fields currently available from `GET /content/{content_id}/details`.
 
 Important: do not add public user review sections. If an inspiration design has reviews, replace that area with InsightStream rating summaries and decision-support information.
 
-### Phase 4: Watch Later Page
+### Phase 4: Watch Later Page (v1 Completed)
 
 Purpose: show saved watch-later titles for the seeded/demo user.
+
+Completed v1 status:
+
+- uses `GET /watch-later/{user_id}`
+- displays saved content cards
+- cards link to `/content/[id]`
+- uses the temporary demo user until authentication exists
 
 Backend API:
 
@@ -182,9 +194,16 @@ Backend API:
 
 Note: use the seeded test user temporarily until authentication exists.
 
-### Phase 5: Watched Page
+### Phase 5: Watched Page (v1 Completed)
 
 Purpose: show watched titles for the seeded/demo user.
+
+Completed v1 status:
+
+- uses `GET /watched/{user_id}`
+- displays watched content cards
+- cards link to `/content/[id]`
+- uses the temporary demo user until authentication exists
 
 Backend API:
 
@@ -203,6 +222,7 @@ Note: use the seeded test user temporarily until authentication exists.
 | genre dropdown | `GET /genres` | Use for dynamic filter options. |
 | platform dropdown | `GET /platforms` | Use for platform filter options; can filter by `platform_type`. |
 | detail page | `GET /content/{content_id}/details` | Primary source for detail page UI. |
+| detail watch actions | `POST /watch-later`, `DELETE /watch-later`, `POST /watched`, `DELETE /watched` | Temporary demo user until authentication exists; backend keeps states mutually exclusive. |
 | watch later list | `GET /watch-later/{user_id}` | Use seeded user until authentication exists. |
 | watched list | `GET /watched/{user_id}` | Use seeded user until authentication exists. |
 
@@ -247,7 +267,7 @@ The frontend should use a small API helper file:
 frontend/lib/api.ts
 ```
 
-This helper currently supports homepage and content detail reads. It should continue to:
+This helper currently supports homepage, discovery, content detail, watch actions, and saved-list reads. It should continue to:
 
 - use `NEXT_PUBLIC_API_BASE_URL`
 - centralize fetch calls
@@ -330,16 +350,19 @@ Notes:
 - frontend should not pretend full auth exists
 - demo user handling should be isolated in a constant, not scattered through page code
 
-## 13. Next Recommended Frontend Implementation Task
+## 13. Next Recommended Frontend Task
 
 The next recommended coding task is:
 
-Build Watch Later and Watched frontend pages using:
+Frontend MVP polish pass across:
 
-- `GET /watch-later/{user_id}`
-- `GET /watched/{user_id}`
+- homepage
+- discovery
+- content detail
+- Watch Later
+- Watched
 
-Use the seeded/demo user temporarily. Do not implement full authentication yet, and do not implement mutation buttons unless that is planned as a separate task. Public reviews, posts, comments, communities, and social feed features remain outside the MVP.
+After visual and interaction polish, future work can move toward frontend integration testing, authentication planning, real image/data ingestion planning, and backend/data/analytics improvements. Public reviews, posts, comments, communities, and social feed features remain outside the MVP.
 
 ## 14. Risks / Notes
 
@@ -349,8 +372,8 @@ Use the seeded/demo user temporarily. Do not implement full authentication yet, 
 - API response shapes should remain stable.
 - Frontend should be built incrementally.
 - Visual inspiration should guide theme and layout, not product scope.
-- Watch later/watched pages should use the seeded user only as a temporary demo bridge.
+- Watch later/watched pages use the seeded user only as a temporary demo bridge.
 
 ## 15. Final Summary
 
-The frontend should stay built around the current stable backend API contract. Homepage v1, content detail page v1, and discovery page v1 are now implemented, so the next major frontend step is personal watch-state pages. Public reviews, posts, and communities remain outside the MVP.
+The frontend should stay built around the current stable backend API contract. Homepage v1, content detail page v1, discovery page v1, reversible detail-page watch actions, Watch Later page v1, and Watched page v1 are now implemented, so the basic frontend MVP loop is connected. Public reviews, posts, and communities remain outside the MVP.
