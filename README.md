@@ -50,7 +50,7 @@ Public reviews and community features may be reconsidered later only if they cle
 * **UI:** React
 * **Language:** TypeScript
 * **Styling:** Dark cinematic global CSS currently; Tailwind CSS may be adopted later if the styling system is standardized
-* **Current implementation:** homepage and content detail page v1
+* **Current implementation:** homepage, content detail page v1, and discovery page v1
 
 ### Analytics
 
@@ -591,6 +591,8 @@ The frontend foundation is now partially implemented:
 * Content cards are polished, include fallback poster states, and route to `/content/[id]`
 * Dynamic content detail page v1 uses `GET /content/{content_id}/details`
 * Detail page shows metadata, genres, overview, availability, ratings, unified score, critic/audience scores, review summary, pros, cons, and verdict
+* Discovery page v1 uses `GET /content/discover`, `GET /genres`, and `GET /platforms`
+* Discovery filters include content type, genre, platform, availability type, and recent/top-rated sorting
 * Frontend production build passes
 
 Current seed poster/backdrop URLs are placeholders, so real media data remains future work through TMDb or another ingestion source.
@@ -619,10 +621,12 @@ Current backend status:
 * Swagger verification passed for expanded sample data
 * Swagger documentation working
 * API responses standardized and frontend-friendly
-* Frontend foundation implemented with homepage, polished content cards, and content detail page v1
+* Frontend foundation implemented with homepage, polished content cards, content detail page v1, and discovery page v1
+* Discovery page filters are working using existing backend APIs
 * Frontend production build passes
-* Discovery page still pending
 * Watch later / watched frontend pages still pending
+* Frontend UI polish will continue over time
+* Real poster/backdrop data is still future work through TMDb/data ingestion
 * Analytics scripts and API-based data collection still planned / not implemented
 
 Current discovery endpoints:
@@ -645,9 +649,9 @@ GET /platforms
 
 Possible next steps:
 
-* Build frontend discovery page with filters using existing discovery and metadata APIs
 * Add frontend watch later / watched pages for the seeded demo user
 * Polish the detail page over time as data quality improves
+* Polish discovery page UI over time
 * Expand backend tests to mutation endpoints and edge cases
 * Continue analytics script planning
 * Plan future TMDb ingestion before implementing it
@@ -672,9 +676,9 @@ Planned future backend work:
 
 ### Future Product Work
 
-* Filter-based discovery UI
 * Watch later / watched frontend pages
 * Content detail page refinements
+* Discovery page UI refinements
 * Real poster/backdrop data through future TMDb ingestion
 * Cast, crew, and person support after backend schema/API expansion
 * Frontend integration testing later

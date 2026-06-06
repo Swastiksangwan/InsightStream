@@ -178,15 +178,14 @@ Collection and analytics scripts should stay separate from route logic. Backend 
 
 ## 12. Immediate Next Product Decision
 
-After this planning document, the next coding task should be:
+Discovery page v1 is now complete, so the next immediate frontend task should be:
 
-Build the discovery page with filters using:
+- Watch Later page using `GET /watch-later/{user_id}`
+- Watched page using `GET /watched/{user_id}`
 
-- `GET /content/discover`
-- `GET /genres`
-- `GET /platforms`
+These pages should use the seeded/demo user temporarily until authentication is planned. They should not add full authentication or mutation buttons unless those are handled as separate tasks.
 
-Reason: the detail page v1 exists, but users need a better way to browse, filter, and intentionally reach detail pages. Discovery is the next practical bridge between the current backend API strength and the frontend product experience.
+After that, future work can return to detail page polish, backend/data improvements, real poster/backdrop ingestion, and cast/crew/person support planning.
 
 ## 13. Final Summary
 

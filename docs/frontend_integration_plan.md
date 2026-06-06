@@ -11,7 +11,7 @@ Current status: partially implemented.
 - Homepage v1 completed
 - Homepage card polish completed
 - Content detail page v1 completed
-- Discovery page pending
+- Discovery page v1 completed
 - Watch later and watched frontend pages pending
 
 ## 2. Current Backend Readiness
@@ -104,9 +104,19 @@ Backend APIs:
 
 UI idea: use poster cards in horizontal or responsive grid sections. Keep it information-first, not social-feed based.
 
-### Phase 2: Discovery Page
+### Phase 2: Discovery Page (v1 Completed)
 
 Purpose: allow search/filter browsing.
+
+Completed v1 status:
+
+- dynamic filters implemented
+- uses `GET /content/discover`
+- genre filter uses `GET /genres`
+- platform filter uses `GET /platforms`
+- results render using existing content cards
+- cards link to `/content/[id]`
+- UI polish can continue later
 
 Features:
 
@@ -324,13 +334,12 @@ Notes:
 
 The next recommended coding task is:
 
-Build the discovery page using:
+Build Watch Later and Watched frontend pages using:
 
-- `GET /content/discover`
-- `GET /genres`
-- `GET /platforms`
+- `GET /watch-later/{user_id}`
+- `GET /watched/{user_id}`
 
-This should add filter controls and a content grid without introducing public reviews, posts, comments, communities, or social feed features.
+Use the seeded/demo user temporarily. Do not implement full authentication yet, and do not implement mutation buttons unless that is planned as a separate task. Public reviews, posts, comments, communities, and social feed features remain outside the MVP.
 
 ## 14. Risks / Notes
 
@@ -344,4 +353,4 @@ This should add filter controls and a content grid without introducing public re
 
 ## 15. Final Summary
 
-The frontend should stay built around the current stable backend API contract. Homepage v1 and content detail page v1 are now implemented, so the next major frontend step is discovery with filters. Public reviews, posts, and communities remain outside the MVP.
+The frontend should stay built around the current stable backend API contract. Homepage v1, content detail page v1, and discovery page v1 are now implemented, so the next major frontend step is personal watch-state pages. Public reviews, posts, and communities remain outside the MVP.
