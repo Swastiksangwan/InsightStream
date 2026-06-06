@@ -19,6 +19,29 @@ export type PaginatedContentResponse = {
   offset: number;
 };
 
+export type Genre = {
+  id: number;
+  name: string;
+};
+
+export type PlatformType = "ott" | "rating_source" | "review_source";
+
+export type PlatformMetadata = {
+  id: number;
+  name: string;
+  platform_type: PlatformType | string;
+};
+
+export type DiscoverContentParams = {
+  content_type?: Content["type"];
+  genre?: string;
+  platform?: string;
+  availability_type?: "streaming" | "rent" | "buy";
+  sort_by?: "recent" | "top_rated";
+  limit?: number;
+  offset?: number;
+};
+
 export type PlatformAvailability = {
   name: string;
   availability_type: "streaming" | "rent" | "buy" | string;
