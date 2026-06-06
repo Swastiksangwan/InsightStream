@@ -4,12 +4,13 @@ import { useState, useTransition } from "react";
 import {
   addContentToWatchLater,
   markContentAsWatched,
+  removeContentFromWatched,
+  removeContentFromWatchLater,
 } from "@/lib/watchActions";
 import type { WatchStatus } from "@/types/content";
 
 type WatchActionButtonsProps = {
   contentId: number;
-  title?: string;
   initialStatus?: WatchStatus;
   initialMessage?: string;
 };
@@ -31,9 +32,38 @@ function getStatusLabel(status: WatchStatus) {
   return "Not saved yet";
 }
 
+function formatFeedbackMessage(message: string) {
+  const normalizedMessage = message.toLowerCase();
+
+  if (normalizedMessage.includes("already in watch later")) {
+    return "Already in watch later";
+  }
+
+  if (normalizedMessage.includes("already in watched")) {
+    return "Already watched";
+  }
+
+  if (normalizedMessage.includes("removed from watched")) {
+    return "Removed from watched";
+  }
+
+  if (normalizedMessage.includes("removed from watch later")) {
+    return "Removed from watch later";
+  }
+
+  if (normalizedMessage.includes("added to watched")) {
+    return "Marked as watched";
+  }
+
+  if (normalizedMessage.includes("added to watch later")) {
+    return "Added to watch later";
+  }
+
+  return message || "Something went wrong";
+}
+
 export function WatchActionButtons({
   contentId,
-  title,
   initialStatus = "none",
   initialMessage,
 }: WatchActionButtonsProps) {
@@ -47,15 +77,18 @@ export function WatchActionButtons({
     setFeedback(null);
 
     startTransition(async () => {
-      const result = await addContentToWatchLater(contentId);
+      const result =
+        status === "watch_later"
+          ? await removeContentFromWatchLater(contentId)
+          : await addContentToWatchLater(contentId);
 
       if (result.ok) {
         setStatus(result.status);
-        setFeedback({ type: "success", text: result.message });
+        setFeedback({ type: "success", text: formatFeedbackMessage(result.message) });
         return;
       }
 
-      setFeedback({ type: "error", text: result.message });
+      setFeedback({ type: "error", text: formatFeedbackMessage(result.message) });
     });
   }
 
@@ -63,20 +96,27 @@ export function WatchActionButtons({
     setFeedback(null);
 
     startTransition(async () => {
-      const result = await markContentAsWatched(contentId);
+      const result =
+        status === "watched"
+          ? await removeContentFromWatched(contentId)
+          : await markContentAsWatched(contentId);
 
       if (result.ok) {
         setStatus(result.status);
-        setFeedback({ type: "success", text: result.message });
+        setFeedback({ type: "success", text: formatFeedbackMessage(result.message) });
         return;
       }
 
-      setFeedback({ type: "error", text: result.message });
+      setFeedback({ type: "error", text: formatFeedbackMessage(result.message) });
     });
   }
 
   const isWatchLater = status === "watch_later";
   const isWatched = status === "watched";
+  const watchLaterLabel = isWatchLater
+    ? "Remove from Watch Later"
+    : "Add to Watch Later";
+  const watchedLabel = isWatched ? "Remove from Watched" : "Mark as Watched";
 
   return (
     <section className="detail-panel watch-actions" aria-label="Personal watch actions">
@@ -95,25 +135,20 @@ export function WatchActionButtons({
           type="button"
           className="watch-action-button watch-action-button--secondary"
           onClick={handleWatchLater}
-          disabled={isPending || isWatchLater || isWatched}
+          disabled={isPending || isWatched}
         >
-          {isWatchLater ? "In Watch Later" : "Add to Watch Later"}
+          {watchLaterLabel}
         </button>
 
         <button
           type="button"
           className="watch-action-button watch-action-button--primary"
           onClick={handleWatched}
-          disabled={isPending || isWatched}
+          disabled={isPending}
         >
-          {isWatched ? "Watched" : "Mark as Watched"}
+          {watchedLabel}
         </button>
       </div>
-
-      <p className="watch-actions__hint">
-        Marking{title ? ` ${title}` : " this title"} as watched removes it from
-        Watch Later if needed.
-      </p>
 
       {isPending ? (
         <p className="watch-actions__message watch-actions__message--info" role="status">

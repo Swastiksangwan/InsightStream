@@ -76,7 +76,6 @@ export default async function ContentDetailPage({ params }: ContentDetailPagePro
           <SummaryPanel summary={details.summary} />
           <WatchActionButtons
             contentId={details.content.id}
-            title={details.content.title}
             initialStatus={initialWatchState.status}
             initialMessage={initialWatchState.message}
           />

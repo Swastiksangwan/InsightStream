@@ -854,7 +854,11 @@ main {
 
 .watch-actions {
   display: grid;
-  gap: 14px;
+  gap: 12px;
+}
+
+.watch-actions .detail-panel__header {
+  margin-bottom: 2px;
 }
 
 .watch-actions__status {
@@ -864,7 +868,7 @@ main {
   gap: 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  padding: 12px 14px;
+  padding: 11px 13px;
   background: rgba(255, 255, 255, 0.035);
 }
 
@@ -884,7 +888,7 @@ main {
 .watch-actions__buttons {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 9px;
 }
 
 .watch-action-button {
@@ -939,7 +943,6 @@ main {
   color: #ffdca8;
 }
 
-.watch-actions__hint,
 .watch-actions__message {
   margin: 0;
   color: var(--muted);
