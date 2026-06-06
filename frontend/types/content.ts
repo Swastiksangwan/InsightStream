@@ -73,3 +73,16 @@ export type ContentDetailsResponse = {
   ratings: Rating[];
   summary?: Summary | null;
 };
+
+export type UserContentActionRequest = {
+  user_id: number;
+  content_id: number;
+};
+
+export type UserContentActionResponse = {
+  message: string;
+};
+
+export type UserContentItem = Content;
+
+export type WatchStatus = "none" | "watch_later" | "watched";

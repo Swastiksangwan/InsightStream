@@ -5,6 +5,9 @@ import type {
   PaginatedContentResponse,
   PlatformMetadata,
   PlatformType,
+  UserContentActionRequest,
+  UserContentActionResponse,
+  UserContentItem,
 } from "@/types/content";
 
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
@@ -28,13 +31,45 @@ function buildUrl(
   return url.toString();
 }
 
-async function fetchFromApi<T>(url: string): Promise<T> {
+export class ApiRequestError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ApiRequestError";
+    this.status = status;
+  }
+}
+
+async function parseErrorMessage(response: Response) {
+  try {
+    const payload = (await response.json()) as {
+      detail?: string;
+      message?: string;
+    };
+
+    return payload.detail || payload.message;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchFromApi<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     cache: "no-store",
+    ...init,
+    headers: {
+      ...(init?.body ? { "Content-Type": "application/json" } : {}),
+      ...init?.headers,
+    },
   });
 
   if (!response.ok) {
-    throw new Error(`API request failed with status ${response.status}`);
+    const message = await parseErrorMessage(response);
+    throw new ApiRequestError(
+      message || `API request failed with status ${response.status}`,
+      response.status,
+    );
   }
 
   return response.json() as Promise<T>;
@@ -80,4 +115,50 @@ export function getPlatforms(platformType?: PlatformType) {
   return fetchFromApi<PlatformMetadata[]>(
     buildUrl("/platforms", { platform_type: platformType }),
   );
+}
+
+function buildUserContentBody(
+  userId: number,
+  contentId: number,
+): UserContentActionRequest {
+  return {
+    user_id: userId,
+    content_id: contentId,
+  };
+}
+
+export function addToWatchLater(userId: number, contentId: number) {
+  return fetchFromApi<UserContentActionResponse>(buildUrl("/watch-later"), {
+    method: "POST",
+    body: JSON.stringify(buildUserContentBody(userId, contentId)),
+  });
+}
+
+export function addToWatched(userId: number, contentId: number) {
+  return fetchFromApi<UserContentActionResponse>(buildUrl("/watched"), {
+    method: "POST",
+    body: JSON.stringify(buildUserContentBody(userId, contentId)),
+  });
+}
+
+export function removeFromWatchLater(userId: number, contentId: number) {
+  return fetchFromApi<UserContentActionResponse>(buildUrl("/watch-later"), {
+    method: "DELETE",
+    body: JSON.stringify(buildUserContentBody(userId, contentId)),
+  });
+}
+
+export function removeFromWatched(userId: number, contentId: number) {
+  return fetchFromApi<UserContentActionResponse>(buildUrl("/watched"), {
+    method: "DELETE",
+    body: JSON.stringify(buildUserContentBody(userId, contentId)),
+  });
+}
+
+export function getWatchLater(userId: number) {
+  return fetchFromApi<UserContentItem[]>(buildUrl(`/watch-later/${userId}`));
+}
+
+export function getWatched(userId: number) {
+  return fetchFromApi<UserContentItem[]>(buildUrl(`/watched/${userId}`));
 }
