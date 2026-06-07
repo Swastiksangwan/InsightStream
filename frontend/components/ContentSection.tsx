@@ -1,4 +1,5 @@
 import { ContentCard } from "@/components/ContentCard";
+import { EmptyState } from "@/components/EmptyState";
 import type { Content } from "@/types/content";
 
 type ContentSectionProps = {
@@ -36,7 +37,7 @@ export function ContentSection({
           ))}
         </div>
       ) : (
-        <div className="empty-state">{emptyMessage}</div>
+        <EmptyState message={emptyMessage} />
       )}
     </section>
   );
