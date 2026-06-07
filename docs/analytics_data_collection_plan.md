@@ -14,6 +14,8 @@ The MVP focuses on film/series decision support. It should help users understand
 
 The MVP does not include public user reviews, posts, comments, communities, social feeds, or public discussion systems. User interaction should remain personal and utility-focused, such as watch later and watched.
 
+The basic backend/frontend MVP loop is now connected, and frontend polish pass 1 is complete. The next major phase should focus on data collection and analytics planning rather than adding random new product surfaces.
+
 ## 3. Data Needed for the MVP
 
 ### Content Metadata
@@ -30,6 +32,7 @@ The MVP needs structured metadata for each movie or series:
 - status
 - age rating
 - poster/backdrop images
+- real poster/backdrop URLs suitable for frontend display
 - TMDb ID or other external IDs
 
 ### Genre Data
@@ -72,6 +75,8 @@ The MVP needs simplified decision-support fields:
 
 Current frontend note: the content detail page v1 already displays these backend summary fields and scores. Deeper analytics scripts, real external data collection, and automated score generation are still future work.
 
+Future detail-page data needs also include richer labels, director, cast, crew, and person relationships. These should be planned before changing the schema/API.
+
 ### User Action Data
 
 The MVP needs personal user activity data:
@@ -91,6 +96,8 @@ Possible data sources for future phases include:
 - Internal calculated fields such as `unified_score` and verdict.
 
 Data source usage should respect API terms, rate limits, attribution requirements, and allowed data usage. No external integration should be added until the source, fields, and usage limits are understood.
+
+Near-term source planning should prioritize real poster/backdrop URLs, rating-source selection, metadata quality, richer labels, and whether person/cast/crew data can be ingested cleanly.
 
 ## 5. Data Collection Approach
 
@@ -139,6 +146,7 @@ Generate analytics outputs that improve decision support:
 - review summaries
 - trending signals
 - recommendation inputs
+- richer content labels and detail-page analytics fields
 
 These outputs should be explainable enough that the product can show users why something is worth watching.
 
@@ -278,12 +286,13 @@ Analytics scripts should be added gradually and should not be mixed randomly wit
 
 Small practical next tasks:
 
-1. Review the expanded `backend/sample_data.sql` and document remaining gaps for analytics testing.
-2. Decide the first external data source, likely TMDb for metadata.
-3. Create a small sample metadata collection script later.
-4. Create a rating normalization script later.
-5. Define a first unified score calculation script later.
-6. Plan real poster/backdrop and cast/crew/person data ingestion after the schema/API needs are clear.
+1. Decide the first external data source, likely TMDb for metadata and real poster/backdrop URLs.
+2. Define rating-source strategy before adding more rating data.
+3. Define the first unified score calculation approach.
+4. Define the review summary/verdict strategy.
+5. Plan richer labels beyond only `movie` and `series`, such as anime, short film, documentary, miniseries, and special.
+6. Plan director/cast/crew/person ingestion and schema/API needs before implementation.
+7. Create small collection, cleaning, normalization, and scoring scripts only after the data mapping is clear.
 
 ## 15. Final Direction
 

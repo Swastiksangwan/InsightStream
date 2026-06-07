@@ -27,6 +27,8 @@ The current frontend already includes:
 
 The current backend detail response includes `content`, `genres`, `platforms`, `ratings`, and `summary`. It does not yet include cast, crew, person data, similar titles, real external media assets, or deeper analytics explanations.
 
+The frontend should not fake director, cast, crew, or person data before backend support exists.
+
 ## 3. Desired End-State Detail Page
 
 A mature InsightStream detail page should eventually show:
@@ -41,11 +43,14 @@ A mature InsightStream detail page should eventually show:
 - critic, audience, and general score breakdown
 - review signal summary
 - pros, cons, and verdict
+- director
 - cast and crew
 - important people connected to the content
 - similar or recommended titles
 - analytics insights
 - data source transparency where useful
+- clickable genres that route to filtered discovery/listing
+- clickable director, cast, crew, and person entries after person support exists
 
 The detail page should remain information-first and decision-support focused. Public user reviews, posts, comments, communities, and social feeds are still excluded from the MVP.
 
@@ -112,9 +117,9 @@ Future labeling may need to represent:
 
 This should be handled carefully. `content_type` may remain a broad database field, while tags, categories, or labels handle finer distinctions. Any schema changes should be planned before implementation and should avoid breaking existing APIs or frontend assumptions.
 
-## 8. Cast, Crew, and Person Data
+## 8. Director, Cast, Crew, and Person Data
 
-Cast, crew, and person information are important for the desired content detail page experience.
+Director, cast, crew, and person information are important for the desired content detail page experience.
 
 Future backend support may need:
 
@@ -125,8 +130,9 @@ Future backend support may need:
 - order or priority for cast display
 - person image and profile fields
 - extending the details API to return cast and crew
+- frontend routes for person pages later
 
-The frontend should not fake cast, crew, or person data before backend support exists. The first implementation should continue using only fields returned by the current detail API.
+The frontend should not fake director, cast, crew, or person data before backend support exists. The first implementation should continue using only fields returned by the current detail API.
 
 ## 9. Analytics Display on Detail Page
 
@@ -145,6 +151,8 @@ Possible display elements include:
 
 The UI should remain easy to scan. The most important information should answer practical user questions: what is it, where can I watch it, how is it rated, what do people generally think, and is it worth watching?
 
+Genre chips should eventually become navigational filters. Clicking a genre should route users to a genre-specific discovery/listing view. Person entries should eventually route to person pages, but only after the backend can provide reliable person identity and relationship data.
+
 ## 10. Backend/API Improvements Needed Later
 
 Possible future backend work includes:
@@ -152,7 +160,7 @@ Possible future backend work includes:
 - richer content labels or tags
 - real external IDs
 - real poster and backdrop URLs
-- person, cast, and crew schema
+- person, director, cast, and crew schema
 - rating source configuration
 - unified score calculation pipeline
 - review summary pipeline
@@ -179,10 +187,18 @@ Collection and analytics scripts should stay separate from route logic. Backend 
 
 ## 12. Immediate Next Product Decision
 
-Discovery page v1, Watch Later page v1, and Watched page v1 are now complete. Reversible watch actions are also part of the detail page v1.
+Discovery page v1, Watch Later page v1, Watched page v1, and frontend polish pass 1 are now complete. Reversible watch actions are also part of the detail page v1.
 
-The next detail-page-related work should be gradual polish and deeper backend/data/analytics improvements. Future work can return to stronger rating explanations, real poster/backdrop ingestion, cast/crew/person support planning, and richer decision-support displays after the current frontend loop is polished.
+The next phase should prioritize data, backend, and analytics decisions before expanding the UI further:
+
+- rating-source strategy
+- unified score logic
+- review summary strategy
+- real poster/backdrop ingestion
+- richer content labels
+- director/cast/crew/person schema and API support
+- future clickable genre and person navigation
 
 ## 13. Final Summary
 
-The detail page should become the main decision-support surface of InsightStream. The current v1 is a strong start, but the final version depends on better backend data, analytics decisions, rating-source strategy, review summarization, richer labels, and cast/crew/person support.
+The detail page should become the main decision-support surface of InsightStream. The current v1 is a strong start, but the final version depends on better backend data, analytics decisions, rating-source strategy, review summarization, richer labels, real media assets, and director/cast/crew/person support.

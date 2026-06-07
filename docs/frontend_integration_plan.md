@@ -6,7 +6,7 @@ This document plans how the Next.js frontend should connect to the existing Fast
 
 The goal is to build a clean frontend around the already-working backend APIs instead of randomly creating pages. The backend already provides stable content, discovery, metadata, ratings, summaries, and watch-state read contracts, so the frontend should start by presenting those capabilities clearly.
 
-Current status: partially implemented; frontend MVP loop v1 is connected.
+Current status: frontend MVP loop v1 is connected, and frontend polish pass 1 is complete.
 
 - Homepage v1 completed
 - Homepage card polish completed
@@ -15,7 +15,9 @@ Current status: partially implemented; frontend MVP loop v1 is connected.
 - Reversible detail-page watch actions completed
 - Watch Later page v1 completed
 - Watched page v1 completed
+- Frontend polish pass 1 completed across the current pages/components
 - Authentication and deeper polish are still pending
+- Real poster/backdrop data remains future work through data ingestion
 
 ## 2. Current Backend Readiness
 
@@ -79,7 +81,7 @@ Use:
 
 The design can be inspired by modern entertainment discovery platforms, but it should not copy any specific website, logo, brand, images, or exact UI. InsightStream should feel like its own information-first decision platform.
 
-## 5. Recommended First Frontend Pages
+## 5. Frontend Page Status
 
 ### Phase 1: Homepage (Completed)
 
@@ -92,6 +94,7 @@ Completed status:
 - polished content cards implemented
 - fallback poster UI implemented for placeholder or missing images
 - uses the existing `GET /content/recent` and `GET /content/top-rated` backend APIs
+- included in frontend polish pass 1
 
 Sections:
 
@@ -119,7 +122,7 @@ Completed v1 status:
 - platform filter uses `GET /platforms`
 - results render using existing content cards
 - cards link to `/content/[id]`
-- UI polish can continue later
+- included in frontend polish pass 1; UI polish can continue later
 
 Features:
 
@@ -150,6 +153,7 @@ Completed v1 status:
 - supports reversible personal watch actions: add/remove Watch Later and mark/remove Watched
 - backend maintains mutual exclusivity between `watch_later` and `watched`
 - cast, crew, and person data remain future backend + frontend enhancements
+- included in frontend polish pass 1
 
 Backend API:
 
@@ -173,7 +177,13 @@ Sections:
 - pros/cons/verdict
 - reversible watch later/watched actions
 
-The desired eventual detail page should include cast, crew, and important person information. The first implementation should only use fields currently available from `GET /content/{content_id}/details`.
+The desired eventual detail page should include director, cast, crew, and important person information. The first implementation should only use fields currently available from `GET /content/{content_id}/details`.
+
+Future navigation improvements:
+
+- genre chips should become clickable and route to a genre-filtered discovery/listing page
+- director, cast, crew, and person entries should become clickable after backend schema/API support exists
+- the frontend should not fake director/cast/crew/person data before backend support exists
 
 Important: do not add public user review sections. If an inspiration design has reviews, replace that area with InsightStream rating summaries and decision-support information.
 
@@ -187,6 +197,7 @@ Completed v1 status:
 - displays saved content cards
 - cards link to `/content/[id]`
 - uses the temporary demo user until authentication exists
+- included in frontend polish pass 1
 
 Backend API:
 
@@ -204,6 +215,7 @@ Completed v1 status:
 - displays watched content cards
 - cards link to `/content/[id]`
 - uses the temporary demo user until authentication exists
+- included in frontend polish pass 1
 
 Backend API:
 
@@ -350,19 +362,19 @@ Notes:
 - frontend should not pretend full auth exists
 - demo user handling should be isolated in a constant, not scattered through page code
 
-## 13. Next Recommended Frontend Task
+## 13. Next Recommended Product Task
 
-The next recommended coding task is:
+The current frontend MVP loop is connected, so the next major work should shift toward data, backend, and analytics planning for:
 
-Frontend MVP polish pass across:
+- real poster/backdrop ingestion
+- rating-source strategy
+- unified score logic
+- review summary strategy
+- richer labels beyond only `movie` and `series`
+- detail-page data expansion, including director/cast/crew/person support
+- analytics display improvements on the detail page
 
-- homepage
-- discovery
-- content detail
-- Watch Later
-- Watched
-
-After visual and interaction polish, future work can move toward frontend integration testing, authentication planning, real image/data ingestion planning, and backend/data/analytics improvements. Public reviews, posts, comments, communities, and social feed features remain outside the MVP.
+Frontend work can continue with small polish improvements and integration testing, but the product should avoid adding random new UI surfaces before the data direction is clearer. Public reviews, posts, comments, communities, and social feed features remain outside the MVP.
 
 ## 14. Risks / Notes
 
@@ -373,7 +385,9 @@ After visual and interaction polish, future work can move toward frontend integr
 - Frontend should be built incrementally.
 - Visual inspiration should guide theme and layout, not product scope.
 - Watch later/watched pages use the seeded user only as a temporary demo bridge.
+- Real poster/backdrop URLs are important for future visual quality.
+- Clickable genre/person navigation should wait for clear backend/API support.
 
 ## 15. Final Summary
 
-The frontend should stay built around the current stable backend API contract. Homepage v1, content detail page v1, discovery page v1, reversible detail-page watch actions, Watch Later page v1, and Watched page v1 are now implemented, so the basic frontend MVP loop is connected. Public reviews, posts, and communities remain outside the MVP.
+The frontend should stay built around the current stable backend API contract. Homepage v1, discovery page v1, content detail page v1, reversible detail-page watch actions, Watch Later page v1, and Watched page v1 are implemented, and polish pass 1 is complete. The next major direction should focus on real data, analytics decisions, rating sources, unified scoring, review summaries, richer labels, and detail-page data expansion. Public reviews, posts, and communities remain outside the MVP.
