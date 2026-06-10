@@ -224,10 +224,10 @@ Use current seeded titles for the first TMDb mapping:
 - Interstellar
 - Inception
 - Breaking Bad
-- The Mandalorian
+- The Dark Knight
 - Dune: Part Two
 
-Use known TMDb IDs from `backend/sample_data.sql` where available. Verify IDs before relying on them, especially for older placeholder-like IDs.
+Use known TMDb IDs from `backend/sample_data.sql` where available. The Dark Knight is currently used as a temporary known test case while The Mandalorian TMDb TV ID is manually verified.
 
 ## 14. Current Schema Gap Summary
 
@@ -264,7 +264,22 @@ Needs expansion:
 8. Update the detail page for director/cast/crew/person.
 9. Plan rating-source and unified-score pipeline separately.
 
-## 16. What Not To Do Yet
+## 16. Sample Fetch Result
+
+The inspection-only TMDb fetch script was created at `analytics/scripts/fetch_tmdb_sample.py`.
+
+Current output behavior:
+
+- raw TMDb JSON is saved under `analytics/raw/tmdb/`
+- raw JSON files are gitignored
+- processed preview data is written to `analytics/processed/tmdb/sample_mapping_preview.json`
+- the script does not modify PostgreSQL
+
+The first successful run confirmed that TMDb can provide real poster/backdrop URL generation, external IDs, cast names, director/creator names, genres, runtime, release date, status, vote data, and popularity.
+
+The Dark Knight is currently used as a temporary known test title while The Mandalorian TMDb TV ID is manually verified. The processed preview should be treated as inspection data, not production data.
+
+## 17. What Not To Do Yet
 
 Do not:
 
@@ -281,6 +296,6 @@ Do not:
 
 TMDb ingestion should start small and inspectable. The first useful outcome is confidence in field mapping, not database volume.
 
-## 17. Final Decision
+## 18. Final Decision
 
 The first TMDb phase should focus on controlled metadata and media mapping, especially real poster/backdrop URLs and reliable content metadata. Cast/crew/person, external IDs, richer labels, and rating-source integration are important, but they require planned schema/API support before implementation. Long term, InsightStream should build its own normalized schema and analytics layer while keeping metadata providers replaceable and legally usable.

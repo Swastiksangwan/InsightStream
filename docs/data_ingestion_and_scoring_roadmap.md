@@ -260,13 +260,15 @@ These are future enhancements, not immediate changes. The next step is mapping a
 
 Decide TMDb fields, rating sources, image handling, and mapping to the current schema.
 
-### Phase 2: Small TMDb Fetch Script
+### Phase 2: Small TMDb Fetch Script (Completed for Inspection)
 
-Fetch metadata for 3-5 known titles and save raw JSON locally for inspection.
+The inspection-only TMDb sample fetch script has been created and run for a small set of known titles. It saves raw JSON locally, writes a processed mapping preview, and does not insert anything into PostgreSQL.
+
+No full ingestion pipeline exists yet. The next decision is whether to use the processed preview to update current poster/backdrop data in the local seed or development database.
 
 ### Phase 3: Poster/Backdrop Update Path
 
-Decide how to update the current seed or local database with real image paths.
+Decide how to update the current seed or local database with real image paths. This should remain controlled and provider-neutral, with TMDb treated as a replaceable prototype metadata provider.
 
 ### Phase 4: Rating/Scoring Prototype
 
