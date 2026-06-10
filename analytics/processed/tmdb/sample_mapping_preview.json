@@ -1,0 +1,188 @@
+{
+  "generated_at": "2026-06-10T06:26:39.409844+00:00",
+  "inspection_only": true,
+  "items": [
+    {
+      "backdrop_path": "/2ssWTSVklAEc98frZUQhgtGHx7s.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/2ssWTSVklAEc98frZUQhgtGHx7s.jpg",
+      "director_or_creator_names": [
+        "Christopher Nolan"
+      ],
+      "genres": [
+        "Adventure",
+        "Drama",
+        "Science Fiction"
+      ],
+      "imdb_id": "tt0816692",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
+      "popularity": 69.9095,
+      "poster_path": "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
+      "release_date": "2014-11-05",
+      "runtime": 169,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "Interstellar",
+      "tmdb_id": 157336,
+      "top_cast_names": [
+        "Matthew McConaughey",
+        "Anne Hathaway",
+        "Michael Caine",
+        "Jessica Chastain",
+        "Casey Affleck"
+      ],
+      "vote_average": 8.477,
+      "vote_count": 39959,
+      "year": 2014
+    },
+    {
+      "backdrop_path": "/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg",
+      "director_or_creator_names": [
+        "Christopher Nolan"
+      ],
+      "genres": [
+        "Action",
+        "Science Fiction",
+        "Adventure"
+      ],
+      "imdb_id": "tt1375666",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
+      "popularity": 34.3413,
+      "poster_path": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
+      "release_date": "2010-07-15",
+      "runtime": 148,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "Inception",
+      "tmdb_id": 27205,
+      "top_cast_names": [
+        "Leonardo DiCaprio",
+        "Joseph Gordon-Levitt",
+        "Ken Watanabe",
+        "Tom Hardy",
+        "Elliot Page"
+      ],
+      "vote_average": 8.4,
+      "vote_count": 39331,
+      "year": 2010
+    },
+    {
+      "backdrop_path": "/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg",
+      "director_or_creator_names": [
+        "Vince Gilligan"
+      ],
+      "genres": [
+        "Drama",
+        "Crime"
+      ],
+      "imdb_id": "tt0903747",
+      "mapping_notes": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
+      "original_language": "en",
+      "overview": "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
+      "popularity": 158.7291,
+      "poster_path": "/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+      "release_date": "2008-01-20",
+      "runtime": null,
+      "source_provider": "tmdb",
+      "status": "Ended",
+      "title": "Breaking Bad",
+      "tmdb_id": 1396,
+      "top_cast_names": [
+        "Bryan Cranston",
+        "Aaron Paul",
+        "Anna Gunn",
+        "RJ Mitte",
+        "Dean Norris"
+      ],
+      "vote_average": 8.946,
+      "vote_count": 17888,
+      "year": 2008
+    },
+    {
+      "backdrop_path": "/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
+      "director_or_creator_names": [
+        "Christopher Nolan"
+      ],
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "imdb_id": "tt0468569",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
+      "popularity": 39.7514,
+      "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "release_date": "2008-07-16",
+      "runtime": 152,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "The Dark Knight",
+      "tmdb_id": 155,
+      "top_cast_names": [
+        "Christian Bale",
+        "Heath Ledger",
+        "Aaron Eckhart",
+        "Michael Caine",
+        "Maggie Gyllenhaal"
+      ],
+      "vote_average": 8.5,
+      "vote_count": 35867,
+      "year": 2008
+    },
+    {
+      "backdrop_path": "/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+      "director_or_creator_names": [
+        "Denis Villeneuve"
+      ],
+      "genres": [
+        "Science Fiction",
+        "Adventure"
+      ],
+      "imdb_id": "tt15239678",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
+      "popularity": 24.1371,
+      "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+      "release_date": "2024-02-27",
+      "runtime": 167,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "Dune: Part Two",
+      "tmdb_id": 693134,
+      "top_cast_names": [
+        "Timothée Chalamet",
+        "Zendaya",
+        "Rebecca Ferguson",
+        "Javier Bardem",
+        "Josh Brolin"
+      ],
+      "vote_average": 8.129,
+      "vote_count": 8015,
+      "year": 2024
+    }
+  ],
+  "licensing_note": "Prototype/non-commercial inspection only. Follow TMDb terms, do not commit API keys, do not use TMDb content for ML/AI training, and do not assume permanent storage rights.",
+  "source_provider": "tmdb"
+}

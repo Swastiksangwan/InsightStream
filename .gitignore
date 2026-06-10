@@ -4,6 +4,9 @@ backend/.env
 frontend/.env
 frontend/.env.local
 
+# Analytics raw provider output
+analytics/raw/tmdb/*.json
+
 # Python
 __pycache__/
 *.pyc
