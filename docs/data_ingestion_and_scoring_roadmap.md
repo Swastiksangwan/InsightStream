@@ -57,6 +57,24 @@ Important source rules:
 
 InsightStream should avoid treating every source as interchangeable. Metadata, ratings, reviews, popularity, and availability can have different source quality, usage permissions, and update frequency.
 
+Metadata provider strategy:
+
+- Treat TMDb as the first prototype metadata provider, not a permanent hard dependency.
+- Keep the backend data model provider-neutral where practical.
+- Do not tightly couple application tables or API responses to TMDb-only response shapes.
+- Store source names and external IDs where useful so providers can be compared or replaced later.
+- Keep TMDb replaceable if licensing, attribution, commercial direction, or product needs change.
+
+Licensing and long-term data independence notes:
+
+- TMDb can be used for prototype/non-commercial development with attribution.
+- Public or commercial use may require a separate written agreement with TMDb.
+- Do not assume TMDb content can be cached or stored forever without checking rights.
+- Do not use TMDb content for ML/AI training.
+- Do not commit API keys.
+- Building InsightStream's own database means building a normalized schema and analytics layer; it does not mean permanently copying provider data without rights.
+- Long-term options include commercial agreements, licensed sources, open/permissive datasets, and curated or owned data.
+
 ## 5. TMDb First Use Case
 
 TMDb is the practical first source to evaluate because it can support:
@@ -275,6 +293,9 @@ Do not:
 - add schema changes randomly
 - fake cast/crew data in the frontend
 - finalize the unified score formula before real data review
+- assume provider data can be cached or stored forever
+- use TMDb content for ML/AI training
+- couple the app permanently to TMDb-only response shapes
 - add public reviews/posts/comments/social feed
 
 The next phase should be controlled and inspectable. Small, verified data steps are more valuable than a large ingestion pipeline that is hard to validate.

@@ -6,6 +6,10 @@ This document maps useful TMDb data to the current InsightStream backend schema 
 
 The goal is to make content detail pages richer and more useful without randomly changing the schema or forcing data into the wrong fields. TMDb can improve metadata and media quality, but InsightStream should only ingest fields that have a clear storage model, product purpose, and API path.
 
+TMDb should be treated as the first prototype metadata provider, not a permanent hard dependency. The backend should remain provider-neutral where possible, store source names/external IDs where useful, and avoid coupling core application data to TMDb-only response shapes.
+
+Licensing note: TMDb can be used for prototype/non-commercial development with attribution, but public or commercial use may require a separate written agreement with TMDb. Do not assume TMDb content can be cached or stored forever, do not use TMDb content for ML/AI training, and do not commit API keys.
+
 ## 2. Current Backend Data Model
 
 Current relevant tables from `backend/schema.sql`:
@@ -194,6 +198,8 @@ Priority:
 
 High before rating-source integration.
 
+External IDs should also help keep providers replaceable. TMDb IDs are useful, but future ingestion should be able to store alternate IDs from licensed sources, open datasets, or curated internal data.
+
 ## 12. First TMDb Fetch Script Output
 
 The first script should be created later, not in this task.
@@ -269,9 +275,12 @@ Do not:
 - mix ingestion logic into FastAPI route handlers
 - commit API keys
 - scrape review sites
+- assume TMDb content can be cached or stored forever
+- use TMDb content for ML/AI training
+- make TMDb the only possible metadata provider in the application design
 
 TMDb ingestion should start small and inspectable. The first useful outcome is confidence in field mapping, not database volume.
 
 ## 17. Final Decision
 
-The first TMDb phase should focus on controlled metadata and media mapping, especially real poster/backdrop URLs and reliable content metadata. Cast/crew/person, external IDs, richer labels, and rating-source integration are important, but they require planned schema/API support before implementation.
+The first TMDb phase should focus on controlled metadata and media mapping, especially real poster/backdrop URLs and reliable content metadata. Cast/crew/person, external IDs, richer labels, and rating-source integration are important, but they require planned schema/API support before implementation. Long term, InsightStream should build its own normalized schema and analytics layer while keeping metadata providers replaceable and legally usable.

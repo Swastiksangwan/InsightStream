@@ -99,6 +99,24 @@ Data source usage should respect API terms, rate limits, attribution requirement
 
 Near-term source planning should prioritize real poster/backdrop URLs, rating-source selection, metadata quality, richer labels, and whether person/cast/crew data can be ingested cleanly.
 
+Metadata provider strategy:
+
+- TMDb is the first prototype metadata provider.
+- The backend should stay provider-neutral where possible.
+- Do not tightly couple InsightStream's schema or API responses to TMDb-only response shapes.
+- Store source names and external IDs where useful.
+- Keep TMDb replaceable if licensing, commercial direction, or product needs change.
+
+Licensing and data independence notes:
+
+- TMDb is acceptable for prototype/non-commercial development with attribution.
+- Public or commercial use may require a separate written agreement with TMDb.
+- Do not assume TMDb content can be cached or stored forever.
+- Do not use TMDb content for ML/AI training.
+- Do not commit API keys.
+- Building InsightStream's own database means building a normalized schema and analytics layer, not permanently copying provider data without rights.
+- Long-term options include commercial agreements, licensed sources, open/permissive datasets, and curated or owned data.
+
 ## 5. Data Collection Approach
 
 ### Phase 1: Manual/Seed Data
