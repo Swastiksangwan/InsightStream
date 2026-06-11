@@ -28,6 +28,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background:
     radial-gradient(circle at 16% 0%, rgba(228, 87, 87, 0.16), transparent 34rem),
     radial-gradient(circle at 88% 10%, rgba(244, 184, 96, 0.12), transparent 30rem),
@@ -53,6 +55,7 @@ select {
 
 main {
   width: min(var(--page-width), calc(100% - 32px));
+  flex: 1 0 auto;
   margin: 0 auto;
   padding: 42px 0 64px;
 }
@@ -149,6 +152,38 @@ main {
   font-weight: 700;
   white-space: nowrap;
   background: rgba(244, 184, 96, 0.08);
+}
+
+.site-footer {
+  width: min(var(--page-width), calc(100% - 32px));
+  flex-shrink: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 6px auto 0;
+  padding: 20px 0 28px;
+  color: var(--subtle);
+  font-size: 0.76rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.site-footer p {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.site-footer a {
+  color: rgba(199, 207, 219, 0.88);
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-color: rgba(167, 176, 191, 0.32);
+  text-underline-offset: 3px;
+}
+
+.site-footer a:hover,
+.site-footer a:focus-visible {
+  color: var(--text);
+  outline: none;
+  text-decoration-color: rgba(244, 184, 96, 0.64);
 }
 
 .hero-section,
@@ -1235,6 +1270,12 @@ main {
 
   .navbar__status {
     display: none;
+  }
+
+  .site-footer {
+    width: min(100% - 24px, var(--page-width));
+    padding: 16px 0 22px;
+    font-size: 0.72rem;
   }
 
   main {
