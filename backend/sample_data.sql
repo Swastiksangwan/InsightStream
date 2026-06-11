@@ -304,6 +304,63 @@ SET
 
 
 -- ------------------------------------------------------------
+-- External IDs
+-- Provider-neutral IDs for future metadata/rating-source matching.
+-- Keep content.tmdb_id for now; external_ids is the broader identity layer.
+-- ------------------------------------------------------------
+
+INSERT INTO external_ids (
+    content_id,
+    source_name,
+    external_id,
+    source_url
+)
+SELECT
+    c.id,
+    'tmdb',
+    c.tmdb_id::TEXT,
+    NULL
+FROM content c
+WHERE c.tmdb_id IS NOT NULL
+  AND c.tmdb_id IN (
+      157336, 27205, 1396, 157339, 155,
+      496243, 693134, 346698, 569094, 512195,
+      100088, 66732, 76479, 70523, 71912
+  )
+ON CONFLICT ON CONSTRAINT uq_external_ids_content_source DO UPDATE
+SET
+    external_id = EXCLUDED.external_id,
+    source_url = EXCLUDED.source_url,
+    updated_at = CURRENT_TIMESTAMP;
+
+INSERT INTO external_ids (
+    content_id,
+    source_name,
+    external_id,
+    source_url
+)
+SELECT
+    c.id,
+    'imdb',
+    seed.imdb_id,
+    NULL
+FROM (
+    VALUES
+        (157336, 'tt0816692'),
+        (27205, 'tt1375666'),
+        (1396, 'tt0903747'),
+        (155, 'tt0468569'),
+        (693134, 'tt15239678')
+) AS seed(tmdb_id, imdb_id)
+JOIN content c ON c.tmdb_id = seed.tmdb_id
+ON CONFLICT ON CONSTRAINT uq_external_ids_content_source DO UPDATE
+SET
+    external_id = EXCLUDED.external_id,
+    source_url = EXCLUDED.source_url,
+    updated_at = CURRENT_TIMESTAMP;
+
+
+-- ------------------------------------------------------------
 -- Content-Genre Relationships
 -- ------------------------------------------------------------
 
@@ -830,6 +887,25 @@ COMMIT;
 -- JOIN content c ON c.id = r.content_id
 -- JOIN platforms p ON p.id = r.platform_id
 -- ORDER BY c.title, r.reviewer_group, p.name;
+
+-- External IDs by source:
+-- SELECT source_name, COUNT(*) AS total
+-- FROM external_ids
+-- GROUP BY source_name
+-- ORDER BY source_name;
+
+-- Tested title external IDs:
+-- SELECT c.title, ei.source_name, ei.external_id
+-- FROM content c
+-- JOIN external_ids ei ON ei.content_id = c.id
+-- WHERE c.title IN (
+--     'Interstellar',
+--     'Inception',
+--     'Breaking Bad',
+--     'The Dark Knight',
+--     'Dune: Part Two'
+-- )
+-- ORDER BY c.title, ei.source_name;
 
 -- Watch-state conflict check:
 -- SELECT wl.user_id, wl.content_id, c.title

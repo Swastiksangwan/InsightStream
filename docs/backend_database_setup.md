@@ -142,6 +142,7 @@ DROP TABLE IF EXISTS
     watched,
     content_summary,
     ratings,
+    external_ids,
     content_platforms,
     content_genres,
     platforms,
@@ -167,6 +168,7 @@ TRUNCATE TABLE
     watched,
     content_summary,
     ratings,
+    external_ids,
     content_platforms,
     content_genres,
     platforms,
@@ -202,6 +204,7 @@ Expected core tables:
 - `content_genres`
 - `content_platforms`
 - `content_summary`
+- `external_ids`
 - `genres`
 - `platforms`
 - `ratings`
@@ -215,6 +218,8 @@ Expected core tables:
 SELECT 'users' AS table_name, COUNT(*) AS row_count FROM users
 UNION ALL
 SELECT 'content', COUNT(*) FROM content
+UNION ALL
+SELECT 'external_ids', COUNT(*) FROM external_ids
 UNION ALL
 SELECT 'genres', COUNT(*) FROM genres
 UNION ALL
@@ -264,6 +269,50 @@ Expected current result:
 
 - `movie`: 8
 - `series`: 7
+
+### Verify External IDs by Source
+
+```sql
+SELECT
+    source_name,
+    COUNT(*) AS total
+FROM external_ids
+GROUP BY source_name
+ORDER BY source_name;
+```
+
+Expected current result:
+
+- `imdb`: 5
+- `tmdb`: 15
+
+### Verify Tested Title External IDs
+
+```sql
+SELECT
+    c.title,
+    ei.source_name,
+    ei.external_id
+FROM content c
+JOIN external_ids ei
+    ON ei.content_id = c.id
+WHERE c.title IN (
+    'Interstellar',
+    'Inception',
+    'Breaking Bad',
+    'The Dark Knight',
+    'Dune: Part Two'
+)
+ORDER BY c.title, ei.source_name;
+```
+
+Expected rows include TMDb IDs for each title and these verified IMDb IDs:
+
+- Interstellar: `tt0816692`
+- Inception: `tt1375666`
+- Breaking Bad: `tt0903747`
+- The Dark Knight: `tt0468569`
+- Dune: Part Two: `tt15239678`
 
 ### Inspect Genres
 
@@ -351,6 +400,7 @@ It is designed for the current backend state and includes sample data for:
 - combined discovery
 - metadata endpoints
 - watch later and watched examples
+- provider-neutral external IDs for TMDb and verified IMDb matching
 
 The seed file avoids hardcoded generated IDs by using stable lookups such as `tmdb_id`, genre name, platform name, and user email.
 

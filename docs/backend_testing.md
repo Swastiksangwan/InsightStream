@@ -2,13 +2,13 @@
 
 ## 1. Purpose
 
-Backend tests verify the current stable read-only API behavior and protect existing endpoints from regressions.
+Backend tests verify the current stable read-only API behavior, protect existing endpoints from regressions, and check key seed-data assumptions.
 
 These tests are especially useful now that the backend has a stable API surface, canonical sample data, discovery endpoints, metadata endpoints, and watch-state read endpoints.
 
 ## 2. Current Test Scope
 
-The current tests cover read-only endpoints only.
+The current tests cover read-only endpoints and read-only seed verification only.
 
 Covered areas:
 
@@ -26,6 +26,10 @@ Covered areas:
 - watched read endpoint
 - watch later read endpoint
 - watch later/watched non-overlap for seeded user
+- external IDs seed verification
+- TMDb external ID coverage for seeded content
+- verified IMDb IDs for tested TMDb preview titles
+- duplicate external ID checks
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
 
@@ -45,6 +49,8 @@ Expected current seed state:
 - test user: `test@example.com`
 - watched: Interstellar, Inception
 - watch later: The Mandalorian, Dune: Part Two
+- external IDs: 15 `tmdb` rows and 5 verified `imdb` rows
+- verified IMDb IDs for Interstellar, Inception, Breaking Bad, The Dark Knight, and Dune: Part Two
 
 If the database is stale, missing seed data, or still has duplicate old seed rows, tests may fail. Reset the local database and rerun the setup SQL files before debugging the tests themselves.
 
@@ -67,7 +73,7 @@ pytest
 Expected current result:
 
 ```text
-18 passed
+22 passed
 ```
 
 ## 5. Test File Overview
@@ -77,6 +83,7 @@ Expected current result:
 - `backend/tests/test_content_read_endpoints.py` — content, discovery, and details read endpoints
 - `backend/tests/test_metadata_endpoints.py` — genre and platform metadata endpoints
 - `backend/tests/test_user_content_read_endpoints.py` — watched/watch-later read endpoints for the seeded user
+- `backend/tests/test_external_ids_seed.py` — read-only external ID seed verification
 
 ## 6. Important Bug Caught by Tests
 

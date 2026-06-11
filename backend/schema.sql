@@ -24,6 +24,18 @@ CREATE TABLE content (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS external_ids (
+    id SERIAL PRIMARY KEY,
+    content_id INTEGER NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+    source_name VARCHAR(50) NOT NULL,
+    external_id VARCHAR(255) NOT NULL,
+    source_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_external_ids_content_source UNIQUE (content_id, source_name),
+    CONSTRAINT uq_external_ids_source_external_id UNIQUE (source_name, external_id)
+);
+
 CREATE TABLE genres (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL
@@ -101,4 +113,3 @@ CREATE TABLE watch_later (
     FOREIGN KEY (content_id) REFERENCES content(id) ON DELETE CASCADE,
     UNIQUE (user_id, content_id)
 );
-
