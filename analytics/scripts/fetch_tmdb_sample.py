@@ -47,20 +47,25 @@ class SampleTitle:
     media_type: str
     tmdb_id: int | None
     year: int | None = None
-    id_note: str | None = None
-    search_first: bool = False
 
 
-# NOTE:
-# The Dark Knight is temporarily used as a known movie test case.
-# The Mandalorian should be added back after manually verifying its TMDb TV ID.
-
+# Current seeded titles from backend/sample_data.sql.
 SAMPLE_TITLES = [
     SampleTitle("Interstellar", "movie", 157336, 2014),
     SampleTitle("Inception", "movie", 27205, 2010),
-    SampleTitle("Breaking Bad", "tv", 1396, 2008),
     SampleTitle("The Dark Knight", "movie", 155, 2008),
+    SampleTitle("Parasite", "movie", 496243, 2019),
     SampleTitle("Dune: Part Two", "movie", 693134, 2024),
+    SampleTitle("Barbie", "movie", 346698, 2023),
+    SampleTitle("Spider-Man: Across the Spider-Verse", "movie", 569094, 2023),
+    SampleTitle("Red Notice", "movie", 512195, 2021),
+    SampleTitle("Breaking Bad", "tv", 1396, 2008),
+    SampleTitle("The Mandalorian", "tv", 157339, 2019),
+    SampleTitle("The Last of Us", "tv", 100088, 2023),
+    SampleTitle("Stranger Things", "tv", 66732, 2016),
+    SampleTitle("The Boys", "tv", 76479, 2019),
+    SampleTitle("Dark", "tv", 70523, 2017),
+    SampleTitle("The Witcher", "tv", 71912, 2019),
 ]
 
 
@@ -232,6 +237,33 @@ def get_details_title(details: dict[str, Any], media_type: str) -> str | None:
     return details.get("name")
 
 
+def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[str, Any]:
+    return {
+        "source_provider": "tmdb",
+        "tmdb_id": sample.tmdb_id,
+        "media_type": sample.media_type,
+        "title": sample.title,
+        "overview": None,
+        "release_date": None,
+        "year": sample.year,
+        "runtime": None,
+        "original_language": None,
+        "status": None,
+        "poster_path": None,
+        "backdrop_path": None,
+        "poster_url": None,
+        "backdrop_url": None,
+        "genres": [],
+        "vote_average": None,
+        "vote_count": None,
+        "popularity": None,
+        "imdb_id": None,
+        "top_cast_names": [],
+        "director_or_creator_names": [],
+        "mapping_notes": [error_message],
+    }
+
+
 def fetch_title_payloads(
     sample: SampleTitle,
     token: str,
@@ -239,18 +271,10 @@ def fetch_title_payloads(
     notes: list[str] = []
     tmdb_id = sample.tmdb_id
 
-    if sample.id_note:
-        notes.append(sample.id_note)
-
-    if sample.search_first or tmdb_id is None:
-        search_id, search_note = find_first_reasonable_search_result(sample, token)
-        if search_note:
-            notes.append(search_note)
-        if search_id:
-            print(
-                f"Warning: using search-derived ID {search_id} for {sample.title}; manually verify before database use."
-            )
-            tmdb_id = search_id
+    if sample.media_type not in {"movie", "tv"}:
+        raise TmdbFetchError(
+            f"Unsupported media_type '{sample.media_type}' for {sample.title}."
+        )
 
     if not tmdb_id:
         raise TmdbFetchError(f"No usable TMDb ID for {sample.title}.")
@@ -262,26 +286,18 @@ def fetch_title_payloads(
     details = fetch_tmdb_json(details_path, token)
     actual_title = get_details_title(details, sample.media_type)
 
-    if not title_matches(sample.title, actual_title):
+    if not actual_title:
         notes.append(
-            f"Fetched title '{actual_title}' did not clearly match expected title '{sample.title}'."
+            f"Media type validation warning: expected TMDb {sample.media_type} payload for {sample.title}, but no title/name field was returned."
         )
-        search_id, search_note = find_first_reasonable_search_result(sample, token)
-        if search_note:
-            notes.append(search_note)
-        if search_id and search_id != tmdb_id:
-            print(
-                f"Warning: seed ID {tmdb_id} returned '{actual_title}'. Using search-derived ID {search_id} for {sample.title}; manually verify."
-            )
-            tmdb_id = search_id
-            details_path = f"/{sample.media_type}/{tmdb_id}"
-            external_ids_path = f"/{sample.media_type}/{tmdb_id}/external_ids"
-            credits_path = f"/{sample.media_type}/{tmdb_id}/credits"
-            details = fetch_tmdb_json(details_path, token)
-        else:
-            raise TmdbFetchError(
-                f"Fetched title '{actual_title}' did not match expected title '{sample.title}', and fallback search did not provide a better ID."
-            )
+
+    if not title_matches(sample.title, actual_title):
+        note = (
+            f"Title mismatch: seed expected '{sample.title}', "
+            f"TMDb returned '{actual_title}'. Manually verify tmdb_id {tmdb_id}."
+        )
+        notes.append(note)
+        print(f"  Warning: {note}")
 
     external_ids = fetch_tmdb_json(external_ids_path, token)
     credits = fetch_tmdb_json(credits_path, token)
@@ -469,16 +485,18 @@ def print_preview_table(items: list[dict[str, Any]]) -> None:
         "Poster",
         "Backdrop",
         "IMDb",
+        "Notes",
     )
     print(
         f"{header[0]:34} {header[1]:6} {header[2]:6} {header[3]:8} "
-        f"{header[4]:34} {header[5]:7} {header[6]:8} {header[7]:5}"
+        f"{header[4]:34} {header[5]:7} {header[6]:8} {header[7]:5} {header[8]:5}"
     )
-    print("-" * 122)
+    print("-" * 130)
     for item in items:
         genres = ", ".join(item.get("genres") or [])
         if len(genres) > 32:
             genres = genres[:29] + "..."
+        notes_count = len(item.get("mapping_notes") or [])
         print(
             f"{str(item.get('title') or '')[:34]:34} "
             f"{str(item.get('media_type') or '')[:6]:6} "
@@ -487,8 +505,24 @@ def print_preview_table(items: list[dict[str, Any]]) -> None:
             f"{genres[:34]:34} "
             f"{'yes' if item.get('poster_url') else 'no':7} "
             f"{'yes' if item.get('backdrop_url') else 'no':8} "
-            f"{'yes' if item.get('imdb_id') else 'no':5}"
+            f"{'yes' if item.get('imdb_id') else 'no':5} "
+            f"{notes_count if notes_count else '-':5}"
         )
+
+
+def print_preview_totals(items: list[dict[str, Any]], total_fetched: int) -> None:
+    total_with_poster = sum(1 for item in items if item.get("poster_url"))
+    total_with_backdrop = sum(1 for item in items if item.get("backdrop_url"))
+    total_with_imdb = sum(1 for item in items if item.get("imdb_id"))
+    total_with_notes = sum(1 for item in items if item.get("mapping_notes"))
+
+    print("\nPreview totals:")
+    print(f"- Total fetched: {total_fetched}")
+    print(f"- Total preview items: {len(items)}")
+    print(f"- Total with poster_url: {total_with_poster}")
+    print(f"- Total with backdrop_url: {total_with_backdrop}")
+    print(f"- Total with imdb_id: {total_with_imdb}")
+    print(f"- Total with warnings/mapping_notes: {total_with_notes}")
 
 
 def main() -> int:
@@ -515,6 +549,7 @@ def main() -> int:
     mapped_items: list[dict[str, Any]] = []
     raw_files: list[Path] = [RAW_OUTPUT_DIR / "configuration.json"]
     errors: list[str] = []
+    total_fetched = 0
 
     for sample in SAMPLE_TITLES:
         print(f"Fetching {sample.title} ({sample.media_type})...")
@@ -527,6 +562,7 @@ def main() -> int:
             message = f"{sample.title}: {exc}"
             print(f"  Error: {message}")
             errors.append(message)
+            mapped_items.append(build_error_preview_item(sample, str(exc)))
             continue
 
         details_path = RAW_OUTPUT_DIR / raw_filename(
@@ -567,6 +603,7 @@ def main() -> int:
                 notes,
             )
         mapped_items.append(mapped)
+        total_fetched += 1
 
     if not mapped_items:
         print("No titles were mapped. Check the token, network, and TMDb IDs.")
@@ -594,6 +631,17 @@ def main() -> int:
 
     print(f"\nProcessed preview saved: {PREVIEW_OUTPUT_PATH.relative_to(REPO_ROOT)}")
     print_preview_table(mapped_items)
+    print_preview_totals(mapped_items, total_fetched)
+
+    warning_items = [
+        item for item in mapped_items if item.get("mapping_notes")
+    ]
+    if warning_items:
+        print("\nMapping warnings:")
+        for item in warning_items:
+            print(f"- {item.get('title')}:")
+            for note in item.get("mapping_notes") or []:
+                print(f"  - {note}")
 
     if errors:
         print("\nWarnings/errors:")

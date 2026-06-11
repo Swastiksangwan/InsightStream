@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-10T06:26:39.409844+00:00",
+  "generated_at": "2026-06-11T21:14:39.775488+00:00",
   "inspection_only": true,
   "items": [
     {
@@ -18,7 +18,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
-      "popularity": 69.9095,
+      "popularity": 67.4273,
       "poster_path": "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "release_date": "2014-11-05",
@@ -34,8 +34,8 @@
         "Jessica Chastain",
         "Casey Affleck"
       ],
-      "vote_average": 8.477,
-      "vote_count": 39959,
+      "vote_average": 8.478,
+      "vote_count": 39975,
       "year": 2014
     },
     {
@@ -54,7 +54,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
-      "popularity": 34.3413,
+      "popularity": 33.3385,
       "poster_path": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "release_date": "2010-07-15",
@@ -70,9 +70,227 @@
         "Tom Hardy",
         "Elliot Page"
       ],
-      "vote_average": 8.4,
-      "vote_count": 39331,
+      "vote_average": 8.372,
+      "vote_count": 39339,
       "year": 2010
+    },
+    {
+      "backdrop_path": "/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
+      "director_or_creator_names": [
+        "Christopher Nolan"
+      ],
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "imdb_id": "tt0468569",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
+      "popularity": 38.8635,
+      "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "release_date": "2008-07-16",
+      "runtime": 152,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "The Dark Knight",
+      "tmdb_id": 155,
+      "top_cast_names": [
+        "Christian Bale",
+        "Heath Ledger",
+        "Aaron Eckhart",
+        "Michael Caine",
+        "Maggie Gyllenhaal"
+      ],
+      "vote_average": 8.531,
+      "vote_count": 35873,
+      "year": 2008
+    },
+    {
+      "backdrop_path": "/8eihUxjQsJ7WvGySkVMC0EwbPAD.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/8eihUxjQsJ7WvGySkVMC0EwbPAD.jpg",
+      "director_or_creator_names": [
+        "Bong Joon Ho"
+      ],
+      "genres": [
+        "Comedy",
+        "Thriller",
+        "Drama"
+      ],
+      "imdb_id": "tt6751668",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "ko",
+      "overview": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
+      "popularity": 34.9593,
+      "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+      "release_date": "2019-05-30",
+      "runtime": 133,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "Parasite",
+      "tmdb_id": 496243,
+      "top_cast_names": [
+        "Song Kang-ho",
+        "Lee Sun-kyun",
+        "Cho Yeo-jeong",
+        "Choi Woo-shik",
+        "Park So-dam"
+      ],
+      "vote_average": 8.494,
+      "vote_count": 20704,
+      "year": 2019
+    },
+    {
+      "backdrop_path": "/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+      "director_or_creator_names": [
+        "Denis Villeneuve"
+      ],
+      "genres": [
+        "Science Fiction",
+        "Adventure"
+      ],
+      "imdb_id": "tt15239678",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
+      "popularity": 23.9682,
+      "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+      "release_date": "2024-02-27",
+      "runtime": 167,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "Dune: Part Two",
+      "tmdb_id": 693134,
+      "top_cast_names": [
+        "Timothée Chalamet",
+        "Zendaya",
+        "Rebecca Ferguson",
+        "Javier Bardem",
+        "Josh Brolin"
+      ],
+      "vote_average": 8.128,
+      "vote_count": 8018,
+      "year": 2024
+    },
+    {
+      "backdrop_path": "/3N5QNUqS76GFYNoEayfkkJyAyTN.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/3N5QNUqS76GFYNoEayfkkJyAyTN.jpg",
+      "director_or_creator_names": [
+        "Greta Gerwig"
+      ],
+      "genres": [
+        "Comedy",
+        "Adventure",
+        "Fantasy"
+      ],
+      "imdb_id": "tt1517268",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land. However, when they get a chance to go to the real world, they soon discover the joys and perils of living among humans.",
+      "popularity": 21.3804,
+      "poster_path": "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+      "release_date": "2023-07-19",
+      "runtime": 114,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "Barbie",
+      "tmdb_id": 346698,
+      "top_cast_names": [
+        "Margot Robbie",
+        "Ryan Gosling",
+        "America Ferrera",
+        "Ariana Greenblatt",
+        "Issa Rae"
+      ],
+      "vote_average": 6.922,
+      "vote_count": 11136,
+      "year": 2023
+    },
+    {
+      "backdrop_path": "/9xfDWXAUbFXQK585JvByT5pEAhe.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/9xfDWXAUbFXQK585JvByT5pEAhe.jpg",
+      "director_or_creator_names": [
+        "Kemp Powers",
+        "Justin K. Thompson",
+        "Joaquim Dos Santos"
+      ],
+      "genres": [
+        "Animation",
+        "Action",
+        "Adventure",
+        "Science Fiction"
+      ],
+      "imdb_id": "tt9362722",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse's very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
+      "popularity": 30.1341,
+      "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+      "release_date": "2023-05-31",
+      "runtime": 140,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "Spider-Man: Across the Spider-Verse",
+      "tmdb_id": 569094,
+      "top_cast_names": [
+        "Shameik Moore",
+        "Hailee Steinfeld",
+        "Brian Tyree Henry",
+        "Luna Lauren Vélez",
+        "Jake Johnson"
+      ],
+      "vote_average": 8.337,
+      "vote_count": 8655,
+      "year": 2023
+    },
+    {
+      "backdrop_path": "/p34WRcgkN2QIHcds5FtFiSpV3PC.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/p34WRcgkN2QIHcds5FtFiSpV3PC.jpg",
+      "director_or_creator_names": [
+        "Rawson Marshall Thurber"
+      ],
+      "genres": [
+        "Action",
+        "Comedy",
+        "Crime"
+      ],
+      "imdb_id": "tt7991608",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "An Interpol-issued Red Notice is a global alert to hunt and capture the world's most wanted. But when a daring heist brings together the FBI's top profiler and two rival criminals, there's no telling what will happen.",
+      "popularity": 7.4526,
+      "poster_path": "/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
+      "release_date": "2021-11-04",
+      "runtime": 118,
+      "source_provider": "tmdb",
+      "status": "Released",
+      "title": "Red Notice",
+      "tmdb_id": 512195,
+      "top_cast_names": [
+        "Dwayne Johnson",
+        "Ryan Reynolds",
+        "Gal Gadot",
+        "Ritu Arya",
+        "Chris Diamantopoulos"
+      ],
+      "vote_average": 6.731,
+      "vote_count": 6453,
+      "year": 2021
     },
     {
       "backdrop_path": "/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg",
@@ -91,7 +309,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
-      "popularity": 158.7291,
+      "popularity": 171.472,
       "poster_path": "/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
       "release_date": "2008-01-20",
@@ -108,79 +326,225 @@
         "Dean Norris"
       ],
       "vote_average": 8.946,
-      "vote_count": 17888,
+      "vote_count": 17897,
       "year": 2008
     },
     {
-      "backdrop_path": "/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
-      "backdrop_url": "https://image.tmdb.org/t/p/w1280/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
+      "backdrop_path": null,
+      "backdrop_url": null,
       "director_or_creator_names": [
-        "Christopher Nolan"
+        "Rob Fickling"
+      ],
+      "genres": [],
+      "imdb_id": null,
+      "mapping_notes": [
+        "Title mismatch: seed expected 'The Mandalorian', TMDb returned 'Beyond The Divide'. Manually verify tmdb_id 157339.",
+        "Missing backdrop_path.",
+        "No genres returned.",
+        "No imdb_id returned.",
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
+      "original_language": "en",
+      "overview": "We have seen Rob’s passion for Australian hunting through his business and impressive range of gear and designs and now this passion has flowed on to our television screens. As the name suggests “Beyond the Divide” provides an adventure hunting series that not only captures the spirit of hunters and hunting in this country, in and around the Great Dividing Range, but also portrays what it takes to be an Australian, hunting and surviving challenging environments overseas.",
+      "popularity": 0.3867,
+      "poster_path": "/fouBQTufJ1lhPmhY10ifjIMFXgX.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/fouBQTufJ1lhPmhY10ifjIMFXgX.jpg",
+      "release_date": "2013-05-02",
+      "runtime": null,
+      "source_provider": "tmdb",
+      "status": "Returning Series",
+      "title": "Beyond The Divide",
+      "tmdb_id": 157339,
+      "top_cast_names": [],
+      "vote_average": 0.0,
+      "vote_count": 0,
+      "year": 2013
+    },
+    {
+      "backdrop_path": "/acevLdSl5I2MK5RYAm7gwAndt1w.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/acevLdSl5I2MK5RYAm7gwAndt1w.jpg",
+      "director_or_creator_names": [
+        "Neil Druckmann",
+        "Craig Mazin"
       ],
       "genres": [
-        "Action",
+        "Drama"
+      ],
+      "imdb_id": "tt3581920",
+      "mapping_notes": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
+      "original_language": "en",
+      "overview": "Twenty years after modern civilization has been destroyed, Joel, a hardened survivor, is hired to smuggle Ellie, a 14-year-old girl, out of an oppressive quarantine zone. What starts as a small job soon becomes a brutal, heartbreaking journey, as they both must traverse the United States and depend on each other for survival.",
+      "popularity": 45.6522,
+      "poster_path": "/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
+      "release_date": "2023-01-15",
+      "runtime": null,
+      "source_provider": "tmdb",
+      "status": "Returning Series",
+      "title": "The Last of Us",
+      "tmdb_id": 100088,
+      "top_cast_names": [
+        "Bella Ramsey",
+        "Gabriel Luna",
+        "Isabela Merced",
+        "Young Mazino"
+      ],
+      "vote_average": 8.428,
+      "vote_count": 7045,
+      "year": 2023
+    },
+    {
+      "backdrop_path": "/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
+      "director_or_creator_names": [
+        "Ross Duffer",
+        "Matt Duffer"
+      ],
+      "genres": [
+        "Action & Adventure",
+        "Mystery",
+        "Sci-Fi & Fantasy"
+      ],
+      "imdb_id": "tt4574334",
+      "mapping_notes": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
+      "original_language": "en",
+      "overview": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
+      "popularity": 141.663,
+      "poster_path": "/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
+      "release_date": "2016-07-15",
+      "runtime": null,
+      "source_provider": "tmdb",
+      "status": "Ended",
+      "title": "Stranger Things",
+      "tmdb_id": 66732,
+      "top_cast_names": [
+        "Winona Ryder",
+        "David Harbour",
+        "Millie Bobby Brown",
+        "Finn Wolfhard",
+        "Gaten Matarazzo"
+      ],
+      "vote_average": 8.564,
+      "vote_count": 21278,
+      "year": 2016
+    },
+    {
+      "backdrop_path": "/bq28ajZaoMyzEIm6REelqyqtEDZ.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/bq28ajZaoMyzEIm6REelqyqtEDZ.jpg",
+      "director_or_creator_names": [
+        "Eric Kripke"
+      ],
+      "genres": [
+        "Sci-Fi & Fantasy",
+        "Action & Adventure"
+      ],
+      "imdb_id": "tt1190634",
+      "mapping_notes": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
+      "original_language": "en",
+      "overview": "A group of vigilantes known informally as “The Boys” set out to take down corrupt superheroes with no more than blue-collar grit and a willingness to fight dirty.",
+      "popularity": 373.1314,
+      "poster_path": "/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
+      "release_date": "2019-07-25",
+      "runtime": null,
+      "source_provider": "tmdb",
+      "status": "Ended",
+      "title": "The Boys",
+      "tmdb_id": 76479,
+      "top_cast_names": [
+        "Karl Urban",
+        "Jack Quaid",
+        "Antony Starr",
+        "Erin Moriarty",
+        "Laz Alonso"
+      ],
+      "vote_average": 8.454,
+      "vote_count": 12890,
+      "year": 2019
+    },
+    {
+      "backdrop_path": "/3jDXL4Xvj3AzDOF6UH1xeyHW8MH.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/3jDXL4Xvj3AzDOF6UH1xeyHW8MH.jpg",
+      "director_or_creator_names": [
+        "Baran bo Odar",
+        "Jantje Friese"
+      ],
+      "genres": [
         "Crime",
-        "Thriller"
+        "Drama",
+        "Sci-Fi & Fantasy",
+        "Mystery"
       ],
-      "imdb_id": "tt0468569",
-      "mapping_notes": [],
-      "media_type": "movie",
-      "original_language": "en",
-      "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
-      "popularity": 39.7514,
-      "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-      "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-      "release_date": "2008-07-16",
-      "runtime": 152,
+      "imdb_id": "tt5753856",
+      "mapping_notes": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
+      "original_language": "de",
+      "overview": "A missing child sets four families on a frantic hunt for answers as they unearth a mind-bending mystery that spans three generations.",
+      "popularity": 44.716,
+      "poster_path": "/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
+      "release_date": "2017-12-01",
+      "runtime": null,
       "source_provider": "tmdb",
-      "status": "Released",
-      "title": "The Dark Knight",
-      "tmdb_id": 155,
+      "status": "Ended",
+      "title": "Dark",
+      "tmdb_id": 70523,
       "top_cast_names": [
-        "Christian Bale",
-        "Heath Ledger",
-        "Aaron Eckhart",
-        "Michael Caine",
-        "Maggie Gyllenhaal"
+        "Louis Hofmann"
       ],
-      "vote_average": 8.5,
-      "vote_count": 35867,
-      "year": 2008
+      "vote_average": 8.424,
+      "vote_count": 7588,
+      "year": 2017
     },
     {
-      "backdrop_path": "/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
-      "backdrop_url": "https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+      "backdrop_path": "/foGkPxpw9h8zln81j63mix5B7m8.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/foGkPxpw9h8zln81j63mix5B7m8.jpg",
       "director_or_creator_names": [
-        "Denis Villeneuve"
+        "Lauren Schmidt Hissrich"
       ],
       "genres": [
-        "Science Fiction",
-        "Adventure"
+        "Drama",
+        "Action & Adventure"
       ],
-      "imdb_id": "tt15239678",
-      "mapping_notes": [],
-      "media_type": "movie",
+      "imdb_id": "tt5180504",
+      "mapping_notes": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
       "original_language": "en",
-      "overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
-      "popularity": 24.1371,
-      "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
-      "poster_url": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
-      "release_date": "2024-02-27",
-      "runtime": 167,
+      "overview": "Geralt of Rivia, a mutated monster-hunter for hire, journeys toward his destiny in a turbulent world where people often prove more wicked than beasts.",
+      "popularity": 51.5021,
+      "poster_path": "/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
+      "release_date": "2019-12-20",
+      "runtime": null,
       "source_provider": "tmdb",
-      "status": "Released",
-      "title": "Dune: Part Two",
-      "tmdb_id": 693134,
+      "status": "Returning Series",
+      "title": "The Witcher",
+      "tmdb_id": 71912,
       "top_cast_names": [
-        "Timothée Chalamet",
-        "Zendaya",
-        "Rebecca Ferguson",
-        "Javier Bardem",
-        "Josh Brolin"
+        "Liam Hemsworth",
+        "Anya Chalotra",
+        "Freya Allan",
+        "Joey Batey",
+        "Eamon Farren"
       ],
-      "vote_average": 8.129,
-      "vote_count": 8015,
-      "year": 2024
+      "vote_average": 7.916,
+      "vote_count": 6704,
+      "year": 2019
     }
   ],
   "licensing_note": "Prototype/non-commercial inspection only. Follow TMDb terms, do not commit API keys, do not use TMDb content for ML/AI training, and do not assume permanent storage rights.",
