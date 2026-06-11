@@ -12,11 +12,12 @@ Current state:
 
 - The frontend already supports poster/backdrop display.
 - The frontend already has fallback UI for missing or broken poster/backdrop images.
-- Current seed poster/backdrop URLs are placeholder-style values.
+- Some current seed poster/backdrop URLs are placeholder-style values.
 - The TMDb sample fetch generated real image URLs.
 - The processed preview exists at `analytics/processed/tmdb/sample_mapping_preview.json`.
 - A local PostgreSQL update has been applied for the 5 preview titles using the update script.
-- `backend/sample_data.sql` still has placeholder-style URLs, so these local updates are not reset-safe yet.
+- Verified poster/backdrop URLs have been persisted into `backend/sample_data.sql` for the 5 preview titles.
+- Other seeded titles may still use placeholder-style URLs until they are verified.
 - Raw TMDb output remains gitignored under `analytics/raw/tmdb/`.
 
 ## 3. Available Preview Fields
@@ -192,8 +193,10 @@ The script was run successfully with `--apply`:
 
 Only `poster_url` and `backdrop_url` were updated. No ratings, summaries, genres, runtime, overview, cast, director, or schema fields were changed.
 
-These updates currently exist only in local PostgreSQL. Re-running `backend/sample_data.sql` will restore placeholder URLs unless `sample_data.sql` is updated later.
+Before seed persistence, these updates existed only in local PostgreSQL and would have been lost after re-running `backend/sample_data.sql`.
+
+Seed persistence note: the verified poster/backdrop URLs were later persisted into `backend/sample_data.sql` for the 5 tested titles. This makes real images reproducible after local database resets. This remains prototype seed data, not full TMDb ingestion. The Mandalorian is still pending TMDb TV ID verification.
 
 ## 10. Final Decision
 
-The first local poster/backdrop update is complete for 5 matched titles. The next decision is whether to persist verified image URLs into `backend/sample_data.sql` for reset-safe local development, or keep applying them through the local update script while broader ingestion planning continues.
+The first local poster/backdrop update is complete for 5 matched titles, and those verified image URLs are now persisted in `backend/sample_data.sql` for reset-safe local development. Broader ingestion planning should continue before adding more TMDb-derived metadata or updating additional titles.

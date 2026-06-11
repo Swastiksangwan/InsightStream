@@ -59,6 +59,9 @@ SET platform_type = EXCLUDED.platform_type;
 -- ------------------------------------------------------------
 -- Content
 -- ------------------------------------------------------------
+-- Some poster/backdrop URLs below are TMDb-derived media values used
+-- for local prototype development. TMDb requires attribution/licensing
+-- consideration and remains a replaceable metadata provider.
 
 INSERT INTO content (
     tmdb_id,
@@ -79,8 +82,8 @@ INSERT INTO content (
     'Interstellar',
     'movie',
     'A team of explorers travel through a wormhole in space in an attempt to ensure humanity''s survival.',
-    'https://image.tmdb.org/t/p/w500/sampleposter.jpg',
-    'https://image.tmdb.org/t/p/original/samplebackdrop.jpg',
+    'https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg',
+    'https://image.tmdb.org/t/p/w1280/2ssWTSVklAEc98frZUQhgtGHx7s.jpg',
     '2014-11-07',
     2014,
     169,
@@ -93,8 +96,8 @@ INSERT INTO content (
     'Inception',
     'movie',
     'A thief who steals corporate secrets through dream-sharing technology is given a chance to erase his past crimes.',
-    'https://image.tmdb.org/t/p/w500/sampleposter2.jpg',
-    'https://image.tmdb.org/t/p/original/samplebackdrop2.jpg',
+    'https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg',
+    'https://image.tmdb.org/t/p/w1280/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg',
     '2010-07-16',
     2010,
     148,
@@ -107,8 +110,8 @@ INSERT INTO content (
     'Breaking Bad',
     'series',
     'A high school chemistry teacher turns to manufacturing methamphetamine after a life-changing diagnosis.',
-    'https://image.tmdb.org/t/p/w500/sampleposter3.jpg',
-    'https://image.tmdb.org/t/p/original/samplebackdrop3.jpg',
+    'https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg',
+    'https://image.tmdb.org/t/p/w1280/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg',
     '2008-01-20',
     2008,
     60,
@@ -135,8 +138,8 @@ INSERT INTO content (
     'The Dark Knight',
     'movie',
     'Batman faces the Joker, a criminal mastermind who pushes Gotham City and its hero into chaos.',
-    'https://image.tmdb.org/t/p/w500/sampleposter5.jpg',
-    'https://image.tmdb.org/t/p/original/samplebackdrop5.jpg',
+    'https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
+    'https://image.tmdb.org/t/p/w1280/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg',
     '2008-07-18',
     2008,
     152,
@@ -163,8 +166,8 @@ INSERT INTO content (
     'Dune: Part Two',
     'movie',
     'Paul Atreides unites with the Fremen while seeking revenge and confronting a future shaped by prophecy.',
-    'https://image.tmdb.org/t/p/w500/sampleposter7.jpg',
-    'https://image.tmdb.org/t/p/original/samplebackdrop7.jpg',
+    'https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg',
+    'https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg',
     '2024-03-01',
     2024,
     166,
