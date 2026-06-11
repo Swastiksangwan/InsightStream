@@ -17,7 +17,10 @@ Current status: frontend MVP loop v1 is connected, and frontend polish pass 1 is
 - Watched page v1 completed
 - Frontend polish pass 1 completed across the current pages/components
 - Authentication and deeper polish are still pending
-- Real poster/backdrop data remains future work through data ingestion
+- Real posters/backdrops have been locally applied for 5 titles through the PostgreSQL update script
+- Frontend cards now render real posters for updated titles, and detail pages render real backdrops for updated titles
+- Detail hero backdrop styling has been improved and is acceptable for now, though more polish will be needed later
+- Fallback poster/backdrop UI remains necessary for titles without real images
 
 ## 2. Current Backend Readiness
 
@@ -152,6 +155,7 @@ Completed v1 status:
 - shows metadata, genres, overview, availability, ratings, unified/critic/audience scores, review summary, pros, cons, and verdict
 - supports reversible personal watch actions: add/remove Watch Later and mark/remove Watched
 - backend maintains mutual exclusivity between `watch_later` and `watched`
+- renders real backdrops for locally updated titles while preserving fallback hero styling for missing images
 - cast, crew, and person data remain future backend + frontend enhancements
 - included in frontend polish pass 1
 
@@ -385,7 +389,7 @@ Frontend work can continue with small polish improvements and integration testin
 - Frontend should be built incrementally.
 - Visual inspiration should guide theme and layout, not product scope.
 - Watch later/watched pages use the seeded user only as a temporary demo bridge.
-- Real poster/backdrop URLs are important for future visual quality.
+- Real poster/backdrop URLs have been locally applied for 5 titles, but broader/canonical image ingestion remains future work.
 - Clickable genre/person navigation should wait for clear backend/API support.
 
 ## 15. Final Summary

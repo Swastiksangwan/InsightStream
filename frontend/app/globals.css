@@ -697,7 +697,8 @@ main {
 
 .detail-hero {
   position: relative;
-  min-height: 510px;
+  min-height: clamp(500px, 58vh, 650px);
+  isolation: isolate;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
@@ -710,18 +711,29 @@ main {
   box-shadow: 0 26px 72px rgba(0, 0, 0, 0.44);
 }
 
-.detail-hero__backdrop-probe {
-  display: none;
+.detail-hero__backdrop-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0.78;
+  filter: saturate(1.08) contrast(1.04);
 }
 
 .detail-hero__overlay {
-  min-height: 510px;
+  position: relative;
+  z-index: 1;
+  min-height: clamp(500px, 58vh, 650px);
   display: flex;
   flex-direction: column;
   justify-content: end;
   background:
-    linear-gradient(90deg, rgba(5, 6, 8, 0.94), rgba(5, 6, 8, 0.72) 48%, rgba(5, 6, 8, 0.86)),
-    linear-gradient(180deg, rgba(5, 6, 8, 0.2), rgba(5, 6, 8, 0.94));
+    linear-gradient(90deg, rgba(5, 6, 8, 0.88) 0%, rgba(5, 6, 8, 0.62) 45%, rgba(5, 6, 8, 0.24) 100%),
+    linear-gradient(180deg, rgba(5, 6, 8, 0.12) 0%, rgba(5, 6, 8, 0.28) 48%, rgba(5, 6, 8, 0.9) 100%);
   padding: 26px;
 }
 
@@ -737,7 +749,8 @@ main {
   color: var(--muted);
   font-size: 0.86rem;
   font-weight: 700;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(5, 6, 8, 0.42);
+  backdrop-filter: blur(10px);
 }
 
 .detail-back-link:hover,
@@ -764,7 +777,9 @@ main {
   background:
     radial-gradient(circle at 30% 18%, rgba(244, 184, 96, 0.2), transparent 9rem),
     linear-gradient(155deg, #202839, #080b10 54%, #171116);
-  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.62),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
   place-items: center;
 }
 
@@ -823,6 +838,7 @@ main {
 .detail-hero__content {
   max-width: 760px;
   padding-bottom: 4px;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.78);
 }
 
 .detail-hero__content h1 {
@@ -834,7 +850,7 @@ main {
 .detail-hero__content p {
   max-width: 720px;
   margin: 20px 0 0;
-  color: var(--muted);
+  color: rgba(232, 237, 246, 0.88);
   font-size: 1.02rem;
   line-height: 1.75;
 }
@@ -1272,6 +1288,11 @@ main {
 
   .detail-hero__overlay {
     padding: 18px;
+  }
+
+  .detail-hero__backdrop-image {
+    object-position: center top;
+    opacity: 0.66;
   }
 
   .detail-hero__grid {

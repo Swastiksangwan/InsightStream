@@ -279,6 +279,12 @@ The first successful run confirmed that TMDb can provide real poster/backdrop UR
 
 The Dark Knight is currently used as a temporary known test title while The Mandalorian TMDb TV ID is manually verified. The processed preview should be treated as inspection data, not production data.
 
+Local media update note:
+
+- the first local media-data update successfully used resolved TMDb `poster_url` and `backdrop_url` values from the processed preview
+- this validated the current mapping approach for `content.poster_url` and `content.backdrop_url`
+- full TMDb ingestion and schema expansion remain future work
+
 ## 17. What Not To Do Yet
 
 Do not:

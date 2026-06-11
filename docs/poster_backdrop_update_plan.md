@@ -15,7 +15,8 @@ Current state:
 - Current seed poster/backdrop URLs are placeholder-style values.
 - The TMDb sample fetch generated real image URLs.
 - The processed preview exists at `analytics/processed/tmdb/sample_mapping_preview.json`.
-- No database update has happened yet.
+- A local PostgreSQL update has been applied for the 5 preview titles using the update script.
+- `backend/sample_data.sql` still has placeholder-style URLs, so these local updates are not reset-safe yet.
 - Raw TMDb output remains gitignored under `analytics/raw/tmdb/`.
 
 ## 3. Available Preview Fields
@@ -145,6 +146,8 @@ Recommended next coding task:
 
 Create an inspection-first poster/backdrop update script.
 
+Implementation note: this script now exists at `analytics/scripts/update_posters_from_tmdb_preview.py`.
+
 Suggested file:
 
 ```text
@@ -177,6 +180,20 @@ Do not:
 - make the frontend call TMDb directly
 - commit raw TMDb JSON
 
+## Local Update Result
+
+`analytics/scripts/update_posters_from_tmdb_preview.py` was created to read `analytics/processed/tmdb/sample_mapping_preview.json`. It does not fetch TMDb directly, supports dry-run by default, and requires `--apply` before writing to the database.
+
+The script was run successfully with `--apply`:
+
+- rows updated: 5
+- rows skipped: 0
+- updated titles: Interstellar, Inception, Breaking Bad, The Dark Knight, Dune: Part Two
+
+Only `poster_url` and `backdrop_url` were updated. No ratings, summaries, genres, runtime, overview, cast, director, or schema fields were changed.
+
+These updates currently exist only in local PostgreSQL. Re-running `backend/sample_data.sql` will restore placeholder URLs unless `sample_data.sql` is updated later.
+
 ## 10. Final Decision
 
-The next implementation step should be a small inspection-first update script that reads the processed TMDb preview and updates only `poster_url`/`backdrop_url` for matching local content rows after explicit confirmation. This keeps the first media-data improvement controlled, reversible, and separate from full TMDb ingestion.
+The first local poster/backdrop update is complete for 5 matched titles. The next decision is whether to persist verified image URLs into `backend/sample_data.sql` for reset-safe local development, or keep applying them through the local update script while broader ingestion planning continues.

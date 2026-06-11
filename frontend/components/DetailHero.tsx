@@ -41,17 +41,10 @@ export function DetailHero({ content, genres }: DetailHeroProps) {
   ].filter(Boolean);
 
   return (
-    <section
-      className="detail-hero"
-      style={
-        showBackdrop && content.backdrop
-          ? { backgroundImage: `url(${content.backdrop})` }
-          : undefined
-      }
-    >
+    <section className="detail-hero">
       {showBackdrop && content.backdrop ? (
         <img
-          className="detail-hero__backdrop-probe"
+          className="detail-hero__backdrop-image"
           src={content.backdrop}
           alt=""
           aria-hidden="true"

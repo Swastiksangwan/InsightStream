@@ -13,7 +13,8 @@ Current project state:
 - Backend APIs are stable.
 - Frontend MVP loop v1 is connected.
 - Canonical seed data has 15 titles.
-- Poster and backdrop URLs are placeholder-style development values.
+- `backend/sample_data.sql` still contains placeholder-style poster/backdrop values.
+- Local PostgreSQL has been updated with real TMDb poster/backdrop URLs for 5 titles: Interstellar, Inception, Breaking Bad, The Dark Knight, and Dune: Part Two.
 - Ratings, summaries, unified scores, pros, cons, and verdicts are plausible development data.
 - No external ingestion pipeline exists yet.
 - No person, cast, crew, or director schema exists yet.
@@ -264,11 +265,13 @@ Decide TMDb fields, rating sources, image handling, and mapping to the current s
 
 The inspection-only TMDb sample fetch script has been created and run for a small set of known titles. It saves raw JSON locally, writes a processed mapping preview, and does not insert anything into PostgreSQL.
 
-No full ingestion pipeline exists yet. The next decision is whether to use the processed preview to update current poster/backdrop data in the local seed or development database.
+No full ingestion pipeline exists yet. The processed preview has now been used for a controlled local poster/backdrop update, but no reset-safe seed update has happened yet.
 
-### Phase 3: Poster/Backdrop Update Path
+### Phase 3: Poster/Backdrop Update Path (Local Update Completed for 5 Titles)
 
-Decide how to update the current seed or local database with real image paths. This should remain controlled and provider-neutral, with TMDb treated as a replaceable prototype metadata provider.
+The processed preview was used by a local update script to update `poster_url` and `backdrop_url` in PostgreSQL for 5 matched titles. No schema changes, seed-file changes, ratings updates, summary updates, or full ingestion pipeline were added.
+
+The next decision is whether to persist the verified poster/backdrop URLs into `backend/sample_data.sql` for reset-safe local development, or keep using the local update script during development. This should remain controlled and provider-neutral, with TMDb treated as a replaceable prototype metadata provider.
 
 ### Phase 4: Rating/Scoring Prototype
 
@@ -306,22 +309,15 @@ The next phase should be controlled and inspectable. Small, verified data steps 
 
 Recommended next concrete task:
 
-Create a TMDb field mapping plan for the current schema.
+Decide how to handle the verified local poster/backdrop URLs after the successful 5-title update.
 
-Suggested file:
+Options:
 
-```text
-docs/tmdb_field_mapping_plan.md
-```
+- persist the verified URLs into `backend/sample_data.sql` for reset-safe local development
+- keep applying them through the local update script during development
+- wait until a broader ingestion/schema plan is ready
 
-That document should decide:
-
-- which TMDb fields map to current `content` fields
-- which fields cannot be stored yet
-- whether to store full image URLs or image paths
-- how to handle genres
-- how to handle external IDs
-- what schema gaps exist before cast/crew ingestion
+Full ingestion, an `external_ids` table, person/cast/crew schema, and rating/scoring pipelines remain future work.
 
 ## 17. Final Summary
 
