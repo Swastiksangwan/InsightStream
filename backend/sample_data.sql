@@ -120,7 +120,7 @@ INSERT INTO content (
     'TV-MA'
 ),
 (
-    157339,
+    82856,
     'The Mandalorian',
     'series',
     'A lone bounty hunter travels through the outer reaches of the galaxy while protecting a mysterious child.',
@@ -323,7 +323,7 @@ SELECT
 FROM content c
 WHERE c.tmdb_id IS NOT NULL
   AND c.tmdb_id IN (
-      157336, 27205, 1396, 157339, 155,
+      157336, 27205, 1396, 82856, 155,
       496243, 693134, 346698, 569094, 512195,
       100088, 66732, 76479, 70523, 71912
   )
@@ -368,7 +368,7 @@ DELETE FROM content_genres cg
 USING content c
 WHERE cg.content_id = c.id
   AND c.tmdb_id IN (
-      157336, 27205, 1396, 157339, 155,
+      157336, 27205, 1396, 82856, 155,
       496243, 693134, 346698, 569094, 512195,
       100088, 66732, 76479, 70523, 71912
   );
@@ -388,9 +388,9 @@ FROM (
         (1396, 'Crime'),
         (1396, 'Drama'),
         (1396, 'Thriller'),
-        (157339, 'Action'),
-        (157339, 'Adventure'),
-        (157339, 'Sci-Fi'),
+        (82856, 'Action'),
+        (82856, 'Adventure'),
+        (82856, 'Sci-Fi'),
         (155, 'Action'),
         (155, 'Crime'),
         (155, 'Drama'),
@@ -445,7 +445,7 @@ DELETE FROM content_platforms cp
 USING content c
 WHERE cp.content_id = c.id
   AND c.tmdb_id IN (
-      157336, 27205, 1396, 157339, 155,
+      157336, 27205, 1396, 82856, 155,
       496243, 693134, 346698, 569094, 512195,
       100088, 66732, 76479, 70523, 71912
   );
@@ -463,7 +463,7 @@ FROM (
         (27205, 'Prime Video', 'rent'),
         (1396, 'Prime Video', 'streaming'),
         (1396, 'Netflix', 'streaming'),
-        (157339, 'Disney+ Hotstar', 'streaming'),
+        (82856, 'Disney+ Hotstar', 'streaming'),
         (155, 'Prime Video', 'rent'),
         (155, 'Apple TV+', 'buy'),
         (496243, 'Prime Video', 'rent'),
@@ -497,7 +497,7 @@ DELETE FROM ratings r
 USING content c
 WHERE r.content_id = c.id
   AND c.tmdb_id IN (
-      157336, 27205, 1396, 157339, 155,
+      157336, 27205, 1396, 82856, 155,
       496243, 693134, 346698, 569094, 512195,
       100088, 66732, 76479, 70523, 71912
   );
@@ -533,10 +533,10 @@ FROM (
         (1396, 'Rotten Tomatoes', 96.00, 100.00, 96.00, 120, 'critic'),
         (1396, 'Rotten Tomatoes', 97.00, 100.00, 97.00, 500000, 'audience'),
         (1396, 'Metacritic', 87.00, 100.00, 87.00, 30, 'critic'),
-        (157339, 'IMDb', 8.60, 10.00, 86.00, 600000, 'general'),
-        (157339, 'Rotten Tomatoes', 90.00, 100.00, 90.00, 200, 'critic'),
-        (157339, 'Rotten Tomatoes', 92.00, 100.00, 92.00, 180000, 'audience'),
-        (157339, 'Metacritic', 70.00, 100.00, 70.00, 25, 'critic'),
+        (82856, 'IMDb', 8.60, 10.00, 86.00, 600000, 'general'),
+        (82856, 'Rotten Tomatoes', 90.00, 100.00, 90.00, 200, 'critic'),
+        (82856, 'Rotten Tomatoes', 92.00, 100.00, 92.00, 180000, 'audience'),
+        (82856, 'Metacritic', 70.00, 100.00, 70.00, 25, 'critic'),
         (155, 'IMDb', 9.00, 10.00, 90.00, 2800000, 'general'),
         (155, 'Rotten Tomatoes', 94.00, 100.00, 94.00, 350, 'critic'),
         (155, 'Rotten Tomatoes', 94.00, 100.00, 94.00, 700000, 'audience'),
@@ -650,7 +650,7 @@ FROM (
             'Must Watch'
         ),
         (
-            157339,
+            82856,
             87.00,
             80.00,
             86.00,
@@ -810,7 +810,7 @@ WHERE wl.user_id = u.id
   AND wl.content_id = c.id
   AND u.email = 'test@example.com'
   AND c.tmdb_id IN (
-      157336, 27205, 1396, 157339, 155,
+      157336, 27205, 1396, 82856, 155,
       496243, 693134, 346698, 569094, 512195,
       100088, 66732, 76479, 70523, 71912
   );
@@ -821,7 +821,7 @@ WHERE w.user_id = u.id
   AND w.content_id = c.id
   AND u.email = 'test@example.com'
   AND c.tmdb_id IN (
-      157336, 27205, 1396, 157339, 155,
+      157336, 27205, 1396, 82856, 155,
       496243, 693134, 346698, 569094, 512195,
       100088, 66732, 76479, 70523, 71912
   );
@@ -844,7 +844,7 @@ SELECT
     u.id,
     c.id
 FROM users u
-JOIN content c ON c.tmdb_id IN (157339, 693134)
+JOIN content c ON c.tmdb_id IN (82856, 693134)
 WHERE u.email = 'test@example.com'
 ON CONFLICT (user_id, content_id) DO NOTHING;
 

@@ -60,7 +60,7 @@ SAMPLE_TITLES = [
     SampleTitle("Spider-Man: Across the Spider-Verse", "movie", 569094, 2023),
     SampleTitle("Red Notice", "movie", 512195, 2021),
     SampleTitle("Breaking Bad", "tv", 1396, 2008),
-    SampleTitle("The Mandalorian", "tv", 157339, 2019),
+    SampleTitle("The Mandalorian", "tv", 82856, 2019),
     SampleTitle("The Last of Us", "tv", 100088, 2023),
     SampleTitle("Stranger Things", "tv", 66732, 2016),
     SampleTitle("The Boys", "tv", 76479, 2019),
