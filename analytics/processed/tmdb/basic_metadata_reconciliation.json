@@ -1,0 +1,2267 @@
+{
+  "generated_at": "2026-06-13T14:30:18.843196+00:00",
+  "items": [
+    {
+      "content_type": "movie",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "PG-13",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Christopher Nolan"
+            ],
+            "top_cast_names": [
+              "Christian Bale",
+              "Heath Ledger",
+              "Aaron Eckhart",
+              "Michael Caine",
+              "Maggie Gyllenhaal"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "movie",
+          "note": "",
+          "provider": "movie"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt0468569",
+            "tmdb": "155"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt0468569",
+            "tmdb": "155"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Action",
+            "Crime",
+            "Drama",
+            "Thriller"
+          ],
+          "note": "Local genres are useful decision-support metadata not present in provider genres.",
+          "provider": [
+            "Action",
+            "Crime",
+            "Thriller"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "93 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "396 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 41.699
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+        },
+        "release_date": {
+          "action": "needs_manual_review",
+          "local": "2008-07-18",
+          "note": "Release dates can differ by source/region; preserve provider value for review.",
+          "provider": "2008-07-16"
+        },
+        "runtime": {
+          "action": "no_action",
+          "local": 152,
+          "note": "",
+          "provider": 152
+        },
+        "status": {
+          "action": "no_action",
+          "local": "Released",
+          "note": "Provider status normalizes to Released.",
+          "provider": "Released"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "The Dark Knight",
+          "note": "",
+          "provider": "The Dark Knight"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.5
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 35875
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2008,
+          "note": "",
+          "provider": 2008
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "normalized_status": "Released",
+      "notes": [
+        "Release date differs."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [
+        "Drama"
+      ],
+      "title": "The Dark Knight",
+      "tmdb_id": 155
+    },
+    {
+      "content_type": "series",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "TV-MA",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Vince Gilligan"
+            ],
+            "top_cast_names": [
+              "Bryan Cranston",
+              "Aaron Paul",
+              "Anna Gunn",
+              "RJ Mitte",
+              "Dean Norris"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "series",
+          "note": "",
+          "provider": "series"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt0903747",
+            "tmdb": "1396"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt0903747",
+            "tmdb": "1396"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Crime",
+            "Drama",
+            "Thriller"
+          ],
+          "note": "Local genres are useful decision-support metadata not present in provider genres.",
+          "provider": [
+            "Drama",
+            "Crime"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "103 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "312 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 158.4361
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg"
+        },
+        "release_date": {
+          "action": "no_action",
+          "local": "2008-01-20",
+          "note": "",
+          "provider": "2008-01-20"
+        },
+        "runtime": {
+          "action": "keep_local",
+          "local": 60,
+          "note": "Never replace known representative series runtime with null.",
+          "provider": null
+        },
+        "status": {
+          "action": "needs_manual_review",
+          "local": "Released",
+          "note": "Normalized provider status differs from current local display value.",
+          "provider": "Ended"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Breaking Bad",
+          "note": "",
+          "provider": "Breaking Bad"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.946
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 17901
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2008,
+          "note": "",
+          "provider": 2008
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Drama",
+        "Crime"
+      ],
+      "normalized_status": "Ended",
+      "notes": [
+        "Status differs after normalization."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [
+        "Thriller"
+      ],
+      "title": "Breaking Bad",
+      "tmdb_id": 1396
+    },
+    {
+      "content_type": "movie",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "PG-13",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Christopher Nolan"
+            ],
+            "top_cast_names": [
+              "Leonardo DiCaprio",
+              "Joseph Gordon-Levitt",
+              "Ken Watanabe",
+              "Tom Hardy",
+              "Elliot Page"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "movie",
+          "note": "",
+          "provider": "movie"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt1375666",
+            "tmdb": "27205"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt1375666",
+            "tmdb": "27205"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Action",
+            "Sci-Fi",
+            "Thriller"
+          ],
+          "note": "Provider proposes additions; local genres should be retained unless reviewed.",
+          "provider": [
+            "Action",
+            "Sci-Fi",
+            "Adventure"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "113 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "280 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 32.9299
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg"
+        },
+        "release_date": {
+          "action": "needs_manual_review",
+          "local": "2010-07-16",
+          "note": "Release dates can differ by source/region; preserve provider value for review.",
+          "provider": "2010-07-15"
+        },
+        "runtime": {
+          "action": "no_action",
+          "local": 148,
+          "note": "",
+          "provider": 148
+        },
+        "status": {
+          "action": "no_action",
+          "local": "Released",
+          "note": "Provider status normalizes to Released.",
+          "provider": "Released"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Inception",
+          "note": "",
+          "provider": "Inception"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.372
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 39341
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2010,
+          "note": "",
+          "provider": 2010
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Action",
+        "Sci-Fi",
+        "Adventure"
+      ],
+      "normalized_status": "Released",
+      "notes": [
+        "Release date differs."
+      ],
+      "proposed_genre_additions": [
+        "Adventure"
+      ],
+      "retained_local_genres": [
+        "Thriller"
+      ],
+      "title": "Inception",
+      "tmdb_id": 27205
+    },
+    {
+      "content_type": "series",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "TV-14",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/56v2KjBlU4XaOv9rVYEQypROD7P.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Ross Duffer",
+              "Matt Duffer"
+            ],
+            "top_cast_names": [
+              "Winona Ryder",
+              "David Harbour",
+              "Millie Bobby Brown",
+              "Finn Wolfhard",
+              "Gaten Matarazzo"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "series",
+          "note": "",
+          "provider": "series"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt4574334",
+            "tmdb": "66732"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt4574334",
+            "tmdb": "66732"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Drama",
+            "Fantasy",
+            "Horror",
+            "Sci-Fi"
+          ],
+          "note": "Provider proposes additions; local genres should be retained unless reviewed.",
+          "provider": [
+            "Action",
+            "Adventure",
+            "Mystery",
+            "Sci-Fi",
+            "Fantasy"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "116 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "149 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 132.5819
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg"
+        },
+        "release_date": {
+          "action": "no_action",
+          "local": "2016-07-15",
+          "note": "",
+          "provider": "2016-07-15"
+        },
+        "runtime": {
+          "action": "keep_local",
+          "local": 50,
+          "note": "Never replace known representative series runtime with null.",
+          "provider": null
+        },
+        "status": {
+          "action": "needs_manual_review",
+          "local": "Released",
+          "note": "Normalized provider status differs from current local display value.",
+          "provider": "Ended"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Stranger Things",
+          "note": "",
+          "provider": "Stranger Things"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.564
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 21278
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2016,
+          "note": "",
+          "provider": 2016
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Action",
+        "Adventure",
+        "Mystery",
+        "Sci-Fi",
+        "Fantasy"
+      ],
+      "normalized_status": "Ended",
+      "notes": [
+        "Status differs after normalization."
+      ],
+      "proposed_genre_additions": [
+        "Action",
+        "Adventure",
+        "Mystery"
+      ],
+      "retained_local_genres": [
+        "Drama",
+        "Horror"
+      ],
+      "title": "Stranger Things",
+      "tmdb_id": 66732
+    },
+    {
+      "content_type": "series",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "TV-MA",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/3jDXL4Xvj3AzDOF6UH1xeyHW8MH.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/3jDXL4Xvj3AzDOF6UH1xeyHW8MH.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Baran bo Odar",
+              "Jantje Friese"
+            ],
+            "top_cast_names": [
+              "Louis Hofmann"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "series",
+          "note": "",
+          "provider": "series"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt5753856",
+            "tmdb": "70523"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt5753856",
+            "tmdb": "70523"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Crime",
+            "Drama",
+            "Mystery",
+            "Sci-Fi",
+            "Thriller"
+          ],
+          "note": "Provider proposes additions; local genres should be retained unless reviewed.",
+          "provider": [
+            "Crime",
+            "Drama",
+            "Sci-Fi",
+            "Fantasy",
+            "Mystery"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "German",
+          "note": "Provider code normalizes to German.",
+          "provider": "de"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "109 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "133 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 41.9549
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/1DLjjvSWMYo17B7wuz6YikB96hH.jpg"
+        },
+        "release_date": {
+          "action": "no_action",
+          "local": "2017-12-01",
+          "note": "",
+          "provider": "2017-12-01"
+        },
+        "runtime": {
+          "action": "keep_local",
+          "local": 53,
+          "note": "Never replace known representative series runtime with null.",
+          "provider": null
+        },
+        "status": {
+          "action": "needs_manual_review",
+          "local": "Released",
+          "note": "Normalized provider status differs from current local display value.",
+          "provider": "Ended"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Dark",
+          "note": "",
+          "provider": "Dark"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.424
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 7588
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2017,
+          "note": "",
+          "provider": 2017
+        }
+      },
+      "normalized_language": "German",
+      "normalized_provider_genres": [
+        "Crime",
+        "Drama",
+        "Sci-Fi",
+        "Fantasy",
+        "Mystery"
+      ],
+      "normalized_status": "Ended",
+      "notes": [
+        "Status differs after normalization."
+      ],
+      "proposed_genre_additions": [
+        "Fantasy"
+      ],
+      "retained_local_genres": [
+        "Thriller"
+      ],
+      "title": "Dark",
+      "tmdb_id": 70523
+    },
+    {
+      "content_type": "series",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "TV-MA",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/foGkPxpw9h8zln81j63mix5B7m8.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/foGkPxpw9h8zln81j63mix5B7m8.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Lauren Schmidt Hissrich"
+            ],
+            "top_cast_names": [
+              "Liam Hemsworth",
+              "Anya Chalotra",
+              "Freya Allan",
+              "Joey Batey",
+              "Eamon Farren"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "series",
+          "note": "",
+          "provider": "series"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt5180504",
+            "tmdb": "71912"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt5180504",
+            "tmdb": "71912"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Action",
+            "Adventure",
+            "Drama",
+            "Fantasy"
+          ],
+          "note": "Local genres are useful decision-support metadata not present in provider genres.",
+          "provider": [
+            "Drama",
+            "Action",
+            "Adventure"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "108 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "150 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 47.1923
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg"
+        },
+        "release_date": {
+          "action": "no_action",
+          "local": "2019-12-20",
+          "note": "",
+          "provider": "2019-12-20"
+        },
+        "runtime": {
+          "action": "keep_local",
+          "local": 60,
+          "note": "Never replace known representative series runtime with null.",
+          "provider": null
+        },
+        "status": {
+          "action": "needs_manual_review",
+          "local": "Released",
+          "note": "Normalized provider status differs from current local display value.",
+          "provider": "Ongoing"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "The Witcher",
+          "note": "",
+          "provider": "The Witcher"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 7.915
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 6703
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2019,
+          "note": "",
+          "provider": 2019
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Drama",
+        "Action",
+        "Adventure"
+      ],
+      "normalized_status": "Ongoing",
+      "notes": [
+        "Status differs after normalization."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [
+        "Fantasy"
+      ],
+      "title": "The Witcher",
+      "tmdb_id": 71912
+    },
+    {
+      "content_type": "series",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "TV-MA",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/bq28ajZaoMyzEIm6REelqyqtEDZ.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/bq28ajZaoMyzEIm6REelqyqtEDZ.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Eric Kripke"
+            ],
+            "top_cast_names": [
+              "Karl Urban",
+              "Jack Quaid",
+              "Antony Starr",
+              "Erin Moriarty",
+              "Laz Alonso"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "series",
+          "note": "",
+          "provider": "series"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt1190634",
+            "tmdb": "76479"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt1190634",
+            "tmdb": "76479"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Action",
+            "Comedy",
+            "Crime",
+            "Drama"
+          ],
+          "note": "Provider proposes additions; local genres should be retained unless reviewed.",
+          "provider": [
+            "Sci-Fi",
+            "Fantasy",
+            "Action",
+            "Adventure"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "106 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "162 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 342.517
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/in1R2dDc421JxsoRWaIIAqVI2KE.jpg"
+        },
+        "release_date": {
+          "action": "needs_manual_review",
+          "local": "2019-07-26",
+          "note": "Release dates can differ by source/region; preserve provider value for review.",
+          "provider": "2019-07-25"
+        },
+        "runtime": {
+          "action": "keep_local",
+          "local": 60,
+          "note": "Never replace known representative series runtime with null.",
+          "provider": null
+        },
+        "status": {
+          "action": "needs_manual_review",
+          "local": "Released",
+          "note": "Normalized provider status differs from current local display value.",
+          "provider": "Ended"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "The Boys",
+          "note": "",
+          "provider": "The Boys"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.453
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 12894
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2019,
+          "note": "",
+          "provider": 2019
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Sci-Fi",
+        "Fantasy",
+        "Action",
+        "Adventure"
+      ],
+      "normalized_status": "Ended",
+      "notes": [
+        "Release date differs.",
+        "Status differs after normalization."
+      ],
+      "proposed_genre_additions": [
+        "Adventure",
+        "Fantasy",
+        "Sci-Fi"
+      ],
+      "retained_local_genres": [
+        "Comedy",
+        "Crime",
+        "Drama"
+      ],
+      "title": "The Boys",
+      "tmdb_id": 76479
+    },
+    {
+      "content_type": "series",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "TV-14",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/9zcbqSxdsRMZWHYtyCd1nXPr2xq.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/9zcbqSxdsRMZWHYtyCd1nXPr2xq.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Jon Favreau"
+            ],
+            "top_cast_names": [
+              "Pedro Pascal",
+              "Katee Sackhoff"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "series",
+          "note": "",
+          "provider": "series"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt8111088",
+            "tmdb": "82856"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt8111088",
+            "tmdb": "82856"
+          }
+        },
+        "genres": {
+          "action": "add_provider_value",
+          "local": [
+            "Action",
+            "Adventure",
+            "Sci-Fi"
+          ],
+          "note": "Provider has normalized genres missing locally; propose additions.",
+          "provider": [
+            "Sci-Fi",
+            "Fantasy",
+            "Action",
+            "Adventure"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "105 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "180 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 71.3149
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg"
+        },
+        "release_date": {
+          "action": "no_action",
+          "local": "2019-11-12",
+          "note": "",
+          "provider": "2019-11-12"
+        },
+        "runtime": {
+          "action": "keep_local",
+          "local": 50,
+          "note": "Never replace known representative series runtime with null.",
+          "provider": null
+        },
+        "status": {
+          "action": "needs_manual_review",
+          "local": "Released",
+          "note": "Normalized provider status differs from current local display value.",
+          "provider": "Ended"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "The Mandalorian",
+          "note": "",
+          "provider": "The Mandalorian"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.41
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 10968
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2019,
+          "note": "",
+          "provider": 2019
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Sci-Fi",
+        "Fantasy",
+        "Action",
+        "Adventure"
+      ],
+      "normalized_status": "Ended",
+      "notes": [
+        "Status differs after normalization."
+      ],
+      "proposed_genre_additions": [
+        "Fantasy"
+      ],
+      "retained_local_genres": [],
+      "title": "The Mandalorian",
+      "tmdb_id": 82856
+    },
+    {
+      "content_type": "series",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "TV-MA",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/acevLdSl5I2MK5RYAm7gwAndt1w.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/acevLdSl5I2MK5RYAm7gwAndt1w.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Neil Druckmann",
+              "Craig Mazin"
+            ],
+            "top_cast_names": [
+              "Bella Ramsey",
+              "Gabriel Luna",
+              "Isabela Merced",
+              "Young Mazino"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "series",
+          "note": "",
+          "provider": "series"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt3581920",
+            "tmdb": "100088"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt3581920",
+            "tmdb": "100088"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Drama",
+            "Horror",
+            "Thriller"
+          ],
+          "note": "Local genres are useful decision-support metadata not present in provider genres.",
+          "provider": [
+            "Drama"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "97 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "327 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 43.4921
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg"
+        },
+        "release_date": {
+          "action": "no_action",
+          "local": "2023-01-15",
+          "note": "",
+          "provider": "2023-01-15"
+        },
+        "runtime": {
+          "action": "keep_local",
+          "local": 55,
+          "note": "Never replace known representative series runtime with null.",
+          "provider": null
+        },
+        "status": {
+          "action": "needs_manual_review",
+          "local": "Released",
+          "note": "Normalized provider status differs from current local display value.",
+          "provider": "Ongoing"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "The Last of Us",
+          "note": "",
+          "provider": "The Last of Us"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.428
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 7045
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2023,
+          "note": "",
+          "provider": 2023
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Drama"
+      ],
+      "normalized_status": "Ongoing",
+      "notes": [
+        "Status differs after normalization."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "title": "The Last of Us",
+      "tmdb_id": 100088
+    },
+    {
+      "content_type": "movie",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "PG-13",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/2ssWTSVklAEc98frZUQhgtGHx7s.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/2ssWTSVklAEc98frZUQhgtGHx7s.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Christopher Nolan"
+            ],
+            "top_cast_names": [
+              "Matthew McConaughey",
+              "Anne Hathaway",
+              "Michael Caine",
+              "Jessica Chastain",
+              "Casey Affleck"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "movie",
+          "note": "",
+          "provider": "movie"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt0816692",
+            "tmdb": "157336"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt0816692",
+            "tmdb": "157336"
+          }
+        },
+        "genres": {
+          "action": "no_action",
+          "local": [
+            "Adventure",
+            "Drama",
+            "Sci-Fi"
+          ],
+          "note": "Normalized provider genres match local genres.",
+          "provider": [
+            "Adventure",
+            "Drama",
+            "Sci-Fi"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "99 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "198 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 67.4273
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg"
+        },
+        "release_date": {
+          "action": "needs_manual_review",
+          "local": "2014-11-07",
+          "note": "Release dates can differ by source/region; preserve provider value for review.",
+          "provider": "2014-11-05"
+        },
+        "runtime": {
+          "action": "no_action",
+          "local": 169,
+          "note": "",
+          "provider": 169
+        },
+        "status": {
+          "action": "no_action",
+          "local": "Released",
+          "note": "Provider status normalizes to Released.",
+          "provider": "Released"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Interstellar",
+          "note": "",
+          "provider": "Interstellar"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.478
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 39976
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2014,
+          "note": "",
+          "provider": 2014
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Adventure",
+        "Drama",
+        "Sci-Fi"
+      ],
+      "normalized_status": "Released",
+      "notes": [
+        "Release date differs."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [],
+      "title": "Interstellar",
+      "tmdb_id": 157336
+    },
+    {
+      "content_type": "movie",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "PG-13",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/3N5QNUqS76GFYNoEayfkkJyAyTN.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/3N5QNUqS76GFYNoEayfkkJyAyTN.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Greta Gerwig"
+            ],
+            "top_cast_names": [
+              "Margot Robbie",
+              "Ryan Gosling",
+              "America Ferrera",
+              "Ariana Greenblatt",
+              "Issa Rae"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "movie",
+          "note": "",
+          "provider": "movie"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt1517268",
+            "tmdb": "346698"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt1517268",
+            "tmdb": "346698"
+          }
+        },
+        "genres": {
+          "action": "no_action",
+          "local": [
+            "Adventure",
+            "Comedy",
+            "Fantasy"
+          ],
+          "note": "Normalized provider genres match local genres.",
+          "provider": [
+            "Comedy",
+            "Adventure",
+            "Fantasy"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "104 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "229 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 20.6207
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg"
+        },
+        "release_date": {
+          "action": "needs_manual_review",
+          "local": "2023-07-21",
+          "note": "Release dates can differ by source/region; preserve provider value for review.",
+          "provider": "2023-07-19"
+        },
+        "runtime": {
+          "action": "no_action",
+          "local": 114,
+          "note": "",
+          "provider": 114
+        },
+        "status": {
+          "action": "no_action",
+          "local": "Released",
+          "note": "Provider status normalizes to Released.",
+          "provider": "Released"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Barbie",
+          "note": "",
+          "provider": "Barbie"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 6.922
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 11136
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2023,
+          "note": "",
+          "provider": 2023
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Comedy",
+        "Adventure",
+        "Fantasy"
+      ],
+      "normalized_status": "Released",
+      "notes": [
+        "Release date differs."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [],
+      "title": "Barbie",
+      "tmdb_id": 346698
+    },
+    {
+      "content_type": "movie",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "R",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/8eihUxjQsJ7WvGySkVMC0EwbPAD.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/8eihUxjQsJ7WvGySkVMC0EwbPAD.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Bong Joon Ho"
+            ],
+            "top_cast_names": [
+              "Song Kang-ho",
+              "Lee Sun-kyun",
+              "Cho Yeo-jeong",
+              "Choi Woo-shik",
+              "Park So-dam"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "movie",
+          "note": "",
+          "provider": "movie"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt6751668",
+            "tmdb": "496243"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt6751668",
+            "tmdb": "496243"
+          }
+        },
+        "genres": {
+          "action": "no_action",
+          "local": [
+            "Comedy",
+            "Drama",
+            "Thriller"
+          ],
+          "note": "Normalized provider genres match local genres.",
+          "provider": [
+            "Comedy",
+            "Thriller",
+            "Drama"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "Korean",
+          "note": "Provider code normalizes to Korean.",
+          "provider": "ko"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "103 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "164 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 36.4975
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg"
+        },
+        "release_date": {
+          "action": "no_action",
+          "local": "2019-05-30",
+          "note": "",
+          "provider": "2019-05-30"
+        },
+        "runtime": {
+          "action": "needs_manual_review",
+          "local": 132,
+          "note": "Movie runtime differs by 1 minute(s); preserve provider value for review.",
+          "provider": 133
+        },
+        "status": {
+          "action": "no_action",
+          "local": "Released",
+          "note": "Provider status normalizes to Released.",
+          "provider": "Released"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Parasite",
+          "note": "",
+          "provider": "Parasite"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.494
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 20706
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2019,
+          "note": "",
+          "provider": 2019
+        }
+      },
+      "normalized_language": "Korean",
+      "normalized_provider_genres": [
+        "Comedy",
+        "Thriller",
+        "Drama"
+      ],
+      "normalized_status": "Released",
+      "notes": [
+        "Runtime differs."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [],
+      "title": "Parasite",
+      "tmdb_id": 496243
+    },
+    {
+      "content_type": "movie",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "PG-13",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/p34WRcgkN2QIHcds5FtFiSpV3PC.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/p34WRcgkN2QIHcds5FtFiSpV3PC.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Rawson Marshall Thurber"
+            ],
+            "top_cast_names": [
+              "Dwayne Johnson",
+              "Ryan Reynolds",
+              "Gal Gadot",
+              "Ritu Arya",
+              "Chris Diamantopoulos"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "movie",
+          "note": "",
+          "provider": "movie"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt7991608",
+            "tmdb": "512195"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt7991608",
+            "tmdb": "512195"
+          }
+        },
+        "genres": {
+          "action": "no_action",
+          "local": [
+            "Action",
+            "Comedy",
+            "Crime"
+          ],
+          "note": "Normalized provider genres match local genres.",
+          "provider": [
+            "Action",
+            "Comedy",
+            "Crime"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "100 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "217 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 7.4526
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/lAXONuqg41NwUMuzMiFvicDET9Y.jpg"
+        },
+        "release_date": {
+          "action": "needs_manual_review",
+          "local": "2021-11-12",
+          "note": "Release dates can differ by source/region; preserve provider value for review.",
+          "provider": "2021-11-04"
+        },
+        "runtime": {
+          "action": "no_action",
+          "local": 118,
+          "note": "",
+          "provider": 118
+        },
+        "status": {
+          "action": "no_action",
+          "local": "Released",
+          "note": "Provider status normalizes to Released.",
+          "provider": "Released"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Red Notice",
+          "note": "",
+          "provider": "Red Notice"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 6.731
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 6453
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2021,
+          "note": "",
+          "provider": 2021
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Action",
+        "Comedy",
+        "Crime"
+      ],
+      "normalized_status": "Released",
+      "notes": [
+        "Release date differs."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [],
+      "title": "Red Notice",
+      "tmdb_id": 512195
+    },
+    {
+      "content_type": "movie",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "PG",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/9xfDWXAUbFXQK585JvByT5pEAhe.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/9xfDWXAUbFXQK585JvByT5pEAhe.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Justin K. Thompson",
+              "Kemp Powers",
+              "Joaquim Dos Santos"
+            ],
+            "top_cast_names": [
+              "Shameik Moore",
+              "Hailee Steinfeld",
+              "Brian Tyree Henry",
+              "Luna Lauren Vélez",
+              "Jake Johnson"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "movie",
+          "note": "",
+          "provider": "movie"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt9362722",
+            "tmdb": "569094"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt9362722",
+            "tmdb": "569094"
+          }
+        },
+        "genres": {
+          "action": "no_action",
+          "local": [
+            "Action",
+            "Adventure",
+            "Animation",
+            "Sci-Fi"
+          ],
+          "note": "Normalized provider genres match local genres.",
+          "provider": [
+            "Animation",
+            "Action",
+            "Adventure",
+            "Sci-Fi"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "104 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "412 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 30.1341
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg"
+        },
+        "release_date": {
+          "action": "needs_manual_review",
+          "local": "2023-06-02",
+          "note": "Release dates can differ by source/region; preserve provider value for review.",
+          "provider": "2023-05-31"
+        },
+        "runtime": {
+          "action": "no_action",
+          "local": 140,
+          "note": "",
+          "provider": 140
+        },
+        "status": {
+          "action": "no_action",
+          "local": "Released",
+          "note": "Provider status normalizes to Released.",
+          "provider": "Released"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Spider-Man: Across the Spider-Verse",
+          "note": "",
+          "provider": "Spider-Man: Across the Spider-Verse"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.337
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8654
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2023,
+          "note": "",
+          "provider": 2023
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Animation",
+        "Action",
+        "Adventure",
+        "Sci-Fi"
+      ],
+      "normalized_status": "Released",
+      "notes": [
+        "Release date differs."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [],
+      "title": "Spider-Man: Across the Spider-Verse",
+      "tmdb_id": 569094
+    },
+    {
+      "content_type": "movie",
+      "field_actions": {
+        "age_rating": {
+          "action": "keep_local",
+          "local": "PG-13",
+          "note": "TMDb preview does not provide the local age_rating field; future certification source needed.",
+          "provider": null
+        },
+        "backdrop_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg"
+        },
+        "cast_crew": {
+          "action": "needs_future_schema",
+          "local": null,
+          "note": "Useful metadata exists but requires person/role schema before import/display.",
+          "provider": {
+            "director_or_creator_names": [
+              "Denis Villeneuve"
+            ],
+            "top_cast_names": [
+              "Timothée Chalamet",
+              "Zendaya",
+              "Rebecca Ferguson",
+              "Javier Bardem",
+              "Josh Brolin"
+            ]
+          }
+        },
+        "content_type": {
+          "action": "no_action",
+          "local": "movie",
+          "note": "",
+          "provider": "movie"
+        },
+        "external_ids": {
+          "action": "no_action",
+          "local": {
+            "imdb": "tt15239678",
+            "tmdb": "693134"
+          },
+          "note": "Expected TMDb and IMDb external IDs are available.",
+          "provider": {
+            "imdb": "tt15239678",
+            "tmdb": "693134"
+          }
+        },
+        "genres": {
+          "action": "keep_local_and_preserve_provider",
+          "local": [
+            "Adventure",
+            "Drama",
+            "Sci-Fi"
+          ],
+          "note": "Local genres are useful decision-support metadata not present in provider genres.",
+          "provider": [
+            "Sci-Fi",
+            "Adventure"
+          ]
+        },
+        "language": {
+          "action": "no_action",
+          "local": "English",
+          "note": "Provider code normalizes to English.",
+          "provider": "en"
+        },
+        "overview": {
+          "action": "keep_local_and_preserve_provider",
+          "local": "103 chars",
+          "note": "Keep curated overview for display; preserve provider overview for future review.",
+          "provider": "305 chars"
+        },
+        "popularity": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 23.0595
+        },
+        "poster_url": {
+          "action": "no_action",
+          "local": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+          "note": "",
+          "provider": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg"
+        },
+        "release_date": {
+          "action": "needs_manual_review",
+          "local": "2024-03-01",
+          "note": "Release dates can differ by source/region; preserve provider value for review.",
+          "provider": "2024-02-27"
+        },
+        "runtime": {
+          "action": "needs_manual_review",
+          "local": 166,
+          "note": "Movie runtime differs by 1 minute(s); preserve provider value for review.",
+          "provider": 167
+        },
+        "status": {
+          "action": "no_action",
+          "local": "Released",
+          "note": "Provider status normalizes to Released.",
+          "provider": "Released"
+        },
+        "title": {
+          "action": "no_action",
+          "local": "Dune: Part Two",
+          "note": "",
+          "provider": "Dune: Part Two"
+        },
+        "vote_average": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8.128
+        },
+        "vote_count": {
+          "action": "provider_signal_only",
+          "local": null,
+          "note": "Provider-specific analytics signal; do not write into content_summary or ratings directly.",
+          "provider": 8019
+        },
+        "year": {
+          "action": "no_action",
+          "local": 2024,
+          "note": "",
+          "provider": 2024
+        }
+      },
+      "normalized_language": "English",
+      "normalized_provider_genres": [
+        "Sci-Fi",
+        "Adventure"
+      ],
+      "normalized_status": "Released",
+      "notes": [
+        "Release date differs.",
+        "Runtime differs."
+      ],
+      "proposed_genre_additions": [],
+      "retained_local_genres": [
+        "Drama"
+      ],
+      "title": "Dune: Part Two",
+      "tmdb_id": 693134
+    }
+  ],
+  "matched_titles": 15,
+  "policy_reference_path": "docs/metadata_normalization_plan.md",
+  "source_preview_path": "analytics/processed/tmdb/sample_mapping_preview.json",
+  "source_seed_path": "backend/sample_data.sql",
+  "total_titles": 15,
+  "warnings": [
+    "The Dark Knight: Release date differs.",
+    "Breaking Bad: Status differs after normalization.",
+    "Inception: Release date differs.",
+    "Stranger Things: Status differs after normalization.",
+    "Dark: Status differs after normalization.",
+    "The Witcher: Status differs after normalization.",
+    "The Boys: Release date differs.",
+    "The Boys: Status differs after normalization.",
+    "The Mandalorian: Status differs after normalization.",
+    "The Last of Us: Status differs after normalization.",
+    "Interstellar: Release date differs.",
+    "Barbie: Release date differs.",
+    "Parasite: Runtime differs.",
+    "Red Notice: Release date differs.",
+    "Spider-Man: Across the Spider-Verse: Release date differs.",
+    "Dune: Part Two: Release date differs.",
+    "Dune: Part Two: Runtime differs."
+  ]
+}
