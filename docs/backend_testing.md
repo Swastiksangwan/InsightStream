@@ -28,7 +28,7 @@ Covered areas:
 - watch later/watched non-overlap for seeded user
 - external IDs seed verification
 - TMDb external ID coverage for seeded content
-- verified IMDb IDs for tested TMDb preview titles
+- verified IMDb IDs for all seeded titles
 - duplicate external ID checks
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
@@ -49,8 +49,8 @@ Expected current seed state:
 - test user: `test@example.com`
 - watched: Interstellar, Inception
 - watch later: The Mandalorian, Dune: Part Two
-- external IDs: 15 `tmdb` rows and 5 verified `imdb` rows
-- verified IMDb IDs for Interstellar, Inception, Breaking Bad, The Dark Knight, and Dune: Part Two
+- external IDs: 15 `tmdb` rows and 15 verified `imdb` rows
+- verified IMDb IDs for all 15 seeded titles
 
 If the database is stale, missing seed data, or still has duplicate old seed rows, tests may fail. Reset the local database and rerun the setup SQL files before debugging the tests themselves.
 
@@ -73,7 +73,7 @@ pytest
 Expected current result:
 
 ```text
-22 passed
+23 passed
 ```
 
 ## 5. Test File Overview

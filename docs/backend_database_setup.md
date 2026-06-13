@@ -283,34 +283,29 @@ ORDER BY source_name;
 
 Expected current result:
 
-- `imdb`: 5
+- `imdb`: 15
 - `tmdb`: 15
 
-### Verify Tested Title External IDs
+### Verify Seeded Title External IDs
 
 ```sql
 SELECT
     c.title,
+    c.tmdb_id,
     ei.source_name,
     ei.external_id
 FROM content c
 JOIN external_ids ei
     ON ei.content_id = c.id
-WHERE c.title IN (
-    'Interstellar',
-    'Inception',
-    'Breaking Bad',
-    'The Dark Knight',
-    'Dune: Part Two'
-)
 ORDER BY c.title, ei.source_name;
 ```
 
-Expected rows include TMDb IDs for each title and these verified IMDb IDs:
+Expected rows include TMDb and verified IMDb IDs for all 15 seeded titles, including:
 
 - Interstellar: `tt0816692`
 - Inception: `tt1375666`
 - Breaking Bad: `tt0903747`
+- The Mandalorian: `82856` and `tt8111088`
 - The Dark Knight: `tt0468569`
 - Dune: Part Two: `tt15239678`
 
