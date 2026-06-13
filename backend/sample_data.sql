@@ -116,7 +116,7 @@ INSERT INTO content (
     2008,
     60,
     'English',
-    'Released',
+    'Ended',
     'TV-MA'
 ),
 (
@@ -130,7 +130,7 @@ INSERT INTO content (
     2019,
     50,
     'English',
-    'Released',
+    'Ended',
     'TV-14'
 ),
 (
@@ -228,7 +228,7 @@ INSERT INTO content (
     2023,
     55,
     'English',
-    'Released',
+    'Ongoing',
     'TV-MA'
 ),
 (
@@ -242,7 +242,7 @@ INSERT INTO content (
     2016,
     50,
     'English',
-    'Released',
+    'Ended',
     'TV-14'
 ),
 (
@@ -256,7 +256,7 @@ INSERT INTO content (
     2019,
     60,
     'English',
-    'Released',
+    'Ended',
     'TV-MA'
 ),
 (
@@ -270,7 +270,7 @@ INSERT INTO content (
     2017,
     53,
     'German',
-    'Released',
+    'Ended',
     'TV-MA'
 ),
 (
@@ -284,7 +284,7 @@ INSERT INTO content (
     2019,
     60,
     'English',
-    'Released',
+    'Ongoing',
     'TV-MA'
 )
 ON CONFLICT (tmdb_id) DO UPDATE
@@ -393,6 +393,7 @@ FROM (
         (157336, 'Drama'),
         (157336, 'Sci-Fi'),
         (27205, 'Action'),
+        (27205, 'Adventure'),
         (27205, 'Sci-Fi'),
         (27205, 'Thriller'),
         (1396, 'Crime'),
@@ -400,6 +401,7 @@ FROM (
         (1396, 'Thriller'),
         (82856, 'Action'),
         (82856, 'Adventure'),
+        (82856, 'Fantasy'),
         (82856, 'Sci-Fi'),
         (155, 'Action'),
         (155, 'Crime'),
@@ -425,15 +427,22 @@ FROM (
         (100088, 'Horror'),
         (100088, 'Thriller'),
         (66732, 'Drama'),
+        (66732, 'Action'),
+        (66732, 'Adventure'),
         (66732, 'Fantasy'),
         (66732, 'Horror'),
+        (66732, 'Mystery'),
         (66732, 'Sci-Fi'),
         (76479, 'Action'),
+        (76479, 'Adventure'),
         (76479, 'Comedy'),
         (76479, 'Crime'),
         (76479, 'Drama'),
+        (76479, 'Fantasy'),
+        (76479, 'Sci-Fi'),
         (70523, 'Crime'),
         (70523, 'Drama'),
+        (70523, 'Fantasy'),
         (70523, 'Mystery'),
         (70523, 'Sci-Fi'),
         (70523, 'Thriller'),
