@@ -28,6 +28,39 @@ ON content (LOWER(title));
 
 
 -- ------------------------------------------------------------
+-- People and credits indexes
+-- ------------------------------------------------------------
+
+-- Speeds up person name lookup and future person search.
+CREATE INDEX IF NOT EXISTS idx_people_name
+ON people (name);
+
+-- Speeds up filtering people by known department if needed later.
+CREATE INDEX IF NOT EXISTS idx_people_known_for_department
+ON people (known_for_department);
+
+-- Speeds up joining person external IDs back to people.
+CREATE INDEX IF NOT EXISTS idx_person_external_ids_person_id
+ON person_external_ids (person_id);
+
+-- Speeds up fetching credits for a content detail page.
+CREATE INDEX IF NOT EXISTS idx_content_people_content_id
+ON content_people (content_id);
+
+-- Speeds up fetching a person's credits later.
+CREATE INDEX IF NOT EXISTS idx_content_people_person_id
+ON content_people (person_id);
+
+-- Speeds up role-based credit filtering.
+CREATE INDEX IF NOT EXISTS idx_content_people_role_type
+ON content_people (role_type);
+
+-- Speeds up ordered cast/director/creator retrieval for one title.
+CREATE INDEX IF NOT EXISTS idx_content_people_content_role_order
+ON content_people (content_id, role_type, display_order);
+
+
+-- ------------------------------------------------------------
 -- Content summary indexes
 -- ------------------------------------------------------------
 

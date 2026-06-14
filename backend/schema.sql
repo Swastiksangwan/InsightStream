@@ -36,6 +36,43 @@ CREATE TABLE IF NOT EXISTS external_ids (
     CONSTRAINT uq_external_ids_source_external_id UNIQUE (source_name, external_id)
 );
 
+CREATE TABLE IF NOT EXISTS people (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    profile_url TEXT,
+    known_for_department VARCHAR(100),
+    biography TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS person_external_ids (
+    id SERIAL PRIMARY KEY,
+    person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
+    source_name VARCHAR(50) NOT NULL,
+    external_id VARCHAR(255) NOT NULL,
+    source_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_person_external_ids_person_source UNIQUE (person_id, source_name),
+    CONSTRAINT uq_person_external_ids_source_external_id UNIQUE (source_name, external_id)
+);
+
+CREATE TABLE IF NOT EXISTS content_people (
+    id SERIAL PRIMARY KEY,
+    content_id INTEGER NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+    person_id INTEGER NOT NULL REFERENCES people(id) ON DELETE CASCADE,
+    role_type VARCHAR(30) NOT NULL CHECK (role_type IN ('cast', 'director', 'creator', 'crew')),
+    character_name VARCHAR(255),
+    job VARCHAR(150),
+    department VARCHAR(150),
+    display_order INTEGER,
+    source_name VARCHAR(50),
+    source_credit_id VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE genres (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL

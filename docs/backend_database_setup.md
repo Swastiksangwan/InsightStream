@@ -140,6 +140,8 @@ Use this when you want a completely clean local database structure.
 DROP TABLE IF EXISTS
     watch_later,
     watched,
+    content_people,
+    person_external_ids,
     content_summary,
     ratings,
     external_ids,
@@ -147,6 +149,7 @@ DROP TABLE IF EXISTS
     content_genres,
     platforms,
     genres,
+    people,
     content,
     users
 CASCADE;
@@ -166,6 +169,8 @@ Use this when the tables already exist and you want to clear local data while ke
 TRUNCATE TABLE
     watch_later,
     watched,
+    content_people,
+    person_external_ids,
     content_summary,
     ratings,
     external_ids,
@@ -173,6 +178,7 @@ TRUNCATE TABLE
     content_genres,
     platforms,
     genres,
+    people,
     content,
     users
 RESTART IDENTITY CASCADE;
@@ -206,8 +212,11 @@ Expected core tables:
 - `content_summary`
 - `external_ids`
 - `genres`
+- `people`
+- `person_external_ids`
 - `platforms`
 - `ratings`
+- `content_people`
 - `users`
 - `watch_later`
 - `watched`
@@ -220,6 +229,12 @@ UNION ALL
 SELECT 'content', COUNT(*) FROM content
 UNION ALL
 SELECT 'external_ids', COUNT(*) FROM external_ids
+UNION ALL
+SELECT 'people', COUNT(*) FROM people
+UNION ALL
+SELECT 'person_external_ids', COUNT(*) FROM person_external_ids
+UNION ALL
+SELECT 'content_people', COUNT(*) FROM content_people
 UNION ALL
 SELECT 'genres', COUNT(*) FROM genres
 UNION ALL
@@ -237,6 +252,40 @@ SELECT 'watch_later', COUNT(*) FROM watch_later
 UNION ALL
 SELECT 'watched', COUNT(*) FROM watched;
 ```
+
+The person/cast/crew tables are schema-only for now. Expected counts after the current setup are:
+
+- `people`: 0
+- `person_external_ids`: 0
+- `content_people`: 0
+
+Actual people, cast, crew, director, and creator rows will be added later through a structured credits preview/import task.
+
+### Verify Person/Cast/Crew Tables
+
+```sql
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+  AND table_name IN ('people', 'person_external_ids', 'content_people')
+ORDER BY table_name;
+```
+
+Expected current result:
+
+- `content_people`
+- `people`
+- `person_external_ids`
+
+```sql
+SELECT 'people' AS table_name, COUNT(*) FROM people
+UNION ALL
+SELECT 'person_external_ids', COUNT(*) FROM person_external_ids
+UNION ALL
+SELECT 'content_people', COUNT(*) FROM content_people;
+```
+
+Expected current result: all counts can be `0`.
 
 ### Inspect Content Rows
 
@@ -348,6 +397,13 @@ Useful indexes to confirm include:
 - `idx_content_release_date`
 - `idx_content_title_lower`
 - `idx_content_type_release_date`
+- `idx_people_name`
+- `idx_people_known_for_department`
+- `idx_person_external_ids_person_id`
+- `idx_content_people_content_id`
+- `idx_content_people_person_id`
+- `idx_content_people_role_type`
+- `idx_content_people_content_role_order`
 - `idx_content_summary_unified_score`
 - `idx_genres_name_lower`
 - `idx_platforms_name_lower`

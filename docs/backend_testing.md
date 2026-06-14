@@ -30,6 +30,9 @@ Covered areas:
 - TMDb external ID coverage for seeded content
 - verified IMDb IDs for all seeded titles
 - duplicate external ID checks
+- people/cast/crew schema table verification
+- person external ID unique constraint verification
+- content-person role type constraint verification
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
 
@@ -51,6 +54,7 @@ Expected current seed state:
 - watch later: The Mandalorian, Dune: Part Two
 - external IDs: 15 `tmdb` rows and 15 verified `imdb` rows
 - verified IMDb IDs for all 15 seeded titles
+- people/cast/crew schema tables exist with 0 seeded rows until a later import task
 
 If the database is stale, missing seed data, or still has duplicate old seed rows, tests may fail. Reset the local database and rerun the setup SQL files before debugging the tests themselves.
 
@@ -73,7 +77,7 @@ pytest
 Expected current result:
 
 ```text
-23 passed
+27 passed
 ```
 
 ## 5. Test File Overview
@@ -84,6 +88,7 @@ Expected current result:
 - `backend/tests/test_metadata_endpoints.py` — genre and platform metadata endpoints
 - `backend/tests/test_user_content_read_endpoints.py` — watched/watch-later read endpoints for the seeded user
 - `backend/tests/test_external_ids_seed.py` — read-only external ID seed verification
+- `backend/tests/test_people_schema.py` — read-only people/cast/crew schema verification
 
 ## 6. Important Bug Caught by Tests
 
