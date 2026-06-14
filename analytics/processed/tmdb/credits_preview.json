@@ -1,0 +1,1378 @@
+{
+  "generated_at": "2026-06-14T16:03:59.967409+00:00",
+  "inspection_only": true,
+  "source_provider": "tmdb",
+  "source_preview_path": "analytics/processed/tmdb/sample_mapping_preview.json",
+  "total_titles": 15,
+  "summary": {
+    "total_titles": 15,
+    "total_cast_people": 67,
+    "total_directors": 10,
+    "total_creators": 10,
+    "titles_with_missing_cast": [],
+    "titles_with_missing_director_or_creator": [],
+    "total_warnings": 0,
+    "titles_with_warnings": []
+  },
+  "items": [
+    {
+      "tmdb_id": 157336,
+      "content_type": "movie",
+      "media_type": "movie",
+      "title": "Interstellar",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "10297",
+            "source_credit_id": "52fe4bbf9251416c910e47cb",
+            "name": "Matthew McConaughey",
+            "character_name": "Cooper",
+            "known_for_department": "Acting",
+            "profile_path": "/lCySuYjhXix3FzQdS4oceDDrXKI.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/lCySuYjhXix3FzQdS4oceDDrXKI.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1813",
+            "source_credit_id": "57fe146fc3a368504a00261e",
+            "name": "Anne Hathaway",
+            "character_name": "Brand",
+            "known_for_department": "Acting",
+            "profile_path": "/nbccV2pMoyLTCeg5DQip24Eq0Jp.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/nbccV2pMoyLTCeg5DQip24Eq0Jp.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "3895",
+            "source_credit_id": "52fe4bbf9251416c910e47f5",
+            "name": "Michael Caine",
+            "character_name": "Professor Brand",
+            "known_for_department": "Acting",
+            "profile_path": "/bVZRMlpjTAO2pJK6v90buFgVbSW.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/bVZRMlpjTAO2pJK6v90buFgVbSW.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "83002",
+            "source_credit_id": "52fe4bbf9251416c910e47f1",
+            "name": "Jessica Chastain",
+            "character_name": "Murph",
+            "known_for_department": "Acting",
+            "profile_path": "/eQKnihReJeB9vQEa5gySzAlKfZt.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/eQKnihReJeB9vQEa5gySzAlKfZt.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1893",
+            "source_credit_id": "52fe4bbf9251416c910e4805",
+            "name": "Casey Affleck",
+            "character_name": "Tom",
+            "known_for_department": "Acting",
+            "profile_path": "/304ilSygaCRWykoBWAL67TOw8g9.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/304ilSygaCRWykoBWAL67TOw8g9.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "525",
+            "source_credit_id": "5e83abfad236e60017fd99ed",
+            "name": "Christopher Nolan",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg",
+            "role_type": "director"
+          }
+        ],
+        "creators": [],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 1,
+        "creators": 0,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 27205,
+      "content_type": "movie",
+      "media_type": "movie",
+      "title": "Inception",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "6193",
+            "source_credit_id": "52fe4534c3a368484e04de03",
+            "name": "Leonardo DiCaprio",
+            "character_name": "Dom Cobb",
+            "known_for_department": "Acting",
+            "profile_path": "/mkdRcVIQl4WZhDf1vXKWTD7HZrZ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/mkdRcVIQl4WZhDf1vXKWTD7HZrZ.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "24045",
+            "source_credit_id": "52fe4534c3a368484e04de0b",
+            "name": "Joseph Gordon-Levitt",
+            "character_name": "Arthur",
+            "known_for_department": "Acting",
+            "profile_path": "/z2FA8js799xqtfiFjBTicFYdfk.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/z2FA8js799xqtfiFjBTicFYdfk.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "3899",
+            "source_credit_id": "52fe4534c3a368484e04de07",
+            "name": "Ken Watanabe",
+            "character_name": "Saito",
+            "known_for_department": "Acting",
+            "profile_path": "/psAXOYp9SBOXvg6AXzARDedNQ9P.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/psAXOYp9SBOXvg6AXzARDedNQ9P.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "2524",
+            "source_credit_id": "52fe4534c3a368484e04de1b",
+            "name": "Tom Hardy",
+            "character_name": "Eames",
+            "known_for_department": "Acting",
+            "profile_path": "/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "27578",
+            "source_credit_id": "52fe4534c3a368484e04de13",
+            "name": "Elliot Page",
+            "character_name": "Ariadne",
+            "known_for_department": "Acting",
+            "profile_path": "/nXO8DE4biVXY4UDYP0NdIY1zvXS.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/nXO8DE4biVXY4UDYP0NdIY1zvXS.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "525",
+            "source_credit_id": "5e83ac2ee33f830018359a00",
+            "name": "Christopher Nolan",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg",
+            "role_type": "director"
+          }
+        ],
+        "creators": [],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 1,
+        "creators": 0,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 155,
+      "content_type": "movie",
+      "media_type": "movie",
+      "title": "The Dark Knight",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "3894",
+            "source_credit_id": "52fe4220c3a36847f8005d17",
+            "name": "Christian Bale",
+            "character_name": "Bruce Wayne",
+            "known_for_department": "Acting",
+            "profile_path": "/7Pxez9J8fuPd2Mn9kex13YALrCQ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/7Pxez9J8fuPd2Mn9kex13YALrCQ.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1810",
+            "source_credit_id": "52fe421fc3a36847f8005cbf",
+            "name": "Heath Ledger",
+            "character_name": "Joker",
+            "known_for_department": "Acting",
+            "profile_path": "/4CvsOS5Z9aAChe4lNLWCcCADpaE.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/4CvsOS5Z9aAChe4lNLWCcCADpaE.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "6383",
+            "source_credit_id": "52fe4220c3a36847f8005cf1",
+            "name": "Aaron Eckhart",
+            "character_name": "Harvey Dent",
+            "known_for_department": "Acting",
+            "profile_path": "/u5JjnRMr9zKEVvOP7k3F6gdcwT6.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/u5JjnRMr9zKEVvOP7k3F6gdcwT6.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "3895",
+            "source_credit_id": "52fe4220c3a36847f8005cf9",
+            "name": "Michael Caine",
+            "character_name": "Alfred",
+            "known_for_department": "Acting",
+            "profile_path": "/bVZRMlpjTAO2pJK6v90buFgVbSW.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/bVZRMlpjTAO2pJK6v90buFgVbSW.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1579",
+            "source_credit_id": "52fe421fc3a36847f8005cd5",
+            "name": "Maggie Gyllenhaal",
+            "character_name": "Rachel",
+            "known_for_department": "Acting",
+            "profile_path": "/vsfkWdYWmA9CpzMHTJzrFxlDnEZ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/vsfkWdYWmA9CpzMHTJzrFxlDnEZ.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "525",
+            "source_credit_id": "5e83ac8b6e3b68001464b691",
+            "name": "Christopher Nolan",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg",
+            "role_type": "director"
+          }
+        ],
+        "creators": [],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 1,
+        "creators": 0,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 496243,
+      "content_type": "movie",
+      "media_type": "movie",
+      "title": "Parasite",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "20738",
+            "source_credit_id": "5a4db31fc3a3683b82003a00",
+            "name": "Song Kang-ho",
+            "character_name": "Kim Ki-taek",
+            "known_for_department": "Acting",
+            "profile_path": "/kBM9UTPYXUA2RNk210DXhztLFns.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/kBM9UTPYXUA2RNk210DXhztLFns.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "115290",
+            "source_credit_id": "5bcf34f9c3a3686637014df3",
+            "name": "Lee Sun-kyun",
+            "character_name": "Park Dong-ik",
+            "known_for_department": "Acting",
+            "profile_path": "/nHFBbSFohzOUOvMxPVwe3Es2nJw.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/nHFBbSFohzOUOvMxPVwe3Es2nJw.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "556435",
+            "source_credit_id": "5bcf351f92514172df0118e1",
+            "name": "Cho Yeo-jeong",
+            "character_name": "Yeon-kyo",
+            "known_for_department": "Acting",
+            "profile_path": "/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1255881",
+            "source_credit_id": "5bcf358dc3a368662f013901",
+            "name": "Choi Woo-shik",
+            "character_name": "Ki-woo",
+            "known_for_department": "Acting",
+            "profile_path": "/hRDiuKWwe156zRjEu826eci7H3r.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/hRDiuKWwe156zRjEu826eci7H3r.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1442583",
+            "source_credit_id": "5bcf359b0e0a26624f012c00",
+            "name": "Park So-dam",
+            "character_name": "Ki-jung",
+            "known_for_department": "Acting",
+            "profile_path": "/fGVOikpvivopeATDy6ZzLdKYXDu.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/fGVOikpvivopeATDy6ZzLdKYXDu.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "21684",
+            "source_credit_id": "5e85d1bf5294e700114ad77f",
+            "name": "Bong Joon Ho",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/stwnTvZAoD8gEJEDHpDQyLCyDy5.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/stwnTvZAoD8gEJEDHpDQyLCyDy5.jpg",
+            "role_type": "director"
+          }
+        ],
+        "creators": [],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 1,
+        "creators": 0,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 693134,
+      "content_type": "movie",
+      "media_type": "movie",
+      "title": "Dune: Part Two",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1190668",
+            "source_credit_id": "5e959c45955c6500159f1c98",
+            "name": "Timothée Chalamet",
+            "character_name": "Paul Atreides",
+            "known_for_department": "Acting",
+            "profile_path": "/axENiFIrSz5B7UuWkMT7PDe7CaO.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/axENiFIrSz5B7UuWkMT7PDe7CaO.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "505710",
+            "source_credit_id": "5e959c5caf58cb001adc1c94",
+            "name": "Zendaya",
+            "character_name": "Chani",
+            "known_for_department": "Acting",
+            "profile_path": "/yCpzzMJ9gS7Rp7xgrVOsntW1m7D.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/yCpzzMJ9gS7Rp7xgrVOsntW1m7D.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "933238",
+            "source_credit_id": "5f193d28519bbb003570317b",
+            "name": "Rebecca Ferguson",
+            "character_name": "Jessica",
+            "known_for_department": "Acting",
+            "profile_path": "/lJloTOheuQSirSLXNA3JHsrMNfH.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/lJloTOheuQSirSLXNA3JHsrMNfH.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "3810",
+            "source_credit_id": "603ccede60c51d7aeb807f49",
+            "name": "Javier Bardem",
+            "character_name": "Stilgar",
+            "known_for_department": "Acting",
+            "profile_path": "/p5xjCovj1uzvA2SXrWLH78Nh1Jf.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/p5xjCovj1uzvA2SXrWLH78Nh1Jf.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "16851",
+            "source_credit_id": "5e959c7daf58cb0012dc1007",
+            "name": "Josh Brolin",
+            "character_name": "Gurney Halleck",
+            "known_for_department": "Acting",
+            "profile_path": "/sX2etBbIkxRaCsATyw5ZpOVMPTD.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/sX2etBbIkxRaCsATyw5ZpOVMPTD.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "137427",
+            "source_credit_id": "5e959beedb72c00012ad7dcf",
+            "name": "Denis Villeneuve",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/433lXlkdMGXzrpwnKM4Ul1sln15.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/433lXlkdMGXzrpwnKM4Ul1sln15.jpg",
+            "role_type": "director"
+          }
+        ],
+        "creators": [],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 1,
+        "creators": 0,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 346698,
+      "content_type": "movie",
+      "media_type": "movie",
+      "title": "Barbie",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "234352",
+            "source_credit_id": "5f88a9d28258fc0036ad14ff",
+            "name": "Margot Robbie",
+            "character_name": "Barbie",
+            "known_for_department": "Acting",
+            "profile_path": "/euDPyqLnuwaWMHajcU3oZ9uZezR.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/euDPyqLnuwaWMHajcU3oZ9uZezR.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "30614",
+            "source_credit_id": "61732049a217c000434083ec",
+            "name": "Ryan Gosling",
+            "character_name": "Ken",
+            "known_for_department": "Acting",
+            "profile_path": "/lyUyVARQKhGxaxy0FbPJCQRpiaW.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/lyUyVARQKhGxaxy0FbPJCQRpiaW.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "59174",
+            "source_credit_id": "620408d4194186001ba589e4",
+            "name": "America Ferrera",
+            "character_name": "Gloria",
+            "known_for_department": "Acting",
+            "profile_path": "/7q9uUWnaIjveX8DTU2lcA7mA3dp.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/7q9uUWnaIjveX8DTU2lcA7mA3dp.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1767250",
+            "source_credit_id": "621e9f569f1be7001b137584",
+            "name": "Ariana Greenblatt",
+            "character_name": "Sasha",
+            "known_for_department": "Acting",
+            "profile_path": "/lp7lzzBE7EYTMvSb4foN5LyZUkP.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/lp7lzzBE7EYTMvSb4foN5LyZUkP.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1455336",
+            "source_credit_id": "628697ceec45525126899890",
+            "name": "Issa Rae",
+            "character_name": "Barbie",
+            "known_for_department": "Acting",
+            "profile_path": "/uFjimuDgBv8kckApr19t8DykxPH.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/uFjimuDgBv8kckApr19t8DykxPH.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "45400",
+            "source_credit_id": "5f87d5b52385130036355b3a",
+            "name": "Greta Gerwig",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Acting",
+            "profile_path": "/3H0xzU12GTNJyQTpGysEuI9KyiQ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/3H0xzU12GTNJyQTpGysEuI9KyiQ.jpg",
+            "role_type": "director"
+          }
+        ],
+        "creators": [],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 1,
+        "creators": 0,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 569094,
+      "content_type": "movie",
+      "media_type": "movie",
+      "title": "Spider-Man: Across the Spider-Verse",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "587506",
+            "source_credit_id": "6489a4f8e375c000e251ab48",
+            "name": "Shameik Moore",
+            "character_name": "Miles Morales (voice)",
+            "known_for_department": "Acting",
+            "profile_path": "/ovUKfVOwJ7CadEHaG3NDsfA5xRq.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/ovUKfVOwJ7CadEHaG3NDsfA5xRq.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "130640",
+            "source_credit_id": "6489a502d2b209010c1b8eda",
+            "name": "Hailee Steinfeld",
+            "character_name": "Gwen Stacy (voice)",
+            "known_for_department": "Acting",
+            "profile_path": "/4K2dzM3odGiVZOQOD6RjVxNq2ZQ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/4K2dzM3odGiVZOQOD6RjVxNq2ZQ.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "226366",
+            "source_credit_id": "6271f53b89d97f005085abd7",
+            "name": "Brian Tyree Henry",
+            "character_name": "Jeff Morales (voice)",
+            "known_for_department": "Acting",
+            "profile_path": "/2MsJh0bpyzwvOUnXOltHp3j85Pb.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/2MsJh0bpyzwvOUnXOltHp3j85Pb.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "141610",
+            "source_credit_id": "6489a50dbf31f2505708a397",
+            "name": "Luna Lauren Vélez",
+            "character_name": "Rio Morales (voice)",
+            "known_for_department": "Acting",
+            "profile_path": "/98BvmTJCZHx0jPv0oNcv04Jkmfb.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/98BvmTJCZHx0jPv0oNcv04Jkmfb.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "543505",
+            "source_credit_id": "6489a51ae375c0011c8201e0",
+            "name": "Jake Johnson",
+            "character_name": "Peter B. Parker (voice)",
+            "known_for_department": "Acting",
+            "profile_path": "/3UNfW2qZgRkW81neNVfQvaRC92K.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/3UNfW2qZgRkW81neNVfQvaRC92K.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1046497",
+            "source_credit_id": "607e088a01b1ca0041e6957a",
+            "name": "Justin K. Thompson",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/mRMi8Q2fmlfbDYkE7A63gzFtGsZ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/mRMi8Q2fmlfbDYkE7A63gzFtGsZ.jpg",
+            "role_type": "director"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "2451598",
+            "source_credit_id": "607e08761b1f3c006eb33d8c",
+            "name": "Kemp Powers",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/oE4TcENMQw25t4UTAjrnl0m4JyH.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/oE4TcENMQw25t4UTAjrnl0m4JyH.jpg",
+            "role_type": "director"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "89596",
+            "source_credit_id": "5c17ccfe0e0a26037f3e5aa6",
+            "name": "Joaquim Dos Santos",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/w45GPb3cW6TqPw4FxB5Hc6zzAwx.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/w45GPb3cW6TqPw4FxB5Hc6zzAwx.jpg",
+            "role_type": "director"
+          }
+        ],
+        "creators": [],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 3,
+        "creators": 0,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 512195,
+      "content_type": "movie",
+      "media_type": "movie",
+      "title": "Red Notice",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "18918",
+            "source_credit_id": "5aac343892514116b7004626",
+            "name": "Dwayne Johnson",
+            "character_name": "John Hartley",
+            "known_for_department": "Acting",
+            "profile_path": "/5QApZVV8FUFlVxQpIK3Ew6cqotq.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/5QApZVV8FUFlVxQpIK3Ew6cqotq.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "10859",
+            "source_credit_id": "5d23cf7069d2800010011045",
+            "name": "Ryan Reynolds",
+            "character_name": "Nolan Booth",
+            "known_for_department": "Acting",
+            "profile_path": "/trzgptffGvAlAT6MEu01fz47cLW.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/trzgptffGvAlAT6MEu01fz47cLW.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "90633",
+            "source_credit_id": "5b1ea4290e0a261010008a2d",
+            "name": "Gal Gadot",
+            "character_name": "Sarah Black / The Bishop",
+            "known_for_department": "Acting",
+            "profile_path": "/qCJB1ACi5VjtY4ypXuv3hjAvbSu.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/qCJB1ACi5VjtY4ypXuv3hjAvbSu.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1742596",
+            "source_credit_id": "5e4204000c271000137fe6fd",
+            "name": "Ritu Arya",
+            "character_name": "Inspector Urvashi Das",
+            "known_for_department": "Acting",
+            "profile_path": "/bBRGCBAW0wNS7fQeGQroOeA60yw.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/bBRGCBAW0wNS7fQeGQroOeA60yw.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1217648",
+            "source_credit_id": "5e42040b41465c0018ce67e2",
+            "name": "Chris Diamantopoulos",
+            "character_name": "Sotto Voce",
+            "known_for_department": "Acting",
+            "profile_path": "/oenBtpk0RTId4wacQKYU4cPcq8Z.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/oenBtpk0RTId4wacQKYU4cPcq8Z.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "57633",
+            "source_credit_id": "5aac342192514116b10047e9",
+            "name": "Rawson Marshall Thurber",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/bFtVBwPGiQfhSbZbZdGFuP1acw1.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/bFtVBwPGiQfhSbZbZdGFuP1acw1.jpg",
+            "role_type": "director"
+          }
+        ],
+        "creators": [],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 1,
+        "creators": 0,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 1396,
+      "content_type": "series",
+      "media_type": "tv",
+      "title": "Breaking Bad",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "17419",
+            "source_credit_id": "52542282760ee313280017f9",
+            "name": "Bryan Cranston",
+            "character_name": "Walter White",
+            "known_for_department": "Acting",
+            "profile_path": "/7Jahy5LZX2Fo8fGJltMreAI49hC.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/7Jahy5LZX2Fo8fGJltMreAI49hC.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "84497",
+            "source_credit_id": "52542282760ee31328001845",
+            "name": "Aaron Paul",
+            "character_name": "Jesse Pinkman",
+            "known_for_department": "Acting",
+            "profile_path": "/8Ac9uuoYwZoYVAIJfRLzzLsGGJn.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/8Ac9uuoYwZoYVAIJfRLzzLsGGJn.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "134531",
+            "source_credit_id": "52542282760ee3132800181b",
+            "name": "Anna Gunn",
+            "character_name": "Skyler White",
+            "known_for_department": "Acting",
+            "profile_path": "/adppyeu1a4REN3khtgmXusrapFi.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/adppyeu1a4REN3khtgmXusrapFi.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "209674",
+            "source_credit_id": "52542284760ee313280018a9",
+            "name": "RJ Mitte",
+            "character_name": "Walter White Jr.",
+            "known_for_department": "Acting",
+            "profile_path": "/sNPA92ZrssYhlaB1UA2pWcLD9db.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/sNPA92ZrssYhlaB1UA2pWcLD9db.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "14329",
+            "source_credit_id": "52542283760ee3132800187b",
+            "name": "Dean Norris",
+            "character_name": "Hank Schrader",
+            "known_for_department": "Acting",
+            "profile_path": "/mKRrEbsxAX3ro700HsViFArRM7l.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/mKRrEbsxAX3ro700HsViFArRM7l.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [],
+        "creators": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "66633",
+            "source_credit_id": "52542286760ee31328001a7b",
+            "name": "Vince Gilligan",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Writing",
+            "profile_path": "/wJIxATESjzsjSgvRhVavOmdamXc.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/wJIxATESjzsjSgvRhVavOmdamXc.jpg",
+            "role_type": "creator"
+          }
+        ],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 0,
+        "creators": 1,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 82856,
+      "content_type": "series",
+      "media_type": "tv",
+      "title": "The Mandalorian",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1253360",
+            "source_credit_id": "5beb247f92514143e6058194",
+            "name": "Pedro Pascal",
+            "character_name": "Din Djarin / The Mandalorian",
+            "known_for_department": "Acting",
+            "profile_path": "/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "51798",
+            "source_credit_id": "5faedeff7a4ee7003fb49e00",
+            "name": "Katee Sackhoff",
+            "character_name": "Bo-Katan Kryze",
+            "known_for_department": "Acting",
+            "profile_path": "/kzcwfDDrgXnVgyTfcpG0obOn7Qk.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/kzcwfDDrgXnVgyTfcpG0obOn7Qk.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [],
+        "creators": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "15277",
+            "source_credit_id": "5bb6f5c39251410dc601d77f",
+            "name": "Jon Favreau",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Acting",
+            "profile_path": "/8MtRRnEHaBSw8Ztdl8saXiw1egP.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/8MtRRnEHaBSw8Ztdl8saXiw1egP.jpg",
+            "role_type": "creator"
+          }
+        ],
+        "crew": []
+      },
+      "counts": {
+        "cast": 2,
+        "directors": 0,
+        "creators": 1,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 100088,
+      "content_type": "series",
+      "media_type": "tv",
+      "title": "The Last of Us",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1668004",
+            "source_credit_id": "60249992abf8e2003fa458b0",
+            "name": "Bella Ramsey",
+            "character_name": "Ellie Williams",
+            "known_for_department": "Acting",
+            "profile_path": "/vDbgxc7RYawpB1wK7JDEj62j06H.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/vDbgxc7RYawpB1wK7JDEj62j06H.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "111016",
+            "source_credit_id": "6407840b158c85007c1ea4a9",
+            "name": "Gabriel Luna",
+            "character_name": "Tommy Miller",
+            "known_for_department": "Acting",
+            "profile_path": "/bIPORtYxTJPEUJIThbZrpqf4A11.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/bIPORtYxTJPEUJIThbZrpqf4A11.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1428070",
+            "source_credit_id": "67fc6f983110bd82dfad1aa8",
+            "name": "Isabela Merced",
+            "character_name": "Dina",
+            "known_for_department": "Acting",
+            "profile_path": "/4SolFI9dwyPm6BXcb3PDcOYzSEl.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/4SolFI9dwyPm6BXcb3PDcOYzSEl.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "2569691",
+            "source_credit_id": "67fc6fa4aacf7cfb26996a94",
+            "name": "Young Mazino",
+            "character_name": "Jesse",
+            "known_for_department": "Acting",
+            "profile_path": "/obh9i5mr0fpk91HVxr2SmDNZlVF.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/obh9i5mr0fpk91HVxr2SmDNZlVF.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [],
+        "creators": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1295692",
+            "source_credit_id": "5e84f03598f1f10016a985c0",
+            "name": "Neil Druckmann",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Acting",
+            "profile_path": "/bVUsM4aYiHbeSYE1xAw2H5Z1ANU.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/bVUsM4aYiHbeSYE1xAw2H5Z1ANU.jpg",
+            "role_type": "creator"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "35796",
+            "source_credit_id": "5e84f06a3344c600153f6a57",
+            "name": "Craig Mazin",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Writing",
+            "profile_path": "/uEhna6qcMuyU5TP7irpTUZ2ZsZc.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/uEhna6qcMuyU5TP7irpTUZ2ZsZc.jpg",
+            "role_type": "creator"
+          }
+        ],
+        "crew": []
+      },
+      "counts": {
+        "cast": 4,
+        "directors": 0,
+        "creators": 2,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 66732,
+      "content_type": "series",
+      "media_type": "tv",
+      "title": "Stranger Things",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1920",
+            "source_credit_id": "5759b97bc3a3684ea90029c1",
+            "name": "Winona Ryder",
+            "character_name": "Joyce Byers",
+            "known_for_department": "Acting",
+            "profile_path": "/8RVrlgtua8b53wmK7oZAAkm0N5O.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/8RVrlgtua8b53wmK7oZAAkm0N5O.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "35029",
+            "source_credit_id": "5759b986c3a3683e7c003967",
+            "name": "David Harbour",
+            "character_name": "Jim Hopper",
+            "known_for_department": "Acting",
+            "profile_path": "/qMFtMWlYVtFVyBoBhX5IoA5sN5a.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/qMFtMWlYVtFVyBoBhX5IoA5sN5a.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1356210",
+            "source_credit_id": "579f8d3092514178bf003120",
+            "name": "Millie Bobby Brown",
+            "character_name": "Eleven / Jane Hopper",
+            "known_for_department": "Acting",
+            "profile_path": "/kHO7hdNEVuTnQ0OjjrxP1RcAa0e.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/kHO7hdNEVuTnQ0OjjrxP1RcAa0e.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1442069",
+            "source_credit_id": "5759b9909251416bab0002c4",
+            "name": "Finn Wolfhard",
+            "character_name": "Mike Wheeler",
+            "known_for_department": "Acting",
+            "profile_path": "/vgjd34eWfVL6GsLHwiwcAsjWLmo.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/vgjd34eWfVL6GsLHwiwcAsjWLmo.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1653291",
+            "source_credit_id": "57a49317c3a36865ed000ee2",
+            "name": "Gaten Matarazzo",
+            "character_name": "Dustin Henderson",
+            "known_for_department": "Acting",
+            "profile_path": "/qOwnmR5gbOT6ygp17YyLlEKXD38.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/qOwnmR5gbOT6ygp17YyLlEKXD38.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [],
+        "creators": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1179422",
+            "source_credit_id": "57599b039251410a99001cce",
+            "name": "Ross Duffer",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Writing",
+            "profile_path": "/AnZhpHzHKy0IWwn9KxkukXXWNte.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/AnZhpHzHKy0IWwn9KxkukXXWNte.jpg",
+            "role_type": "creator"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1179419",
+            "source_credit_id": "57599b0e925141378a002c87",
+            "name": "Matt Duffer",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Writing",
+            "profile_path": "/xaBSTbWWVmKcZN5RoIzPiF5RzZj.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/xaBSTbWWVmKcZN5RoIzPiF5RzZj.jpg",
+            "role_type": "creator"
+          }
+        ],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 0,
+        "creators": 2,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 76479,
+      "content_type": "series",
+      "media_type": "tv",
+      "title": "The Boys",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1372",
+            "source_credit_id": "5baaac490e0a2664d400bb5a",
+            "name": "Karl Urban",
+            "character_name": "Billy Butcher",
+            "known_for_department": "Acting",
+            "profile_path": "/6CkZLwEJxfqqcJHyeXegMAvOlPh.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/6CkZLwEJxfqqcJHyeXegMAvOlPh.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1030513",
+            "source_credit_id": "5d4821012d1e405083c02531",
+            "name": "Jack Quaid",
+            "character_name": "Hugh 'Hughie' Campbell",
+            "known_for_department": "Acting",
+            "profile_path": "/320qW5yEbxpmyxQ3evmClJbtKag.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/320qW5yEbxpmyxQ3evmClJbtKag.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "60373",
+            "source_credit_id": "5a60c6e10e0a26102e0005eb",
+            "name": "Antony Starr",
+            "character_name": "Homelander",
+            "known_for_department": "Acting",
+            "profile_path": "/b0T56GMrHM24hDDjJ4DNPJcEUp6.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/b0T56GMrHM24hDDjJ4DNPJcEUp6.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "990393",
+            "source_credit_id": "5baaac7892514150f500b2f6",
+            "name": "Erin Moriarty",
+            "character_name": "Annie January / Starlight",
+            "known_for_department": "Acting",
+            "profile_path": "/nA2HsETMzIUAau5XDERIxfSdc5y.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/nA2HsETMzIUAau5XDERIxfSdc5y.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "10964",
+            "source_credit_id": "5f4e551e41465c0035a7af65",
+            "name": "Laz Alonso",
+            "character_name": "Marvin T. 'Mother's Milk' Milk / M.M.",
+            "known_for_department": "Acting",
+            "profile_path": "/nmgOd3X2Xn3jIp9OLCRJzLExRWN.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/nmgOd3X2Xn3jIp9OLCRJzLExRWN.jpg",
+            "display_order": 6,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [],
+        "creators": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "58321",
+            "source_credit_id": "5f3814c011c066003637f6a8",
+            "name": "Eric Kripke",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Writing",
+            "profile_path": "/dd7EgfOEKPqQxWtBfAvjYZahbSc.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/dd7EgfOEKPqQxWtBfAvjYZahbSc.jpg",
+            "role_type": "creator"
+          }
+        ],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 0,
+        "creators": 1,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 70523,
+      "content_type": "series",
+      "media_type": "tv",
+      "title": "Dark",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1037348",
+            "source_credit_id": "5f90a7af278d8a003a35fdaa",
+            "name": "Louis Hofmann",
+            "character_name": "Jonas Kahnwald",
+            "known_for_department": "Acting",
+            "profile_path": "/m3Mo38afbKmy9EOsfmUagvTFM9q.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/m3Mo38afbKmy9EOsfmUagvTFM9q.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [],
+        "creators": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "232959",
+            "source_credit_id": "58c14491c3a368265b0092f6",
+            "name": "Baran bo Odar",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Directing",
+            "profile_path": "/3CfxoYPDPgFZ6jJMBOXCO5zhhEQ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/3CfxoYPDPgFZ6jJMBOXCO5zhhEQ.jpg",
+            "role_type": "creator"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1075096",
+            "source_credit_id": "5d77e4ce5907de00132cd3df",
+            "name": "Jantje Friese",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Writing",
+            "profile_path": "/1FPWxHCzCmiLlmCAf7Gze6jkWP7.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/1FPWxHCzCmiLlmCAf7Gze6jkWP7.jpg",
+            "role_type": "creator"
+          }
+        ],
+        "crew": []
+      },
+      "counts": {
+        "cast": 1,
+        "directors": 0,
+        "creators": 2,
+        "crew": 0
+      },
+      "warnings": []
+    },
+    {
+      "tmdb_id": 71912,
+      "content_type": "series",
+      "media_type": "tv",
+      "title": "The Witcher",
+      "credits": {
+        "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "96066",
+            "source_credit_id": "664e111d1ce8a9869d9b9878",
+            "name": "Liam Hemsworth",
+            "character_name": "Geralt of Rivia",
+            "known_for_department": "Acting",
+            "profile_path": "/7UIm9RoBnlqS1uLlbElAY8urdWD.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/7UIm9RoBnlqS1uLlbElAY8urdWD.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "2146944",
+            "source_credit_id": "5bbe3b5d0e0a266618034bd6",
+            "name": "Anya Chalotra",
+            "character_name": "Yennefer of Vengerberg",
+            "known_for_department": "Acting",
+            "profile_path": "/gq0RpJ2Y5kHOFMbUWHIc60xCZrd.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/gq0RpJ2Y5kHOFMbUWHIc60xCZrd.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "2146942",
+            "source_credit_id": "5bbe3b28c3a368590d038ced",
+            "name": "Freya Allan",
+            "character_name": "Princess Cirilla 'Ciri' of Cintra",
+            "known_for_department": "Acting",
+            "profile_path": "/8RuLG2mePw8YgFNUjWROBuxMrwT.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/8RuLG2mePw8YgFNUjWROBuxMrwT.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1353920",
+            "source_credit_id": "61bffc35d144430092d9ddf3",
+            "name": "Joey Batey",
+            "character_name": "Jaskier / The Sandpiper",
+            "known_for_department": "Acting",
+            "profile_path": "/4uo4JPaK6KpdN7v8C1pbwKpNVJU.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/4uo4JPaK6KpdN7v8C1pbwKpNVJU.jpg",
+            "display_order": 4,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "110425",
+            "source_credit_id": "5c7bd15c0e0a2611e1143ea4",
+            "name": "Eamon Farren",
+            "character_name": "Cahir",
+            "known_for_department": "Acting",
+            "profile_path": "/f4EX93f9MRCfjJc4kKAKqVqRsUW.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/f4EX93f9MRCfjJc4kKAKqVqRsUW.jpg",
+            "display_order": 5,
+            "role_type": "cast"
+          }
+        ],
+        "directors": [],
+        "creators": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1219517",
+            "source_credit_id": "5b66d0f10e0a267eed0a3f6d",
+            "name": "Lauren Schmidt Hissrich",
+            "job": "Creator",
+            "department": "Production",
+            "known_for_department": "Writing",
+            "profile_path": "/gIYkS3iNC8gMrldAHF09QHPGELb.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/gIYkS3iNC8gMrldAHF09QHPGELb.jpg",
+            "role_type": "creator"
+          }
+        ],
+        "crew": []
+      },
+      "counts": {
+        "cast": 5,
+        "directors": 0,
+        "creators": 1,
+        "crew": 0
+      },
+      "warnings": []
+    }
+  ]
+}
