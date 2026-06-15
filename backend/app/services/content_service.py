@@ -466,6 +466,94 @@ def get_content_by_id_service(content_id: int, db: Session):
     return build_content_object(row)
 
 
+def build_cast_credit(row):
+    return {
+        "person_id": row["person_id"],
+        "name": row["name"],
+        "character_name": row["character_name"],
+        "profile_url": row["profile_url"],
+        "known_for_department": row["known_for_department"],
+        "display_order": row["display_order"],
+    }
+
+
+def build_crew_credit(row):
+    return {
+        "person_id": row["person_id"],
+        "name": row["name"],
+        "profile_url": row["profile_url"],
+        "known_for_department": row["known_for_department"],
+        "job": row["job"],
+        "department": row["department"],
+        "display_order": row["display_order"],
+    }
+
+
+def get_content_credits_service(content_id: int, db: Session):
+    content_exists_query = text("""
+        SELECT id
+        FROM content
+        WHERE id = :content_id;
+    """)
+    content_result = db.execute(content_exists_query, {"content_id": content_id})
+    content_row = content_result.mappings().first()
+
+    if not content_row:
+        return None
+
+    credits_query = text("""
+        SELECT
+            cp.role_type,
+            cp.character_name,
+            cp.job,
+            cp.department,
+            cp.display_order,
+            p.id AS person_id,
+            p.name,
+            p.profile_url,
+            p.known_for_department
+        FROM content_people cp
+        JOIN people p ON p.id = cp.person_id
+        WHERE cp.content_id = :content_id
+        ORDER BY
+            CASE cp.role_type
+                WHEN 'cast' THEN 1
+                WHEN 'director' THEN 2
+                WHEN 'creator' THEN 3
+                WHEN 'crew' THEN 4
+                ELSE 5
+            END,
+            CASE WHEN cp.display_order IS NULL THEN 1 ELSE 0 END,
+            cp.display_order ASC,
+            cp.department ASC NULLS LAST,
+            cp.job ASC NULLS LAST,
+            p.name ASC;
+    """)
+    credits_result = db.execute(credits_query, {"content_id": content_id})
+    rows = credits_result.mappings().all()
+
+    grouped_credits = {
+        "content_id": content_id,
+        "cast": [],
+        "directors": [],
+        "creators": [],
+        "crew": [],
+    }
+
+    for row in rows:
+        role_type = row["role_type"]
+        if role_type == "cast":
+            grouped_credits["cast"].append(build_cast_credit(row))
+        elif role_type == "director":
+            grouped_credits["directors"].append(build_crew_credit(row))
+        elif role_type == "creator":
+            grouped_credits["creators"].append(build_crew_credit(row))
+        elif role_type == "crew":
+            grouped_credits["crew"].append(build_crew_credit(row))
+
+    return grouped_credits
+
+
 def get_content_details_service(content_id: int, db: Session):
     content_query = text(f"""
         SELECT

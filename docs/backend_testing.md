@@ -21,6 +21,7 @@ Covered areas:
 - platform discovery
 - combined discovery
 - content details
+- content credits endpoint, allowing empty arrays before credits import
 - genre metadata
 - platform metadata
 - watched read endpoint
@@ -55,6 +56,7 @@ Expected current seed state:
 - external IDs: 15 `tmdb` rows and 15 verified `imdb` rows
 - verified IMDb IDs for all 15 seeded titles
 - people/cast/crew schema tables exist with 0 seeded rows until a later import task
+- `GET /content/{content_id}/credits` works with either empty credits or imported local credits
 
 If the database is stale, missing seed data, or still has duplicate old seed rows, tests may fail. Reset the local database and rerun the setup SQL files before debugging the tests themselves.
 
@@ -77,7 +79,7 @@ pytest
 Expected current result:
 
 ```text
-27 passed
+31 passed
 ```
 
 ## 5. Test File Overview
@@ -85,6 +87,7 @@ Expected current result:
 - `backend/tests/conftest.py` — shared `TestClient` and database fixtures
 - `backend/tests/test_health.py` — root health endpoint
 - `backend/tests/test_content_read_endpoints.py` — content, discovery, and details read endpoints
+- `backend/tests/test_content_credits_endpoints.py` — provider-neutral content credits endpoint
 - `backend/tests/test_metadata_endpoints.py` — genre and platform metadata endpoints
 - `backend/tests/test_user_content_read_endpoints.py` — watched/watch-later read endpoints for the seeded user
 - `backend/tests/test_external_ids_seed.py` — read-only external ID seed verification

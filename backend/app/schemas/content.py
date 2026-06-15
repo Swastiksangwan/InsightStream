@@ -61,6 +61,33 @@ class PlatformMetadata(BaseModel):
     name: str
     platform_type: str
 
+
+class CastCredit(BaseModel):
+    person_id: int
+    name: str
+    character_name: Optional[str] = None
+    profile_url: Optional[str] = None
+    known_for_department: Optional[str] = None
+    display_order: Optional[int] = None
+
+
+class CrewCredit(BaseModel):
+    person_id: int
+    name: str
+    profile_url: Optional[str] = None
+    known_for_department: Optional[str] = None
+    job: Optional[str] = None
+    department: Optional[str] = None
+    display_order: Optional[int] = None
+
+
+class ContentCreditsResponse(BaseModel):
+    content_id: int
+    cast: List[CastCredit]
+    directors: List[CrewCredit]
+    creators: List[CrewCredit]
+    crew: List[CrewCredit]
+
     
 # Final Response Model
 class ContentDetailsResponse(BaseModel):

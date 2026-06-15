@@ -5,6 +5,7 @@ from app.db.session import get_db
 from app.schemas.content import (
     Content,
     ContentDetailsResponse,
+    ContentCreditsResponse,
     PaginatedContentResponse,
     Genre,
     PlatformMetadata
@@ -19,7 +20,8 @@ from app.services.content_service import (
     get_content_by_platform_service,
     get_discover_content_service,
     get_content_by_id_service,
-    get_content_details_service
+    get_content_details_service,
+    get_content_credits_service
 )
 
 router = APIRouter()
@@ -213,6 +215,16 @@ def get_content_by_platform(
         limit,
         offset
     )
+
+
+@router.get("/content/{content_id}/credits", response_model=ContentCreditsResponse)
+def get_content_credits(content_id: int, db: Session = Depends(get_db)):
+    content_credits = get_content_credits_service(content_id, db)
+
+    if content_credits is None:
+        raise HTTPException(status_code=404, detail="Content not found")
+
+    return content_credits
 
 
 @router.get("/content/{content_id}", response_model=Content)

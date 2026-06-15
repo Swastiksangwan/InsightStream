@@ -261,6 +261,16 @@ The person/cast/crew tables are schema-only for now. Expected counts after the c
 
 Actual people, cast, crew, director, and creator rows will be added later through a structured credits preview/import task.
 
+The read API `GET /content/{content_id}/credits` returns empty arrays until people/credits data has been imported.
+
+Optional local import after setup:
+
+```bash
+python3 analytics/scripts/import_people_credits_from_preview.py --apply
+```
+
+This imports from `analytics/processed/tmdb/credits_preview.json` into `people`, `person_external_ids`, and `content_people`.
+
 ### Verify Person/Cast/Crew Tables
 
 ```sql
@@ -286,6 +296,32 @@ SELECT 'content_people', COUNT(*) FROM content_people;
 ```
 
 Expected current result: all counts can be `0`.
+
+After running the people/credits import script, useful checks include:
+
+```sql
+SELECT COUNT(*) AS total_people FROM people;
+```
+
+```sql
+SELECT source_name, COUNT(*) AS total
+FROM person_external_ids
+GROUP BY source_name
+ORDER BY source_name;
+```
+
+```sql
+SELECT role_type, COUNT(*) AS total
+FROM content_people
+GROUP BY role_type
+ORDER BY role_type;
+```
+
+Expected imported role counts from the current preview:
+
+- `cast`: 67
+- `creator`: 10
+- `director`: 10
 
 ### Inspect Content Rows
 
