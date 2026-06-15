@@ -23,7 +23,10 @@ export function PlatformList({ platforms }: PlatformListProps) {
   if (platforms.length === 0) {
     return (
       <section className="detail-panel">
-        <h2>Availability</h2>
+        <div className="detail-panel__header">
+          <span className="section-label">Where to watch</span>
+          <h2>Availability</h2>
+        </div>
         <p className="detail-empty">No platform availability is listed yet.</p>
       </section>
     );

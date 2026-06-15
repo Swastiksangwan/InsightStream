@@ -26,7 +26,10 @@ export function RatingList({ ratings }: RatingListProps) {
   if (ratings.length === 0) {
     return (
       <section className="detail-panel">
-        <h2>Ratings</h2>
+        <div className="detail-panel__header">
+          <span className="section-label">Cross-platform signal</span>
+          <h2>Ratings</h2>
+        </div>
         <p className="detail-empty">No ratings are available yet.</p>
       </section>
     );

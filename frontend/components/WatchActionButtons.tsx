@@ -36,7 +36,7 @@ function formatFeedbackMessage(message: string) {
   const normalizedMessage = message.toLowerCase();
 
   if (normalizedMessage.includes("already in watch later")) {
-    return "Already in watch later";
+    return "Already saved";
   }
 
   if (normalizedMessage.includes("already in watched")) {
@@ -44,19 +44,19 @@ function formatFeedbackMessage(message: string) {
   }
 
   if (normalizedMessage.includes("removed from watched")) {
-    return "Removed from watched";
+    return "Removed";
   }
 
   if (normalizedMessage.includes("removed from watch later")) {
-    return "Removed from watch later";
+    return "Removed";
   }
 
   if (normalizedMessage.includes("added to watched")) {
-    return "Marked as watched";
+    return "Marked watched";
   }
 
   if (normalizedMessage.includes("added to watch later")) {
-    return "Added to watch later";
+    return "Saved to Watch Later";
   }
 
   return message || "Something went wrong";
@@ -113,10 +113,19 @@ export function WatchActionButtons({
 
   const isWatchLater = status === "watch_later";
   const isWatched = status === "watched";
-  const watchLaterLabel = isWatchLater
-    ? "Remove from Watch Later"
-    : "Add to Watch Later";
-  const watchedLabel = isWatched ? "Remove from Watched" : "Mark as Watched";
+  const canSaveToWatchLater = !isWatchLater && !isWatched;
+  const canMarkWatched = !isWatched;
+
+  function handleRemove() {
+    if (isWatchLater) {
+      handleWatchLater();
+      return;
+    }
+
+    if (isWatched) {
+      handleWatched();
+    }
+  }
 
   return (
     <section className="detail-panel watch-actions" aria-label="Personal watch actions">
@@ -127,32 +136,51 @@ export function WatchActionButtons({
 
       <div className="watch-actions__status">
         <span>Status</span>
-        <strong>{getStatusLabel(status)}</strong>
+        <strong
+          className={`watch-actions__status-chip watch-actions__status-chip--${status}`}
+        >
+          {getStatusLabel(status)}
+        </strong>
       </div>
 
       <div className="watch-actions__buttons">
-        <button
-          type="button"
-          className="watch-action-button watch-action-button--secondary"
-          onClick={handleWatchLater}
-          disabled={isPending || isWatched}
-        >
-          {watchLaterLabel}
-        </button>
+        {canMarkWatched ? (
+          <button
+            type="button"
+            className="watch-action-button watch-action-button--primary"
+            onClick={handleWatched}
+            disabled={isPending}
+          >
+            Mark Watched
+          </button>
+        ) : null}
 
-        <button
-          type="button"
-          className="watch-action-button watch-action-button--primary"
-          onClick={handleWatched}
-          disabled={isPending}
-        >
-          {watchedLabel}
-        </button>
+        {canSaveToWatchLater ? (
+          <button
+            type="button"
+            className="watch-action-button watch-action-button--secondary"
+            onClick={handleWatchLater}
+            disabled={isPending}
+          >
+            Watch Later
+          </button>
+        ) : null}
+
+        {(isWatchLater || isWatched) ? (
+          <button
+            type="button"
+            className="watch-action-button watch-action-button--remove"
+            onClick={handleRemove}
+            disabled={isPending}
+          >
+            Remove
+          </button>
+        ) : null}
       </div>
 
       {isPending ? (
         <p className="watch-actions__message watch-actions__message--info" role="status">
-          Updating watch status...
+          Updating...
         </p>
       ) : null}
 

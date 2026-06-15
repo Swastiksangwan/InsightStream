@@ -9,6 +9,7 @@ import type {
   UserContentActionResponse,
   UserContentItem,
 } from "@/types/content";
+import type { ContentCreditsResponse } from "@/types/credits";
 
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
 
@@ -94,6 +95,12 @@ export function getTopRatedContent(limit = 8) {
 export function getContentDetails(contentId: number | string) {
   return fetchFromApi<ContentDetailsResponse>(
     buildUrl(`/content/${contentId}/details`, {}),
+  );
+}
+
+export function getContentCredits(contentId: number | string) {
+  return fetchFromApi<ContentCreditsResponse>(
+    buildUrl(`/content/${contentId}/credits`, {}),
   );
 }
 

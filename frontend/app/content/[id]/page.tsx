@@ -1,12 +1,18 @@
+import { CreditsSection } from "@/components/CreditsSection";
 import { DetailHero } from "@/components/DetailHero";
+import { DetailOverview } from "@/components/DetailOverview";
+import { DetailSidebar } from "@/components/DetailSidebar";
 import { ErrorState } from "@/components/ErrorState";
-import { PlatformList } from "@/components/PlatformList";
-import { RatingList } from "@/components/RatingList";
 import { SummaryPanel } from "@/components/SummaryPanel";
-import { WatchActionButtons } from "@/components/WatchActionButtons";
-import { getContentDetails, getWatched, getWatchLater } from "@/lib/api";
+import {
+  getContentCredits,
+  getContentDetails,
+  getWatched,
+  getWatchLater,
+} from "@/lib/api";
 import { DEMO_USER_ID } from "@/lib/constants";
 import type { Content, WatchStatus } from "@/types/content";
+import type { ContentCreditsResponse } from "@/types/credits";
 
 type ContentDetailPageProps = {
   params: Promise<{
@@ -23,6 +29,16 @@ function includesContent(items: Content[], contentId: number) {
   return items.some((item) => item.id === contentId);
 }
 
+function emptyCredits(contentId: number): ContentCreditsResponse {
+  return {
+    content_id: contentId,
+    cast: [],
+    directors: [],
+    creators: [],
+    crew: [],
+  };
+}
+
 async function getInitialWatchState(contentId: number): Promise<InitialWatchState> {
   const [watchLaterResult, watchedResult] = await Promise.allSettled([
     getWatchLater(DEMO_USER_ID),
@@ -35,7 +51,7 @@ async function getInitialWatchState(contentId: number): Promise<InitialWatchStat
 
   const message =
     watchLaterResult.status === "rejected" || watchedResult.status === "rejected"
-      ? "Could not load current watch status for the demo user."
+      ? "Could not load watch status."
       : undefined;
 
   if (includesContent(watchedItems, contentId)) {
@@ -66,21 +82,45 @@ export default async function ContentDetailPage({ params }: ContentDetailPagePro
 
   try {
     const details = await getContentDetails(contentId);
-    const initialWatchState = await getInitialWatchState(details.content.id);
+    const [initialWatchStateResult, creditsResult] = await Promise.allSettled([
+      getInitialWatchState(details.content.id),
+      getContentCredits(details.content.id),
+    ]);
+
+    const initialWatchState =
+      initialWatchStateResult.status === "fulfilled"
+        ? initialWatchStateResult.value
+        : {
+            status: "none" as WatchStatus,
+            message: "Could not load watch status.",
+          };
+
+    const credits =
+      creditsResult.status === "fulfilled"
+        ? creditsResult.value
+        : emptyCredits(details.content.id);
 
     return (
       <main className="detail-page-shell">
-        <DetailHero content={details.content} genres={details.genres} />
+        <DetailHero content={details.content} credits={credits} />
 
-        <section className="detail-layout" aria-label="Decision support details">
-          <SummaryPanel summary={details.summary} />
-          <WatchActionButtons
+        <section className="detail-content-grid" aria-label="Content detail sections">
+          <div className="detail-main-column detail-main-column--overview">
+            <DetailOverview content={details.content} genres={details.genres} />
+          </div>
+
+          <DetailSidebar
             contentId={details.content.id}
             initialStatus={initialWatchState.status}
             initialMessage={initialWatchState.message}
+            platforms={details.platforms}
+            ratings={details.ratings}
           />
-          <PlatformList platforms={details.platforms} />
-          <RatingList ratings={details.ratings} />
+
+          <div className="detail-main-column detail-main-column--supporting">
+            <CreditsSection credits={credits} />
+            <SummaryPanel summary={details.summary} />
+          </div>
         </section>
       </main>
     );

@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { Content } from "@/types/content";
+import type { ContentCreditsResponse, CreditCrewMember } from "@/types/credits";
 
 type DetailHeroProps = {
   content: Content;
-  genres: string[];
+  credits?: ContentCreditsResponse | null;
 };
 
 function formatType(type: Content["type"]) {
@@ -29,9 +30,17 @@ function getInitials(title: string) {
   return initials || "IS";
 }
 
-export function DetailHero({ content, genres }: DetailHeroProps) {
+function formatPeopleList(people: CreditCrewMember[]) {
+  return people.map((person) => person.name).join(", ");
+}
+
+export function DetailHero({ content, credits }: DetailHeroProps) {
   const [showBackdrop, setShowBackdrop] = useState(Boolean(content.backdrop));
   const [showPoster, setShowPoster] = useState(Boolean(content.poster));
+  const primaryPeople =
+    content.type === "movie" ? credits?.directors || [] : credits?.creators || [];
+  const primaryPeopleLabel =
+    content.type === "movie" ? "Directed by" : "Created by";
   const metadata = [
     formatType(content.type),
     content.year,
@@ -83,15 +92,12 @@ export function DetailHero({ content, genres }: DetailHeroProps) {
               ))}
             </div>
 
-            {genres.length > 0 ? (
-              <div className="genre-chip-list" aria-label="Genres">
-                {genres.map((genre) => (
-                  <span key={genre}>{genre}</span>
-                ))}
+            {primaryPeople.length > 0 ? (
+              <div className="detail-key-credit" aria-label={primaryPeopleLabel}>
+                <span>{primaryPeopleLabel}</span>
+                <strong>{formatPeopleList(primaryPeople)}</strong>
               </div>
             ) : null}
-
-            <p>{content.overview || "No overview is available yet."}</p>
           </div>
         </div>
       </div>

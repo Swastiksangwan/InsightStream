@@ -9,7 +9,10 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
   if (!summary) {
     return (
       <section className="detail-panel detail-panel--wide">
-        <h2>Insight Summary</h2>
+        <div className="detail-panel__header">
+          <span className="section-label">Decision support</span>
+          <h2>Insight Summary</h2>
+        </div>
         <p className="detail-empty">No InsightStream summary is available yet.</p>
       </section>
     );
