@@ -890,7 +890,8 @@ main {
 }
 
 .detail-metadata span,
-.genre-chip-list span {
+.genre-chip-list span,
+.genre-chip-list a {
   min-height: 30px;
   display: inline-flex;
   align-items: center;
@@ -910,10 +911,28 @@ main {
   margin-top: 12px;
 }
 
-.genre-chip-list span {
+.genre-chip-list span,
+.genre-chip-list a {
   border: 1px solid rgba(244, 184, 96, 0.22);
   color: #ffdca8;
   background: rgba(244, 184, 96, 0.08);
+}
+
+.genre-chip-list a {
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.genre-chip-list a:hover,
+.genre-chip-list a:focus-visible {
+  border-color: rgba(244, 184, 96, 0.42);
+  color: #fff0cc;
+  outline: none;
+  background: rgba(244, 184, 96, 0.13);
+  transform: translateY(-1px);
 }
 
 .detail-key-credit {
