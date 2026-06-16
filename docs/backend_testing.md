@@ -22,6 +22,8 @@ Covered areas:
 - combined discovery
 - content details
 - content credits endpoint, allowing empty arrays before credits import
+- person detail endpoint, conditional on imported people data
+- person credits endpoint, conditional on imported people data
 - genre metadata
 - platform metadata
 - watched read endpoint
@@ -55,8 +57,9 @@ Expected current seed state:
 - watch later: The Mandalorian, Dune: Part Two
 - external IDs: 15 `tmdb` rows and 15 verified `imdb` rows
 - verified IMDb IDs for all 15 seeded titles
-- people/cast/crew schema tables exist with 0 seeded rows until a later import task
+- people/cast/crew schema tables exist with 0 seeded rows until the local people/credits import script is applied
 - `GET /content/{content_id}/credits` works with either empty credits or imported local credits
+- `GET /people/{person_id}` and `GET /people/{person_id}/credits` work when people data has been imported; existing-person tests are skipped when no local people rows exist
 
 If the database is stale, missing seed data, or still has duplicate old seed rows, tests may fail. Reset the local database and rerun the setup SQL files before debugging the tests themselves.
 
@@ -76,11 +79,13 @@ python3 -m pytest
 pytest
 ```
 
-Expected current result:
+Expected current result with local people/credits import applied:
 
 ```text
-31 passed
+35 passed
 ```
+
+Without imported people rows, the existing-person endpoint tests are skipped while the 404 tests still run.
 
 ## 5. Test File Overview
 
@@ -88,6 +93,7 @@ Expected current result:
 - `backend/tests/test_health.py` — root health endpoint
 - `backend/tests/test_content_read_endpoints.py` — content, discovery, and details read endpoints
 - `backend/tests/test_content_credits_endpoints.py` — provider-neutral content credits endpoint
+- `backend/tests/test_people_endpoints.py` — provider-neutral person detail and person credits endpoints
 - `backend/tests/test_metadata_endpoints.py` — genre and platform metadata endpoints
 - `backend/tests/test_user_content_read_endpoints.py` — watched/watch-later read endpoints for the seeded user
 - `backend/tests/test_external_ids_seed.py` — read-only external ID seed verification

@@ -253,15 +253,20 @@ UNION ALL
 SELECT 'watched', COUNT(*) FROM watched;
 ```
 
-The person/cast/crew tables are schema-only for now. Expected counts after the current setup are:
+The person/cast/crew tables are not populated by `sample_data.sql`. Expected counts after the core SQL setup are:
 
 - `people`: 0
 - `person_external_ids`: 0
 - `content_people`: 0
 
-Actual people, cast, crew, director, and creator rows will be added later through a structured credits preview/import task.
+People, cast, crew, director, and creator rows are added separately through the structured credits preview/import script.
 
-The read API `GET /content/{content_id}/credits` returns empty arrays until people/credits data has been imported.
+The read API `GET /content/{content_id}/credits` returns empty arrays until people/credits data has been imported. Person read APIs are also available:
+
+- `GET /people/{person_id}`
+- `GET /people/{person_id}/credits`
+
+These person endpoints require imported people rows. Unknown person IDs return `404`, and known people with no credits return empty grouped credit arrays.
 
 Optional local import after setup:
 
