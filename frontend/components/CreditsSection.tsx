@@ -86,6 +86,7 @@ export function CreditsSection({ credits }: CreditsSectionProps) {
                   name={member.name}
                   subtitle={castSubtitle(member)}
                   profileUrl={member.profile_url}
+                  href={`/people/${member.person_id}`}
                 />
               </div>
             ))}
@@ -110,6 +111,7 @@ export function CreditsSection({ credits }: CreditsSectionProps) {
                   name={person.name}
                   subtitle={crewSubtitle(person, person.fallback)}
                   profileUrl={person.profile_url}
+                  href={`/people/${person.person_id}`}
                   variant="compact"
                 />
               </div>
@@ -135,6 +137,7 @@ export function CreditsSection({ credits }: CreditsSectionProps) {
                   name={person.name}
                   subtitle={crewSubtitle(person, "Crew")}
                   profileUrl={person.profile_url}
+                  href={`/people/${person.person_id}`}
                   variant="compact"
                 />
               </div>

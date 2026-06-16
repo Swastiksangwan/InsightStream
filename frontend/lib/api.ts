@@ -10,6 +10,7 @@ import type {
   UserContentItem,
 } from "@/types/content";
 import type { ContentCreditsResponse } from "@/types/credits";
+import type { PersonCreditsResponse, PersonDetail } from "@/types/people";
 
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
 
@@ -101,6 +102,16 @@ export function getContentDetails(contentId: number | string) {
 export function getContentCredits(contentId: number | string) {
   return fetchFromApi<ContentCreditsResponse>(
     buildUrl(`/content/${contentId}/credits`, {}),
+  );
+}
+
+export function getPerson(personId: number | string) {
+  return fetchFromApi<PersonDetail>(buildUrl(`/people/${personId}`, {}));
+}
+
+export function getPersonCredits(personId: number | string) {
+  return fetchFromApi<PersonCreditsResponse>(
+    buildUrl(`/people/${personId}/credits`, {}),
   );
 }
 
