@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ErrorState } from "@/components/ErrorState";
+import { PersonBiography } from "@/components/PersonBiography";
 import { PersonFilmographyCard } from "@/components/PersonFilmographyCard";
 import { PersonProfileHero } from "@/components/PersonProfileHero";
 import {
@@ -113,17 +114,13 @@ export default async function PersonDetailPage({ params }: PersonDetailPageProps
           <PersonProfileHero person={person} />
         </section>
 
-        <section className="person-page-grid" aria-label="Person details">
+        <section className="person-page-stack" aria-label="Person details">
           <section className="person-panel person-biography">
             <div className="detail-section-heading">
               <span className="section-label">Profile</span>
               <h2>Biography</h2>
             </div>
-            {person.biography ? (
-              <p>{person.biography}</p>
-            ) : (
-              <p className="detail-empty">Biography not available yet.</p>
-            )}
+            <PersonBiography biography={person.biography} />
           </section>
 
           <section className="person-panel person-filmography">
