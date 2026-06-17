@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-06-14T16:03:59.967409+00:00",
+  "generated_at": "2026-06-17T06:33:42.971624+00:00",
   "inspection_only": true,
   "source_provider": "tmdb",
   "source_preview_path": "analytics/processed/tmdb/sample_mapping_preview.json",
   "total_titles": 15,
   "summary": {
     "total_titles": 15,
-    "total_cast_people": 67,
+    "total_cast_people": 75,
     "total_directors": 10,
     "total_creators": 10,
     "titles_with_missing_cast": [],
@@ -644,18 +644,6 @@
         "directors": [
           {
             "source_name": "tmdb",
-            "source_person_id": "1046497",
-            "source_credit_id": "607e088a01b1ca0041e6957a",
-            "name": "Justin K. Thompson",
-            "job": "Director",
-            "department": "Directing",
-            "known_for_department": "Directing",
-            "profile_path": "/mRMi8Q2fmlfbDYkE7A63gzFtGsZ.jpg",
-            "profile_url": "https://image.tmdb.org/t/p/w185/mRMi8Q2fmlfbDYkE7A63gzFtGsZ.jpg",
-            "role_type": "director"
-          },
-          {
-            "source_name": "tmdb",
             "source_person_id": "2451598",
             "source_credit_id": "607e08761b1f3c006eb33d8c",
             "name": "Kemp Powers",
@@ -664,6 +652,18 @@
             "known_for_department": "Directing",
             "profile_path": "/oE4TcENMQw25t4UTAjrnl0m4JyH.jpg",
             "profile_url": "https://image.tmdb.org/t/p/w185/oE4TcENMQw25t4UTAjrnl0m4JyH.jpg",
+            "role_type": "director"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1046497",
+            "source_credit_id": "607e088a01b1ca0041e6957a",
+            "name": "Justin K. Thompson",
+            "job": "Director",
+            "department": "Directing",
+            "known_for_department": "Directing",
+            "profile_path": "/mRMi8Q2fmlfbDYkE7A63gzFtGsZ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/mRMi8Q2fmlfbDYkE7A63gzFtGsZ.jpg",
             "role_type": "director"
           },
           {
@@ -897,6 +897,30 @@
           },
           {
             "source_name": "tmdb",
+            "source_person_id": "2471240",
+            "source_credit_id": "5de215ea0cd44600143589ac",
+            "name": "Kyle Pacek",
+            "character_name": "Jawa (uncredited)",
+            "known_for_department": "Acting",
+            "profile_path": "/6KnQ0GiQgaoyAe4DDkyokwpDoa7.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/6KnQ0GiQgaoyAe4DDkyokwpDoa7.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "6818",
+            "source_credit_id": "5de214d54f5801000f00770c",
+            "name": "Werner Herzog",
+            "character_name": "The Client",
+            "known_for_department": "Directing",
+            "profile_path": "/qKlz1oM482Xf0jTPfLiR6qXlLYK.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/qKlz1oM482Xf0jTPfLiR6qXlLYK.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
             "source_person_id": "51798",
             "source_credit_id": "5faedeff7a4ee7003fb49e00",
             "name": "Katee Sackhoff",
@@ -905,6 +929,18 @@
             "profile_path": "/kzcwfDDrgXnVgyTfcpG0obOn7Qk.jpg",
             "profile_url": "https://image.tmdb.org/t/p/w185/kzcwfDDrgXnVgyTfcpG0obOn7Qk.jpg",
             "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "38571",
+            "source_credit_id": "5dcb3476a06efe0014df6be0",
+            "name": "John Beasley",
+            "character_name": "Bartender",
+            "known_for_department": "Acting",
+            "profile_path": "/tpZQojv2UfelPHr1eSphcp0iEpJ.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/tpZQojv2UfelPHr1eSphcp0iEpJ.jpg",
+            "display_order": 500,
             "role_type": "cast"
           }
         ],
@@ -926,7 +962,7 @@
         "crew": []
       },
       "counts": {
-        "cast": 2,
+        "cast": 5,
         "directors": 0,
         "creators": 1,
         "crew": 0
@@ -983,9 +1019,21 @@
             "name": "Young Mazino",
             "character_name": "Jesse",
             "known_for_department": "Acting",
-            "profile_path": "/obh9i5mr0fpk91HVxr2SmDNZlVF.jpg",
-            "profile_url": "https://image.tmdb.org/t/p/w185/obh9i5mr0fpk91HVxr2SmDNZlVF.jpg",
+            "profile_path": "/bseVfwPNhDlToTIGs7FuKzd0uxi.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/bseVfwPNhDlToTIGs7FuKzd0uxi.jpg",
             "display_order": 4,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1253360",
+            "source_credit_id": "6024a814c0ae36003d59cc3c",
+            "name": "Pedro Pascal",
+            "character_name": "Joel Miller",
+            "known_for_department": "Acting",
+            "profile_path": "/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/oKcMbVn0NJTNzQt0ClKKvVXkm60.jpg",
+            "display_order": 219,
             "role_type": "cast"
           }
         ],
@@ -1019,7 +1067,7 @@
         "crew": []
       },
       "counts": {
-        "cast": 4,
+        "cast": 5,
         "directors": 0,
         "creators": 2,
         "crew": 0
@@ -1059,18 +1107,6 @@
           },
           {
             "source_name": "tmdb",
-            "source_person_id": "1356210",
-            "source_credit_id": "579f8d3092514178bf003120",
-            "name": "Millie Bobby Brown",
-            "character_name": "Eleven / Jane Hopper",
-            "known_for_department": "Acting",
-            "profile_path": "/kHO7hdNEVuTnQ0OjjrxP1RcAa0e.jpg",
-            "profile_url": "https://image.tmdb.org/t/p/w185/kHO7hdNEVuTnQ0OjjrxP1RcAa0e.jpg",
-            "display_order": 2,
-            "role_type": "cast"
-          },
-          {
-            "source_name": "tmdb",
             "source_person_id": "1442069",
             "source_credit_id": "5759b9909251416bab0002c4",
             "name": "Finn Wolfhard",
@@ -1078,6 +1114,18 @@
             "known_for_department": "Acting",
             "profile_path": "/vgjd34eWfVL6GsLHwiwcAsjWLmo.jpg",
             "profile_url": "https://image.tmdb.org/t/p/w185/vgjd34eWfVL6GsLHwiwcAsjWLmo.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1356210",
+            "source_credit_id": "579f8d3092514178bf003120",
+            "name": "Millie Bobby Brown",
+            "character_name": "Eleven / Jane Hopper",
+            "known_for_department": "Acting",
+            "profile_path": "/kHO7hdNEVuTnQ0OjjrxP1RcAa0e.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/kHO7hdNEVuTnQ0OjjrxP1RcAa0e.jpg",
             "display_order": 3,
             "role_type": "cast"
           },
@@ -1188,14 +1236,14 @@
           },
           {
             "source_name": "tmdb",
-            "source_person_id": "10964",
-            "source_credit_id": "5f4e551e41465c0035a7af65",
-            "name": "Laz Alonso",
-            "character_name": "Marvin T. 'Mother's Milk' Milk / M.M.",
+            "source_person_id": "198847",
+            "source_credit_id": "5a60c74ec3a368537b0005dc",
+            "name": "Jessie T. Usher",
+            "character_name": "Reggie Franklin / A-Train",
             "known_for_department": "Acting",
-            "profile_path": "/nmgOd3X2Xn3jIp9OLCRJzLExRWN.jpg",
-            "profile_url": "https://image.tmdb.org/t/p/w185/nmgOd3X2Xn3jIp9OLCRJzLExRWN.jpg",
-            "display_order": 6,
+            "profile_path": "/bkFM2GHKU1rr6CRCgeaojY1TDCS.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/bkFM2GHKU1rr6CRCgeaojY1TDCS.jpg",
+            "display_order": 5,
             "role_type": "cast"
           }
         ],
@@ -1242,6 +1290,54 @@
             "profile_url": "https://image.tmdb.org/t/p/w185/m3Mo38afbKmy9EOsfmUagvTFM9q.jpg",
             "display_order": 0,
             "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "142660",
+            "source_credit_id": "5ec1d30ad2147c0022b41e2f",
+            "name": "Lisa Vicari",
+            "character_name": "Martha Nielsen",
+            "known_for_department": "Acting",
+            "profile_path": "/y31tGv4Y7yijRBQdGWwIZs8Loml.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/y31tGv4Y7yijRBQdGWwIZs8Loml.jpg",
+            "display_order": 1,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1073985",
+            "source_credit_id": "5ec1df75cdf2e600204f2d7c",
+            "name": "Andreas Pietschmann",
+            "character_name": "The Stranger",
+            "known_for_department": "Acting",
+            "profile_path": "/72Srjd11dwvovxe1tyUKU0ml04u.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/72Srjd11dwvovxe1tyUKU0ml04u.jpg",
+            "display_order": 2,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "1608974",
+            "source_credit_id": "5ec3230228723c0020492714",
+            "name": "Daan Lennard Liebrenz",
+            "character_name": "Mikkel Nielsen",
+            "known_for_department": "Acting",
+            "profile_path": "/dYJWxmuhKvSjx7vCQdybZsoe38X.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/dYJWxmuhKvSjx7vCQdybZsoe38X.jpg",
+            "display_order": 3,
+            "role_type": "cast"
+          },
+          {
+            "source_name": "tmdb",
+            "source_person_id": "38608",
+            "source_credit_id": "5d8f871466a7c3000f8969c3",
+            "name": "Dietrich Hollinderbäumer",
+            "character_name": "Adam",
+            "known_for_department": "Acting",
+            "profile_path": "/wj4zDoZnFMRhyTCeKx0C8Zh6q07.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/wj4zDoZnFMRhyTCeKx0C8Zh6q07.jpg",
+            "display_order": 4,
+            "role_type": "cast"
           }
         ],
         "directors": [],
@@ -1274,7 +1370,7 @@
         "crew": []
       },
       "counts": {
-        "cast": 1,
+        "cast": 5,
         "directors": 0,
         "creators": 2,
         "crew": 0
@@ -1288,6 +1384,18 @@
       "title": "The Witcher",
       "credits": {
         "cast": [
+          {
+            "source_name": "tmdb",
+            "source_person_id": "73968",
+            "source_credit_id": "5b8e9e27c3a3681ae400050c",
+            "name": "Henry Cavill",
+            "character_name": "Geralt of Rivia",
+            "known_for_department": "Acting",
+            "profile_path": "/kN3A5oLgtKYAxa9lAkpsIGYKYVo.jpg",
+            "profile_url": "https://image.tmdb.org/t/p/w185/kN3A5oLgtKYAxa9lAkpsIGYKYVo.jpg",
+            "display_order": 0,
+            "role_type": "cast"
+          },
           {
             "source_name": "tmdb",
             "source_person_id": "96066",
@@ -1334,18 +1442,6 @@
             "profile_path": "/4uo4JPaK6KpdN7v8C1pbwKpNVJU.jpg",
             "profile_url": "https://image.tmdb.org/t/p/w185/4uo4JPaK6KpdN7v8C1pbwKpNVJU.jpg",
             "display_order": 4,
-            "role_type": "cast"
-          },
-          {
-            "source_name": "tmdb",
-            "source_person_id": "110425",
-            "source_credit_id": "5c7bd15c0e0a2611e1143ea4",
-            "name": "Eamon Farren",
-            "character_name": "Cahir",
-            "known_for_department": "Acting",
-            "profile_path": "/f4EX93f9MRCfjJc4kKAKqVqRsUW.jpg",
-            "profile_url": "https://image.tmdb.org/t/p/w185/f4EX93f9MRCfjJc4kKAKqVqRsUW.jpg",
-            "display_order": 5,
             "role_type": "cast"
           }
         ],

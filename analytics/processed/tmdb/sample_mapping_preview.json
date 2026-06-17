@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-12T06:48:25.376731+00:00",
+  "generated_at": "2026-06-17T06:32:31.010214+00:00",
   "inspection_only": true,
   "items": [
     {
@@ -18,7 +18,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
-      "popularity": 67.4273,
+      "popularity": 69.9304,
       "poster_path": "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "release_date": "2014-11-05",
@@ -35,7 +35,7 @@
         "Casey Affleck"
       ],
       "vote_average": 8.478,
-      "vote_count": 39976,
+      "vote_count": 40022,
       "year": 2014
     },
     {
@@ -54,7 +54,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
-      "popularity": 32.9299,
+      "popularity": 31.6964,
       "poster_path": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "release_date": "2010-07-15",
@@ -71,7 +71,7 @@
         "Elliot Page"
       ],
       "vote_average": 8.372,
-      "vote_count": 39341,
+      "vote_count": 39369,
       "year": 2010
     },
     {
@@ -90,7 +90,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
-      "popularity": 41.699,
+      "popularity": 40.915,
       "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
       "release_date": "2008-07-16",
@@ -106,8 +106,8 @@
         "Michael Caine",
         "Maggie Gyllenhaal"
       ],
-      "vote_average": 8.5,
-      "vote_count": 35875,
+      "vote_average": 8.531,
+      "vote_count": 35907,
       "year": 2008
     },
     {
@@ -126,7 +126,7 @@
       "media_type": "movie",
       "original_language": "ko",
       "overview": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
-      "popularity": 36.4975,
+      "popularity": 32.8232,
       "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
       "release_date": "2019-05-30",
@@ -143,7 +143,7 @@
         "Park So-dam"
       ],
       "vote_average": 8.494,
-      "vote_count": 20706,
+      "vote_count": 20737,
       "year": 2019
     },
     {
@@ -161,7 +161,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
-      "popularity": 23.0595,
+      "popularity": 21.7491,
       "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
       "release_date": "2024-02-27",
@@ -177,8 +177,8 @@
         "Javier Bardem",
         "Josh Brolin"
       ],
-      "vote_average": 8.128,
-      "vote_count": 8019,
+      "vote_average": 8.126,
+      "vote_count": 8036,
       "year": 2024
     },
     {
@@ -197,7 +197,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land. However, when they get a chance to go to the real world, they soon discover the joys and perils of living among humans.",
-      "popularity": 20.6207,
+      "popularity": 18.1387,
       "poster_path": "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
       "release_date": "2023-07-19",
@@ -213,16 +213,16 @@
         "Ariana Greenblatt",
         "Issa Rae"
       ],
-      "vote_average": 6.922,
-      "vote_count": 11136,
+      "vote_average": 6.921,
+      "vote_count": 11148,
       "year": 2023
     },
     {
       "backdrop_path": "/9xfDWXAUbFXQK585JvByT5pEAhe.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/9xfDWXAUbFXQK585JvByT5pEAhe.jpg",
       "director_or_creator_names": [
-        "Justin K. Thompson",
         "Kemp Powers",
+        "Justin K. Thompson",
         "Joaquim Dos Santos"
       ],
       "genres": [
@@ -236,7 +236,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse's very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
-      "popularity": 30.1341,
+      "popularity": 25.1451,
       "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "release_date": "2023-05-31",
@@ -252,8 +252,8 @@
         "Luna Lauren Vélez",
         "Jake Johnson"
       ],
-      "vote_average": 8.337,
-      "vote_count": 8654,
+      "vote_average": 8.336,
+      "vote_count": 8670,
       "year": 2023
     },
     {
@@ -272,7 +272,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "An Interpol-issued Red Notice is a global alert to hunt and capture the world's most wanted. But when a daring heist brings together the FBI's top profiler and two rival criminals, there's no telling what will happen.",
-      "popularity": 7.4526,
+      "popularity": 7.7096,
       "poster_path": "/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "release_date": "2021-11-04",
@@ -288,8 +288,8 @@
         "Ritu Arya",
         "Chris Diamantopoulos"
       ],
-      "vote_average": 6.731,
-      "vote_count": 6453,
+      "vote_average": 6.732,
+      "vote_count": 6460,
       "year": 2021
     },
     {
@@ -309,9 +309,9 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
-      "popularity": 158.4361,
-      "poster_path": "/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
-      "poster_url": "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+      "popularity": 142.5611,
+      "poster_path": "/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
       "release_date": "2008-01-20",
       "runtime": null,
       "source_provider": "tmdb",
@@ -325,8 +325,8 @@
         "RJ Mitte",
         "Dean Norris"
       ],
-      "vote_average": 8.946,
-      "vote_count": 17901,
+      "vote_average": 8.947,
+      "vote_count": 17932,
       "year": 2008
     },
     {
@@ -346,7 +346,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "After the fall of the Galactic Empire, lawlessness has spread throughout the galaxy. A lone gunfighter makes his way through the outer reaches, earning his keep as a bounty hunter.",
-      "popularity": 71.3149,
+      "popularity": 63.8374,
       "poster_path": "/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
       "release_date": "2019-11-12",
@@ -359,8 +359,8 @@
         "Pedro Pascal",
         "Katee Sackhoff"
       ],
-      "vote_average": 8.41,
-      "vote_count": 10968,
+      "vote_average": 8.4,
+      "vote_count": 10983,
       "year": 2019
     },
     {
@@ -380,7 +380,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "Twenty years after modern civilization has been destroyed, Joel, a hardened survivor, is hired to smuggle Ellie, a 14-year-old girl, out of an oppressive quarantine zone. What starts as a small job soon becomes a brutal, heartbreaking journey, as they both must traverse the United States and depend on each other for survival.",
-      "popularity": 43.4921,
+      "popularity": 30.2249,
       "poster_path": "/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
       "release_date": "2023-01-15",
@@ -395,8 +395,8 @@
         "Isabela Merced",
         "Young Mazino"
       ],
-      "vote_average": 8.428,
-      "vote_count": 7045,
+      "vote_average": 8.426,
+      "vote_count": 7058,
       "year": 2023
     },
     {
@@ -418,7 +418,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
-      "popularity": 132.5819,
+      "popularity": 124.377,
       "poster_path": "/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
       "release_date": "2016-07-15",
@@ -435,7 +435,7 @@
         "Gaten Matarazzo"
       ],
       "vote_average": 8.564,
-      "vote_count": 21278,
+      "vote_count": 21302,
       "year": 2016
     },
     {
@@ -455,7 +455,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "A group of vigilantes known informally as “The Boys” set out to take down corrupt superheroes with no more than blue-collar grit and a willingness to fight dirty.",
-      "popularity": 342.517,
+      "popularity": 287.9306,
       "poster_path": "/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "release_date": "2019-07-25",
@@ -471,8 +471,8 @@
         "Erin Moriarty",
         "Laz Alonso"
       ],
-      "vote_average": 8.453,
-      "vote_count": 12894,
+      "vote_average": 8.451,
+      "vote_count": 12930,
       "year": 2019
     },
     {
@@ -495,7 +495,7 @@
       "media_type": "tv",
       "original_language": "de",
       "overview": "A missing child sets four families on a frantic hunt for answers as they unearth a mind-bending mystery that spans three generations.",
-      "popularity": 41.9549,
+      "popularity": 38.7509,
       "poster_path": "/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
       "release_date": "2017-12-01",
@@ -507,8 +507,8 @@
       "top_cast_names": [
         "Louis Hofmann"
       ],
-      "vote_average": 8.424,
-      "vote_count": 7588,
+      "vote_average": 8.425,
+      "vote_count": 7597,
       "year": 2017
     },
     {
@@ -528,7 +528,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "Geralt of Rivia, a mutated monster-hunter for hire, journeys toward his destiny in a turbulent world where people often prove more wicked than beasts.",
-      "popularity": 47.1923,
+      "popularity": 44.6731,
       "poster_path": "/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
       "release_date": "2019-12-20",
@@ -544,8 +544,8 @@
         "Joey Batey",
         "Eamon Farren"
       ],
-      "vote_average": 7.915,
-      "vote_count": 6703,
+      "vote_average": 7.913,
+      "vote_count": 6714,
       "year": 2019
     }
   ],

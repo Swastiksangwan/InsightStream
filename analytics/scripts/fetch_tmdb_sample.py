@@ -267,7 +267,14 @@ def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[st
 def fetch_title_payloads(
     sample: SampleTitle,
     token: str,
-) -> tuple[int, dict[str, Any], dict[str, Any], dict[str, Any], list[str]]:
+) -> tuple[
+    int,
+    dict[str, Any],
+    dict[str, Any],
+    dict[str, Any],
+    dict[str, Any] | None,
+    list[str],
+]:
     notes: list[str] = []
     tmdb_id = sample.tmdb_id
 
@@ -282,6 +289,7 @@ def fetch_title_payloads(
     details_path = f"/{sample.media_type}/{tmdb_id}"
     external_ids_path = f"/{sample.media_type}/{tmdb_id}/external_ids"
     credits_path = f"/{sample.media_type}/{tmdb_id}/credits"
+    aggregate_credits_path = f"/tv/{tmdb_id}/aggregate_credits"
 
     details = fetch_tmdb_json(details_path, token)
     actual_title = get_details_title(details, sample.media_type)
@@ -301,8 +309,20 @@ def fetch_title_payloads(
 
     external_ids = fetch_tmdb_json(external_ids_path, token)
     credits = fetch_tmdb_json(credits_path, token)
+    aggregate_credits = None
 
-    return tmdb_id, details, external_ids, credits, notes
+    if sample.media_type == "tv":
+        try:
+            aggregate_credits = fetch_tmdb_json(aggregate_credits_path, token)
+        except TmdbFetchError as exc:
+            note = (
+                "TV aggregate credits fetch failed; regular TV credits remain available "
+                f"as fallback: {exc}"
+            )
+            notes.append(note)
+            print(f"  Warning: {note}")
+
+    return tmdb_id, details, external_ids, credits, aggregate_credits, notes
 
 
 def top_cast_names(credits: dict[str, Any], limit: int = 5) -> list[str]:
@@ -554,7 +574,14 @@ def main() -> int:
     for sample in SAMPLE_TITLES:
         print(f"Fetching {sample.title} ({sample.media_type})...")
         try:
-            tmdb_id, details, external_ids, credits, notes = fetch_title_payloads(
+            (
+                tmdb_id,
+                details,
+                external_ids,
+                credits,
+                aggregate_credits,
+                notes,
+            ) = fetch_title_payloads(
                 sample,
                 token,
             )
@@ -585,6 +612,15 @@ def main() -> int:
         save_json(external_ids_path, external_ids)
         save_json(credits_path, credits)
         raw_files.extend([details_path, external_ids_path, credits_path])
+
+        if sample.media_type == "tv" and aggregate_credits is not None:
+            aggregate_credits_path = RAW_OUTPUT_DIR / raw_filename(
+                sample.media_type,
+                tmdb_id,
+                "aggregate_credits",
+            )
+            save_json(aggregate_credits_path, aggregate_credits)
+            raw_files.append(aggregate_credits_path)
 
         if sample.media_type == "movie":
             mapped = map_tmdb_movie_preview(

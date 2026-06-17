@@ -28,6 +28,8 @@ The first preview focuses on:
 
 Generic crew remains empty for now so the first import can stay focused and reviewable.
 
+For TV series, the preview should prefer TMDb aggregate credits for show-level cast. Regular TV credits can be incomplete or biased toward a current/recent season, so `tv_{tmdb_id}_aggregate_credits.json` is used for cast extraction when available. The regular `tv_{tmdb_id}_credits.json` file remains a fallback and should produce a warning when used.
+
 ## Why It Is Preview-Only
 
 People and credits should be imported only after reviewing structured person IDs, role data, display order, and missing-field warnings. The import should create `people`, `person_external_ids`, and `content_people` rows through a safe, idempotent script.

@@ -57,6 +57,12 @@ def load_json(path: Path) -> dict[str, Any]:
     return data
 
 
+def load_optional_json(path: Path) -> Optional[dict[str, Any]]:
+    if not path.exists():
+        return None
+    return load_json(path)
+
+
 def save_json(path: Path, data: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -123,6 +129,97 @@ def map_cast_member(cast_member: dict[str, Any], warnings: list[str]) -> dict[st
         "source_credit_id": cast_member.get("credit_id"),
         "name": name,
         "character_name": cast_member.get("character"),
+        "known_for_department": cast_member.get("known_for_department"),
+        "profile_path": cast_member.get("profile_path"),
+        "profile_url": profile_url(cast_member.get("profile_path")),
+        "display_order": cast_member.get("order"),
+        "role_type": "cast",
+    }
+
+
+def role_episode_count(role: dict[str, Any]) -> int:
+    episode_count = role.get("episode_count")
+    return episode_count if isinstance(episode_count, int) else -1
+
+
+def total_episode_count(cast_member: dict[str, Any]) -> int:
+    episode_count = cast_member.get("total_episode_count")
+    if isinstance(episode_count, int):
+        return episode_count
+
+    roles = cast_member.get("roles")
+    if isinstance(roles, list):
+        role_counts = [
+            role_episode_count(role)
+            for role in roles
+            if isinstance(role, dict)
+        ]
+        return max(role_counts, default=-1)
+
+    return -1
+
+
+def selected_aggregate_role(
+    cast_member: dict[str, Any],
+    warnings: list[str],
+) -> dict[str, Any]:
+    name = cast_member.get("name") or "<unknown>"
+    roles = cast_member.get("roles")
+
+    if not isinstance(roles, list) or not roles:
+        warnings.append(
+            f"Aggregate cast member {name} is missing roles/character data."
+        )
+        return {}
+
+    valid_roles = [role for role in roles if isinstance(role, dict)]
+    if not valid_roles:
+        warnings.append(
+            f"Aggregate cast member {name} has no usable roles/character data."
+        )
+        return {}
+
+    roles_with_counts = [
+        role for role in valid_roles if isinstance(role.get("episode_count"), int)
+    ]
+    if roles_with_counts:
+        selected_role = sorted(
+            roles_with_counts,
+            key=lambda role: role.get("episode_count", -1),
+            reverse=True,
+        )[0]
+    else:
+        selected_role = valid_roles[0]
+
+    if not selected_role.get("character"):
+        warnings.append(
+            f"Aggregate cast member {name} is missing selected role character."
+        )
+
+    return selected_role
+
+
+def map_aggregate_cast_member(
+    cast_member: dict[str, Any],
+    warnings: list[str],
+) -> dict[str, Any]:
+    source_person_id = as_source_person_id(cast_member.get("id"))
+    name = cast_member.get("name")
+    selected_role = selected_aggregate_role(cast_member, warnings)
+
+    if not source_person_id:
+        warnings.append(
+            f"Missing source person ID for aggregate cast member {name or '<unknown>'}."
+        )
+    if not name:
+        warnings.append("Missing aggregate cast member name.")
+
+    return {
+        "source_name": SOURCE_PROVIDER,
+        "source_person_id": source_person_id,
+        "source_credit_id": selected_role.get("credit_id") or cast_member.get("credit_id"),
+        "name": name,
+        "character_name": selected_role.get("character") or cast_member.get("character"),
         "known_for_department": cast_member.get("known_for_department"),
         "profile_path": cast_member.get("profile_path"),
         "profile_url": profile_url(cast_member.get("profile_path")),
@@ -217,6 +314,61 @@ def extract_cast(credits: dict[str, Any], warnings: list[str]) -> list[dict[str,
     ]
 
 
+def extract_aggregate_cast(
+    aggregate_credits: dict[str, Any],
+    warnings: list[str],
+) -> list[dict[str, Any]]:
+    cast = aggregate_credits.get("cast")
+    if not isinstance(cast, list):
+        warnings.append("Missing or invalid cast array in aggregate credits file.")
+        return []
+
+    if not cast:
+        warnings.append("Missing cast in aggregate credits.")
+        return []
+
+    sorted_cast = sorted(
+        [cast_member for cast_member in cast if isinstance(cast_member, dict)],
+        key=lambda item: (
+            item.get("order") if isinstance(item.get("order"), int) else 9999,
+            -total_episode_count(item),
+            item.get("name") or "",
+        ),
+    )
+
+    return [
+        map_aggregate_cast_member(cast_member, warnings)
+        for cast_member in sorted_cast[:CAST_LIMIT]
+    ]
+
+
+def extract_tv_cast(
+    aggregate_credits: Optional[dict[str, Any]],
+    regular_credits: dict[str, Any],
+    tmdb_id: int,
+    warnings: list[str],
+) -> list[dict[str, Any]]:
+    if aggregate_credits is None:
+        warnings.append(
+            f"TV aggregate credits file missing for tmdb_id={tmdb_id}; falling back to regular TV credits."
+        )
+        cast = extract_cast(regular_credits, warnings)
+    else:
+        cast = extract_aggregate_cast(aggregate_credits, warnings)
+        if not cast:
+            warnings.append(
+                f"No cast found in aggregate credits for tmdb_id={tmdb_id}; falling back to regular TV credits."
+            )
+            cast = extract_cast(regular_credits, warnings)
+
+    if not cast:
+        warnings.append(
+            f"No cast found after aggregate and regular TV credits fallback for tmdb_id={tmdb_id}."
+        )
+
+    return cast
+
+
 def extract_directors(credits: dict[str, Any], warnings: list[str]) -> list[dict[str, Any]]:
     crew = credits.get("crew")
     if not isinstance(crew, list):
@@ -305,12 +457,23 @@ def build_item(preview_item: dict[str, Any]) -> dict[str, Any]:
 
     details_path = RAW_INPUT_DIR / raw_filename(media_type, tmdb_id, "details")
     credits_path = RAW_INPUT_DIR / raw_filename(media_type, tmdb_id, "credits")
+    aggregate_credits_path = RAW_INPUT_DIR / raw_filename(
+        media_type,
+        tmdb_id,
+        "aggregate_credits",
+    )
 
     details = load_json(details_path)
     credits = load_json(credits_path)
+    aggregate_credits = (
+        load_optional_json(aggregate_credits_path) if media_type == "tv" else None
+    )
     validate_item(preview_item, details, warnings)
 
-    cast = extract_cast(credits, warnings)
+    if media_type == "tv":
+        cast = extract_tv_cast(aggregate_credits, credits, tmdb_id, warnings)
+    else:
+        cast = extract_cast(credits, warnings)
     directors: list[dict[str, Any]] = []
     creators: list[dict[str, Any]] = []
 
