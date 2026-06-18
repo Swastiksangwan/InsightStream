@@ -1,7 +1,16 @@
 from sqlalchemy import text
 
 
-def test_external_ids_table_has_seeded_rows(db_session):
+MIN_SEED_EXTERNAL_ID_COUNT = 15
+CANONICAL_SEED_TMDB_IDS = {
+    "Interstellar": "157336",
+    "Inception": "27205",
+    "The Last of Us": "100088",
+    "The Mandalorian": "82856",
+}
+
+
+def test_external_ids_table_has_seed_or_larger_catalog_rows(db_session):
     rows = db_session.execute(
         text(
             """
@@ -14,8 +23,31 @@ def test_external_ids_table_has_seeded_rows(db_session):
 
     counts = {row["source_name"]: row["total"] for row in rows}
 
-    assert counts.get("tmdb") == 15
-    assert counts.get("imdb") == 15
+    assert counts.get("tmdb", 0) >= MIN_SEED_EXTERNAL_ID_COUNT
+    assert counts.get("imdb", 0) >= MIN_SEED_EXTERNAL_ID_COUNT
+
+
+def test_canonical_seed_tmdb_external_ids_exist(db_session):
+    rows = db_session.execute(
+        text(
+            """
+            SELECT c.title, ei.external_id
+            FROM content c
+            JOIN external_ids ei ON ei.content_id = c.id
+            WHERE ei.source_name = 'tmdb'
+              AND c.title IN (
+                  'Interstellar',
+                  'Inception',
+                  'The Last of Us',
+                  'The Mandalorian'
+              );
+            """
+        )
+    ).mappings().all()
+
+    tmdb_ids = {row["title"]: row["external_id"] for row in rows}
+
+    assert tmdb_ids == CANONICAL_SEED_TMDB_IDS
 
 
 def test_every_seeded_tmdb_content_has_tmdb_external_id(db_session):

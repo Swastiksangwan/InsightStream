@@ -135,6 +135,15 @@
       "priority": "seed",
       "ingestion_status": "verified",
       "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Oppenheimer",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "872585",
+      "priority": "pipeline_test",
+      "ingestion_status": "verified",
+      "notes": "First one-title scalable ingestion test."
     }
   ]
 }

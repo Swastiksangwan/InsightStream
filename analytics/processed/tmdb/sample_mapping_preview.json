@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T06:21:35.496382+00:00",
+  "generated_at": "2026-06-18T09:59:58.432701+00:00",
   "inspection_only": true,
   "items": [
     {
@@ -64,7 +64,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
-      "popularity": 31.6964,
+      "popularity": 31.9669,
       "poster_path": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "priority": "seed",
@@ -84,8 +84,8 @@
         "Tom Hardy",
         "Elliot Page"
       ],
-      "vote_average": 8.372,
-      "vote_count": 39375,
+      "vote_average": 8.4,
+      "vote_count": 39376,
       "year": 2010
     },
     {
@@ -127,7 +127,7 @@
         "Michael Caine",
         "Maggie Gyllenhaal"
       ],
-      "vote_average": 8.531,
+      "vote_average": 8.5,
       "vote_count": 35918,
       "year": 2008
     },
@@ -281,7 +281,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse's very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
-      "popularity": 24.8159,
+      "popularity": 25.7865,
       "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "priority": "seed",
@@ -302,7 +302,7 @@
         "Jake Johnson"
       ],
       "vote_average": 8.336,
-      "vote_count": 8672,
+      "vote_count": 8673,
       "year": 2023
     },
     {
@@ -324,7 +324,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "An Interpol-issued Red Notice is a global alert to hunt and capture the world's most wanted. But when a daring heist brings together the FBI's top profiler and two rival criminals, there's no telling what will happen.",
-      "popularity": 7.5638,
+      "popularity": 8.4368,
       "poster_path": "/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "priority": "seed",
@@ -473,7 +473,7 @@
         "Young Mazino"
       ],
       "vote_average": 8.427,
-      "vote_count": 7061,
+      "vote_count": 7062,
       "year": 2023
     },
     {
@@ -519,7 +519,7 @@
         "Gaten Matarazzo"
       ],
       "vote_average": 8.563,
-      "vote_count": 21307,
+      "vote_count": 21310,
       "year": 2016
     },
     {
@@ -542,7 +542,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "A group of vigilantes known informally as “The Boys” set out to take down corrupt superheroes with no more than blue-collar grit and a willingness to fight dirty.",
-      "popularity": 287.9306,
+      "popularity": 273.7089,
       "poster_path": "/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "priority": "seed",
@@ -563,7 +563,7 @@
         "Laz Alonso"
       ],
       "vote_average": 8.451,
-      "vote_count": 12936,
+      "vote_count": 12938,
       "year": 2019
     },
     {
@@ -652,10 +652,52 @@
       "vote_average": 7.913,
       "vote_count": 6715,
       "year": 2019
+    },
+    {
+      "backdrop_path": "/neeNHeXjMF5fXoCJRsOmkNGC7q.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/neeNHeXjMF5fXoCJRsOmkNGC7q.jpg",
+      "content_type": "movie",
+      "director_or_creator_names": [
+        "Christopher Nolan"
+      ],
+      "genres": [
+        "Drama",
+        "History"
+      ],
+      "imdb_id": "tt15398776",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2023-07-19",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "The story of J. Robert Oppenheimer's role in the development of the atomic bomb during World War II.",
+      "popularity": 21.5654,
+      "poster_path": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
+      "priority": "pipeline_test",
+      "release_date": "2023-07-19",
+      "runtime": 181,
+      "source_id": "872585",
+      "source_name": "tmdb",
+      "source_provider": "tmdb",
+      "status": "Released",
+      "target_notes": "First one-title scalable ingestion test.",
+      "title": "Oppenheimer",
+      "tmdb_id": 872585,
+      "top_cast_names": [
+        "Cillian Murphy",
+        "Emily Blunt",
+        "Matt Damon",
+        "Robert Downey Jr.",
+        "Florence Pugh"
+      ],
+      "vote_average": 8.026,
+      "vote_count": 11859,
+      "year": 2023
     }
   ],
   "licensing_note": "Prototype/non-commercial inspection only. Follow TMDb terms, do not commit API keys, do not use TMDb content for ML/AI training, and do not assume permanent storage rights.",
   "source_provider": "tmdb",
   "source_target_path": "analytics/config/content_ingestion_targets.json",
-  "total_targets_loaded": 15
+  "total_targets_loaded": 16
 }
