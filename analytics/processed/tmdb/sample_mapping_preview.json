@@ -1,10 +1,11 @@
 {
-  "generated_at": "2026-06-17T06:32:31.010214+00:00",
+  "generated_at": "2026-06-18T06:21:35.496382+00:00",
   "inspection_only": true,
   "items": [
     {
       "backdrop_path": "/2ssWTSVklAEc98frZUQhgtGHx7s.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/2ssWTSVklAEc98frZUQhgtGHx7s.jpg",
+      "content_type": "movie",
       "director_or_creator_names": [
         "Christopher Nolan"
       ],
@@ -14,18 +15,23 @@
         "Science Fiction"
       ],
       "imdb_id": "tt0816692",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2014-11-05",
       "mapping_notes": [],
       "media_type": "movie",
       "original_language": "en",
       "overview": "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
-      "popularity": 69.9304,
+      "popularity": 73.2445,
       "poster_path": "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
+      "priority": "seed",
       "release_date": "2014-11-05",
-      "latest_activity_date": "2014-11-05",
       "runtime": 169,
+      "source_id": "157336",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Released",
+      "target_notes": "Current canonical seed title.",
       "title": "Interstellar",
       "tmdb_id": 157336,
       "top_cast_names": [
@@ -36,12 +42,13 @@
         "Casey Affleck"
       ],
       "vote_average": 8.478,
-      "vote_count": 40022,
+      "vote_count": 40031,
       "year": 2014
     },
     {
       "backdrop_path": "/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg",
+      "content_type": "movie",
       "director_or_creator_names": [
         "Christopher Nolan"
       ],
@@ -51,6 +58,8 @@
         "Adventure"
       ],
       "imdb_id": "tt1375666",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2010-07-15",
       "mapping_notes": [],
       "media_type": "movie",
       "original_language": "en",
@@ -58,11 +67,14 @@
       "popularity": 31.6964,
       "poster_path": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
+      "priority": "seed",
       "release_date": "2010-07-15",
-      "latest_activity_date": "2010-07-15",
       "runtime": 148,
+      "source_id": "27205",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Released",
+      "target_notes": "Current canonical seed title.",
       "title": "Inception",
       "tmdb_id": 27205,
       "top_cast_names": [
@@ -73,12 +85,13 @@
         "Elliot Page"
       ],
       "vote_average": 8.372,
-      "vote_count": 39369,
+      "vote_count": 39375,
       "year": 2010
     },
     {
       "backdrop_path": "/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/cfT29Im5VDvjE0RpyKOSdCKZal7.jpg",
+      "content_type": "movie",
       "director_or_creator_names": [
         "Christopher Nolan"
       ],
@@ -88,18 +101,23 @@
         "Thriller"
       ],
       "imdb_id": "tt0468569",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2008-07-16",
       "mapping_notes": [],
       "media_type": "movie",
       "original_language": "en",
       "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
-      "popularity": 40.915,
+      "popularity": 47.5608,
       "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+      "priority": "seed",
       "release_date": "2008-07-16",
-      "latest_activity_date": "2008-07-16",
       "runtime": 152,
+      "source_id": "155",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Released",
+      "target_notes": "Current canonical seed title.",
       "title": "The Dark Knight",
       "tmdb_id": 155,
       "top_cast_names": [
@@ -110,12 +128,13 @@
         "Maggie Gyllenhaal"
       ],
       "vote_average": 8.531,
-      "vote_count": 35907,
+      "vote_count": 35918,
       "year": 2008
     },
     {
       "backdrop_path": "/8eihUxjQsJ7WvGySkVMC0EwbPAD.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/8eihUxjQsJ7WvGySkVMC0EwbPAD.jpg",
+      "content_type": "movie",
       "director_or_creator_names": [
         "Bong Joon Ho"
       ],
@@ -125,18 +144,23 @@
         "Drama"
       ],
       "imdb_id": "tt6751668",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2019-05-30",
       "mapping_notes": [],
       "media_type": "movie",
       "original_language": "ko",
       "overview": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
-      "popularity": 32.8232,
+      "popularity": 33.2497,
       "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+      "priority": "seed",
       "release_date": "2019-05-30",
-      "latest_activity_date": "2019-05-30",
       "runtime": 133,
+      "source_id": "496243",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Released",
+      "target_notes": "Current canonical seed title.",
       "title": "Parasite",
       "tmdb_id": 496243,
       "top_cast_names": [
@@ -147,12 +171,13 @@
         "Park So-dam"
       ],
       "vote_average": 8.494,
-      "vote_count": 20737,
+      "vote_count": 20742,
       "year": 2019
     },
     {
       "backdrop_path": "/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/xOMo8BRK7PfcJv9JCnx7s5hj0PX.jpg",
+      "content_type": "movie",
       "director_or_creator_names": [
         "Denis Villeneuve"
       ],
@@ -161,18 +186,23 @@
         "Adventure"
       ],
       "imdb_id": "tt15239678",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2024-02-27",
       "mapping_notes": [],
       "media_type": "movie",
       "original_language": "en",
       "overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
-      "popularity": 21.7491,
+      "popularity": 20.1912,
       "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+      "priority": "seed",
       "release_date": "2024-02-27",
-      "latest_activity_date": "2024-02-27",
       "runtime": 167,
+      "source_id": "693134",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Released",
+      "target_notes": "Current canonical seed title.",
       "title": "Dune: Part Two",
       "tmdb_id": 693134,
       "top_cast_names": [
@@ -183,12 +213,13 @@
         "Josh Brolin"
       ],
       "vote_average": 8.126,
-      "vote_count": 8036,
+      "vote_count": 8039,
       "year": 2024
     },
     {
       "backdrop_path": "/3N5QNUqS76GFYNoEayfkkJyAyTN.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/3N5QNUqS76GFYNoEayfkkJyAyTN.jpg",
+      "content_type": "movie",
       "director_or_creator_names": [
         "Greta Gerwig"
       ],
@@ -198,18 +229,23 @@
         "Fantasy"
       ],
       "imdb_id": "tt1517268",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2023-07-19",
       "mapping_notes": [],
       "media_type": "movie",
       "original_language": "en",
       "overview": "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land. However, when they get a chance to go to the real world, they soon discover the joys and perils of living among humans.",
-      "popularity": 18.1387,
+      "popularity": 18.3539,
       "poster_path": "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
+      "priority": "seed",
       "release_date": "2023-07-19",
-      "latest_activity_date": "2023-07-19",
       "runtime": 114,
+      "source_id": "346698",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Released",
+      "target_notes": "Current canonical seed title.",
       "title": "Barbie",
       "tmdb_id": 346698,
       "top_cast_names": [
@@ -219,13 +255,14 @@
         "Ariana Greenblatt",
         "Issa Rae"
       ],
-      "vote_average": 6.921,
-      "vote_count": 11148,
+      "vote_average": 6.92,
+      "vote_count": 11152,
       "year": 2023
     },
     {
       "backdrop_path": "/9xfDWXAUbFXQK585JvByT5pEAhe.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/9xfDWXAUbFXQK585JvByT5pEAhe.jpg",
+      "content_type": "movie",
       "director_or_creator_names": [
         "Kemp Powers",
         "Justin K. Thompson",
@@ -238,18 +275,23 @@
         "Science Fiction"
       ],
       "imdb_id": "tt9362722",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2023-05-31",
       "mapping_notes": [],
       "media_type": "movie",
       "original_language": "en",
       "overview": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse's very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
-      "popularity": 25.1451,
+      "popularity": 24.8159,
       "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+      "priority": "seed",
       "release_date": "2023-05-31",
-      "latest_activity_date": "2023-05-31",
       "runtime": 140,
+      "source_id": "569094",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Released",
+      "target_notes": "Current canonical seed title.",
       "title": "Spider-Man: Across the Spider-Verse",
       "tmdb_id": 569094,
       "top_cast_names": [
@@ -260,12 +302,13 @@
         "Jake Johnson"
       ],
       "vote_average": 8.336,
-      "vote_count": 8670,
+      "vote_count": 8672,
       "year": 2023
     },
     {
       "backdrop_path": "/p34WRcgkN2QIHcds5FtFiSpV3PC.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/p34WRcgkN2QIHcds5FtFiSpV3PC.jpg",
+      "content_type": "movie",
       "director_or_creator_names": [
         "Rawson Marshall Thurber"
       ],
@@ -275,18 +318,23 @@
         "Crime"
       ],
       "imdb_id": "tt7991608",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2021-11-04",
       "mapping_notes": [],
       "media_type": "movie",
       "original_language": "en",
       "overview": "An Interpol-issued Red Notice is a global alert to hunt and capture the world's most wanted. But when a daring heist brings together the FBI's top profiler and two rival criminals, there's no telling what will happen.",
-      "popularity": 7.7096,
+      "popularity": 7.5638,
       "poster_path": "/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
+      "priority": "seed",
       "release_date": "2021-11-04",
-      "latest_activity_date": "2021-11-04",
       "runtime": 118,
+      "source_id": "512195",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Released",
+      "target_notes": "Current canonical seed title.",
       "title": "Red Notice",
       "tmdb_id": 512195,
       "top_cast_names": [
@@ -296,13 +344,14 @@
         "Ritu Arya",
         "Chris Diamantopoulos"
       ],
-      "vote_average": 6.732,
-      "vote_count": 6460,
+      "vote_average": 6.731,
+      "vote_count": 6462,
       "year": 2021
     },
     {
       "backdrop_path": "/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/tsRy63Mu5cu8etL1X7ZLyf7UP1M.jpg",
+      "content_type": "series",
       "director_or_creator_names": [
         "Vince Gilligan"
       ],
@@ -311,20 +360,25 @@
         "Crime"
       ],
       "imdb_id": "tt0903747",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2013-09-29",
       "mapping_notes": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ],
       "media_type": "tv",
       "original_language": "en",
       "overview": "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
-      "popularity": 142.5611,
+      "popularity": 133.507,
       "poster_path": "/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
+      "priority": "seed",
       "release_date": "2008-01-20",
-      "latest_activity_date": "2013-09-29",
       "runtime": null,
+      "source_id": "1396",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Ended",
+      "target_notes": "Current canonical seed title.",
       "title": "Breaking Bad",
       "tmdb_id": 1396,
       "top_cast_names": [
@@ -335,12 +389,13 @@
         "Dean Norris"
       ],
       "vote_average": 8.947,
-      "vote_count": 17932,
+      "vote_count": 17937,
       "year": 2008
     },
     {
       "backdrop_path": "/9zcbqSxdsRMZWHYtyCd1nXPr2xq.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/9zcbqSxdsRMZWHYtyCd1nXPr2xq.jpg",
+      "content_type": "series",
       "director_or_creator_names": [
         "Jon Favreau"
       ],
@@ -349,33 +404,39 @@
         "Action & Adventure"
       ],
       "imdb_id": "tt8111088",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2023-04-19",
       "mapping_notes": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ],
       "media_type": "tv",
       "original_language": "en",
       "overview": "After the fall of the Galactic Empire, lawlessness has spread throughout the galaxy. A lone gunfighter makes his way through the outer reaches, earning his keep as a bounty hunter.",
-      "popularity": 63.8374,
+      "popularity": 60.8034,
       "poster_path": "/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
+      "priority": "seed",
       "release_date": "2019-11-12",
-      "latest_activity_date": "2023-04-19",
       "runtime": null,
+      "source_id": "82856",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Ended",
+      "target_notes": "Current canonical seed title; corrected TMDb TV ID.",
       "title": "The Mandalorian",
       "tmdb_id": 82856,
       "top_cast_names": [
         "Pedro Pascal",
         "Katee Sackhoff"
       ],
-      "vote_average": 8.4,
-      "vote_count": 10983,
+      "vote_average": 8.409,
+      "vote_count": 10986,
       "year": 2019
     },
     {
       "backdrop_path": "/acevLdSl5I2MK5RYAm7gwAndt1w.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/acevLdSl5I2MK5RYAm7gwAndt1w.jpg",
+      "content_type": "series",
       "director_or_creator_names": [
         "Neil Druckmann",
         "Craig Mazin"
@@ -384,20 +445,25 @@
         "Drama"
       ],
       "imdb_id": "tt3581920",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2025-05-25",
       "mapping_notes": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ],
       "media_type": "tv",
       "original_language": "en",
       "overview": "Twenty years after modern civilization has been destroyed, Joel, a hardened survivor, is hired to smuggle Ellie, a 14-year-old girl, out of an oppressive quarantine zone. What starts as a small job soon becomes a brutal, heartbreaking journey, as they both must traverse the United States and depend on each other for survival.",
-      "popularity": 30.2249,
+      "popularity": 35.7285,
       "poster_path": "/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
+      "priority": "seed",
       "release_date": "2023-01-15",
-      "latest_activity_date": "2025-05-25",
       "runtime": null,
+      "source_id": "100088",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Returning Series",
+      "target_notes": "Current canonical seed title; TV aggregate credits used for show-level cast.",
       "title": "The Last of Us",
       "tmdb_id": 100088,
       "top_cast_names": [
@@ -406,13 +472,14 @@
         "Isabela Merced",
         "Young Mazino"
       ],
-      "vote_average": 8.426,
-      "vote_count": 7058,
+      "vote_average": 8.427,
+      "vote_count": 7061,
       "year": 2023
     },
     {
       "backdrop_path": "/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/56v2KjBlU4XaOv9rVYEQypROD7P.jpg",
+      "content_type": "series",
       "director_or_creator_names": [
         "Ross Duffer",
         "Matt Duffer"
@@ -423,20 +490,25 @@
         "Sci-Fi & Fantasy"
       ],
       "imdb_id": "tt4574334",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2025-12-31",
       "mapping_notes": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ],
       "media_type": "tv",
       "original_language": "en",
       "overview": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
-      "popularity": 124.377,
+      "popularity": 121.6386,
       "poster_path": "/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
+      "priority": "seed",
       "release_date": "2016-07-15",
-      "latest_activity_date": "2025-12-31",
       "runtime": null,
+      "source_id": "66732",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Ended",
+      "target_notes": "Current canonical seed title.",
       "title": "Stranger Things",
       "tmdb_id": 66732,
       "top_cast_names": [
@@ -446,13 +518,14 @@
         "Finn Wolfhard",
         "Gaten Matarazzo"
       ],
-      "vote_average": 8.564,
-      "vote_count": 21302,
+      "vote_average": 8.563,
+      "vote_count": 21307,
       "year": 2016
     },
     {
-      "backdrop_path": "/bq28ajZaoMyzEIm6REelqyqtEDZ.jpg",
-      "backdrop_url": "https://image.tmdb.org/t/p/w1280/bq28ajZaoMyzEIm6REelqyqtEDZ.jpg",
+      "backdrop_path": "/n6vVs6z8obNbExdD3QHTr4Utu1Z.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/n6vVs6z8obNbExdD3QHTr4Utu1Z.jpg",
+      "content_type": "series",
       "director_or_creator_names": [
         "Eric Kripke"
       ],
@@ -461,6 +534,8 @@
         "Action & Adventure"
       ],
       "imdb_id": "tt1190634",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2026-05-20",
       "mapping_notes": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ],
@@ -470,11 +545,14 @@
       "popularity": 287.9306,
       "poster_path": "/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
+      "priority": "seed",
       "release_date": "2019-07-25",
-      "latest_activity_date": "2026-05-20",
       "runtime": null,
+      "source_id": "76479",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Ended",
+      "target_notes": "Current canonical seed title.",
       "title": "The Boys",
       "tmdb_id": 76479,
       "top_cast_names": [
@@ -485,12 +563,13 @@
         "Laz Alonso"
       ],
       "vote_average": 8.451,
-      "vote_count": 12930,
+      "vote_count": 12936,
       "year": 2019
     },
     {
       "backdrop_path": "/3jDXL4Xvj3AzDOF6UH1xeyHW8MH.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/3jDXL4Xvj3AzDOF6UH1xeyHW8MH.jpg",
+      "content_type": "series",
       "director_or_creator_names": [
         "Baran bo Odar",
         "Jantje Friese"
@@ -502,32 +581,38 @@
         "Mystery"
       ],
       "imdb_id": "tt5753856",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2020-06-27",
       "mapping_notes": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ],
       "media_type": "tv",
       "original_language": "de",
       "overview": "A missing child sets four families on a frantic hunt for answers as they unearth a mind-bending mystery that spans three generations.",
-      "popularity": 38.7509,
+      "popularity": 37.2072,
       "poster_path": "/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
+      "priority": "seed",
       "release_date": "2017-12-01",
-      "latest_activity_date": "2020-06-27",
       "runtime": null,
+      "source_id": "70523",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Ended",
+      "target_notes": "Current canonical seed title.",
       "title": "Dark",
       "tmdb_id": 70523,
       "top_cast_names": [
         "Louis Hofmann"
       ],
       "vote_average": 8.425,
-      "vote_count": 7597,
+      "vote_count": 7598,
       "year": 2017
     },
     {
       "backdrop_path": "/foGkPxpw9h8zln81j63mix5B7m8.jpg",
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/foGkPxpw9h8zln81j63mix5B7m8.jpg",
+      "content_type": "series",
       "director_or_creator_names": [
         "Lauren Schmidt Hissrich"
       ],
@@ -536,20 +621,25 @@
         "Action & Adventure"
       ],
       "imdb_id": "tt5180504",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2025-10-30",
       "mapping_notes": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ],
       "media_type": "tv",
       "original_language": "en",
       "overview": "Geralt of Rivia, a mutated monster-hunter for hire, journeys toward his destiny in a turbulent world where people often prove more wicked than beasts.",
-      "popularity": 44.6731,
+      "popularity": 42.6129,
       "poster_path": "/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
+      "priority": "seed",
       "release_date": "2019-12-20",
-      "latest_activity_date": "2025-10-30",
       "runtime": null,
+      "source_id": "71912",
+      "source_name": "tmdb",
       "source_provider": "tmdb",
       "status": "Returning Series",
+      "target_notes": "Current canonical seed title.",
       "title": "The Witcher",
       "tmdb_id": 71912,
       "top_cast_names": [
@@ -560,10 +650,12 @@
         "Eamon Farren"
       ],
       "vote_average": 7.913,
-      "vote_count": 6714,
+      "vote_count": 6715,
       "year": 2019
     }
   ],
   "licensing_note": "Prototype/non-commercial inspection only. Follow TMDb terms, do not commit API keys, do not use TMDb content for ML/AI training, and do not assume permanent storage rights.",
-  "source_provider": "tmdb"
+  "source_provider": "tmdb",
+  "source_target_path": "analytics/config/content_ingestion_targets.json",
+  "total_targets_loaded": 15
 }

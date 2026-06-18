@@ -1,0 +1,140 @@
+{
+  "description": "Canonical InsightStream seed content targets for provider metadata inspection.",
+  "targets": [
+    {
+      "title": "Interstellar",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "157336",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Inception",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "27205",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "The Dark Knight",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "155",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Parasite",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "496243",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Dune: Part Two",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "693134",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Barbie",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "346698",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Spider-Man: Across the Spider-Verse",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "569094",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Red Notice",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "512195",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Breaking Bad",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1396",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "The Mandalorian",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "82856",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title; corrected TMDb TV ID."
+    },
+    {
+      "title": "The Last of Us",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "100088",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title; TV aggregate credits used for show-level cast."
+    },
+    {
+      "title": "Stranger Things",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "66732",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "The Boys",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "76479",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "Dark",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "70523",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    },
+    {
+      "title": "The Witcher",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "71912",
+      "priority": "seed",
+      "ingestion_status": "verified",
+      "notes": "Current canonical seed title."
+    }
+  ]
+}

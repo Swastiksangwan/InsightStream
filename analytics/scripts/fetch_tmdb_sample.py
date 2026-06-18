@@ -14,6 +14,7 @@ Inspection-only TMDb sample fetch script.
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -39,6 +40,15 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 RAW_OUTPUT_DIR = REPO_ROOT / "analytics" / "raw" / "tmdb"
 PROCESSED_OUTPUT_DIR = REPO_ROOT / "analytics" / "processed" / "tmdb"
 PREVIEW_OUTPUT_PATH = PROCESSED_OUTPUT_DIR / "sample_mapping_preview.json"
+DEFAULT_TARGETS_PATH = REPO_ROOT / "analytics" / "config" / "content_ingestion_targets.json"
+CONTENT_TYPE_TO_MEDIA_TYPE = {
+    "movie": "movie",
+    "series": "tv",
+}
+MEDIA_TYPE_TO_CONTENT_TYPE = {
+    "movie": "movie",
+    "tv": "series",
+}
 
 
 @dataclass(frozen=True)
@@ -47,30 +57,178 @@ class SampleTitle:
     media_type: str
     tmdb_id: int | None
     year: int | None = None
+    content_type: str | None = None
+    source_name: str = "tmdb"
+    source_id: str | None = None
+    priority: str | None = None
+    ingestion_status: str | None = None
+    notes: str | None = None
 
 
-# Current seeded titles from backend/sample_data.sql.
-SAMPLE_TITLES = [
-    SampleTitle("Interstellar", "movie", 157336, 2014),
-    SampleTitle("Inception", "movie", 27205, 2010),
-    SampleTitle("The Dark Knight", "movie", 155, 2008),
-    SampleTitle("Parasite", "movie", 496243, 2019),
-    SampleTitle("Dune: Part Two", "movie", 693134, 2024),
-    SampleTitle("Barbie", "movie", 346698, 2023),
-    SampleTitle("Spider-Man: Across the Spider-Verse", "movie", 569094, 2023),
-    SampleTitle("Red Notice", "movie", 512195, 2021),
-    SampleTitle("Breaking Bad", "tv", 1396, 2008),
-    SampleTitle("The Mandalorian", "tv", 82856, 2019),
-    SampleTitle("The Last of Us", "tv", 100088, 2023),
-    SampleTitle("Stranger Things", "tv", 66732, 2016),
-    SampleTitle("The Boys", "tv", 76479, 2019),
-    SampleTitle("Dark", "tv", 70523, 2017),
-    SampleTitle("The Witcher", "tv", 71912, 2019),
-]
+@dataclass(frozen=True)
+class TargetLoadResult:
+    path: Path
+    total_targets: int
+    skipped_targets: int
+    warnings: list[str]
+    samples: list[SampleTitle]
 
 
 class TmdbFetchError(RuntimeError):
     pass
+
+
+class TargetConfigError(RuntimeError):
+    pass
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Fetch inspection-only TMDb metadata for configured content targets."
+    )
+    parser.add_argument(
+        "--targets",
+        default=str(DEFAULT_TARGETS_PATH.relative_to(REPO_ROOT)),
+        help=(
+            "Path to ingestion target JSON. Defaults to "
+            f"{DEFAULT_TARGETS_PATH.relative_to(REPO_ROOT)}."
+        ),
+    )
+    return parser.parse_args(argv)
+
+
+def relative_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def resolve_target_path(path_value: str) -> Path:
+    path = Path(path_value).expanduser()
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    return path
+
+
+def config_text(value: Any) -> str | None:
+    if value is None:
+        return None
+    return str(value).strip()
+
+
+def parse_optional_year(value: Any) -> int | None:
+    if value is None or value == "":
+        return None
+    try:
+        year = int(value)
+    except (TypeError, ValueError):
+        return None
+    if 1800 <= year <= 3000:
+        return year
+    return None
+
+
+def parse_source_id(value: str | None) -> int | None:
+    if not value:
+        return None
+    try:
+        parsed = int(value)
+    except ValueError:
+        return None
+    if parsed <= 0:
+        return None
+    return parsed
+
+
+def load_targets(path: Path) -> TargetLoadResult:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise TargetConfigError(f"Missing target file: {relative_path(path)}") from exc
+    except json.JSONDecodeError as exc:
+        raise TargetConfigError(
+            f"Malformed target JSON in {relative_path(path)}: {exc}"
+        ) from exc
+
+    if not isinstance(data, dict):
+        raise TargetConfigError(
+            f"Target file must contain a JSON object: {relative_path(path)}"
+        )
+
+    targets = data.get("targets")
+    if not isinstance(targets, list):
+        raise TargetConfigError(
+            f"Target file must contain a 'targets' array: {relative_path(path)}"
+        )
+
+    warnings: list[str] = []
+    samples: list[SampleTitle] = []
+    skipped_targets = 0
+
+    for index, target in enumerate(targets, start=1):
+        if not isinstance(target, dict):
+            warnings.append(f"Target #{index}: expected an object; skipped.")
+            skipped_targets += 1
+            continue
+
+        title = config_text(target.get("title"))
+        content_type = (config_text(target.get("content_type")) or "").lower()
+        source_name = (config_text(target.get("source_name")) or "").lower()
+        source_id = config_text(target.get("source_id"))
+        priority = config_text(target.get("priority"))
+        ingestion_status = config_text(target.get("ingestion_status"))
+        notes = config_text(target.get("notes"))
+        label = title or f"target #{index}"
+
+        if (ingestion_status or "").lower() == "skip":
+            warnings.append(f"{label}: ingestion_status is skip; skipped.")
+            skipped_targets += 1
+            continue
+
+        validation_errors: list[str] = []
+        if not title:
+            validation_errors.append("missing title")
+        if content_type not in CONTENT_TYPE_TO_MEDIA_TYPE:
+            validation_errors.append("content_type must be movie or series")
+        if source_name != "tmdb":
+            validation_errors.append("source_name must be tmdb")
+        if not source_id:
+            validation_errors.append("missing source_id")
+
+        tmdb_id = parse_source_id(source_id)
+        if source_id and tmdb_id is None:
+            validation_errors.append("source_id must be a positive integer TMDb ID")
+
+        if validation_errors:
+            warnings.append(
+                f"{label}: invalid target ({'; '.join(validation_errors)}); skipped."
+            )
+            skipped_targets += 1
+            continue
+
+        samples.append(
+            SampleTitle(
+                title=title or "",
+                media_type=CONTENT_TYPE_TO_MEDIA_TYPE[content_type],
+                tmdb_id=tmdb_id,
+                year=parse_optional_year(target.get("year")),
+                content_type=content_type,
+                source_name=source_name,
+                source_id=source_id,
+                priority=priority,
+                ingestion_status=ingestion_status,
+                notes=notes,
+            )
+        )
+
+    return TargetLoadResult(
+        path=path,
+        total_targets=len(targets),
+        skipped_targets=skipped_targets,
+        warnings=warnings,
+        samples=samples,
+    )
 
 
 def fetch_tmdb_json(
@@ -274,8 +432,34 @@ def get_details_title(details: dict[str, Any], media_type: str) -> str | None:
     return details.get("name")
 
 
-def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[str, Any]:
+def content_type_from_media_type(media_type: str) -> str | None:
+    return MEDIA_TYPE_TO_CONTENT_TYPE.get(media_type)
+
+
+def target_metadata(sample: SampleTitle) -> dict[str, Any]:
     return {
+        "content_type": sample.content_type
+        or content_type_from_media_type(sample.media_type),
+        "source_name": sample.source_name,
+        "source_id": sample.source_id or (
+            str(sample.tmdb_id) if sample.tmdb_id is not None else None
+        ),
+        "priority": sample.priority,
+        "ingestion_status": sample.ingestion_status,
+        "target_notes": sample.notes,
+    }
+
+
+def attach_target_metadata(
+    item: dict[str, Any],
+    sample: SampleTitle,
+) -> dict[str, Any]:
+    item.update(target_metadata(sample))
+    return item
+
+
+def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[str, Any]:
+    return attach_target_metadata({
         "source_provider": "tmdb",
         "tmdb_id": sample.tmdb_id,
         "media_type": sample.media_type,
@@ -299,7 +483,7 @@ def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[st
         "top_cast_names": [],
         "director_or_creator_names": [],
         "mapping_notes": [error_message],
-    }
+    }, sample)
 
 
 def fetch_title_payloads(
@@ -420,6 +604,7 @@ def map_common_preview_fields(
         "source_provider": "tmdb",
         "tmdb_id": details.get("id"),
         "media_type": media_type,
+        "content_type": content_type_from_media_type(media_type),
         "overview": details.get("overview"),
         "runtime": None,
         "original_language": details.get("original_language"),
@@ -572,14 +757,21 @@ def print_preview_table(items: list[dict[str, Any]]) -> None:
         )
 
 
-def print_preview_totals(items: list[dict[str, Any]], total_fetched: int) -> None:
+def print_preview_totals(
+    items: list[dict[str, Any]],
+    total_targets_loaded: int,
+    total_fetched: int,
+    total_skipped: int,
+) -> None:
     total_with_poster = sum(1 for item in items if item.get("poster_url"))
     total_with_backdrop = sum(1 for item in items if item.get("backdrop_url"))
     total_with_imdb = sum(1 for item in items if item.get("imdb_id"))
     total_with_notes = sum(1 for item in items if item.get("mapping_notes"))
 
     print("\nPreview totals:")
+    print(f"- Total targets loaded: {total_targets_loaded}")
     print(f"- Total fetched: {total_fetched}")
+    print(f"- Total skipped: {total_skipped}")
     print(f"- Total preview items: {len(items)}")
     print(f"- Total with poster_url: {total_with_poster}")
     print(f"- Total with backdrop_url: {total_with_backdrop}")
@@ -587,7 +779,34 @@ def print_preview_totals(items: list[dict[str, Any]], total_fetched: int) -> Non
     print(f"- Total with warnings/mapping_notes: {total_with_notes}")
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    target_path = resolve_target_path(args.targets)
+
+    try:
+        target_result = load_targets(target_path)
+    except TargetConfigError as exc:
+        print(f"Could not load ingestion targets: {exc}")
+        print("No TMDb requests were made.")
+        print("No database changes were made.")
+        return 1
+
+    print(f"Target file used: {relative_path(target_result.path)}")
+    print(f"Total targets loaded: {target_result.total_targets}")
+    print(f"Valid fetch targets: {len(target_result.samples)}")
+    print(f"Targets skipped before fetch: {target_result.skipped_targets}")
+
+    if target_result.warnings:
+        print("\nTarget warnings:")
+        for warning in target_result.warnings:
+            print(f"- {warning}")
+
+    if not target_result.samples:
+        print("No valid targets were loaded. Check the target config file.")
+        print("No TMDb requests were made.")
+        print("No database changes were made.")
+        return 1
+
     token = os.getenv(TOKEN_ENV_VAR)
     if not token:
         print(
@@ -595,6 +814,7 @@ def main() -> int:
             f'  export {TOKEN_ENV_VAR}="..."\n'
             "No TMDb requests were made."
         )
+        print("No database changes were made.")
         return 1
 
     RAW_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -613,7 +833,7 @@ def main() -> int:
     errors: list[str] = []
     total_fetched = 0
 
-    for sample in SAMPLE_TITLES:
+    for sample in target_result.samples:
         print(f"Fetching {sample.title} ({sample.media_type})...")
         try:
             (
@@ -680,7 +900,7 @@ def main() -> int:
                 configuration,
                 notes,
             )
-        mapped_items.append(mapped)
+        mapped_items.append(attach_target_metadata(mapped, sample))
         total_fetched += 1
 
     if not mapped_items:
@@ -691,6 +911,8 @@ def main() -> int:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "inspection_only": True,
         "source_provider": "tmdb",
+        "source_target_path": relative_path(target_result.path),
+        "total_targets_loaded": target_result.total_targets,
         "licensing_note": (
             "Prototype/non-commercial inspection only. Follow TMDb terms, do not commit API keys, "
             "do not use TMDb content for ML/AI training, and do not assume permanent storage rights."
@@ -709,7 +931,13 @@ def main() -> int:
 
     print(f"\nProcessed preview saved: {PREVIEW_OUTPUT_PATH.relative_to(REPO_ROOT)}")
     print_preview_table(mapped_items)
-    print_preview_totals(mapped_items, total_fetched)
+    total_skipped = target_result.skipped_targets + len(errors)
+    print_preview_totals(
+        mapped_items,
+        target_result.total_targets,
+        total_fetched,
+        total_skipped,
+    )
 
     warning_items = [
         item for item in mapped_items if item.get("mapping_notes")
