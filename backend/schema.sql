@@ -15,6 +15,7 @@ CREATE TABLE content (
     poster_url TEXT,
     backdrop_url TEXT,
     release_date DATE,
+    latest_activity_date DATE,
     year INTEGER,
     runtime INTEGER,
     language VARCHAR(50),

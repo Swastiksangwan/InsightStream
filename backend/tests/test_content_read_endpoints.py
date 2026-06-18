@@ -34,11 +34,53 @@ def test_get_content_filters_series(client):
 def test_get_recent_content(client):
     response = client.get("/content/recent?limit=5")
     data = response.json()
+    titles = [item["title"] for item in data["items"]]
 
     assert response.status_code == 200
     assert data["total"] == 15
     assert len(data["items"]) == 5
-    assert data["items"][0]["title"] == "Dune: Part Two"
+    assert titles == [
+        "The Boys",
+        "Stranger Things",
+        "The Witcher",
+        "The Last of Us",
+        "Dune: Part Two",
+    ]
+
+
+def test_recent_sorting_preserves_series_original_release_date(client):
+    response = client.get("/content/recent?limit=5")
+    data = response.json()
+
+    the_boys = next(item for item in data["items"] if item["title"] == "The Boys")
+
+    assert response.status_code == 200
+    assert the_boys["release_date"] == "2019-07-26"
+    assert the_boys["year"] == 2019
+
+
+def test_recent_movie_filter_still_sorts_by_movie_release_date(client):
+    response = client.get("/content/recent?content_type=movie&limit=3")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert [item["title"] for item in data["items"]] == [
+        "Dune: Part Two",
+        "Barbie",
+        "Spider-Man: Across the Spider-Verse",
+    ]
+
+
+def test_discover_recent_uses_latest_activity_date(client):
+    response = client.get("/content/discover?sort_by=recent&limit=3")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert [item["title"] for item in data["items"]] == [
+        "The Boys",
+        "Stranger Things",
+        "The Witcher",
+    ]
 
 
 def test_get_top_rated_content(client):

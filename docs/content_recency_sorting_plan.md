@@ -10,7 +10,7 @@ For Recent sorting, series need a separate latest activity signal. A series shou
 
 ## 2. Current Problem
 
-Current backend sorting uses `content.release_date` for Recent ordering:
+Before the `latest_activity_date` implementation, backend sorting used `content.release_date` for Recent ordering:
 
 - `GET /content/recent` orders by `c.release_date DESC, c.title ASC`.
 - Discovery with `sort_by=recent` also orders by `c.release_date DESC, c.title ASC`.
@@ -19,6 +19,8 @@ Current backend sorting uses `content.release_date` for Recent ordering:
 This works reasonably for movies because the movie release date is the main recency date.
 
 For series, `release_date` represents `first_air_date` or first season premiere date. That means an actively updated series can look old if it first premiered years ago. A show with a recent season or recently aired episode should be able to rank as recent without changing its original release date.
+
+Implementation status: `content.latest_activity_date` has been added to support Recent sorting while preserving `release_date` as the original release or first air date.
 
 ## 3. Recommended Fields
 

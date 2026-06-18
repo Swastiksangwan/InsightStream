@@ -18,9 +18,17 @@ ON content (content_type);
 CREATE INDEX IF NOT EXISTS idx_content_release_date
 ON content (release_date DESC);
 
+-- Speeds up recent sorting when series use a latest activity date.
+CREATE INDEX IF NOT EXISTS idx_content_latest_activity_date
+ON content (latest_activity_date DESC);
+
 -- Speeds up common discovery sorting by type + release date.
 CREATE INDEX IF NOT EXISTS idx_content_type_release_date
 ON content (content_type, release_date DESC);
+
+-- Speeds up common discovery sorting by type + latest activity date.
+CREATE INDEX IF NOT EXISTS idx_content_type_latest_activity_date
+ON content (content_type, latest_activity_date DESC);
 
 -- Speeds up case-insensitive title search using ILIKE.
 CREATE INDEX IF NOT EXISTS idx_content_title_lower

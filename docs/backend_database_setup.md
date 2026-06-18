@@ -95,6 +95,8 @@ Expected result: sample rows are inserted successfully.
 
 Current expected seed state: `backend/sample_data.sql` loads 15 content titles, split into 8 movies and 7 series.
 
+The `content.release_date` column stores the original movie release date or series first air date. The `content.latest_activity_date` column stores the date used for Recent sorting, so active series can rank by latest show activity without changing their original premiere year.
+
 ### 4. Run Indexes
 
 1. Open `backend/indexes.sql`.
@@ -336,6 +338,7 @@ SELECT
     title,
     content_type,
     release_date,
+    latest_activity_date,
     year,
     age_rating
 FROM content
@@ -343,6 +346,26 @@ ORDER BY id;
 ```
 
 Expected current seed count: 15 total content rows.
+
+### Verify Recent Sorting Dates
+
+```sql
+SELECT
+    title,
+    content_type,
+    release_date,
+    latest_activity_date,
+    year
+FROM content
+ORDER BY COALESCE(latest_activity_date, release_date) DESC, title ASC
+LIMIT 10;
+```
+
+Expected behavior:
+
+- Movie `latest_activity_date` values match their `release_date`.
+- Series keep their original `release_date` and `year`.
+- Active/recently updated series can sort above newer movies when `latest_activity_date` is newer.
 
 ### Verify Content Count by Type
 
@@ -435,8 +458,10 @@ ORDER BY tablename, indexname;
 Useful indexes to confirm include:
 
 - `idx_content_content_type`
+- `idx_content_latest_activity_date`
 - `idx_content_release_date`
 - `idx_content_title_lower`
+- `idx_content_type_latest_activity_date`
 - `idx_content_type_release_date`
 - `idx_people_name`
 - `idx_people_known_for_department`

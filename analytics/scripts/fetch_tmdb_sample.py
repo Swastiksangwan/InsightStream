@@ -151,6 +151,43 @@ def year_from_date(date_value: str | None) -> int | None:
         return None
 
 
+def is_date_string(value: Any) -> bool:
+    return isinstance(value, str) and bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", value))
+
+
+def latest_valid_season_air_date(details: dict[str, Any]) -> str | None:
+    seasons = details.get("seasons")
+    if not isinstance(seasons, list):
+        return None
+
+    season_dates = [
+        season.get("air_date")
+        for season in seasons
+        if isinstance(season, dict) and is_date_string(season.get("air_date"))
+    ]
+    return max(season_dates) if season_dates else None
+
+
+def latest_tv_activity_date(details: dict[str, Any]) -> str | None:
+    last_episode = details.get("last_episode_to_air")
+    if isinstance(last_episode, dict) and is_date_string(last_episode.get("air_date")):
+        return last_episode.get("air_date")
+
+    last_air_date = details.get("last_air_date")
+    if is_date_string(last_air_date):
+        return last_air_date
+
+    season_air_date = latest_valid_season_air_date(details)
+    if season_air_date:
+        return season_air_date
+
+    first_air_date = details.get("first_air_date")
+    if is_date_string(first_air_date):
+        return first_air_date
+
+    return None
+
+
 def choose_image_size(
     available_sizes: list[str],
     preferred_size: str,
@@ -245,6 +282,7 @@ def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[st
         "title": sample.title,
         "overview": None,
         "release_date": None,
+        "latest_activity_date": None,
         "year": sample.year,
         "runtime": None,
         "original_language": None,
@@ -421,6 +459,7 @@ def map_tmdb_movie_preview(
         {
             "title": details.get("title"),
             "release_date": release_date,
+            "latest_activity_date": release_date,
             "year": year_from_date(release_date),
             "runtime": details.get("runtime"),
             "director_or_creator_names": crew_names_by_jobs(credits, {"Director"}),
@@ -476,6 +515,7 @@ def map_tmdb_tv_preview(
         {
             "title": details.get("name"),
             "release_date": release_date,
+            "latest_activity_date": latest_tv_activity_date(details),
             "year": year_from_date(release_date),
             "runtime": runtime,
             "director_or_creator_names": director_or_creator_names,
@@ -500,6 +540,7 @@ def print_preview_table(items: list[dict[str, Any]]) -> None:
         "Title",
         "Type",
         "Year",
+        "Latest",
         "Runtime",
         "Genres",
         "Poster",
@@ -508,10 +549,10 @@ def print_preview_table(items: list[dict[str, Any]]) -> None:
         "Notes",
     )
     print(
-        f"{header[0]:34} {header[1]:6} {header[2]:6} {header[3]:8} "
-        f"{header[4]:34} {header[5]:7} {header[6]:8} {header[7]:5} {header[8]:5}"
+        f"{header[0]:34} {header[1]:6} {header[2]:6} {header[3]:10} {header[4]:8} "
+        f"{header[5]:34} {header[6]:7} {header[7]:8} {header[8]:5} {header[9]:5}"
     )
-    print("-" * 130)
+    print("-" * 142)
     for item in items:
         genres = ", ".join(item.get("genres") or [])
         if len(genres) > 32:
@@ -521,6 +562,7 @@ def print_preview_table(items: list[dict[str, Any]]) -> None:
             f"{str(item.get('title') or '')[:34]:34} "
             f"{str(item.get('media_type') or '')[:6]:6} "
             f"{str(item.get('year') or '')[:6]:6} "
+            f"{str(item.get('latest_activity_date') or '')[:10]:10} "
             f"{str(item.get('runtime') or '')[:8]:8} "
             f"{genres[:34]:34} "
             f"{'yes' if item.get('poster_url') else 'no':7} "

@@ -16,6 +16,8 @@ CONTENT_SELECT_FIELDS = """
     c.age_rating
 """
 
+RECENT_SORT_EXPRESSION = "COALESCE(c.latest_activity_date, c.release_date)"
+
 
 def build_content_object(content_row):
     return {
@@ -41,7 +43,7 @@ def get_all_content_service(
     offset: int = 0
 ):
     base_from_query = """
-        FROM content
+        FROM content c
     """
 
     conditions = []
@@ -51,11 +53,11 @@ def get_all_content_service(
     }
 
     if content_type:
-        conditions.append("content_type = :content_type")
+        conditions.append("c.content_type = :content_type")
         params["content_type"] = content_type
 
     if search:
-        conditions.append("title ILIKE :search")
+        conditions.append("c.title ILIKE :search")
         params["search"] = f"%{search}%"
 
     if conditions:
@@ -63,19 +65,9 @@ def get_all_content_service(
 
     data_query = text(f"""
         SELECT
-            id,
-            title,
-            content_type,
-            overview,
-            poster_url,
-            backdrop_url,
-            release_date,
-            year,
-            runtime,
-            language,
-            age_rating
+            {CONTENT_SELECT_FIELDS}
         {base_from_query}
-        ORDER BY release_date DESC
+        ORDER BY {RECENT_SORT_EXPRESSION} DESC, c.title ASC
         LIMIT :limit OFFSET :offset;
     """)
 
@@ -201,7 +193,7 @@ def get_recent_content_service(
 ):
     base_from_query = """
         FROM content c
-        WHERE c.release_date IS NOT NULL
+        WHERE COALESCE(c.latest_activity_date, c.release_date) IS NOT NULL
     """
 
     params = {
@@ -217,7 +209,7 @@ def get_recent_content_service(
         SELECT
             {CONTENT_SELECT_FIELDS}
         {base_from_query}
-        ORDER BY c.release_date DESC, c.title ASC
+        ORDER BY {RECENT_SORT_EXPRESSION} DESC, c.title ASC
         LIMIT :limit OFFSET :offset;
     """)
 
@@ -268,9 +260,10 @@ def get_content_by_genre_service(
 
     data_query = text(f"""
         SELECT DISTINCT
-            {CONTENT_SELECT_FIELDS}
+            {CONTENT_SELECT_FIELDS},
+            {RECENT_SORT_EXPRESSION} AS sort_recent_date
         {base_from_query}
-        ORDER BY c.release_date DESC, c.title ASC
+        ORDER BY sort_recent_date DESC, c.title ASC
         LIMIT :limit OFFSET :offset;
     """)
 
@@ -326,9 +319,10 @@ def get_content_by_platform_service(
 
     data_query = text(f"""
         SELECT DISTINCT
-            {CONTENT_SELECT_FIELDS}
+            {CONTENT_SELECT_FIELDS},
+            {RECENT_SORT_EXPRESSION} AS sort_recent_date
         {base_from_query}
-        ORDER BY c.release_date DESC, c.title ASC
+        ORDER BY sort_recent_date DESC, c.title ASC
         LIMIT :limit OFFSET :offset;
     """)
 
@@ -409,7 +403,7 @@ def get_discover_content_service(
         base_from_query += " WHERE " + " AND ".join(conditions)
 
     # PostgreSQL requires ORDER BY fields to appear in SELECT when using SELECT DISTINCT.
-    # So for top-rated sorting, include cs.unified_score only as an internal sort field.
+    # Internal sort fields are ignored by build_content_object(), keeping the API shape stable.
     if sort_by == "top_rated":
         select_fields = f"""
             {CONTENT_SELECT_FIELDS},
@@ -417,8 +411,11 @@ def get_discover_content_service(
         """
         order_by = "ORDER BY sort_unified_score DESC NULLS LAST, c.release_date DESC, c.title ASC"
     else:
-        select_fields = CONTENT_SELECT_FIELDS
-        order_by = "ORDER BY c.release_date DESC, c.title ASC"
+        select_fields = f"""
+            {CONTENT_SELECT_FIELDS},
+            {RECENT_SORT_EXPRESSION} AS sort_recent_date
+        """
+        order_by = "ORDER BY sort_recent_date DESC, c.title ASC"
 
     data_query = text(f"""
         SELECT DISTINCT
