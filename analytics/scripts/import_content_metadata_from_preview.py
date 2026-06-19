@@ -303,16 +303,20 @@ def normalize_genres(raw_genres: Any, title: str, warnings: List[str]) -> List[s
 
         mapped_genres = GENRE_MAP.get(genre_name)
         if not mapped_genres:
-            warnings.append(
-                f"{title}: unmapped provider genre {genre_name!r}; preserved in preview but not applied."
-            )
-            continue
+            mapped_genres = (genre_name,)
 
         for mapped_genre in mapped_genres:
             if mapped_genre not in normalized:
                 normalized.append(mapped_genre)
 
     return normalized
+
+
+def preview_genres(item: Dict[str, Any]) -> Any:
+    genres = item.get("genres")
+    if isinstance(genres, list):
+        return genres
+    return item.get("genre_names")
 
 
 def collect_skipped_preview_fields(item: Dict[str, Any], stats: ImportStats) -> None:
@@ -378,7 +382,7 @@ def preview_record_from_item(
         "status": normalize_status(item.get("status"), title, local_warnings),
         "age_rating": clean_text(item.get("age_rating")),
     }
-    genres = normalize_genres(item.get("genres"), title, local_warnings)
+    genres = normalize_genres(preview_genres(item), title, local_warnings)
 
     stats.warnings.extend(local_warnings)
     collect_skipped_preview_fields(item, stats)
