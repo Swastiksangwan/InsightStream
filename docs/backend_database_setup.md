@@ -146,6 +146,8 @@ DROP TABLE IF EXISTS
     person_external_ids,
     content_summary,
     ratings,
+    content_certifications,
+    content_availability,
     external_ids,
     content_platforms,
     content_genres,
@@ -175,6 +177,8 @@ TRUNCATE TABLE
     person_external_ids,
     content_summary,
     ratings,
+    content_certifications,
+    content_availability,
     external_ids,
     content_platforms,
     content_genres,
@@ -209,6 +213,8 @@ ORDER BY table_name;
 Expected core tables:
 
 - `content`
+- `content_availability`
+- `content_certifications`
 - `content_genres`
 - `content_platforms`
 - `content_summary`
@@ -229,6 +235,10 @@ Expected core tables:
 SELECT 'users' AS table_name, COUNT(*) AS row_count FROM users
 UNION ALL
 SELECT 'content', COUNT(*) FROM content
+UNION ALL
+SELECT 'content_availability', COUNT(*) FROM content_availability
+UNION ALL
+SELECT 'content_certifications', COUNT(*) FROM content_certifications
 UNION ALL
 SELECT 'external_ids', COUNT(*) FROM external_ids
 UNION ALL
@@ -260,8 +270,12 @@ The person/cast/crew tables are not populated by `sample_data.sql`. Expected cou
 - `people`: 0
 - `person_external_ids`: 0
 - `content_people`: 0
+- `content_availability`: 0
+- `content_certifications`: 0
 
 People, cast, crew, director, and creator rows are added separately through the structured credits preview/import script.
+
+Region-aware availability and certification rows are not populated by `sample_data.sql` yet. The older `content_platforms` table remains the simple local seed availability source, and `content.age_rating` remains the compact display field. Future ingestion scripts should populate `content_availability` and `content_certifications` after source/region mapping is implemented.
 
 The read API `GET /content/{content_id}/credits` returns empty arrays until people/credits data has been imported. Person read APIs are also available:
 
@@ -303,6 +317,31 @@ SELECT 'content_people', COUNT(*) FROM content_people;
 ```
 
 Expected current result: all counts can be `0`.
+
+### Verify Region-Aware Availability and Certification Tables
+
+```sql
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public'
+  AND table_name IN ('content_availability', 'content_certifications')
+ORDER BY table_name;
+```
+
+Expected current result:
+
+- `content_availability`
+- `content_certifications`
+
+```sql
+SELECT 'content_availability' AS table_name, COUNT(*) FROM content_availability
+UNION ALL
+SELECT 'content_certifications', COUNT(*) FROM content_certifications;
+```
+
+Expected current result: both counts can be `0`.
+
+`content_availability` is intended for region-aware provider availability records such as streaming, rent, buy, ads, or free availability by country. `content_certifications` is intended for region/source-aware age rating records. Neither table replaces `content_platforms` or `content.age_rating` yet.
 
 After running the people/credits import script, useful checks include:
 
@@ -474,6 +513,9 @@ Useful indexes to confirm include:
 - `idx_genres_name_lower`
 - `idx_platforms_name_lower`
 - `idx_content_platforms_platform_availability`
+- `idx_content_availability_content_region`
+- `idx_content_availability_region_code`
+- `idx_content_certifications_country_code`
 - `idx_watch_later_user_content`
 - `idx_watched_user_content`
 

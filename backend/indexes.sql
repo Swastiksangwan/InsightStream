@@ -128,6 +128,35 @@ ON content_platforms (availability_type);
 CREATE INDEX IF NOT EXISTS idx_content_platforms_platform_availability
 ON content_platforms (platform_id, availability_type);
 
+-- Speeds up region-aware provider availability lookup.
+CREATE INDEX IF NOT EXISTS idx_content_availability_content_id
+ON content_availability (content_id);
+
+CREATE INDEX IF NOT EXISTS idx_content_availability_platform_id
+ON content_availability (platform_id);
+
+CREATE INDEX IF NOT EXISTS idx_content_availability_region_code
+ON content_availability (region_code);
+
+CREATE INDEX IF NOT EXISTS idx_content_availability_source_name
+ON content_availability (source_name);
+
+CREATE INDEX IF NOT EXISTS idx_content_availability_availability_type
+ON content_availability (availability_type);
+
+CREATE INDEX IF NOT EXISTS idx_content_availability_content_region
+ON content_availability (content_id, region_code);
+
+-- Speeds up region/source-aware certification lookup.
+CREATE INDEX IF NOT EXISTS idx_content_certifications_content_id
+ON content_certifications (content_id);
+
+CREATE INDEX IF NOT EXISTS idx_content_certifications_country_code
+ON content_certifications (country_code);
+
+CREATE INDEX IF NOT EXISTS idx_content_certifications_source_name
+ON content_certifications (source_name);
+
 
 -- ------------------------------------------------------------
 -- Ratings indexes

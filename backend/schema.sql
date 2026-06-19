@@ -104,6 +104,36 @@ CREATE TABLE content_platforms (
     UNIQUE (content_id, platform_id, availability_type)
 );
 
+CREATE TABLE IF NOT EXISTS content_availability (
+    id SERIAL PRIMARY KEY,
+    content_id INTEGER NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+    platform_id INTEGER NOT NULL REFERENCES platforms(id) ON DELETE CASCADE,
+    availability_type VARCHAR(50) NOT NULL,
+    region_code VARCHAR(10) NOT NULL,
+    source_name VARCHAR(50) NOT NULL,
+    source_provider_id VARCHAR(100),
+    display_priority INTEGER,
+    fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_content_availability_content_platform_type_region_source
+        UNIQUE (content_id, platform_id, availability_type, region_code, source_name)
+);
+
+CREATE TABLE IF NOT EXISTS content_certifications (
+    id SERIAL PRIMARY KEY,
+    content_id INTEGER NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+    certification VARCHAR(50) NOT NULL,
+    country_code VARCHAR(10) NOT NULL,
+    rating_system VARCHAR(50),
+    source_name VARCHAR(50) NOT NULL,
+    source_priority INTEGER,
+    notes TEXT,
+    fetched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_content_certifications_content_country_system_source
+        UNIQUE (content_id, country_code, rating_system, source_name)
+);
+
 CREATE TABLE ratings (
     id SERIAL PRIMARY KEY,
     content_id INTEGER NOT NULL,
