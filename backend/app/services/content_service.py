@@ -17,6 +17,8 @@ CONTENT_SELECT_FIELDS = """
 """
 
 RECENT_SORT_EXPRESSION = "COALESCE(c.latest_activity_date, c.release_date)"
+DEFAULT_AVAILABILITY_REGION = "IN"
+FALLBACK_AVAILABILITY_REGION = "US"
 
 
 def build_content_object(content_row):
@@ -33,6 +35,92 @@ def build_content_object(content_row):
         "language": content_row["language"],
         "age_rating": content_row["age_rating"]
     }
+
+
+def get_region_aware_platforms(
+    db: Session,
+    content_id: int,
+    region_code: str,
+) -> list[dict]:
+    platforms_query = text("""
+        SELECT
+            p.name AS name,
+            ca.availability_type,
+            p.platform_type,
+            ca.region_code,
+            ca.source_name,
+            ca.source_provider_id,
+            ca.display_priority
+        FROM content_availability ca
+        JOIN platforms p ON ca.platform_id = p.id
+        WHERE ca.content_id = :content_id
+          AND ca.region_code = :region_code
+        ORDER BY
+            CASE ca.availability_type
+                WHEN 'streaming' THEN 1
+                WHEN 'rent' THEN 2
+                WHEN 'buy' THEN 3
+                WHEN 'ads' THEN 4
+                WHEN 'free' THEN 5
+                ELSE 6
+            END,
+            ca.display_priority NULLS LAST,
+            p.name;
+    """)
+    platforms_result = db.execute(
+        platforms_query,
+        {
+            "content_id": content_id,
+            "region_code": region_code,
+        },
+    )
+    return [dict(row) for row in platforms_result.mappings().all()]
+
+
+def get_legacy_platforms(db: Session, content_id: int) -> list[dict]:
+    platforms_query = text("""
+        SELECT
+            p.name AS name,
+            cp.availability_type,
+            p.platform_type,
+            NULL::VARCHAR AS region_code,
+            NULL::VARCHAR AS source_name,
+            NULL::VARCHAR AS source_provider_id,
+            NULL::INTEGER AS display_priority
+        FROM content_platforms cp
+        JOIN platforms p ON cp.platform_id = p.id
+        WHERE cp.content_id = :content_id
+        ORDER BY
+            CASE cp.availability_type
+                WHEN 'streaming' THEN 1
+                WHEN 'rent' THEN 2
+                WHEN 'buy' THEN 3
+                ELSE 4
+            END,
+            p.name;
+    """)
+    platforms_result = db.execute(platforms_query, {"content_id": content_id})
+    return [dict(row) for row in platforms_result.mappings().all()]
+
+
+def get_detail_platforms(db: Session, content_id: int) -> list[dict]:
+    primary_platforms = get_region_aware_platforms(
+        db,
+        content_id,
+        DEFAULT_AVAILABILITY_REGION,
+    )
+    if primary_platforms:
+        return primary_platforms
+
+    fallback_platforms = get_region_aware_platforms(
+        db,
+        content_id,
+        FALLBACK_AVAILABILITY_REGION,
+    )
+    if fallback_platforms:
+        return fallback_platforms
+
+    return get_legacy_platforms(db, content_id)
 
 
 def get_all_content_service(
@@ -577,25 +665,7 @@ def get_content_details_service(content_id: int, db: Session):
     genres_rows = genres_result.mappings().all()
     genres = [row["name"] for row in genres_rows]
 
-    platforms_query = text("""
-        SELECT
-            p.name AS name,
-            cp.availability_type
-        FROM content_platforms cp
-        JOIN platforms p ON cp.platform_id = p.id
-        WHERE cp.content_id = :content_id
-        ORDER BY
-            CASE cp.availability_type
-                WHEN 'streaming' THEN 1
-                WHEN 'rent' THEN 2
-                WHEN 'buy' THEN 3
-                ELSE 4
-            END,
-            p.name;
-    """)
-    platforms_result = db.execute(platforms_query, {"content_id": content_id})
-    platforms_rows = platforms_result.mappings().all()
-    platforms = [dict(row) for row in platforms_rows]
+    platforms = get_detail_platforms(db, content_id)
 
     ratings_query = text("""
         SELECT

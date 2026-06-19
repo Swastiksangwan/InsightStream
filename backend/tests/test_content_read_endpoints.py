@@ -1,3 +1,4 @@
+import pytest
 from sqlalchemy import text
 
 
@@ -52,6 +53,28 @@ def recent_content_count(db_session, content_type=None):
         params,
     ).mappings().first()
     return row["total"]
+
+
+def optional_content_id_by_title(db_session, title):
+    row = db_session.execute(
+        text("SELECT id FROM content WHERE title = :title;"),
+        {"title": title},
+    ).mappings().first()
+    return row["id"] if row else None
+
+
+def has_region_aware_availability(db_session, content_id):
+    row = db_session.execute(
+        text(
+            """
+            SELECT COUNT(*) AS total
+            FROM content_availability
+            WHERE content_id = :content_id;
+            """
+        ),
+        {"content_id": content_id},
+    ).mappings().first()
+    return row["total"] > 0
 
 
 def test_get_content_returns_seed_or_larger_catalog(client):
@@ -221,3 +244,117 @@ def test_get_content_details_for_seeded_title(client, content_id_by_title):
     assert data["platforms"]
     assert data["ratings"]
     assert data["summary"] is not None
+
+
+def test_content_details_include_imported_region_aware_availability(client, db_session):
+    content_id = optional_content_id_by_title(db_session, "Oppenheimer")
+    if content_id is None:
+        pytest.skip("Oppenheimer has not been imported into this local database.")
+    if not has_region_aware_availability(db_session, content_id):
+        pytest.skip("Oppenheimer region-aware availability has not been imported.")
+
+    response = client.get(f"/content/{content_id}/details")
+    data = response.json()
+    platforms = data["platforms"]
+
+    assert response.status_code == 200
+    assert data["content"]["title"] == "Oppenheimer"
+    assert data["content"]["age_rating"] == "UA"
+    assert platforms
+    assert {platform["region_code"] for platform in platforms} == {"IN"}
+    assert all(platform["source_name"] == "tmdb" for platform in platforms)
+    assert any(
+        platform["name"] == "JioHotstar"
+        and platform["availability_type"] == "streaming"
+        for platform in platforms
+    )
+
+
+def test_content_details_region_aware_availability_has_no_duplicate_rows(
+    client,
+    db_session,
+):
+    content_id = optional_content_id_by_title(db_session, "Oppenheimer")
+    if content_id is None:
+        pytest.skip("Oppenheimer has not been imported into this local database.")
+    if not has_region_aware_availability(db_session, content_id):
+        pytest.skip("Oppenheimer region-aware availability has not been imported.")
+
+    response = client.get(f"/content/{content_id}/details")
+    platforms = response.json()["platforms"]
+    platform_keys = {
+        (
+            platform["name"],
+            platform["availability_type"],
+            platform.get("region_code"),
+            platform.get("source_name"),
+        )
+        for platform in platforms
+    }
+
+    assert response.status_code == 200
+    assert len(platform_keys) == len(platforms)
+
+
+def test_content_details_preserve_legacy_availability_fallback(client, db_session):
+    row = db_session.execute(
+        text(
+            """
+            SELECT c.id, c.title
+            FROM content c
+            WHERE EXISTS (
+                SELECT 1
+                FROM content_platforms cp
+                WHERE cp.content_id = c.id
+            )
+              AND NOT EXISTS (
+                SELECT 1
+                FROM content_availability ca
+                WHERE ca.content_id = c.id
+            )
+            ORDER BY c.title
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+    if row is None:
+        pytest.skip("No legacy-only availability content exists in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    platforms = response.json()["platforms"]
+
+    assert response.status_code == 200
+    assert platforms
+    assert all(platform.get("region_code") is None for platform in platforms)
+    assert all(platform.get("source_name") is None for platform in platforms)
+
+
+def test_content_details_empty_availability_is_safe(client, db_session):
+    row = db_session.execute(
+        text(
+            """
+            SELECT c.id
+            FROM content c
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM content_platforms cp
+                WHERE cp.content_id = c.id
+            )
+              AND NOT EXISTS (
+                SELECT 1
+                FROM content_availability ca
+                WHERE ca.content_id = c.id
+            )
+            ORDER BY c.title
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+    if row is None:
+        pytest.skip("No content without availability exists in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["platforms"] == []

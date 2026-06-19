@@ -28,6 +28,11 @@ class PaginatedContentResponse(BaseModel):
 class Platform(BaseModel):
     name: str
     availability_type: str
+    platform_type: Optional[str] = None
+    region_code: Optional[str] = None
+    source_name: Optional[str] = None
+    source_provider_id: Optional[str] = None
+    display_priority: Optional[int] = None
 
 
 # Rating
