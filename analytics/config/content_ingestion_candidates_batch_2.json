@@ -1,0 +1,275 @@
+{
+  "description": "Candidate InsightStream content targets for the second scalable ingestion batch. Review and validate before merging into content_ingestion_targets.json.",
+  "targets": [
+    {
+      "title": "The Shawshank Redemption",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "278",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "The Godfather",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "238",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Pulp Fiction",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "680",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Forrest Gump",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "13",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Goodfellas",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "769",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "The Lord of the Rings: The Fellowship of the Ring",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "120",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "The Lord of the Rings: The Return of the King",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "122",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Gladiator",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "98",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Mad Max: Fury Road",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "76341",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Whiplash",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "244786",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Everything Everywhere All at Once",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "545611",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "The Social Network",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "37799",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Blade Runner",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "78",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Blade Runner 2049",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "335984",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Arrival",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "329865",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Game of Thrones",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1399",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Better Call Saul",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "60059",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Sherlock",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "19885",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "The Office",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "2316",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "True Detective",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "46648",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Westworld",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "63247",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Succession",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "76331",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "The Sopranos",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1398",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Band of Brothers",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "4613",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Narcos",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "63351",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Black Mirror",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "42009",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Severance",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "95396",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Andor",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "83867",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "Arcane",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "94605",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    },
+    {
+      "title": "The Bear",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "136315",
+      "priority": "batch_test_2",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for 30-title scalable ingestion batch."
+    }
+  ]
+}

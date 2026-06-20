@@ -199,7 +199,30 @@ Without `--refresh`, fetch scripts reuse existing raw files when all required ra
 analytics/processed/tmdb/run_reports/
 ```
 
-## 8. Normal Daily Ingestion Flow For New Titles
+## 8. Preparing A New Batch
+
+Before adding a larger provider-backed batch to the main target config:
+
+1. Create a separate candidate batch file under `analytics/config/`.
+2. Run the candidate validator:
+
+```bash
+python3 analytics/scripts/validate_ingestion_candidates.py --candidates analytics/config/content_ingestion_candidates_batch_2.json
+```
+
+3. Review the validation report:
+
+```text
+analytics/processed/tmdb/run_reports/batch_2_target_validation_report.json
+```
+
+4. Resolve duplicates, invalid IDs, title mismatches, or `needs_review` entries.
+5. Only after review, merge verified candidates into `analytics/config/content_ingestion_targets.json`.
+6. Run the normal ingestion pipeline for the selected source ID or priority batch.
+
+Candidate validation does not fetch ingestion payloads, does not import data, and does not write to PostgreSQL.
+
+## 9. Normal Daily Ingestion Flow For New Titles
 
 Standard flow for adding new provider-backed titles:
 
@@ -221,7 +244,7 @@ Standard flow for adding new provider-backed titles:
 16. Run the frontend build.
 17. Manually verify frontend detail pages.
 
-## 9. Verification SQL
+## 10. Verification SQL
 
 These queries use the current schema column names. Provider IDs are stored in `external_ids.external_id` and `person_external_ids.external_id`.
 
@@ -349,7 +372,7 @@ HAVING COUNT(*) > 1;
 
 Expected duplicate check result: no rows.
 
-## 10. Test Commands
+## 11. Test Commands
 
 Backend:
 
@@ -367,7 +390,7 @@ npm run build
 
 Backend tests should pass, and the frontend build should pass, when the local database has been prepared through the setup/rebuild flow above.
 
-## 11. Reset/Rebuild Warnings
+## 12. Reset/Rebuild Warnings
 
 - Do not rerun `backend/schema.sql` on an existing populated database unless you are intentionally resetting or manually applying a new `CREATE TABLE IF NOT EXISTS` block.
 - Do not manually insert provider data into PostgreSQL.
@@ -379,7 +402,7 @@ Backend tests should pass, and the frontend build should pass, when the local da
 - Availability and certifications are region-aware; do not mix `IN` and `US` silently.
 - Do not commit API tokens or local environment files.
 
-## 12. Current Limitations
+## 13. Current Limitations
 
 - Ratings and review intelligence are not implemented yet.
 - Advanced admin ingestion UI is not implemented yet.
@@ -387,7 +410,7 @@ Backend tests should pass, and the frontend build should pass, when the local da
 - Broad 1000-title ingestion needs batching, retry, and report hardening.
 - `backend/sample_data.sql` still represents only the base seed, not the full current catalog.
 
-## 13. Next Recommended Step
+## 14. Next Recommended Step
 
 After this runbook is committed, either:
 
