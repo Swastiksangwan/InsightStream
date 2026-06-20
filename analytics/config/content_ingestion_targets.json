@@ -144,6 +144,51 @@
       "priority": "pipeline_test",
       "ingestion_status": "verified",
       "notes": "First one-title scalable ingestion test."
+    },
+    {
+      "title": "The Matrix",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "603",
+      "priority": "batch_test_1",
+      "ingestion_status": "verified",
+      "notes": "Five-title scalable ingestion batch test."
+    },
+    {
+      "title": "Fight Club",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "550",
+      "priority": "batch_test_1",
+      "ingestion_status": "verified",
+      "notes": "Five-title scalable ingestion batch test."
+    },
+    {
+      "title": "Top Gun: Maverick",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "361743",
+      "priority": "batch_test_1",
+      "ingestion_status": "verified",
+      "notes": "Five-title scalable ingestion batch test."
+    },
+    {
+      "title": "House of the Dragon",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "94997",
+      "priority": "batch_test_1",
+      "ingestion_status": "verified",
+      "notes": "Five-title scalable ingestion batch test."
+    },
+    {
+      "title": "Chernobyl",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "87108",
+      "priority": "batch_test_1",
+      "ingestion_status": "verified",
+      "notes": "Five-title scalable ingestion batch test."
     }
   ]
 }

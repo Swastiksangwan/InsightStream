@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-18T09:59:58.432701+00:00",
+  "generated_at": "2026-06-19T10:12:45.187293+00:00",
   "inspection_only": true,
   "items": [
     {
@@ -21,7 +21,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
-      "popularity": 73.2445,
+      "popularity": 70.1924,
       "poster_path": "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "priority": "seed",
@@ -42,7 +42,7 @@
         "Casey Affleck"
       ],
       "vote_average": 8.478,
-      "vote_count": 40031,
+      "vote_count": 40045,
       "year": 2014
     },
     {
@@ -64,7 +64,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
-      "popularity": 31.9669,
+      "popularity": 30.5979,
       "poster_path": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "priority": "seed",
@@ -84,8 +84,8 @@
         "Tom Hardy",
         "Elliot Page"
       ],
-      "vote_average": 8.4,
-      "vote_count": 39376,
+      "vote_average": 8.372,
+      "vote_count": 39382,
       "year": 2010
     },
     {
@@ -107,7 +107,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
-      "popularity": 47.5608,
+      "popularity": 42.6252,
       "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
       "priority": "seed",
@@ -127,8 +127,8 @@
         "Michael Caine",
         "Maggie Gyllenhaal"
       ],
-      "vote_average": 8.5,
-      "vote_count": 35918,
+      "vote_average": 8.531,
+      "vote_count": 35924,
       "year": 2008
     },
     {
@@ -150,7 +150,7 @@
       "media_type": "movie",
       "original_language": "ko",
       "overview": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
-      "popularity": 33.2497,
+      "popularity": 32.7631,
       "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
       "priority": "seed",
@@ -171,7 +171,7 @@
         "Park So-dam"
       ],
       "vote_average": 8.494,
-      "vote_count": 20742,
+      "vote_count": 20746,
       "year": 2019
     },
     {
@@ -192,7 +192,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
-      "popularity": 20.1912,
+      "popularity": 21.7486,
       "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
       "priority": "seed",
@@ -212,8 +212,8 @@
         "Javier Bardem",
         "Josh Brolin"
       ],
-      "vote_average": 8.126,
-      "vote_count": 8039,
+      "vote_average": 8.1,
+      "vote_count": 8041,
       "year": 2024
     },
     {
@@ -235,7 +235,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land. However, when they get a chance to go to the real world, they soon discover the joys and perils of living among humans.",
-      "popularity": 18.3539,
+      "popularity": 18.0542,
       "poster_path": "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
       "priority": "seed",
@@ -255,8 +255,8 @@
         "Ariana Greenblatt",
         "Issa Rae"
       ],
-      "vote_average": 6.92,
-      "vote_count": 11152,
+      "vote_average": 6.9,
+      "vote_count": 11156,
       "year": 2023
     },
     {
@@ -264,8 +264,8 @@
       "backdrop_url": "https://image.tmdb.org/t/p/w1280/9xfDWXAUbFXQK585JvByT5pEAhe.jpg",
       "content_type": "movie",
       "director_or_creator_names": [
-        "Kemp Powers",
         "Justin K. Thompson",
+        "Kemp Powers",
         "Joaquim Dos Santos"
       ],
       "genres": [
@@ -281,7 +281,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse's very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
-      "popularity": 25.7865,
+      "popularity": 26.079,
       "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "priority": "seed",
@@ -301,8 +301,8 @@
         "Luna Lauren Vélez",
         "Jake Johnson"
       ],
-      "vote_average": 8.336,
-      "vote_count": 8673,
+      "vote_average": 8.337,
+      "vote_count": 8678,
       "year": 2023
     },
     {
@@ -324,7 +324,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "An Interpol-issued Red Notice is a global alert to hunt and capture the world's most wanted. But when a daring heist brings together the FBI's top profiler and two rival criminals, there's no telling what will happen.",
-      "popularity": 8.4368,
+      "popularity": 9.1953,
       "poster_path": "/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "priority": "seed",
@@ -345,7 +345,7 @@
         "Chris Diamantopoulos"
       ],
       "vote_average": 6.731,
-      "vote_count": 6462,
+      "vote_count": 6463,
       "year": 2021
     },
     {
@@ -368,7 +368,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
-      "popularity": 133.507,
+      "popularity": 134.2555,
       "poster_path": "/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
       "priority": "seed",
@@ -388,8 +388,8 @@
         "RJ Mitte",
         "Dean Norris"
       ],
-      "vote_average": 8.947,
-      "vote_count": 17937,
+      "vote_average": 8.9,
+      "vote_count": 17944,
       "year": 2008
     },
     {
@@ -412,7 +412,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "After the fall of the Galactic Empire, lawlessness has spread throughout the galaxy. A lone gunfighter makes his way through the outer reaches, earning his keep as a bounty hunter.",
-      "popularity": 60.8034,
+      "popularity": 61.0549,
       "poster_path": "/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
       "priority": "seed",
@@ -430,7 +430,7 @@
         "Katee Sackhoff"
       ],
       "vote_average": 8.409,
-      "vote_count": 10986,
+      "vote_count": 10989,
       "year": 2019
     },
     {
@@ -453,7 +453,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "Twenty years after modern civilization has been destroyed, Joel, a hardened survivor, is hired to smuggle Ellie, a 14-year-old girl, out of an oppressive quarantine zone. What starts as a small job soon becomes a brutal, heartbreaking journey, as they both must traverse the United States and depend on each other for survival.",
-      "popularity": 35.7285,
+      "popularity": 35.0957,
       "poster_path": "/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
       "priority": "seed",
@@ -473,7 +473,7 @@
         "Young Mazino"
       ],
       "vote_average": 8.427,
-      "vote_count": 7062,
+      "vote_count": 7063,
       "year": 2023
     },
     {
@@ -498,7 +498,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
-      "popularity": 121.6386,
+      "popularity": 121.7581,
       "poster_path": "/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
       "priority": "seed",
@@ -518,8 +518,8 @@
         "Finn Wolfhard",
         "Gaten Matarazzo"
       ],
-      "vote_average": 8.563,
-      "vote_count": 21310,
+      "vote_average": 8.6,
+      "vote_count": 21311,
       "year": 2016
     },
     {
@@ -542,7 +542,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "A group of vigilantes known informally as “The Boys” set out to take down corrupt superheroes with no more than blue-collar grit and a willingness to fight dirty.",
-      "popularity": 273.7089,
+      "popularity": 266.6801,
       "poster_path": "/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "priority": "seed",
@@ -563,7 +563,7 @@
         "Laz Alonso"
       ],
       "vote_average": 8.451,
-      "vote_count": 12938,
+      "vote_count": 12945,
       "year": 2019
     },
     {
@@ -589,7 +589,7 @@
       "media_type": "tv",
       "original_language": "de",
       "overview": "A missing child sets four families on a frantic hunt for answers as they unearth a mind-bending mystery that spans three generations.",
-      "popularity": 37.2072,
+      "popularity": 38.5021,
       "poster_path": "/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
       "priority": "seed",
@@ -606,7 +606,7 @@
         "Louis Hofmann"
       ],
       "vote_average": 8.425,
-      "vote_count": 7598,
+      "vote_count": 7599,
       "year": 2017
     },
     {
@@ -629,7 +629,7 @@
       "media_type": "tv",
       "original_language": "en",
       "overview": "Geralt of Rivia, a mutated monster-hunter for hire, journeys toward his destiny in a turbulent world where people often prove more wicked than beasts.",
-      "popularity": 42.6129,
+      "popularity": 43.1768,
       "poster_path": "/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
       "priority": "seed",
@@ -649,8 +649,8 @@
         "Joey Batey",
         "Eamon Farren"
       ],
-      "vote_average": 7.913,
-      "vote_count": 6715,
+      "vote_average": 7.911,
+      "vote_count": 6718,
       "year": 2019
     },
     {
@@ -671,7 +671,7 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "The story of J. Robert Oppenheimer's role in the development of the atomic bomb during World War II.",
-      "popularity": 21.5654,
+      "popularity": 23.0112,
       "poster_path": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
       "priority": "pipeline_test",
@@ -691,13 +691,229 @@
         "Robert Downey Jr.",
         "Florence Pugh"
       ],
-      "vote_average": 8.026,
-      "vote_count": 11859,
+      "vote_average": 8.0,
+      "vote_count": 11863,
       "year": 2023
+    },
+    {
+      "backdrop_path": "/oMsxZEvz9a708d49b6UdZK1KAo5.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/oMsxZEvz9a708d49b6UdZK1KAo5.jpg",
+      "content_type": "movie",
+      "director_or_creator_names": [
+        "Lana Wachowski",
+        "Lilly Wachowski"
+      ],
+      "genres": [
+        "Action",
+        "Science Fiction"
+      ],
+      "imdb_id": "tt0133093",
+      "ingestion_status": "verified",
+      "latest_activity_date": "1999-03-31",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.",
+      "popularity": 52.422,
+      "poster_path": "/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
+      "priority": "batch_test_1",
+      "release_date": "1999-03-31",
+      "runtime": 136,
+      "source_id": "603",
+      "source_name": "tmdb",
+      "source_provider": "tmdb",
+      "status": "Released",
+      "target_notes": "Five-title scalable ingestion batch test.",
+      "title": "The Matrix",
+      "tmdb_id": 603,
+      "top_cast_names": [
+        "Keanu Reeves",
+        "Laurence Fishburne",
+        "Carrie-Anne Moss",
+        "Hugo Weaving",
+        "Gloria Foster"
+      ],
+      "vote_average": 8.248,
+      "vote_count": 28031,
+      "year": 1999
+    },
+    {
+      "backdrop_path": "/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/xRyINp9KfMLVjRiO5nCsoRDdvvF.jpg",
+      "content_type": "movie",
+      "director_or_creator_names": [
+        "David Fincher"
+      ],
+      "genres": [
+        "Drama",
+        "Thriller"
+      ],
+      "imdb_id": "tt0137523",
+      "ingestion_status": "verified",
+      "latest_activity_date": "1999-10-15",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
+      "popularity": 27.5735,
+      "poster_path": "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
+      "priority": "batch_test_1",
+      "release_date": "1999-10-15",
+      "runtime": 139,
+      "source_id": "550",
+      "source_name": "tmdb",
+      "source_provider": "tmdb",
+      "status": "Released",
+      "target_notes": "Five-title scalable ingestion batch test.",
+      "title": "Fight Club",
+      "tmdb_id": 550,
+      "top_cast_names": [
+        "Edward Norton",
+        "Brad Pitt",
+        "Helena Bonham Carter",
+        "Meat Loaf",
+        "Jared Leto"
+      ],
+      "vote_average": 8.4,
+      "vote_count": 32172,
+      "year": 1999
+    },
+    {
+      "backdrop_path": "/AaV1YIdWKnjAIAOe8UUKBFm327v.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/AaV1YIdWKnjAIAOe8UUKBFm327v.jpg",
+      "content_type": "movie",
+      "director_or_creator_names": [
+        "Joseph Kosinski"
+      ],
+      "genres": [
+        "Action",
+        "Drama"
+      ],
+      "imdb_id": "tt1745960",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2022-05-21",
+      "mapping_notes": [],
+      "media_type": "movie",
+      "original_language": "en",
+      "overview": "After more than thirty years of service as one of the Navy’s top aviators, and dodging the advancement in rank that would ground him, Pete “Maverick” Mitchell finds himself training a detachment of TOP GUN graduates for a specialized mission the likes of which no living pilot has ever seen.",
+      "popularity": 24.2055,
+      "poster_path": "/n0YuM4f5lvGAP6MAW2kBIzugXnc.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/n0YuM4f5lvGAP6MAW2kBIzugXnc.jpg",
+      "priority": "batch_test_1",
+      "release_date": "2022-05-21",
+      "runtime": 131,
+      "source_id": "361743",
+      "source_name": "tmdb",
+      "source_provider": "tmdb",
+      "status": "Released",
+      "target_notes": "Five-title scalable ingestion batch test.",
+      "title": "Top Gun: Maverick",
+      "tmdb_id": 361743,
+      "top_cast_names": [
+        "Tom Cruise",
+        "Miles Teller",
+        "Jennifer Connelly",
+        "Bashir Salahuddin",
+        "Jon Hamm"
+      ],
+      "vote_average": 8.159,
+      "vote_count": 11046,
+      "year": 2022
+    },
+    {
+      "backdrop_path": "/577eXC8wFQT0eUrJcgznSiFPRmk.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/577eXC8wFQT0eUrJcgznSiFPRmk.jpg",
+      "content_type": "series",
+      "director_or_creator_names": [
+        "George R.R. Martin",
+        "Ryan Condal"
+      ],
+      "genres": [
+        "Sci-Fi & Fantasy",
+        "Drama",
+        "Action & Adventure"
+      ],
+      "imdb_id": "tt11198330",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2024-08-04",
+      "mapping_notes": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
+      "original_language": "en",
+      "overview": "The Targaryen dynasty is at the absolute apex of its power, with more than 15 dragons under their yoke. Most empires crumble from such heights. In the case of the Targaryens, their slow fall begins when King Viserys breaks with a century of tradition by naming his daughter Rhaenyra heir to the Iron Throne. But when Viserys later fathers a son, the court is shocked when Rhaenyra retains her status as his heir, and seeds of division sow friction across the realm.",
+      "popularity": 108.3774,
+      "poster_path": "/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg",
+      "priority": "batch_test_1",
+      "release_date": "2022-08-21",
+      "runtime": null,
+      "source_id": "94997",
+      "source_name": "tmdb",
+      "source_provider": "tmdb",
+      "status": "Returning Series",
+      "target_notes": "Five-title scalable ingestion batch test.",
+      "title": "House of the Dragon",
+      "tmdb_id": 94997,
+      "top_cast_names": [
+        "Matt Smith",
+        "Emma D'Arcy",
+        "Olivia Cooke",
+        "Steve Toussaint",
+        "Rhys Ifans"
+      ],
+      "vote_average": 8.299,
+      "vote_count": 6034,
+      "year": 2022
+    },
+    {
+      "backdrop_path": "/3URK0z9PzpVNJrGE7XOuyy6KFzk.jpg",
+      "backdrop_url": "https://image.tmdb.org/t/p/w1280/3URK0z9PzpVNJrGE7XOuyy6KFzk.jpg",
+      "content_type": "series",
+      "director_or_creator_names": [
+        "Craig Mazin"
+      ],
+      "genres": [
+        "Drama"
+      ],
+      "imdb_id": "tt7366338",
+      "ingestion_status": "verified",
+      "latest_activity_date": "2019-06-03",
+      "mapping_notes": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ],
+      "media_type": "tv",
+      "original_language": "en",
+      "overview": "The true story of one of the worst man-made catastrophes in history: the catastrophic nuclear accident at Chernobyl. A tale of the brave men and women who sacrificed to save Europe from unimaginable disaster.",
+      "popularity": 29.4991,
+      "poster_path": "/hlLXt2tOPT6RRnjiUmoxyG1LTFi.jpg",
+      "poster_url": "https://image.tmdb.org/t/p/w500/hlLXt2tOPT6RRnjiUmoxyG1LTFi.jpg",
+      "priority": "batch_test_1",
+      "release_date": "2019-05-06",
+      "runtime": null,
+      "source_id": "87108",
+      "source_name": "tmdb",
+      "source_provider": "tmdb",
+      "status": "Ended",
+      "target_notes": "Five-title scalable ingestion batch test.",
+      "title": "Chernobyl",
+      "tmdb_id": 87108,
+      "top_cast_names": [
+        "Jared Harris",
+        "Stellan Skarsgård",
+        "Emily Watson",
+        "Paul Ritter",
+        "Jessie Buckley"
+      ],
+      "vote_average": 8.714,
+      "vote_count": 7937,
+      "year": 2019
     }
   ],
   "licensing_note": "Prototype/non-commercial inspection only. Follow TMDb terms, do not commit API keys, do not use TMDb content for ML/AI training, and do not assume permanent storage rights.",
   "source_provider": "tmdb",
   "source_target_path": "analytics/config/content_ingestion_targets.json",
-  "total_targets_loaded": 16
+  "total_targets_loaded": 21
 }
