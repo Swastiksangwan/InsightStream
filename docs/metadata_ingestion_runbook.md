@@ -218,6 +218,22 @@ analytics/processed/tmdb/run_reports/batch_2_target_validation_report.json
 
 4. Resolve duplicates, invalid IDs, title mismatches, or `needs_review` entries.
 5. Only after review, merge verified candidates into `analytics/config/content_ingestion_targets.json`.
+
+```bash
+python3 analytics/scripts/merge_ingestion_candidates.py \
+  --candidates analytics/config/content_ingestion_candidates_batch_2.json \
+  --targets analytics/config/content_ingestion_targets.json \
+  --priority batch_test_2
+
+python3 analytics/scripts/merge_ingestion_candidates.py \
+  --candidates analytics/config/content_ingestion_candidates_batch_2.json \
+  --targets analytics/config/content_ingestion_targets.json \
+  --priority batch_test_2 \
+  --apply
+```
+
+The merge helper is dry-run by default. It validates duplicate `source_name`/`source_id` and duplicate `title`/`content_type` keys before writing.
+
 6. Run the normal ingestion pipeline for the selected source ID or priority batch.
 
 Candidate validation does not fetch ingestion payloads, does not import data, and does not write to PostgreSQL.
