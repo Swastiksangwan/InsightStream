@@ -157,6 +157,8 @@ The base seed restores content, genres, platforms, ratings, summaries, external 
 
 People, credits, and person biographies are imported after the base seed using analytics scripts. They are not inserted directly by `sample_data.sql`.
 
+For the current full metadata catalog rebuild, including ingested titles beyond the SQL seed, use `docs/metadata_ingestion_runbook.md`.
+
 ## 7. Environment Variables
 
 Required depending on task:
@@ -228,6 +230,8 @@ Analysis/reporting scripts:
 These compare seed data with processed provider previews and generate reports. They do not update PostgreSQL.
 
 ## 9. Full Database Reset / Restore Flow
+
+For the current 21-title metadata catalog, follow the full runbook in `docs/metadata_ingestion_runbook.md`.
 
 For a clean local reset in pgAdmin or `psql`:
 
@@ -347,6 +351,7 @@ Useful current docs:
 - `docs/product_direction.md`
 - `docs/backend_database_setup.md`
 - `docs/backend_testing.md`
+- `docs/metadata_ingestion_runbook.md`
 - `docs/metadata_provider_strategy.md`
 - `docs/metadata_normalization_plan.md`
 - `docs/content_recency_sorting_plan.md`
