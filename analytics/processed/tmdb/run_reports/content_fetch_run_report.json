@@ -1,0 +1,171 @@
+{
+  "failures": [],
+  "filters_used": {
+    "limit": null,
+    "priority": "batch_test_1",
+    "refresh": false,
+    "source_id": null,
+    "title": null
+  },
+  "generated_at": "2026-06-20T10:45:10.613676+00:00",
+  "per_target": [
+    {
+      "content_type": "movie",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_603_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_603_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_603_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "603",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Matrix",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_550_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_550_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_550_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "550",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Fight Club",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_361743_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_361743_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_361743_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "361743",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Top Gun: Maverick",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_94997_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_94997_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_94997_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_94997_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "94997",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "House of the Dragon",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_87108_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_87108_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_87108_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_87108_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "87108",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Chernobyl",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    }
+  ],
+  "raw_files_fetched": [],
+  "raw_files_reused": [
+    "analytics/raw/tmdb/configuration.json",
+    "analytics/raw/tmdb/movie_603_details.json",
+    "analytics/raw/tmdb/movie_603_external_ids.json",
+    "analytics/raw/tmdb/movie_603_credits.json",
+    "analytics/raw/tmdb/movie_550_details.json",
+    "analytics/raw/tmdb/movie_550_external_ids.json",
+    "analytics/raw/tmdb/movie_550_credits.json",
+    "analytics/raw/tmdb/movie_361743_details.json",
+    "analytics/raw/tmdb/movie_361743_external_ids.json",
+    "analytics/raw/tmdb/movie_361743_credits.json",
+    "analytics/raw/tmdb/tv_94997_details.json",
+    "analytics/raw/tmdb/tv_94997_external_ids.json",
+    "analytics/raw/tmdb/tv_94997_credits.json",
+    "analytics/raw/tmdb/tv_94997_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_87108_details.json",
+    "analytics/raw/tmdb/tv_87108_external_ids.json",
+    "analytics/raw/tmdb/tv_87108_credits.json",
+    "analytics/raw/tmdb/tv_87108_aggregate_credits.json"
+  ],
+  "script_name": "fetch_tmdb_sample.py",
+  "target_config_path": "analytics/config/content_ingestion_targets.json",
+  "targets_loaded": 21,
+  "targets_processed": 5,
+  "targets_selected": 5,
+  "targets_skipped": 0,
+  "warnings": [
+    "House of the Dragon: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Chernobyl: Missing or empty episode_run_time; runtime is approximate/null."
+  ]
+}

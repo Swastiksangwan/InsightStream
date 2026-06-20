@@ -1,0 +1,129 @@
+{
+  "failures": [],
+  "filters_used": {
+    "all": false,
+    "limit": null,
+    "priority": "batch_test_1",
+    "refresh": false,
+    "source_id": null,
+    "title": null
+  },
+  "generated_at": "2026-06-20T10:45:40.112131+00:00",
+  "per_target": [
+    {
+      "content_type": "movie",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_603_watch_providers.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_603_release_dates.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "603",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Matrix",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_550_watch_providers.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_550_release_dates.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "550",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Fight Club",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_361743_watch_providers.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_361743_release_dates.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "361743",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Top Gun: Maverick",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_94997_watch_providers.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_94997_content_ratings.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "94997",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "House of the Dragon",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_1",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_87108_watch_providers.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_87108_content_ratings.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "87108",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Chernobyl",
+      "warnings": []
+    }
+  ],
+  "raw_files_fetched": [],
+  "raw_files_reused": [
+    "analytics/raw/tmdb/movie_603_watch_providers.json",
+    "analytics/raw/tmdb/movie_603_release_dates.json",
+    "analytics/raw/tmdb/movie_550_watch_providers.json",
+    "analytics/raw/tmdb/movie_550_release_dates.json",
+    "analytics/raw/tmdb/movie_361743_watch_providers.json",
+    "analytics/raw/tmdb/movie_361743_release_dates.json",
+    "analytics/raw/tmdb/tv_94997_watch_providers.json",
+    "analytics/raw/tmdb/tv_94997_content_ratings.json",
+    "analytics/raw/tmdb/tv_87108_watch_providers.json",
+    "analytics/raw/tmdb/tv_87108_content_ratings.json"
+  ],
+  "script_name": "fetch_tmdb_availability_certification.py",
+  "target_config_path": "analytics/config/content_ingestion_targets.json",
+  "targets_loaded": 21,
+  "targets_processed": 5,
+  "targets_selected": 5,
+  "targets_skipped": 0,
+  "warnings": []
+}

@@ -1,4 +1,4 @@
-# InsightStream / CineLens
+# InsightStream
 
 ## 1. Project Overview
 

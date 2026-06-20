@@ -52,6 +52,11 @@ Processed preview files:
 - `analytics/processed/tmdb/person_details_preview.json`: person biography/profile preview.
 - `analytics/processed/tmdb/availability_certification_preview.json`: region-aware availability and certification preview.
 
+Run reports:
+
+- `analytics/processed/tmdb/run_reports/content_fetch_run_report.json`: latest content metadata fetch selection, cache reuse, warnings, and failures.
+- `analytics/processed/tmdb/run_reports/availability_certification_fetch_run_report.json`: latest availability/certification fetch selection, cache reuse, warnings, and failures.
+
 Fetch/build scripts that do not write to PostgreSQL:
 
 - `analytics/scripts/fetch_tmdb_sample.py`: fetches content metadata, external IDs, details, credits, and TV aggregate credits.
@@ -169,12 +174,37 @@ python3 analytics/scripts/import_availability_certification_from_preview.py
 
 The target config controls which titles are fetched.
 
+Batch fetch examples:
+
+```bash
+# Fetch/rebuild preview for one TMDb source ID.
+python3 analytics/scripts/fetch_tmdb_sample.py --source-id 603
+
+# Fetch/rebuild preview for one configured priority batch.
+python3 analytics/scripts/fetch_tmdb_sample.py --priority batch_test_1
+
+# Fetch only the first N selected targets from a larger batch.
+python3 analytics/scripts/fetch_tmdb_sample.py --priority batch_test_1 --limit 2
+
+# Fetch availability/certification preview for one configured priority batch.
+python3 analytics/scripts/fetch_tmdb_availability_certification.py --priority batch_test_1
+
+# Force provider refetch instead of reusing existing raw files.
+python3 analytics/scripts/fetch_tmdb_sample.py --priority batch_test_1 --refresh
+```
+
+Without `--refresh`, fetch scripts reuse existing raw files when all required raw files for a selected target are already present. They still rebuild the processed preview and write a run report. Inspect run reports under:
+
+```text
+analytics/processed/tmdb/run_reports/
+```
+
 ## 8. Normal Daily Ingestion Flow For New Titles
 
 Standard flow for adding new provider-backed titles:
 
 1. Add the title to `analytics/config/content_ingestion_targets.json`.
-2. Run `python3 analytics/scripts/fetch_tmdb_sample.py`.
+2. Run `python3 analytics/scripts/fetch_tmdb_sample.py --source-id <TMDB_ID>` or `python3 analytics/scripts/fetch_tmdb_sample.py --priority <BATCH_PRIORITY>`.
 3. Review `analytics/processed/tmdb/sample_mapping_preview.json`.
 4. Run `python3 analytics/scripts/import_content_metadata_from_preview.py`.
 5. Run `python3 analytics/scripts/import_content_metadata_from_preview.py --apply`.
@@ -184,7 +214,7 @@ Standard flow for adding new provider-backed titles:
 9. Run `python3 analytics/scripts/fetch_tmdb_person_details.py`.
 10. Run `python3 analytics/scripts/import_person_details_from_preview.py`.
 11. Run `python3 analytics/scripts/import_person_details_from_preview.py --apply`.
-12. Run `python3 analytics/scripts/fetch_tmdb_availability_certification.py --all` or a targeted source ID.
+12. Run `python3 analytics/scripts/fetch_tmdb_availability_certification.py --source-id <TMDB_ID>`, `--priority <BATCH_PRIORITY>`, or `--all`.
 13. Run `python3 analytics/scripts/import_availability_certification_from_preview.py`.
 14. Run `python3 analytics/scripts/import_availability_certification_from_preview.py --apply`.
 15. Run backend tests.

@@ -40,6 +40,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 RAW_OUTPUT_DIR = REPO_ROOT / "analytics" / "raw" / "tmdb"
 PROCESSED_OUTPUT_DIR = REPO_ROOT / "analytics" / "processed" / "tmdb"
 PREVIEW_OUTPUT_PATH = PROCESSED_OUTPUT_DIR / "sample_mapping_preview.json"
+RUN_REPORT_DIR = PROCESSED_OUTPUT_DIR / "run_reports"
+RUN_REPORT_OUTPUT_PATH = RUN_REPORT_DIR / "content_fetch_run_report.json"
 DEFAULT_TARGETS_PATH = REPO_ROOT / "analytics" / "config" / "content_ingestion_targets.json"
 CONTENT_TYPE_TO_MEDIA_TYPE = {
     "movie": "movie",
@@ -82,6 +84,16 @@ class TargetConfigError(RuntimeError):
     pass
 
 
+def positive_int(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("--limit must be a positive integer") from exc
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("--limit must be a positive integer")
+    return parsed
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Fetch inspection-only TMDb metadata for configured content targets."
@@ -93,6 +105,28 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "Path to ingestion target JSON. Defaults to "
             f"{DEFAULT_TARGETS_PATH.relative_to(REPO_ROOT)}."
         ),
+    )
+    parser.add_argument(
+        "--priority",
+        help="Process only targets with this priority value.",
+    )
+    parser.add_argument(
+        "--source-id",
+        help="Process only one target by provider source ID.",
+    )
+    parser.add_argument(
+        "--title",
+        help="Process only one target by exact title match, case-insensitive.",
+    )
+    parser.add_argument(
+        "--limit",
+        type=positive_int,
+        help="Cap selected targets after filtering.",
+    )
+    parser.add_argument(
+        "--refresh",
+        action="store_true",
+        help="Refetch raw files even when cached raw files already exist.",
     )
     return parser.parse_args(argv)
 
@@ -279,6 +313,50 @@ def save_json(path: Path, data: Any) -> None:
         json.dumps(data, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
+
+
+def load_cached_json(path: Path) -> dict[str, Any]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise TmdbFetchError(f"Missing cached raw file: {relative_path(path)}") from exc
+    except json.JSONDecodeError as exc:
+        raise TmdbFetchError(
+            f"Malformed cached raw JSON in {relative_path(path)}: {exc}"
+        ) from exc
+
+    if not isinstance(data, dict):
+        raise TmdbFetchError(
+            f"Cached raw JSON has unexpected shape: {relative_path(path)}"
+        )
+
+    return data
+
+
+def fetch_or_reuse_json(
+    api_path: str,
+    raw_path: Path,
+    token: str | None,
+    refresh: bool,
+    params: dict[str, Any] | None = None,
+) -> tuple[dict[str, Any], dict[str, str]]:
+    if raw_path.exists() and not refresh:
+        return load_cached_json(raw_path), {
+            "path": relative_path(raw_path),
+            "status": "reused",
+        }
+
+    if not token:
+        raise TmdbFetchError(
+            f"Missing {TOKEN_ENV_VAR}; cannot fetch {api_path} for {relative_path(raw_path)}."
+        )
+
+    data = fetch_tmdb_json(api_path, token, params=params)
+    save_json(raw_path, data)
+    return data, {
+        "path": relative_path(raw_path),
+        "status": "fetched",
+    }
 
 
 def normalize_title(value: str | None) -> str:
@@ -488,7 +566,8 @@ def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[st
 
 def fetch_title_payloads(
     sample: SampleTitle,
-    token: str,
+    token: str | None,
+    refresh: bool,
 ) -> tuple[
     int,
     dict[str, Any],
@@ -496,8 +575,10 @@ def fetch_title_payloads(
     dict[str, Any],
     dict[str, Any] | None,
     list[str],
+    list[dict[str, str]],
 ]:
     notes: list[str] = []
+    raw_file_results: list[dict[str, str]] = []
     tmdb_id = sample.tmdb_id
 
     if sample.media_type not in {"movie", "tv"}:
@@ -512,8 +593,30 @@ def fetch_title_payloads(
     external_ids_path = f"/{sample.media_type}/{tmdb_id}/external_ids"
     credits_path = f"/{sample.media_type}/{tmdb_id}/credits"
     aggregate_credits_path = f"/tv/{tmdb_id}/aggregate_credits"
+    raw_details_path = RAW_OUTPUT_DIR / raw_filename(sample.media_type, tmdb_id, "details")
+    raw_external_ids_path = RAW_OUTPUT_DIR / raw_filename(
+        sample.media_type,
+        tmdb_id,
+        "external_ids",
+    )
+    raw_credits_path = RAW_OUTPUT_DIR / raw_filename(
+        sample.media_type,
+        tmdb_id,
+        "credits",
+    )
+    raw_aggregate_credits_path = RAW_OUTPUT_DIR / raw_filename(
+        sample.media_type,
+        tmdb_id,
+        "aggregate_credits",
+    )
 
-    details = fetch_tmdb_json(details_path, token)
+    details, file_result = fetch_or_reuse_json(
+        details_path,
+        raw_details_path,
+        token,
+        refresh,
+    )
+    raw_file_results.append(file_result)
     actual_title = get_details_title(details, sample.media_type)
 
     if not actual_title:
@@ -529,13 +632,31 @@ def fetch_title_payloads(
         notes.append(note)
         print(f"  Warning: {note}")
 
-    external_ids = fetch_tmdb_json(external_ids_path, token)
-    credits = fetch_tmdb_json(credits_path, token)
+    external_ids, file_result = fetch_or_reuse_json(
+        external_ids_path,
+        raw_external_ids_path,
+        token,
+        refresh,
+    )
+    raw_file_results.append(file_result)
+    credits, file_result = fetch_or_reuse_json(
+        credits_path,
+        raw_credits_path,
+        token,
+        refresh,
+    )
+    raw_file_results.append(file_result)
     aggregate_credits = None
 
     if sample.media_type == "tv":
         try:
-            aggregate_credits = fetch_tmdb_json(aggregate_credits_path, token)
+            aggregate_credits, file_result = fetch_or_reuse_json(
+                aggregate_credits_path,
+                raw_aggregate_credits_path,
+                token,
+                refresh,
+            )
+            raw_file_results.append(file_result)
         except TmdbFetchError as exc:
             note = (
                 "TV aggregate credits fetch failed; regular TV credits remain available "
@@ -544,7 +665,7 @@ def fetch_title_payloads(
             notes.append(note)
             print(f"  Warning: {note}")
 
-    return tmdb_id, details, external_ids, credits, aggregate_credits, notes
+    return tmdb_id, details, external_ids, credits, aggregate_credits, notes, raw_file_results
 
 
 def top_cast_names(credits: dict[str, Any], limit: int = 5) -> list[str]:
@@ -719,6 +840,42 @@ def raw_filename(media_type: str, tmdb_id: int, payload_name: str) -> str:
     return f"{media_type}_{tmdb_id}_{payload_name}.json"
 
 
+def filter_samples(
+    samples: list[SampleTitle],
+    args: argparse.Namespace,
+) -> list[SampleTitle]:
+    selected = samples
+
+    if args.priority:
+        priority = str(args.priority).strip().lower()
+        selected = [
+            sample for sample in selected if (sample.priority or "").lower() == priority
+        ]
+
+    if args.source_id:
+        source_id = str(args.source_id).strip()
+        selected = [sample for sample in selected if sample.source_id == source_id]
+
+    if args.title:
+        title = str(args.title).strip().lower()
+        selected = [sample for sample in selected if sample.title.lower() == title]
+
+    if args.limit:
+        selected = selected[: args.limit]
+
+    return selected
+
+
+def filters_used(args: argparse.Namespace) -> dict[str, Any]:
+    return {
+        "priority": args.priority,
+        "source_id": args.source_id,
+        "title": args.title,
+        "limit": args.limit,
+        "refresh": args.refresh,
+    }
+
+
 def print_preview_table(items: list[dict[str, Any]]) -> None:
     print("\nMapped preview:")
     header = (
@@ -760,7 +917,7 @@ def print_preview_table(items: list[dict[str, Any]]) -> None:
 def print_preview_totals(
     items: list[dict[str, Any]],
     total_targets_loaded: int,
-    total_fetched: int,
+    total_processed: int,
     total_skipped: int,
 ) -> None:
     total_with_poster = sum(1 for item in items if item.get("poster_url"))
@@ -770,7 +927,7 @@ def print_preview_totals(
 
     print("\nPreview totals:")
     print(f"- Total targets loaded: {total_targets_loaded}")
-    print(f"- Total fetched: {total_fetched}")
+    print(f"- Total processed: {total_processed}")
     print(f"- Total skipped: {total_skipped}")
     print(f"- Total preview items: {len(items)}")
     print(f"- Total with poster_url: {total_with_poster}")
@@ -807,34 +964,54 @@ def main(argv: list[str] | None = None) -> int:
         print("No database changes were made.")
         return 1
 
-    token = os.getenv(TOKEN_ENV_VAR)
-    if not token:
-        print(
-            f"Missing {TOKEN_ENV_VAR}. Set it before running:\n"
-            f'  export {TOKEN_ENV_VAR}="..."\n'
-            "No TMDb requests were made."
-        )
+    selected_samples = filter_samples(target_result.samples, args)
+    if not selected_samples:
+        print("No targets matched the requested fetch filters.")
+        print("No TMDb requests were made.")
         print("No database changes were made.")
         return 1
 
+    token = os.getenv(TOKEN_ENV_VAR)
+    if not token:
+        print(
+            f"{TOKEN_ENV_VAR} is not set. Existing raw files can still be reused, "
+            "but missing raw files or --refresh will fail."
+        )
+
     RAW_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     PROCESSED_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    RUN_REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     try:
-        configuration = fetch_tmdb_json("/configuration", token)
+        configuration, configuration_file_result = fetch_or_reuse_json(
+            "/configuration",
+            RAW_OUTPUT_DIR / "configuration.json",
+            token,
+            args.refresh,
+        )
     except TmdbFetchError as exc:
-        print(f"Could not fetch TMDb configuration: {exc}")
+        print(f"Could not load TMDb configuration: {exc}")
+        print("No database changes were made.")
         return 1
 
-    save_json(RAW_OUTPUT_DIR / "configuration.json", configuration)
-
     mapped_items: list[dict[str, Any]] = []
-    raw_files: list[Path] = [RAW_OUTPUT_DIR / "configuration.json"]
+    raw_files_fetched: list[str] = []
+    raw_files_reused: list[str] = []
+    per_target_statuses: list[dict[str, Any]] = []
     errors: list[str] = []
-    total_fetched = 0
+    run_warnings = target_result.warnings.copy()
 
-    for sample in target_result.samples:
-        print(f"Fetching {sample.title} ({sample.media_type})...")
+    if configuration_file_result["status"] == "fetched":
+        raw_files_fetched.append(configuration_file_result["path"])
+    else:
+        raw_files_reused.append(configuration_file_result["path"])
+
+    print(f"Filters used: {filters_used(args)}")
+    print(f"Targets selected: {len(selected_samples)}")
+    print(f"Targets not selected: {len(target_result.samples) - len(selected_samples)}")
+
+    for sample in selected_samples:
+        print(f"Processing {sample.title} ({sample.media_type})...")
         try:
             (
                 tmdb_id,
@@ -843,46 +1020,36 @@ def main(argv: list[str] | None = None) -> int:
                 credits,
                 aggregate_credits,
                 notes,
+                raw_file_results,
             ) = fetch_title_payloads(
                 sample,
                 token,
+                args.refresh,
             )
         except TmdbFetchError as exc:
             message = f"{sample.title}: {exc}"
             print(f"  Error: {message}")
             errors.append(message)
+            per_target_statuses.append(
+                {
+                    "title": sample.title,
+                    "content_type": sample.content_type,
+                    "source_name": sample.source_name,
+                    "source_id": sample.source_id,
+                    "priority": sample.priority,
+                    "status": "failed",
+                    "raw_files": [],
+                    "warnings": [str(exc)],
+                }
+            )
             mapped_items.append(build_error_preview_item(sample, str(exc)))
             continue
 
-        details_path = RAW_OUTPUT_DIR / raw_filename(
-            sample.media_type,
-            tmdb_id,
-            "details",
-        )
-        external_ids_path = RAW_OUTPUT_DIR / raw_filename(
-            sample.media_type,
-            tmdb_id,
-            "external_ids",
-        )
-        credits_path = RAW_OUTPUT_DIR / raw_filename(
-            sample.media_type,
-            tmdb_id,
-            "credits",
-        )
-
-        save_json(details_path, details)
-        save_json(external_ids_path, external_ids)
-        save_json(credits_path, credits)
-        raw_files.extend([details_path, external_ids_path, credits_path])
-
-        if sample.media_type == "tv" and aggregate_credits is not None:
-            aggregate_credits_path = RAW_OUTPUT_DIR / raw_filename(
-                sample.media_type,
-                tmdb_id,
-                "aggregate_credits",
-            )
-            save_json(aggregate_credits_path, aggregate_credits)
-            raw_files.append(aggregate_credits_path)
+        for result in raw_file_results:
+            if result["status"] == "fetched":
+                raw_files_fetched.append(result["path"])
+            else:
+                raw_files_reused.append(result["path"])
 
         if sample.media_type == "movie":
             mapped = map_tmdb_movie_preview(
@@ -901,7 +1068,24 @@ def main(argv: list[str] | None = None) -> int:
                 notes,
             )
         mapped_items.append(attach_target_metadata(mapped, sample))
-        total_fetched += 1
+        run_warnings.extend(f"{sample.title}: {note}" for note in notes)
+        target_status = (
+            "fetched"
+            if any(result["status"] == "fetched" for result in raw_file_results)
+            else "reused"
+        )
+        per_target_statuses.append(
+            {
+                "title": sample.title,
+                "content_type": sample.content_type,
+                "source_name": sample.source_name,
+                "source_id": sample.source_id,
+                "priority": sample.priority,
+                "status": target_status,
+                "raw_files": raw_file_results,
+                "warnings": notes,
+            }
+        )
 
     if not mapped_items:
         print("No titles were mapped. Check the token, network, and TMDb IDs.")
@@ -921,21 +1105,52 @@ def main(argv: list[str] | None = None) -> int:
     }
     save_json(PREVIEW_OUTPUT_PATH, preview_payload)
 
-    print("\nTitles fetched:")
+    targets_fetched = sum(
+        1 for status in per_target_statuses if status.get("status") == "fetched"
+    )
+    targets_reused = sum(
+        1 for status in per_target_statuses if status.get("status") == "reused"
+    )
+    targets_processed = targets_fetched + targets_reused
+    total_skipped = target_result.skipped_targets
+
+    report_payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "script_name": Path(__file__).name,
+        "target_config_path": relative_path(target_result.path),
+        "filters_used": filters_used(args),
+        "targets_loaded": target_result.total_targets,
+        "targets_selected": len(selected_samples),
+        "targets_processed": targets_processed,
+        "targets_skipped": total_skipped,
+        "raw_files_fetched": raw_files_fetched,
+        "raw_files_reused": raw_files_reused,
+        "warnings": run_warnings,
+        "failures": errors,
+        "per_target": per_target_statuses,
+    }
+    save_json(RUN_REPORT_OUTPUT_PATH, report_payload)
+
+    print("\nTitles processed:")
     for item in mapped_items:
         print(f"- {item.get('title')} ({item.get('media_type')}, {item.get('tmdb_id')})")
 
-    print("\nRaw files saved:")
-    for path in raw_files:
-        print(f"- {path.relative_to(REPO_ROOT)}")
+    if raw_files_fetched:
+        print("\nRaw files fetched:")
+        for path in raw_files_fetched:
+            print(f"- {path}")
+    if raw_files_reused:
+        print("\nRaw files reused:")
+        for path in raw_files_reused:
+            print(f"- {path}")
 
     print(f"\nProcessed preview saved: {PREVIEW_OUTPUT_PATH.relative_to(REPO_ROOT)}")
+    print(f"Run report saved: {RUN_REPORT_OUTPUT_PATH.relative_to(REPO_ROOT)}")
     print_preview_table(mapped_items)
-    total_skipped = target_result.skipped_targets + len(errors)
     print_preview_totals(
         mapped_items,
         target_result.total_targets,
-        total_fetched,
+        targets_processed,
         total_skipped,
     )
 
@@ -954,8 +1169,16 @@ def main(argv: list[str] | None = None) -> int:
         for error in errors:
             print(f"- {error}")
 
+    print("\nRun summary:")
+    print(f"- Filters used: {filters_used(args)}")
+    print(f"- Selected target count: {len(selected_samples)}")
+    print(f"- Fetched count: {targets_fetched}")
+    print(f"- Reused count: {targets_reused}")
+    print(f"- Skipped count: {total_skipped}")
+    print(f"- Failure count: {len(errors)}")
+    print(f"- Report path: {RUN_REPORT_OUTPUT_PATH.relative_to(REPO_ROOT)}")
     print("\nNo database changes were made.")
-    return 0
+    return 0 if targets_processed else 1
 
 
 if __name__ == "__main__":

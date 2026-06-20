@@ -44,13 +44,10 @@ TOKEN_ENV_VAR = "TMDB_READ_ACCESS_TOKEN"
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_TARGETS_PATH = REPO_ROOT / "analytics" / "config" / "content_ingestion_targets.json"
 RAW_OUTPUT_DIR = REPO_ROOT / "analytics" / "raw" / "tmdb"
-PROCESSED_OUTPUT_PATH = (
-    REPO_ROOT
-    / "analytics"
-    / "processed"
-    / "tmdb"
-    / "availability_certification_preview.json"
-)
+PROCESSED_DIR = REPO_ROOT / "analytics" / "processed" / "tmdb"
+PROCESSED_OUTPUT_PATH = PROCESSED_DIR / "availability_certification_preview.json"
+RUN_REPORT_DIR = PROCESSED_DIR / "run_reports"
+RUN_REPORT_OUTPUT_PATH = RUN_REPORT_DIR / "availability_certification_fetch_run_report.json"
 PRIMARY_REGION = "IN"
 FALLBACK_REGIONS = ["US"]
 SUPPORTED_CONTENT_TYPES = {"movie", "series"}
@@ -87,20 +84,41 @@ class FetchStats:
     targets_loaded: int = 0
     targets_processed: int = 0
     targets_skipped: int = 0
+    targets_fetched: int = 0
+    targets_reused: int = 0
     availability_rows: int = 0
     certification_rows: int = 0
     warnings: list[str] | None = None
-    raw_files_saved: list[str] | None = None
+    failures: list[str] | None = None
+    raw_files_fetched: list[str] | None = None
+    raw_files_reused: list[str] | None = None
+    per_target: list[dict[str, Any]] | None = None
 
     def __post_init__(self) -> None:
         if self.warnings is None:
             self.warnings = []
-        if self.raw_files_saved is None:
-            self.raw_files_saved = []
+        if self.failures is None:
+            self.failures = []
+        if self.raw_files_fetched is None:
+            self.raw_files_fetched = []
+        if self.raw_files_reused is None:
+            self.raw_files_reused = []
+        if self.per_target is None:
+            self.per_target = []
 
 
 class PreviewFetchError(RuntimeError):
     pass
+
+
+def positive_int(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("--limit must be a positive integer") from exc
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("--limit must be a positive integer")
+    return parsed
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -119,6 +137,10 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--priority",
+        help="Process only targets with this priority value.",
+    )
+    parser.add_argument(
         "--source-id",
         help="Process one TMDb source_id from the target config.",
     )
@@ -130,6 +152,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--all",
         action="store_true",
         help="Process all valid TMDb targets. Defaults to pipeline-test targets only.",
+    )
+    parser.add_argument(
+        "--limit",
+        type=positive_int,
+        help="Cap selected targets after filtering.",
+    )
+    parser.add_argument(
+        "--refresh",
+        action="store_true",
+        help="Refetch raw files even when cached raw files already exist.",
     )
     return parser.parse_args(argv)
 
@@ -230,25 +262,48 @@ def load_targets(path: Path) -> tuple[list[Target], list[str], int]:
 
 def filter_targets(targets: list[Target], args: argparse.Namespace) -> list[Target]:
     if args.all:
-        return targets
+        selected = targets
+    elif args.priority or args.source_id or args.title:
+        selected = targets
+    else:
+        default_targets = [
+            target
+            for target in targets
+            if (target.priority or "").lower() == "pipeline_test"
+        ]
+        selected = default_targets or [
+            target for target in targets if target.source_id == "872585"
+        ]
+
+    if args.priority:
+        priority = str(args.priority).strip().lower()
+        selected = [
+            target for target in selected if (target.priority or "").lower() == priority
+        ]
 
     if args.source_id:
         source_id = str(args.source_id).strip()
-        return [target for target in targets if target.source_id == source_id]
+        selected = [target for target in selected if target.source_id == source_id]
 
     if args.title:
         title = str(args.title).strip().lower()
-        return [target for target in targets if target.title.lower() == title]
+        selected = [target for target in selected if target.title.lower() == title]
 
-    default_targets = [
-        target
-        for target in targets
-        if (target.priority or "").lower() == "pipeline_test"
-    ]
-    if default_targets:
-        return default_targets
+    if args.limit:
+        selected = selected[: args.limit]
 
-    return [target for target in targets if target.source_id == "872585"]
+    return selected
+
+
+def filters_used(args: argparse.Namespace) -> dict[str, Any]:
+    return {
+        "all": args.all,
+        "priority": args.priority,
+        "source_id": args.source_id,
+        "title": args.title,
+        "limit": args.limit,
+        "refresh": args.refresh,
+    }
 
 
 def fetch_tmdb_json(path: str, token: str) -> dict[str, Any]:
@@ -296,6 +351,49 @@ def save_json(path: Path, data: Any) -> None:
     )
 
 
+def load_cached_json(path: Path) -> dict[str, Any]:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise PreviewFetchError(f"Missing cached raw file: {relative_path(path)}") from exc
+    except json.JSONDecodeError as exc:
+        raise PreviewFetchError(
+            f"Malformed cached raw JSON in {relative_path(path)}: {exc}"
+        ) from exc
+
+    if not isinstance(data, dict):
+        raise PreviewFetchError(
+            f"Cached raw JSON has unexpected shape: {relative_path(path)}"
+        )
+
+    return data
+
+
+def fetch_or_reuse_json(
+    api_path: str,
+    raw_path: Path,
+    token: str | None,
+    refresh: bool,
+) -> tuple[dict[str, Any], dict[str, str]]:
+    if raw_path.exists() and not refresh:
+        return load_cached_json(raw_path), {
+            "path": relative_path(raw_path),
+            "status": "reused",
+        }
+
+    if not token:
+        raise PreviewFetchError(
+            f"Missing {TOKEN_ENV_VAR}; cannot fetch {api_path} for {relative_path(raw_path)}."
+        )
+
+    data = fetch_tmdb_json(api_path, token)
+    save_json(raw_path, data)
+    return data, {
+        "path": relative_path(raw_path),
+        "status": "fetched",
+    }
+
+
 def raw_prefix(target: Target) -> str:
     media_type = "movie" if target.content_type == "movie" else "tv"
     return f"{media_type}_{target.source_id}"
@@ -303,8 +401,9 @@ def raw_prefix(target: Target) -> str:
 
 def fetch_raw_payloads(
     target: Target,
-    token: str,
-) -> tuple[dict[str, Any], dict[str, Any], list[Path]]:
+    token: str | None,
+    refresh: bool,
+) -> tuple[dict[str, Any], dict[str, Any], list[dict[str, str]]]:
     prefix = raw_prefix(target)
 
     if target.content_type == "movie":
@@ -318,13 +417,20 @@ def fetch_raw_payloads(
         availability_file = RAW_OUTPUT_DIR / f"{prefix}_watch_providers.json"
         certification_file = RAW_OUTPUT_DIR / f"{prefix}_content_ratings.json"
 
-    availability = fetch_tmdb_json(availability_path, token)
-    certification = fetch_tmdb_json(certification_path, token)
+    availability, availability_result = fetch_or_reuse_json(
+        availability_path,
+        availability_file,
+        token,
+        refresh,
+    )
+    certification, certification_result = fetch_or_reuse_json(
+        certification_path,
+        certification_file,
+        token,
+        refresh,
+    )
 
-    save_json(availability_file, availability)
-    save_json(certification_file, certification)
-
-    return availability, certification, [availability_file, certification_file]
+    return availability, certification, [availability_result, certification_result]
 
 
 def region_list() -> list[str]:
@@ -616,10 +722,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if not token:
         print(
-            f"Missing {TOKEN_ENV_VAR}. Export it before fetching availability/certification data.",
-            file=sys.stderr,
+            f"{TOKEN_ENV_VAR} is not set. Existing raw files can still be reused, "
+            "but missing raw files or --refresh will fail."
         )
-        return 1
 
     try:
         targets, target_warnings, skipped_targets = load_targets(targets_path)
@@ -637,37 +742,80 @@ def main(argv: list[str] | None = None) -> int:
         targets_loaded=len(targets),
         targets_skipped=skipped_targets,
         warnings=target_warnings.copy(),
-        raw_files_saved=[],
     )
     items: list[dict[str, Any]] = []
+
+    RAW_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    RUN_REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
     print(f"Target config: {relative_path(targets_path)}")
     print(f"Targets loaded: {len(targets)}")
     print(f"Targets selected: {len(selected_targets)}")
+    print(f"Targets not selected: {len(targets) - len(selected_targets)}")
+    print(f"Filters used: {filters_used(args)}")
 
     for target in selected_targets:
-        print(f"\nFetching {target.title} ({target.content_type}, TMDb {target.source_id})...")
+        print(f"\nProcessing {target.title} ({target.content_type}, TMDb {target.source_id})...")
         try:
-            availability_payload, certification_payload, raw_files = fetch_raw_payloads(
+            availability_payload, certification_payload, raw_file_results = fetch_raw_payloads(
                 target,
                 token,
+                args.refresh,
             )
         except PreviewFetchError as exc:
             message = f"{target.title}: fetch failed: {exc}"
             stats.warnings.append(message)
+            stats.failures.append(message)
+            stats.per_target.append(
+                {
+                    "title": target.title,
+                    "content_type": target.content_type,
+                    "source_name": target.source_name,
+                    "source_id": target.source_id,
+                    "priority": target.priority,
+                    "status": "failed",
+                    "raw_files": [],
+                    "warnings": [str(exc)],
+                }
+            )
             print(f"  Warning: {message}")
             continue
 
         stats.targets_processed += 1
-        for raw_file in raw_files:
-            stats.raw_files_saved.append(relative_path(raw_file))
-            print(f"  saved {relative_path(raw_file)}")
+        for raw_file in raw_file_results:
+            if raw_file["status"] == "fetched":
+                stats.raw_files_fetched.append(raw_file["path"])
+            else:
+                stats.raw_files_reused.append(raw_file["path"])
+            print(f"  {raw_file['status']} {raw_file['path']}")
 
         item = build_preview_item(target, availability_payload, certification_payload)
         stats.availability_rows += len(item["availability"])
         stats.certification_rows += len(item["certifications"])
         stats.warnings.extend(f"{target.title}: {warning}" for warning in item["warnings"])
         items.append(item)
+        target_status = (
+            "fetched"
+            if any(raw_file["status"] == "fetched" for raw_file in raw_file_results)
+            else "reused"
+        )
+        if target_status == "fetched":
+            stats.targets_fetched += 1
+        else:
+            stats.targets_reused += 1
+        stats.per_target.append(
+            {
+                "title": target.title,
+                "content_type": target.content_type,
+                "source_name": target.source_name,
+                "source_id": target.source_id,
+                "priority": target.priority,
+                "status": target_status,
+                "raw_files": raw_file_results,
+                "warnings": item["warnings"],
+            }
+        )
         print_item_summary(item)
 
     preview = {
@@ -688,9 +836,33 @@ def main(argv: list[str] | None = None) -> int:
     }
     save_json(PROCESSED_OUTPUT_PATH, preview)
 
+    report = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "script_name": Path(__file__).name,
+        "target_config_path": relative_path(targets_path),
+        "filters_used": filters_used(args),
+        "targets_loaded": len(targets),
+        "targets_selected": len(selected_targets),
+        "targets_processed": stats.targets_processed,
+        "targets_skipped": stats.targets_skipped,
+        "raw_files_fetched": stats.raw_files_fetched,
+        "raw_files_reused": stats.raw_files_reused,
+        "warnings": stats.warnings,
+        "failures": stats.failures,
+        "per_target": stats.per_target,
+    }
+    save_json(RUN_REPORT_OUTPUT_PATH, report)
+
     print("\nSummary")
     print(f"Processed preview: {relative_path(PROCESSED_OUTPUT_PATH)}")
+    print(f"Run report: {relative_path(RUN_REPORT_OUTPUT_PATH)}")
+    print(f"Filters used: {filters_used(args)}")
+    print(f"Selected target count: {len(selected_targets)}")
     print(f"Targets processed: {stats.targets_processed}")
+    print(f"Fetched count: {stats.targets_fetched}")
+    print(f"Reused count: {stats.targets_reused}")
+    print(f"Skipped count: {stats.targets_skipped}")
+    print(f"Failure count: {len(stats.failures)}")
     print(f"Availability rows: {stats.availability_rows}")
     print(f"Certification rows: {stats.certification_rows}")
     print(f"Warnings: {len(stats.warnings)}")
