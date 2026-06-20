@@ -15,6 +15,9 @@ class Content(BaseModel):
     runtime: Optional[int]
     language: Optional[str]
     age_rating: Optional[str]
+    age_rating_region: Optional[str] = None
+    age_rating_source: Optional[str] = None
+    age_rating_system: Optional[str] = None
 
 
 class PaginatedContentResponse(BaseModel):

@@ -34,6 +34,19 @@ function formatPeopleList(people: CreditCrewMember[]) {
   return people.map((person) => person.name).join(", ");
 }
 
+function certificationLabel(content: Content) {
+  if (!content.age_rating) {
+    return null;
+  }
+
+  if (content.age_rating_region) {
+    const system = content.age_rating_system || content.age_rating_region;
+    return `${content.age_rating_region} certification${system ? ` (${system})` : ""}`;
+  }
+
+  return "Age rating";
+}
+
 export function DetailHero({ content, credits }: DetailHeroProps) {
   const [showBackdrop, setShowBackdrop] = useState(Boolean(content.backdrop));
   const [showPoster, setShowPoster] = useState(Boolean(content.poster));
@@ -42,12 +55,19 @@ export function DetailHero({ content, credits }: DetailHeroProps) {
   const primaryPeopleLabel =
     content.type === "movie" ? "Directed by" : "Created by";
   const metadata = [
-    formatType(content.type),
-    content.year,
-    formatRuntime(content.runtime),
-    content.language,
-    content.age_rating,
-  ].filter(Boolean);
+    { label: formatType(content.type), title: "Content type" },
+    content.year ? { label: String(content.year), title: "Release year" } : null,
+    formatRuntime(content.runtime)
+      ? { label: formatRuntime(content.runtime) || "", title: "Runtime" }
+      : null,
+    content.language ? { label: content.language, title: "Language" } : null,
+    content.age_rating
+      ? {
+          label: content.age_rating,
+          title: certificationLabel(content) || "Age rating",
+        }
+      : null,
+  ].filter((item): item is { label: string; title: string } => Boolean(item));
 
   return (
     <section className="detail-hero">
@@ -88,7 +108,9 @@ export function DetailHero({ content, credits }: DetailHeroProps) {
 
             <div className="detail-metadata" aria-label="Content metadata">
               {metadata.map((item) => (
-                <span key={String(item)}>{item}</span>
+                <span key={item.label} title={item.title}>
+                  {item.label}
+                </span>
               ))}
             </div>
 

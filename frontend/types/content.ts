@@ -10,6 +10,9 @@ export type Content = {
   runtime?: number | null;
   language?: string | null;
   age_rating?: string | null;
+  age_rating_region?: string | null;
+  age_rating_source?: string | null;
+  age_rating_system?: string | null;
 };
 
 export type PaginatedContentResponse = {
@@ -45,6 +48,11 @@ export type DiscoverContentParams = {
 export type PlatformAvailability = {
   name: string;
   availability_type: "streaming" | "rent" | "buy" | string;
+  platform_type?: PlatformType | string | null;
+  region_code?: string | null;
+  source_name?: string | null;
+  source_provider_id?: string | null;
+  display_priority?: number | null;
 };
 
 export type Rating = {

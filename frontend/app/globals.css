@@ -1776,6 +1776,13 @@ main {
   gap: 12px;
 }
 
+.availability-region {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
 .availability-group {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;

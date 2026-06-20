@@ -123,6 +123,58 @@ def get_detail_platforms(db: Session, content_id: int) -> list[dict]:
     return get_legacy_platforms(db, content_id)
 
 
+def get_display_certification(
+    db: Session,
+    content_id: int,
+    fallback_age_rating,
+) -> dict:
+    certification_query = text("""
+        SELECT
+            certification,
+            country_code,
+            rating_system,
+            source_name
+        FROM content_certifications
+        WHERE content_id = :content_id
+          AND country_code IN (:primary_region, :fallback_region)
+          AND certification IS NOT NULL
+          AND certification <> ''
+        ORDER BY
+            CASE country_code
+                WHEN :primary_region THEN 1
+                WHEN :fallback_region THEN 2
+                ELSE 3
+            END,
+            source_priority NULLS LAST,
+            certification ASC
+        LIMIT 1;
+    """)
+    certification_result = db.execute(
+        certification_query,
+        {
+            "content_id": content_id,
+            "primary_region": DEFAULT_AVAILABILITY_REGION,
+            "fallback_region": FALLBACK_AVAILABILITY_REGION,
+        },
+    )
+    certification_row = certification_result.mappings().first()
+
+    if certification_row:
+        return {
+            "age_rating": certification_row["certification"],
+            "age_rating_region": certification_row["country_code"],
+            "age_rating_source": certification_row["source_name"],
+            "age_rating_system": certification_row["rating_system"],
+        }
+
+    return {
+        "age_rating": fallback_age_rating,
+        "age_rating_region": None,
+        "age_rating_source": None,
+        "age_rating_system": None,
+    }
+
+
 def get_all_content_service(
     db: Session,
     content_type: str = None,
@@ -653,6 +705,13 @@ def get_content_details_service(content_id: int, db: Session):
         return None
 
     content = build_content_object(content_row)
+    content.update(
+        get_display_certification(
+            db,
+            content_id,
+            content_row["age_rating"],
+        )
+    )
 
     genres_query = text("""
         SELECT g.name

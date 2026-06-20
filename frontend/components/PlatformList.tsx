@@ -8,6 +8,13 @@ const availabilityLabels: Record<string, string> = {
   streaming: "Streaming",
   rent: "Rent",
   buy: "Buy",
+  ads: "Ads",
+  free: "Free",
+};
+
+const regionLabels: Record<string, string> = {
+  IN: "India",
+  US: "US",
 };
 
 function groupPlatforms(platforms: PlatformAvailability[]) {
@@ -17,6 +24,27 @@ function groupPlatforms(platforms: PlatformAvailability[]) {
     groups[key].push(platform);
     return groups;
   }, {});
+}
+
+function availabilityRegionLabel(platforms: PlatformAvailability[]) {
+  const regions = Array.from(
+    new Set(
+      platforms
+        .map((platform) => platform.region_code)
+        .filter((region): region is string => Boolean(region))
+    )
+  );
+
+  if (regions.length === 0) {
+    return null;
+  }
+
+  if (regions.length === 1) {
+    const region = regions[0];
+    return `Availability in ${regionLabels[region] || region}`;
+  }
+
+  return `Availability by region: ${regions.join(", ")}`;
 }
 
 export function PlatformList({ platforms }: PlatformListProps) {
@@ -33,12 +61,14 @@ export function PlatformList({ platforms }: PlatformListProps) {
   }
 
   const groupedPlatforms = groupPlatforms(platforms);
+  const regionLabel = availabilityRegionLabel(platforms);
 
   return (
     <section className="detail-panel">
       <div className="detail-panel__header">
         <span className="section-label">Where to watch</span>
         <h2>Availability</h2>
+        {regionLabel ? <p className="availability-region">{regionLabel}</p> : null}
       </div>
 
       <div className="availability-groups">
@@ -47,7 +77,9 @@ export function PlatformList({ platforms }: PlatformListProps) {
             <h3>{availabilityLabels[type] || type}</h3>
             <div className="availability-list">
               {items.map((platform) => (
-                <span key={`${platform.name}-${platform.availability_type}`}>
+                <span
+                  key={`${platform.name}-${platform.availability_type}-${platform.region_code || "legacy"}`}
+                >
                   {platform.name}
                 </span>
               ))}

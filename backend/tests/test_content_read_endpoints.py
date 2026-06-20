@@ -77,6 +77,81 @@ def has_region_aware_availability(db_session, content_id):
     return row["total"] > 0
 
 
+def first_in_certification_conflict(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT
+                c.id,
+                c.title,
+                c.age_rating AS stored_age_rating,
+                cc.certification AS certification,
+                cc.country_code,
+                cc.source_name,
+                cc.rating_system
+            FROM content c
+            JOIN content_certifications cc
+                ON cc.content_id = c.id
+               AND cc.country_code = 'IN'
+            WHERE c.age_rating IS NOT NULL
+              AND c.age_rating <> ''
+              AND c.age_rating <> cc.certification
+            ORDER BY c.title
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
+def first_us_only_certification(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT
+                c.id,
+                c.title,
+                c.age_rating AS stored_age_rating,
+                cc.certification AS certification,
+                cc.country_code,
+                cc.source_name,
+                cc.rating_system
+            FROM content c
+            JOIN content_certifications cc
+                ON cc.content_id = c.id
+               AND cc.country_code = 'US'
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM content_certifications cci
+                WHERE cci.content_id = c.id
+                  AND cci.country_code = 'IN'
+            )
+            ORDER BY c.title
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
+def first_legacy_age_rating_only(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT id, title, age_rating
+            FROM content c
+            WHERE c.age_rating IS NOT NULL
+              AND c.age_rating <> ''
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM content_certifications cc
+                  WHERE cc.content_id = c.id
+              )
+            ORDER BY c.title
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
 def test_get_content_returns_seed_or_larger_catalog(client):
     response = client.get("/content?limit=20")
     data = response.json()
@@ -270,6 +345,64 @@ def test_content_details_include_imported_region_aware_availability(client, db_s
     )
 
 
+def test_content_details_prefer_in_certification_over_stored_age_rating(
+    client,
+    db_session,
+):
+    row = first_in_certification_conflict(db_session)
+    if row is None:
+        pytest.skip("No content has an IN certification conflict in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    content = response.json()["content"]
+
+    assert response.status_code == 200
+    assert content["title"] == row["title"]
+    assert content["age_rating"] == row["certification"]
+    assert content["age_rating"] != row["stored_age_rating"]
+    assert content["age_rating_region"] == "IN"
+    assert content["age_rating_source"] == row["source_name"]
+    assert content["age_rating_system"] == row["rating_system"]
+
+
+def test_content_details_falls_back_to_us_certification_when_in_missing(
+    client,
+    db_session,
+):
+    row = first_us_only_certification(db_session)
+    if row is None:
+        pytest.skip("No content has a US-only certification in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    content = response.json()["content"]
+
+    assert response.status_code == 200
+    assert content["title"] == row["title"]
+    assert content["age_rating"] == row["certification"]
+    assert content["age_rating_region"] == "US"
+    assert content["age_rating_source"] == row["source_name"]
+    assert content["age_rating_system"] == row["rating_system"]
+
+
+def test_content_details_falls_back_to_legacy_age_rating_without_certifications(
+    client,
+    db_session,
+):
+    row = first_legacy_age_rating_only(db_session)
+    if row is None:
+        pytest.skip("No content has legacy-only age_rating in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    content = response.json()["content"]
+
+    assert response.status_code == 200
+    assert content["title"] == row["title"]
+    assert content["age_rating"] == row["age_rating"]
+    assert content["age_rating_region"] is None
+    assert content["age_rating_source"] is None
+    assert content["age_rating_system"] is None
+
+
 def test_content_details_region_aware_availability_has_no_duplicate_rows(
     client,
     db_session,
@@ -327,6 +460,43 @@ def test_content_details_preserve_legacy_availability_fallback(client, db_sessio
     assert platforms
     assert all(platform.get("region_code") is None for platform in platforms)
     assert all(platform.get("source_name") is None for platform in platforms)
+
+
+def test_content_details_us_availability_fallback_is_not_labeled_as_in(
+    client,
+    db_session,
+):
+    row = db_session.execute(
+        text(
+            """
+            SELECT c.id, c.title
+            FROM content c
+            WHERE EXISTS (
+                SELECT 1
+                FROM content_availability ca
+                WHERE ca.content_id = c.id
+                  AND ca.region_code = 'US'
+            )
+              AND NOT EXISTS (
+                SELECT 1
+                FROM content_availability ca
+                WHERE ca.content_id = c.id
+                  AND ca.region_code = 'IN'
+            )
+            ORDER BY c.title
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+    if row is None:
+        pytest.skip("No content has US-only availability in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    platforms = response.json()["platforms"]
+
+    assert response.status_code == 200
+    assert platforms
+    assert {platform["region_code"] for platform in platforms} == {"US"}
 
 
 def test_content_details_empty_availability_is_safe(client, db_session):
