@@ -1,0 +1,117 @@
+{
+  "failures": [],
+  "filters_used": {
+    "all": true,
+    "limit": 10,
+    "missing_only": false,
+    "mode": "all",
+    "name": null,
+    "person_id": null,
+    "refresh": false,
+    "source_person_id": null
+  },
+  "generated_at": "2026-06-21T07:54:03.323802+00:00",
+  "people_selected": 10,
+  "people_skipped_complete": 0,
+  "people_with_biography": 10,
+  "people_without_biography": 0,
+  "per_person": [
+    {
+      "name": "Matthew McConaughey",
+      "person_id": 1,
+      "raw_file": "analytics/raw/tmdb/person_10297_details.json",
+      "source_person_id": "10297",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Anne Hathaway",
+      "person_id": 2,
+      "raw_file": "analytics/raw/tmdb/person_1813_details.json",
+      "source_person_id": "1813",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Michael Caine",
+      "person_id": 3,
+      "raw_file": "analytics/raw/tmdb/person_3895_details.json",
+      "source_person_id": "3895",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jessica Chastain",
+      "person_id": 4,
+      "raw_file": "analytics/raw/tmdb/person_83002_details.json",
+      "source_person_id": "83002",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Casey Affleck",
+      "person_id": 5,
+      "raw_file": "analytics/raw/tmdb/person_1893_details.json",
+      "source_person_id": "1893",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Christopher Nolan",
+      "person_id": 6,
+      "raw_file": "analytics/raw/tmdb/person_525_details.json",
+      "source_person_id": "525",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Leonardo DiCaprio",
+      "person_id": 7,
+      "raw_file": "analytics/raw/tmdb/person_6193_details.json",
+      "source_person_id": "6193",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Joseph Gordon-Levitt",
+      "person_id": 8,
+      "raw_file": "analytics/raw/tmdb/person_24045_details.json",
+      "source_person_id": "24045",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Ken Watanabe",
+      "person_id": 9,
+      "raw_file": "analytics/raw/tmdb/person_3899_details.json",
+      "source_person_id": "3899",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Tom Hardy",
+      "person_id": 10,
+      "raw_file": "analytics/raw/tmdb/person_2524_details.json",
+      "source_person_id": "2524",
+      "status": "fetched",
+      "warnings": []
+    }
+  ],
+  "raw_files_fetched": [
+    "analytics/raw/tmdb/person_10297_details.json",
+    "analytics/raw/tmdb/person_1813_details.json",
+    "analytics/raw/tmdb/person_3895_details.json",
+    "analytics/raw/tmdb/person_83002_details.json",
+    "analytics/raw/tmdb/person_1893_details.json",
+    "analytics/raw/tmdb/person_525_details.json",
+    "analytics/raw/tmdb/person_6193_details.json",
+    "analytics/raw/tmdb/person_24045_details.json",
+    "analytics/raw/tmdb/person_3899_details.json",
+    "analytics/raw/tmdb/person_2524_details.json"
+  ],
+  "raw_files_reused": [],
+  "script_name": "fetch_tmdb_person_details.py",
+  "total_fetched_or_reused": 10,
+  "total_people_found": 297,
+  "warnings": []
+}

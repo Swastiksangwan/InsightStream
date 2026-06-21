@@ -260,6 +260,20 @@ Standard flow for adding new provider-backed titles:
 16. Run the frontend build.
 17. Manually verify frontend detail pages.
 
+Person detail fetch notes:
+
+- `python3 analytics/scripts/fetch_tmdb_person_details.py` defaults to missing-only mode and skips people that already have non-empty `biography`, `profile_url`, and `known_for_department` values.
+- Use `--all --refresh` only when intentionally rebuilding every person detail payload from TMDb.
+- Raw person detail payloads are cached under `analytics/raw/tmdb/person_{source_person_id}_details.json`.
+- The latest person detail fetch report is written to `analytics/processed/tmdb/run_reports/person_details_fetch_run_report.json`.
+- Useful targeted examples:
+
+```bash
+python3 analytics/scripts/fetch_tmdb_person_details.py --missing-only --limit 20
+python3 analytics/scripts/fetch_tmdb_person_details.py --source-person-id 525 --refresh
+python3 analytics/scripts/fetch_tmdb_person_details.py --all --limit 10
+```
+
 ## 10. Verification SQL
 
 These queries use the current schema column names. Provider IDs are stored in `external_ids.external_id` and `person_external_ids.external_id`.
