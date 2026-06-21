@@ -406,6 +406,15 @@ Expected duplicate check result: no rows.
 
 ## 11. Test Commands
 
+Automated ingestion health check:
+
+```bash
+python3 analytics/scripts/check_ingestion_health.py
+python3 analytics/scripts/check_ingestion_health.py --priority batch_test_2
+```
+
+The health check is read-only and writes `analytics/processed/tmdb/run_reports/ingestion_health_report.json`.
+
 Backend:
 
 ```bash

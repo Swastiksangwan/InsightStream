@@ -506,6 +506,36 @@ Expected result: duplicate checks should return no rows.
 
 Note: current schema stores provider IDs in `external_id`, not `source_id`, for both `external_ids` and `person_external_ids`.
 
+## Automated Ingestion Health Check
+
+Run the read-only health check before and after large batch ingestion:
+
+```bash
+python3 analytics/scripts/check_ingestion_health.py
+```
+
+Batch-specific check:
+
+```bash
+python3 analytics/scripts/check_ingestion_health.py --priority batch_test_2
+```
+
+Strict mode:
+
+```bash
+python3 analytics/scripts/check_ingestion_health.py --strict
+```
+
+This script does not write to PostgreSQL. It checks target config shape, target-to-database coverage, duplicate rows, metadata completeness, people summary metrics, and availability/certification coverage.
+
+It writes:
+
+```text
+analytics/processed/tmdb/run_reports/ingestion_health_report.json
+```
+
+Use `--fail-on-warning` in CI or review workflows when warnings should block the run.
+
 ## Full Batch Command Sequence
 
 Use this compact sequence after a candidate batch has passed validation and has been merged into `content_ingestion_targets.json`.
@@ -583,6 +613,7 @@ Debugging one title with `--source-id` does not replace the normal candidate -> 
 | `import_person_details_from_preview.py` | Dry-run/apply missing person detail fields. | `--apply` |
 | `fetch_tmdb_availability_certification.py` | Fetch or reuse availability/certification raw files and build preview. | `--targets`, `--priority`, `--source-id`, `--title`, `--all`, `--limit`, `--refresh` |
 | `import_availability_certification_from_preview.py` | Dry-run/apply region-aware availability/certification import. | `--preview`, `--apply` |
+| `check_ingestion_health.py` | Read-only target config, DB coverage, duplicate, metadata completeness, and people summary check. | `--targets`, `--priority`, `--output`, `--strict`, `--fail-on-warning` |
 
 This table is based on the current scripts. Do not assume an option exists unless it is listed here or shown by the script's `--help`.
 

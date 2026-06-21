@@ -1,0 +1,112 @@
+{
+  "generated_at": "2026-06-21T12:43:13.228887+00:00",
+  "script_name": "check_ingestion_health.py",
+  "target_config_path": "analytics/config/content_ingestion_targets.json",
+  "filters_used": {
+    "priority": null,
+    "strict": false,
+    "fail_on_warning": false
+  },
+  "config_summary": {
+    "total_targets": 51,
+    "valid_targets": 51,
+    "invalid_targets": 0,
+    "selected_targets": 51,
+    "priority_counts": {
+      "batch_test_1": 5,
+      "batch_test_2": 30,
+      "pipeline_test": 1,
+      "seed": 15
+    },
+    "ingestion_status_counts": {
+      "verified": 51
+    },
+    "duplicate_source_targets": [],
+    "duplicate_title_targets": []
+  },
+  "database_summary": {
+    "content_count": 51,
+    "content_type_counts": {
+      "movie": 27,
+      "series": 24
+    },
+    "external_id_counts": {
+      "imdb": 51,
+      "tmdb": 51
+    }
+  },
+  "duplicate_checks": {
+    "content": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    },
+    "external_ids": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    },
+    "person_external_ids": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    },
+    "genres": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    },
+    "platforms": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    },
+    "content_genres": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    },
+    "content_people": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    },
+    "content_availability": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    },
+    "content_certifications": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
+    }
+  },
+  "target_db_coverage": {
+    "selected_targets": 51,
+    "matched_targets": 51,
+    "missing_targets": 0,
+    "content_type_mismatches": [],
+    "extra_db_tmdb_external_ids": [],
+    "missing_target_details": []
+  },
+  "metadata_completeness": {
+    "checked_content_count": 51,
+    "content_with_warnings_or_failures": 0,
+    "items": []
+  },
+  "person_detail_summary": {
+    "total_people": 297,
+    "people_with_biography": 286,
+    "people_without_biography": 11,
+    "people_with_profile_url": 294,
+    "people_without_profile_url": 3,
+    "people_with_known_for_department": 297,
+    "people_without_known_for_department": 0,
+    "person_external_ids_count": 297,
+    "people_without_external_ids": 0
+  },
+  "warnings": [],
+  "failures": [],
+  "status": "healthy"
+}
