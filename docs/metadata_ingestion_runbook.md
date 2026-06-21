@@ -8,6 +8,8 @@ The current catalog is larger than the SQL seed. `backend/sample_data.sql` resto
 
 This document is operational. It explains the current rebuild flow, verification checks, and safe ingestion order. It is not a product planning document.
 
+For the step-by-step operational process for adding one title or a full provider-backed batch, use `docs/full_ingestion_pipeline_guide.md`. That guide is the recommended reference for candidate validation, target merge, fetch/build stages, dry-run/apply imports, idempotency checks, and final verification.
+
 ## 2. Current Catalog State
 
 Current catalog total after the full ingestion rebuild: 21 titles.

@@ -351,6 +351,7 @@ Useful current docs:
 - `docs/product_direction.md`
 - `docs/backend_database_setup.md`
 - `docs/backend_testing.md`
+- `docs/full_ingestion_pipeline_guide.md`
 - `docs/metadata_ingestion_runbook.md`
 - `docs/metadata_provider_strategy.md`
 - `docs/metadata_normalization_plan.md`
