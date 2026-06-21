@@ -2,170 +2,924 @@
   "failures": [],
   "filters_used": {
     "limit": null,
-    "priority": "batch_test_1",
+    "priority": "batch_test_2",
     "refresh": false,
     "source_id": null,
     "title": null
   },
-  "generated_at": "2026-06-20T10:45:10.613676+00:00",
+  "generated_at": "2026-06-20T18:50:09.095839+00:00",
   "per_target": [
     {
       "content_type": "movie",
-      "priority": "batch_test_1",
+      "priority": "batch_test_2",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_603_details.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_278_details.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_603_external_ids.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_278_external_ids.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_603_credits.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_278_credits.json",
+          "status": "fetched"
         }
       ],
-      "source_id": "603",
+      "source_id": "278",
       "source_name": "tmdb",
-      "status": "reused",
-      "title": "The Matrix",
+      "status": "fetched",
+      "title": "The Shawshank Redemption",
       "warnings": []
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_1",
+      "priority": "batch_test_2",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_550_details.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_238_details.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_550_external_ids.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_238_external_ids.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_550_credits.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_238_credits.json",
+          "status": "fetched"
         }
       ],
-      "source_id": "550",
+      "source_id": "238",
       "source_name": "tmdb",
-      "status": "reused",
-      "title": "Fight Club",
+      "status": "fetched",
+      "title": "The Godfather",
       "warnings": []
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_1",
+      "priority": "batch_test_2",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_361743_details.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_680_details.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_361743_external_ids.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_680_external_ids.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_361743_credits.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/movie_680_credits.json",
+          "status": "fetched"
         }
       ],
-      "source_id": "361743",
+      "source_id": "680",
       "source_name": "tmdb",
-      "status": "reused",
-      "title": "Top Gun: Maverick",
+      "status": "fetched",
+      "title": "Pulp Fiction",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_13_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_13_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_13_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "13",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Forrest Gump",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_769_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_769_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_769_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "769",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Goodfellas",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_120_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_120_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_120_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "120",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Lord of the Rings: The Fellowship of the Ring",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_122_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_122_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_122_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "122",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Lord of the Rings: The Return of the King",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_98_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_98_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_98_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "98",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Gladiator",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_76341_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_76341_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_76341_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "76341",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Mad Max: Fury Road",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_244786_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_244786_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_244786_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "244786",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Whiplash",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_545611_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_545611_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_545611_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "545611",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Everything Everywhere All at Once",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_37799_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_37799_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_37799_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "37799",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Social Network",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_78_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_78_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_78_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "78",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Blade Runner",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_335984_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_335984_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_335984_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "335984",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Blade Runner 2049",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_329865_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_329865_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_329865_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "329865",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Arrival",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_1",
+      "priority": "batch_test_2",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_94997_details.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/tv_1399_details.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_94997_external_ids.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/tv_1399_external_ids.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_94997_credits.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/tv_1399_credits.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_94997_aggregate_credits.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/tv_1399_aggregate_credits.json",
+          "status": "fetched"
         }
       ],
-      "source_id": "94997",
+      "source_id": "1399",
       "source_name": "tmdb",
-      "status": "reused",
-      "title": "House of the Dragon",
+      "status": "fetched",
+      "title": "Game of Thrones",
       "warnings": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ]
     },
     {
       "content_type": "series",
-      "priority": "batch_test_1",
+      "priority": "batch_test_2",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_87108_details.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/tv_60059_details.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_87108_external_ids.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/tv_60059_external_ids.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_87108_credits.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/tv_60059_credits.json",
+          "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_87108_aggregate_credits.json",
-          "status": "reused"
+          "path": "analytics/raw/tmdb/tv_60059_aggregate_credits.json",
+          "status": "fetched"
         }
       ],
-      "source_id": "87108",
+      "source_id": "60059",
       "source_name": "tmdb",
-      "status": "reused",
-      "title": "Chernobyl",
+      "status": "fetched",
+      "title": "Better Call Saul",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_19885_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_19885_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_19885_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_19885_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "19885",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Sherlock",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_2316_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_2316_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_2316_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_2316_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "2316",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Office",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_46648_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_46648_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_46648_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_46648_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "46648",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "True Detective",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_63247_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_63247_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_63247_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_63247_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "63247",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Westworld",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_76331_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_76331_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_76331_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_76331_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "76331",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Succession",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_1398_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_1398_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_1398_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_1398_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "1398",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Sopranos",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_4613_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_4613_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_4613_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_4613_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "4613",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Band of Brothers",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null.",
+        "No creator/director names found."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_63351_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_63351_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_63351_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_63351_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "63351",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Narcos",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_42009_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_42009_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_42009_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_42009_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "42009",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Black Mirror",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_95396_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95396_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95396_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95396_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "95396",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Severance",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_83867_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_83867_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_83867_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_83867_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "83867",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Andor",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_94605_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_94605_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_94605_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_94605_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "94605",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Arcane",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_2",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_136315_details.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_136315_external_ids.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_136315_credits.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_136315_aggregate_credits.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "136315",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Bear",
       "warnings": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ]
     }
   ],
-  "raw_files_fetched": [],
+  "raw_files_fetched": [
+    "analytics/raw/tmdb/movie_278_details.json",
+    "analytics/raw/tmdb/movie_278_external_ids.json",
+    "analytics/raw/tmdb/movie_278_credits.json",
+    "analytics/raw/tmdb/movie_238_details.json",
+    "analytics/raw/tmdb/movie_238_external_ids.json",
+    "analytics/raw/tmdb/movie_238_credits.json",
+    "analytics/raw/tmdb/movie_680_details.json",
+    "analytics/raw/tmdb/movie_680_external_ids.json",
+    "analytics/raw/tmdb/movie_680_credits.json",
+    "analytics/raw/tmdb/movie_13_details.json",
+    "analytics/raw/tmdb/movie_13_external_ids.json",
+    "analytics/raw/tmdb/movie_13_credits.json",
+    "analytics/raw/tmdb/movie_769_details.json",
+    "analytics/raw/tmdb/movie_769_external_ids.json",
+    "analytics/raw/tmdb/movie_769_credits.json",
+    "analytics/raw/tmdb/movie_120_details.json",
+    "analytics/raw/tmdb/movie_120_external_ids.json",
+    "analytics/raw/tmdb/movie_120_credits.json",
+    "analytics/raw/tmdb/movie_122_details.json",
+    "analytics/raw/tmdb/movie_122_external_ids.json",
+    "analytics/raw/tmdb/movie_122_credits.json",
+    "analytics/raw/tmdb/movie_98_details.json",
+    "analytics/raw/tmdb/movie_98_external_ids.json",
+    "analytics/raw/tmdb/movie_98_credits.json",
+    "analytics/raw/tmdb/movie_76341_details.json",
+    "analytics/raw/tmdb/movie_76341_external_ids.json",
+    "analytics/raw/tmdb/movie_76341_credits.json",
+    "analytics/raw/tmdb/movie_244786_details.json",
+    "analytics/raw/tmdb/movie_244786_external_ids.json",
+    "analytics/raw/tmdb/movie_244786_credits.json",
+    "analytics/raw/tmdb/movie_545611_details.json",
+    "analytics/raw/tmdb/movie_545611_external_ids.json",
+    "analytics/raw/tmdb/movie_545611_credits.json",
+    "analytics/raw/tmdb/movie_37799_details.json",
+    "analytics/raw/tmdb/movie_37799_external_ids.json",
+    "analytics/raw/tmdb/movie_37799_credits.json",
+    "analytics/raw/tmdb/movie_78_details.json",
+    "analytics/raw/tmdb/movie_78_external_ids.json",
+    "analytics/raw/tmdb/movie_78_credits.json",
+    "analytics/raw/tmdb/movie_335984_details.json",
+    "analytics/raw/tmdb/movie_335984_external_ids.json",
+    "analytics/raw/tmdb/movie_335984_credits.json",
+    "analytics/raw/tmdb/movie_329865_details.json",
+    "analytics/raw/tmdb/movie_329865_external_ids.json",
+    "analytics/raw/tmdb/movie_329865_credits.json",
+    "analytics/raw/tmdb/tv_1399_details.json",
+    "analytics/raw/tmdb/tv_1399_external_ids.json",
+    "analytics/raw/tmdb/tv_1399_credits.json",
+    "analytics/raw/tmdb/tv_1399_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_60059_details.json",
+    "analytics/raw/tmdb/tv_60059_external_ids.json",
+    "analytics/raw/tmdb/tv_60059_credits.json",
+    "analytics/raw/tmdb/tv_60059_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_19885_details.json",
+    "analytics/raw/tmdb/tv_19885_external_ids.json",
+    "analytics/raw/tmdb/tv_19885_credits.json",
+    "analytics/raw/tmdb/tv_19885_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_2316_details.json",
+    "analytics/raw/tmdb/tv_2316_external_ids.json",
+    "analytics/raw/tmdb/tv_2316_credits.json",
+    "analytics/raw/tmdb/tv_2316_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_46648_details.json",
+    "analytics/raw/tmdb/tv_46648_external_ids.json",
+    "analytics/raw/tmdb/tv_46648_credits.json",
+    "analytics/raw/tmdb/tv_46648_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_63247_details.json",
+    "analytics/raw/tmdb/tv_63247_external_ids.json",
+    "analytics/raw/tmdb/tv_63247_credits.json",
+    "analytics/raw/tmdb/tv_63247_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_76331_details.json",
+    "analytics/raw/tmdb/tv_76331_external_ids.json",
+    "analytics/raw/tmdb/tv_76331_credits.json",
+    "analytics/raw/tmdb/tv_76331_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_1398_details.json",
+    "analytics/raw/tmdb/tv_1398_external_ids.json",
+    "analytics/raw/tmdb/tv_1398_credits.json",
+    "analytics/raw/tmdb/tv_1398_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_4613_details.json",
+    "analytics/raw/tmdb/tv_4613_external_ids.json",
+    "analytics/raw/tmdb/tv_4613_credits.json",
+    "analytics/raw/tmdb/tv_4613_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_63351_details.json",
+    "analytics/raw/tmdb/tv_63351_external_ids.json",
+    "analytics/raw/tmdb/tv_63351_credits.json",
+    "analytics/raw/tmdb/tv_63351_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_42009_details.json",
+    "analytics/raw/tmdb/tv_42009_external_ids.json",
+    "analytics/raw/tmdb/tv_42009_credits.json",
+    "analytics/raw/tmdb/tv_42009_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_95396_details.json",
+    "analytics/raw/tmdb/tv_95396_external_ids.json",
+    "analytics/raw/tmdb/tv_95396_credits.json",
+    "analytics/raw/tmdb/tv_95396_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_83867_details.json",
+    "analytics/raw/tmdb/tv_83867_external_ids.json",
+    "analytics/raw/tmdb/tv_83867_credits.json",
+    "analytics/raw/tmdb/tv_83867_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_94605_details.json",
+    "analytics/raw/tmdb/tv_94605_external_ids.json",
+    "analytics/raw/tmdb/tv_94605_credits.json",
+    "analytics/raw/tmdb/tv_94605_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_136315_details.json",
+    "analytics/raw/tmdb/tv_136315_external_ids.json",
+    "analytics/raw/tmdb/tv_136315_credits.json",
+    "analytics/raw/tmdb/tv_136315_aggregate_credits.json"
+  ],
   "raw_files_reused": [
-    "analytics/raw/tmdb/configuration.json",
-    "analytics/raw/tmdb/movie_603_details.json",
-    "analytics/raw/tmdb/movie_603_external_ids.json",
-    "analytics/raw/tmdb/movie_603_credits.json",
-    "analytics/raw/tmdb/movie_550_details.json",
-    "analytics/raw/tmdb/movie_550_external_ids.json",
-    "analytics/raw/tmdb/movie_550_credits.json",
-    "analytics/raw/tmdb/movie_361743_details.json",
-    "analytics/raw/tmdb/movie_361743_external_ids.json",
-    "analytics/raw/tmdb/movie_361743_credits.json",
-    "analytics/raw/tmdb/tv_94997_details.json",
-    "analytics/raw/tmdb/tv_94997_external_ids.json",
-    "analytics/raw/tmdb/tv_94997_credits.json",
-    "analytics/raw/tmdb/tv_94997_aggregate_credits.json",
-    "analytics/raw/tmdb/tv_87108_details.json",
-    "analytics/raw/tmdb/tv_87108_external_ids.json",
-    "analytics/raw/tmdb/tv_87108_credits.json",
-    "analytics/raw/tmdb/tv_87108_aggregate_credits.json"
+    "analytics/raw/tmdb/configuration.json"
   ],
   "script_name": "fetch_tmdb_sample.py",
   "target_config_path": "analytics/config/content_ingestion_targets.json",
-  "targets_loaded": 21,
-  "targets_processed": 5,
-  "targets_selected": 5,
+  "targets_loaded": 51,
+  "targets_processed": 30,
+  "targets_selected": 30,
   "targets_skipped": 0,
   "warnings": [
-    "House of the Dragon: Missing or empty episode_run_time; runtime is approximate/null.",
-    "Chernobyl: Missing or empty episode_run_time; runtime is approximate/null."
+    "Game of Thrones: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Better Call Saul: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The Office: Missing or empty episode_run_time; runtime is approximate/null.",
+    "True Detective: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Westworld: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Succession: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The Sopranos: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Band of Brothers: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Band of Brothers: No creator/director names found.",
+    "Narcos: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Black Mirror: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Severance: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Andor: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Arcane: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The Bear: Missing or empty episode_run_time; runtime is approximate/null."
   ]
 }
