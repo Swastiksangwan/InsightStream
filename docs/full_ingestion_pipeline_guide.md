@@ -170,7 +170,8 @@ Rules:
 
 ```bash
 python3 analytics/scripts/validate_ingestion_candidates.py \
-  --candidates analytics/config/content_ingestion_candidates_batch_3.json
+  --candidates analytics/config/content_ingestion_candidates_batch_3.json \
+  --priority batch_test_3
 ```
 
 Optional existing-target config argument:
@@ -180,6 +181,8 @@ python3 analytics/scripts/validate_ingestion_candidates.py \
   --candidates analytics/config/content_ingestion_candidates_batch_3.json \
   --targets analytics/config/content_ingestion_targets.json
 ```
+
+If `--priority` is omitted, the validator infers the expected priority when all candidates in the file share one priority. Mixed-priority candidate files fail validation with a clear setup error.
 
 Validation checks:
 
@@ -603,7 +606,7 @@ Debugging one title with `--source-id` does not replace the normal candidate -> 
 
 | Script | Purpose | Supported options |
 | --- | --- | --- |
-| `validate_ingestion_candidates.py` | Validate candidate target file before merge. | `--candidates`, `--targets` |
+| `validate_ingestion_candidates.py` | Validate candidate target file before merge. | `--candidates`, `--targets`, `--priority` |
 | `merge_ingestion_candidates.py` | Merge validated candidates into target config. | `--candidates`, `--targets`, `--priority`, `--apply` |
 | `fetch_tmdb_sample.py` | Fetch or reuse content metadata raw files and build content preview. | `--targets`, `--priority`, `--source-id`, `--title`, `--limit`, `--refresh` |
 | `import_content_metadata_from_preview.py` | Dry-run/apply normalized content metadata import. | `--preview`, `--apply` |

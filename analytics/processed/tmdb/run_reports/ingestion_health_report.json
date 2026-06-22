@@ -1,38 +1,39 @@
 {
-  "generated_at": "2026-06-21T12:43:13.228887+00:00",
+  "generated_at": "2026-06-21T17:48:55.700058+00:00",
   "script_name": "check_ingestion_health.py",
   "target_config_path": "analytics/config/content_ingestion_targets.json",
   "filters_used": {
-    "priority": null,
+    "priority": "batch_test_3",
     "strict": false,
     "fail_on_warning": false
   },
   "config_summary": {
-    "total_targets": 51,
-    "valid_targets": 51,
+    "total_targets": 66,
+    "valid_targets": 66,
     "invalid_targets": 0,
-    "selected_targets": 51,
+    "selected_targets": 15,
     "priority_counts": {
       "batch_test_1": 5,
       "batch_test_2": 30,
+      "batch_test_3": 15,
       "pipeline_test": 1,
       "seed": 15
     },
     "ingestion_status_counts": {
-      "verified": 51
+      "verified": 66
     },
     "duplicate_source_targets": [],
     "duplicate_title_targets": []
   },
   "database_summary": {
-    "content_count": 51,
+    "content_count": 66,
     "content_type_counts": {
-      "movie": 27,
-      "series": 24
+      "movie": 35,
+      "series": 31
     },
     "external_id_counts": {
-      "imdb": 51,
-      "tmdb": 51
+      "imdb": 66,
+      "tmdb": 66
     }
   },
   "duplicate_checks": {
@@ -83,27 +84,27 @@
     }
   },
   "target_db_coverage": {
-    "selected_targets": 51,
-    "matched_targets": 51,
+    "selected_targets": 15,
+    "matched_targets": 15,
     "missing_targets": 0,
     "content_type_mismatches": [],
     "extra_db_tmdb_external_ids": [],
     "missing_target_details": []
   },
   "metadata_completeness": {
-    "checked_content_count": 51,
+    "checked_content_count": 15,
     "content_with_warnings_or_failures": 0,
     "items": []
   },
   "person_detail_summary": {
-    "total_people": 297,
-    "people_with_biography": 286,
-    "people_without_biography": 11,
-    "people_with_profile_url": 294,
+    "total_people": 377,
+    "people_with_biography": 362,
+    "people_without_biography": 15,
+    "people_with_profile_url": 374,
     "people_without_profile_url": 3,
-    "people_with_known_for_department": 297,
+    "people_with_known_for_department": 377,
     "people_without_known_for_department": 0,
-    "person_external_ids_count": 297,
+    "person_external_ids_count": 377,
     "people_without_external_ids": 0
   },
   "warnings": [],

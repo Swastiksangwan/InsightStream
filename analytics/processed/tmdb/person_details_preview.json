@@ -1,290 +1,2494 @@
 {
-  "generated_at": "2026-06-21T07:54:03.322737+00:00",
+  "generated_at": "2026-06-21T17:42:23.778272+00:00",
   "inspection_only": true,
   "items": [
     {
       "adult": false,
-      "also_known_as": [
-        "Matthew David McConaughey"
-      ],
-      "biography": "Matthew David McConaughey (/məˈkɒnəheɪ/ mə-KON-ə-hay; born November 4, 1969) is an American actor. He achieved his breakthrough with a supporting performance in the coming-of-age comedy Dazed and Confused (1993). After several supporting roles, his first success as a leading man came in the legal drama A Time to Kill (1996). His career progressed with lead roles in the science fiction film Contact (1997), the historical drama Amistad (1997), and the war film U-571 (2000).\n\nIn the 2000s, McConaughey became known for starring in romantic comedies, including The Wedding Planner (2001), How to Lose a Guy in 10 Days (2003), Failure to Launch (2006), Fool's Gold (2008), and Ghosts of Girlfriends Past (2009), establishing him as a sex symbol. In 2011, after a two-year hiatus from film acting, McConaughey began appearing in more dramatic roles, starting with the legal drama The Lincoln Lawyer. In 2012, he gained wider praise for his roles as a stripper in Magic Mike and a fugitive in Mud.\n\nMcConaughey's portrayal of Ron Woodroof, a cowboy diagnosed with AIDS, in the biopic Dallas Buyers Club (2013) earned him widespread critical acclaim and numerous accolades, including the Academy Award for Best Actor. He followed it with a supporting role in The Wolf of Wall Street (2013), and a starring role as Rust Cohle in the first season of HBO's crime anthology series True Detective (2014), for which he was nominated for the Primetime Emmy Award for Outstanding Lead Actor in a Drama Series. His subsequent film roles include starring in Interstellar (2014) and The Gentlemen (2019), as well as voice work in Kubo and the Two Strings (2016), Sing (2016), and Sing 2 (2021).\n\nDescription above from the Wikipedia article Matthew McConaughey, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
-      "birthday": "1969-11-04",
+      "also_known_as": [],
+      "biography": null,
+      "birthday": "1977-01-01",
       "deathday": null,
       "homepage": null,
-      "imdb_id": "nm0000190",
+      "imdb_id": "nm1296729",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Jantje Friese",
+      "person_id": 78,
+      "place_of_birth": "Marburg, Germany",
+      "popularity": 0.4385,
+      "profile_path": "/1FPWxHCzCmiLlmCAf7Gze6jkWP7.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/1FPWxHCzCmiLlmCAf7Gze6jkWP7.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1075096",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Джои Бэти",
+        "Τζόι Μπέιτι",
+        "喬伊・巴堤"
+      ],
+      "biography": null,
+      "birthday": "1989-01-01",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm5438541",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Joey Batey",
+      "person_id": 82,
+      "place_of_birth": "Newcastle upon Tyne, England, UK",
+      "popularity": 0.9212,
+      "profile_path": "/4uo4JPaK6KpdN7v8C1pbwKpNVJU.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/4uo4JPaK6KpdN7v8C1pbwKpNVJU.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1353920",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Lauren Schmidt",
+        "Lauren Hissrich",
+        "Lauren S. Hissrich"
+      ],
+      "biography": null,
+      "birthday": "1978-08-01",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1274355",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Lauren Schmidt Hissrich",
+      "person_id": 84,
+      "place_of_birth": "Ohio, USA",
+      "popularity": 1.0247,
+      "profile_path": "/gIYkS3iNC8gMrldAHF09QHPGELb.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/gIYkS3iNC8gMrldAHF09QHPGELb.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1219517",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": null,
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm4585291",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Kyle Pacek",
+      "person_id": 85,
+      "place_of_birth": "New Hampshire, USA",
+      "popularity": 0.1308,
+      "profile_path": "/6KnQ0GiQgaoyAe4DDkyokwpDoa7.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/6KnQ0GiQgaoyAe4DDkyokwpDoa7.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "2471240",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": null,
+      "birthday": "2005-11-22",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm5430982",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Daan Lennard Liebrenz",
+      "person_id": 91,
+      "place_of_birth": null,
+      "popularity": 0.289,
+      "profile_path": "/dYJWxmuhKvSjx7vCQdybZsoe38X.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/dYJWxmuhKvSjx7vCQdybZsoe38X.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1608974",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "巴希爾·薩拉赫丁",
+        "バシア・サラフディン",
+        "Bashir R. Salahuddin"
+      ],
+      "biography": null,
+      "birthday": "1976-06-30",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1506981",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Bashir Salahuddin",
+      "person_id": 115,
+      "place_of_birth": "Chicago, Illinois, USA",
+      "popularity": 1.6272,
+      "profile_path": "/ZL5MRzjd6kWkvQXqh5mgPY1CKP.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/ZL5MRzjd6kWkvQXqh5mgPY1CKP.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1241330",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Christopher Jay Brancato"
+      ],
+      "biography": null,
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0104333",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": false
+      },
+      "known_for_department": "Writing",
+      "name": "Chris Brancato",
+      "person_id": 265,
+      "place_of_birth": null,
+      "popularity": 0.8536,
+      "profile_path": null,
+      "profile_url": null,
+      "source_name": "tmdb",
+      "source_person_id": "64506",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Douglas Miro"
+      ],
+      "biography": "Doug Miro (born January 20, 1972) is an American screenwriter based in Los Angeles. Miro studied screenwriting at the USC School of Cinematic Arts and graduated with a degree in English from Stanford University.\n\nDescription above from the Wikipedia article Doug Miro, licensed under CC-BY-SA, full list of contributors on Wikipedia​",
+      "birthday": "1972-01-20",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1215164",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": false
+      },
+      "known_for_department": "Writing",
+      "name": "Doug Miro",
+      "person_id": 266,
+      "place_of_birth": "Los Angeles, California, USA",
+      "popularity": 0.6663,
+      "profile_path": null,
+      "profile_url": null,
+      "source_name": "tmdb",
+      "source_person_id": "81203",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": null,
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0076166",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": false
+      },
+      "known_for_department": "Writing",
+      "name": "Carlo Bernard",
+      "person_id": 267,
+      "place_of_birth": null,
+      "popularity": 0.7348,
+      "profile_path": null,
+      "profile_url": null,
+      "source_name": "tmdb",
+      "source_person_id": "121479",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": null,
+      "birthday": "1984-01-26",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm9772311",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Dan Erickson",
+      "person_id": 279,
+      "place_of_birth": "Olympia, Washington, USA",
+      "popularity": 0.5386,
+      "profile_path": "/qzQ30V43kbVoMjJXRw6ydkicXEP.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/qzQ30V43kbVoMjJXRw6ydkicXEP.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "3442409",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Muhammad Benseghaien",
+        "مهند بحير",
+        "Muhannad Ben Amor",
+        "穆罕纳德·拜尔"
+      ],
+      "biography": null,
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm10753773",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Muhannad Bhaier",
+      "person_id": 281,
+      "place_of_birth": null,
+      "popularity": 0.4165,
+      "profile_path": "/5hn7WeXi6wguwxTPTSmcmzHAs9.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/5hn7WeXi6wguwxTPTSmcmzHAs9.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "3709350",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Алекс Йи"
+      ],
+      "biography": null,
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm13105263",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Production",
+      "name": "Alex Yee",
+      "person_id": 291,
+      "place_of_birth": null,
+      "popularity": 0.5361,
+      "profile_path": "/kvRKbXZcCnM6d1vcND4917iQ4kp.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/kvRKbXZcCnM6d1vcND4917iQ4kp.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "3299121",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Philip Anthony Hopkins",
+        "Sir Anthony Hopkins"
+      ],
+      "biography": "Sir Philip Anthony Hopkins CBE (born December 31, 1937) is a Welsh actor, film director, and film producer. He is the recipient of numerous accolades, including two Academy Awards, four British Academy Film Awards, two Primetime Emmy Awards and a British Academy Television Award. He has also received an honorary Golden Globe Award and the BAFTA Fellowship from the British Academy of Film and Television Arts. In 1993, he was knighted by Queen Elizabeth II for his services to the arts, and in 2003, he received a star on the Hollywood Walk of Fame for his achievements in the motion picture industry.\n\nAfter graduating from the Royal Welsh College of Music & Drama in 1957, Hopkins trained at the Royal Academy of Dramatic Art in London, and was then spotted by Laurence Olivier who invited him to join the Royal National Theatre in 1965. Productions at the National included King Lear, his favourite Shakespeare play. His last stage play was a West End production of M. Butterfly in 1989.\n\nIn 1968, Hopkins achieved recognition in film, playing Richard the Lionheart in The Lion in Winter. In the mid-1970s, Richard Attenborough, who directed five Hopkins films, called him \"the greatest actor of his generation.\" In 1991, he portrayed Hannibal Lecter in the psychological horror film The Silence of the Lambs, winning the Academy Award for Best Actor. He reprised the role in its sequel Hannibal and the prequel Red Dragon. Other notable films include The Elephant Man (1980), 84 Charing Cross Road (1987), Howards End (1992), Bram Stoker's Dracula (1992), Shadowlands (1993), Legends of the Fall (1994), Meet Joe Black (1998), The Mask of Zorro (1998), Thor (2011), Thor: The Dark World (2013), Transformers: The Last Knight (2017), and Thor: Ragnarok (2017). He received four more Academy Award nominations for The Remains of the Day (1993), Nixon (1995), Amistad (1997) and The Two Popes (2019) before winning a fourth BAFTA Award and a second Academy Award for Best Actor for his portrayal of an elderly man diagnosed with dementia in The Father (2020), becoming the oldest Best Actor Oscar winner to date.\n\nSince making his television debut with the BBC in 1967, Hopkins has continued to appear on television. In 1973 he received a British Academy Television Award for Best Actor for his performance in War and Peace. In 2015, he starred in the BBC film The Dresser alongside Ian McKellen. In 2018, he starred in King Lear opposite Emma Thompson. In 2016 and 2018, he starred in the HBO television series Westworld, for which he received a Primetime Emmy Award nomination.",
+      "birthday": "1937-12-31",
+      "deathday": null,
+      "homepage": "https://anthonyhopkinsart.com",
+      "imdb_id": "nm0000164",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
       "known_for_department": "Acting",
-      "name": "Matthew McConaughey",
-      "person_id": 1,
-      "place_of_birth": "Uvalde, Texas, USA",
-      "popularity": 3.8825,
-      "profile_path": "/lCySuYjhXix3FzQdS4oceDDrXKI.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/lCySuYjhXix3FzQdS4oceDDrXKI.jpg",
+      "name": "Anthony Hopkins",
+      "person_id": 298,
+      "place_of_birth": "Margam, Port Talbot, Glamorgan, Wales, UK",
+      "popularity": 4.457,
+      "profile_path": "/dYVQTK1dPrQl1mugeLEWSSmA6Im.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/dYVQTK1dPrQl1mugeLEWSSmA6Im.jpg",
       "source_name": "tmdb",
-      "source_person_id": "10297",
+      "source_person_id": "4173",
       "warnings": []
     },
     {
       "adult": false,
       "also_known_as": [
-        "Anne Jacqueline Hathaway"
+        "Scott Glen"
       ],
-      "biography": "Anne Jacqueline Hathaway (born November 12, 1982) is an American actress. She has received numerous accolades, most notably an Academy Award for Best Supporting Actress, a Golden Globe, a BAFTA Award, and a Screen Actors Guild Award for her performance as Fantine in Les Misérables (2012). In 2015, she was one of the highest-paid actresses in the world, and in 2024, she was included on Time magazine's list of the 100 most influential people. Additionally, she holds a Primetime Emmy Award for her voice work on The Simpsons.\n\n​She began her career appearing in the television series Get Real (1999) before achieving worldwide fame as the lead in her film debut, the Disney comedy The Princess Diaries (2001). She earned critical acclaim for her transition to more adult roles in the dramas Havoc and Brokeback Mountain in 2005. Her star status was solidified with the commercial success of The Devil Wears Prada (2006), starring alongside Meryl Streep, and she received her first Oscar nomination for her role as a woman in rehab in Rachel Getting Married (2008).\n\n​Since 2010, she has starred in several of her career's biggest box-office hits, including the romantic comedies Valentine's Day (2010) and Love and Other Drugs (2010), the fantasy film Alice in Wonderland (2010), and her role as Catwoman in The Dark Knight Rises (2012). Her films Interstellar (2014), The Intern (2015), Ocean's 8 (2018), The Idea of You (2024), and the most recent The Odyssey (2026) have reaffirmed her versatility in the industry. Beyond her artistic work, she serves as a UN Women Goodwill Ambassador, advocating for gender equality and women's rights in the workplace.",
-      "birthday": "1982-11-12",
+      "biography": "Theodore Scott Glenn (born January 26, 1939) is an American actor. His roles have included Bill Lester in She Came to the Valley (1979), Pfc Glenn Kelly in Nashville (1975), Wes Hightower in Urban Cowboy (1980), astronaut Alan Shepard in The Right Stuff (1983), Emmett in Silverado (1985), Captain Bart Mancuso in The Hunt for Red October (1990), Jack Crawford in The Silence of the Lambs (1991), John Adcox in Backdraft (1991), Bill Burton in Absolute Power (1997), Roger in Training Day (2001), Ezra Kramer in The Bourne Ultimatum (2007), Chris Chenery in Secretariat (2010), Kevin Garvey Sr. in the HBO series The Leftovers (2014–2017), and as Stick in the Marvel Cinematic Universe series Daredevil (2015–2016) and The Defenders (2017).",
+      "birthday": "1939-01-26",
       "deathday": null,
       "homepage": null,
-      "imdb_id": "nm0004266",
+      "imdb_id": "nm0001277",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
       "known_for_department": "Acting",
-      "name": "Anne Hathaway",
-      "person_id": 2,
-      "place_of_birth": "Brooklyn, New York City, New York, USA",
-      "popularity": 10.1419,
-      "profile_path": "/nbccV2pMoyLTCeg5DQip24Eq0Jp.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/nbccV2pMoyLTCeg5DQip24Eq0Jp.jpg",
+      "name": "Scott Glenn",
+      "person_id": 299,
+      "place_of_birth": "Pittsburgh, Pennsylvania, USA",
+      "popularity": 2.1586,
+      "profile_path": "/8DHORod2l6ZFS9KR0gNAAM3WZfI.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/8DHORod2l6ZFS9KR0gNAAM3WZfI.jpg",
       "source_name": "tmdb",
-      "source_person_id": "1813",
+      "source_person_id": "349",
       "warnings": []
     },
     {
       "adult": false,
       "also_known_as": [
-        "Michael Scott ",
-        "Sir Michael Caine",
-        "Maurice Joseph Micklewhite Jr."
+        "Тед Левайн",
+        "泰德·李凡",
+        "تد لوین"
       ],
-      "biography": "Sir Michael Caine CBE (born Maurice Joseph Micklewhite Jr.; 14 March 1933) is a retired English actor. Known for his distinctive South London accent, he has appeared in more than 160 films in a career spanning seven decades, and is considered a British film icon. As of February 2017, the films in which Caine has appeared have grossed over $7.8 billion worldwide.\n\nOften playing a Cockney, Caine made his breakthrough in the 1960s with starring roles in British films such as Zulu (1964), The Ipcress File (1965), Alfie (1966), The Italian Job (1969), and Battle of Britain (1969). He was nominated for an Academy Award for Alfie. His roles in the 1970s included Get Carter (1971), The Last Valley (1971), Sleuth (1972), The Man Who Would Be King (1975), The Eagle Has Landed (1976) and A Bridge Too Far (1977). He earned his second Academy Award nomination for Sleuth and achieved some of his greatest critical success in the 1980s, with Educating Rita (1983) earning him the BAFTA and Golden Globe Award for Best Actor and Woody Allen's Hannah and Her Sisters (1986) earning him his first Academy Award for Best Supporting Actor.\n\nCaine is also known for his performance as Ebenezer Scrooge in The Muppet Christmas Carol (1992), and for his comedic roles in Dirty Rotten Scoundrels (1988), Miss Congeniality (2000), Austin Powers in Goldmember (2002), and Secondhand Lions (2003). He received his second Golden Globe Award for Little Voice (1998). In 1999, he received his second Academy Award for Best Supporting Actor for his performance as a sympathetic doctor in The Cider House Rules. He portrayed a British journalist in Vietnam in The Quiet American (2002), earning his sixth Oscar nomination, and appeared in Alfonso Cuaron's dystopian drama film Children of Men (2006). Caine portrayed Alfred Pennyworth in Christopher Nolan's The Dark Knight Trilogy (2005–2012). He appeared in several other of Nolan's films including The Prestige (2006), Inception (2010), Interstellar (2014) and Tenet (2020). He also appeared in the heist thriller film Now You See Me (2013), the action comedy film Kingsman: The Secret Service (2014), the Italian drama Youth (2015) and the crime film King of Thieves (2018).\n\nCaine officially confirmed his retirement from acting on 13 October 2023 after The Great Escaper (2023).",
-      "birthday": "1933-03-14",
+      "biography": "Frank Theodore 'Ted' Levine (born May 29, 1957) is an American actor. He is best known for his roles as Buffalo Bill in The Silence of the Lambs and Captain Leland Stottlemeyer in the television series Monk.",
+      "birthday": "1957-05-29",
       "deathday": null,
-      "homepage": "http://www.michaelcaine.com/",
-      "imdb_id": "nm0000323",
+      "homepage": null,
+      "imdb_id": "nm0505971",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
       "known_for_department": "Acting",
-      "name": "Michael Caine",
-      "person_id": 3,
-      "place_of_birth": "Rotherhithe, London, England, UK",
-      "popularity": 4.1513,
-      "profile_path": "/bVZRMlpjTAO2pJK6v90buFgVbSW.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/bVZRMlpjTAO2pJK6v90buFgVbSW.jpg",
+      "name": "Ted Levine",
+      "person_id": 300,
+      "place_of_birth": "Parma, Ohio, USA",
+      "popularity": 3.0207,
+      "profile_path": "/451KSkowLW6M2Au0wBKZZcidgGm.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/451KSkowLW6M2Au0wBKZZcidgGm.jpg",
       "source_name": "tmdb",
-      "source_person_id": "3895",
+      "source_person_id": "15854",
       "warnings": []
     },
     {
       "adult": false,
       "also_known_as": [
-        "Jessica Michelle Chastain"
+        "安東尼・希爾德"
       ],
-      "biography": "Jessica Michelle Chastain (born March 24, 1977) is an American actress and film producer. Known for her roles in films with feminist themes, she has received various accolades, including an Academy Award, a Golden Globe Award, in addition to nominations for two British Academy Film Awards. Time magazine named her one of the 100 most influential people in the world in 2012.\n\nBorn and raised in Sacramento, California, Chastain developed an interest in acting from an early age. In 1998, she made her professional stage debut as Shakespeare's Juliet. After studying acting at the Juilliard School, she was signed to a talent holding deal with the television producer John Wells. She was a recurring guest star in several television series, including Law & Order: Trial by Jury. She also took on roles in the stage productions of Anton Chekhov's play The Cherry Orchard in 2004 and Oscar Wilde's tragedy Salome in 2006.\n\nChastain made her film debut in the drama Jolene (2008), and gained wide recognition for her starring roles in the dramas Take Shelter (2011) and The Tree of Life (2011). Her performance as an aspiring socialite in The Help (2011) earned her a nomination for the Academy Award for Best Supporting Actress. In 2012, she won a Golden Globe Award and received a nomination for the Academy Award for Best Actress for playing a CIA analyst in the thriller Zero Dark Thirty. Chastain made her Broadway debut in a revival of The Heiress in the same year. Her highest-grossing releases came with the science fiction films Interstellar (2014) and The Martian (2015), and the horror film It Chapter Two (2019), and she continued to receive critical acclaim for her performances in the dramas A Most Violent Year (2014), Miss Sloane (2016), Molly's Game (2017) and The Good Nurse (2022). For her portrayal of Tammy Faye in the biopic The Eyes of Tammy Faye (2021), which she also produced, Chastain won the Academy Award for Best Actress.\n\nIn television, Chastain starred in drama miniseries Scenes from a Marriage (2021) and George & Tammy (2022). For the latter, she won a SAG Award. Her performance also garnered her nominations for a Primetime Emmy Award and a Golden Globe Award.\n\nChastain is the founder of the production company Freckle Films, which was created to promote diversity in film. She is vocal about mental health issues, as well as gender and racial equality. She is married to fashion executive Gian Luca Passi de Preposulo, with whom she has two children.\n\nDescription above from the Wikipedia article Jessica Chastain, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
-      "birthday": "1977-03-24",
+      "biography": "An American actor known for portraying Hannibal Lecter's jail nemesis, Dr. Frederick Chilton in The Silence of the Lambs and Red Dragon, and for playing assistant principal Scott Guber in David E. Kelley's Boston Public. He also had a recurring role as Judge Cooper on Kelley's The Practice and Boston Legal.",
+      "birthday": "1944-08-25",
       "deathday": null,
       "homepage": null,
-      "imdb_id": "nm1567113",
+      "imdb_id": "nm0372217",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
       "known_for_department": "Acting",
-      "name": "Jessica Chastain",
-      "person_id": 4,
-      "place_of_birth": "Southern California, California, USA",
-      "popularity": 3.5536,
-      "profile_path": "/eQKnihReJeB9vQEa5gySzAlKfZt.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/eQKnihReJeB9vQEa5gySzAlKfZt.jpg",
+      "name": "Anthony Heald",
+      "person_id": 301,
+      "place_of_birth": "New Rochelle, New York, USA",
+      "popularity": 0.9157,
+      "profile_path": "/e0E6Z1Y0debr4mAHgj0HO7MYyXG.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/e0E6Z1Y0debr4mAHgj0HO7MYyXG.jpg",
       "source_name": "tmdb",
-      "source_person_id": "83002",
+      "source_person_id": "16293",
       "warnings": []
     },
     {
       "adult": false,
       "also_known_as": [
-        "Caleb Casey McGuire Affleck-Boldt"
+        "조나단 드미",
+        "Robert Jonathan Demme"
       ],
-      "biography": "Casey Affleck (born Caleb Casey McGuire Affleck-Boldt; August 12, 1975) is an American actor. He receives various accolades, including an Academy Award, a British Academy Film Award, and a Golden Globe Award. The younger brother of actor Ben Affleck, he began his career as a child actor, appearing in the PBS television film Lemon Sky (1988). He later appeared in three Gus Van Sant films: To Die For (1995), Good Will Hunting (1997), Gerry (2002), and in Steven Soderbergh's Ocean's film series (2001–2007). His first role was in Steve Buscemi's independent comedy-drama Lonesome Jim (2006).\n\nAffleck's breakthrough came in 2007 when he was nominated for the Academy Award for Best Supporting Actor for his performance as Robert Ford in the Western drama The Assassination of Jesse James by the Coward Robert Ford and starred in his brother's crime drama Gone Baby Gone. In 2010, he directed the mockumentary I'm Still Here. He went on to appear in Tower Heist (2011), ParaNorman (2012), and Interstellar (2014), and he received praise for his performance as an outlaw in Ain't Them Bodies Saints (2013).\n\nIn 2016, Affleck starred in the drama Manchester by the Sea, in which his performance as a grieving man earned him the Academy Award for Best Actor. He has since starred in the dramas A Ghost Story (2017) and The Old Man & the Gun (2018) and as Boris Pash in the biographical thriller Oppenheimer (2023), his highest-grossing release.\n\nDescription above from the Wikipedia article Casey Affleck, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
-      "birthday": "1975-08-12",
-      "deathday": null,
+      "biography": "Robert Jonathan Demme (February 22, 1944 – April 26, 2017) was an American filmmaker, producer and screenwriter. He was best known for directing The Silence of the Lambs, which won him the Academy Award for Best Director. He also directed the acclaimed films Something Wild (1986), Married to the Mob (1988), Philadelphia (1993), and Rachel Getting Married (2008), as well as the Talking Heads concert film Stop Making Sense (1984), which is widely considered to be one of the greatest concert films of all time.",
+      "birthday": "1944-02-22",
+      "deathday": "2017-04-26",
       "homepage": null,
-      "imdb_id": "nm0000729",
-      "importable_fields": {
-        "biography": true,
-        "known_for_department": true,
-        "profile_url": true
-      },
-      "known_for_department": "Acting",
-      "name": "Casey Affleck",
-      "person_id": 5,
-      "place_of_birth": "Falmouth, Massachusetts, USA",
-      "popularity": 2.1631,
-      "profile_path": "/304ilSygaCRWykoBWAL67TOw8g9.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/304ilSygaCRWykoBWAL67TOw8g9.jpg",
-      "source_name": "tmdb",
-      "source_person_id": "1893",
-      "warnings": []
-    },
-    {
-      "adult": false,
-      "also_known_as": [
-        "Christopher Edward Nolan",
-        "Chris Nolan",
-        "Sir Christopher Nolan",
-        "Sir Christopher Edward Nolan",
-        "Christopher E. Nolan"
-      ],
-      "biography": "Sir Christopher Edward Nolan (born 30 July 1970) is a British and American filmmaker. As a significant auteur of his generation, he has established himself as a major figure of 21st-century Hollywood. His films have earned over $6 billion worldwide, making him the seventh highest-grossing film director of all time. Nolan's accolades include two Academy Awards, a Golden Globe Award and two British Academy Film Awards. He was appointed as a CBE in 2019 and was knighted in 2024 for his contributions to film.\n\nNolan developed an interest in filmmaking from a young age. After studying English literature at University College London, he made several short films before his feature film debut with Following (1998). Nolan gained international recognition with his second film, Memento (2000), and transitioned into studio filmmaking with Insomnia (2002). He became a high-profile director with The Dark Knight trilogy (2005–2012). He found further success with The Prestige (2006), Inception (2010), Interstellar (2014) and Dunkirk (2017). After the release of Tenet (2020), Nolan parted ways with longtime distributor Warner Bros. Pictures. He signed with Universal Pictures for Oppenheimer (2023), which won him Academy Awards for Best Director and Best Picture.\n\nThree of Nolan's films have been inducted into the National Film Registry. Infused with a metaphysical outlook, his works thematise epistemology, existentialism, ethics, the construction of time and the malleable nature of memory and personal identity. They feature mathematically inspired images and concepts, unconventional narrative structures, practical special effects, experimental soundscapes, large-format film photography and materialistic perspectives. His enthusiasm for the use and preservation of traditional film stock has also garnered significant attention. He has co-written several of his films with his brother, Jonathan. He runs the production company Syncopy Inc. with his wife, Emma Thomas.\n\nDescription above from the Wikipedia article Christopher Nolan, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
-      "birthday": "1970-07-30",
-      "deathday": null,
-      "homepage": null,
-      "imdb_id": "nm0634240",
+      "imdb_id": "nm0001129",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
       "known_for_department": "Directing",
-      "name": "Christopher Nolan",
-      "person_id": 6,
-      "place_of_birth": "Westminster, London, England, UK",
-      "popularity": 5.4268,
-      "profile_path": "/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg",
+      "name": "Jonathan Demme",
+      "person_id": 302,
+      "place_of_birth": "Baldwin, Long Island, New York, USA",
+      "popularity": 1.0469,
+      "profile_path": "/w9Lw3xTEFQUYELkl9AH5i3p5OhJ.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/w9Lw3xTEFQUYELkl9AH5i3p5OhJ.jpg",
       "source_name": "tmdb",
-      "source_person_id": "525",
+      "source_person_id": "16294",
       "warnings": []
     },
     {
       "adult": false,
       "also_known_as": [
-        "Leo DiCaprio",
-        "Leonardo Wilhelm DiCaprio",
-        "Leonardo Di Caprio"
+        "山姆·尼尔",
+        "萨姆·尼尔",
+        "سم نیل",
+        "Nigel Neill",
+        "山姆·尼爾",
+        "Nigel John Dermot \"Sam\" Neill"
       ],
-      "biography": "Leonardo Wilhelm DiCaprio (born November 11, 1974) is an American actor and film producer. Known for his work in biopics and period films, DiCaprio is the recipient of numerous accolades, including an Academy Award, a British Academy Film Award, and three Golden Globe Awards. As of 2019, his films have grossed over $7.2 billion worldwide, and he has been placed eight times in annual rankings of the world's highest-paid actors.\n\nBorn in Los Angeles, DiCaprio began his career in the late 1980s by appearing in television commercials. In the early 1990s, he had recurring roles in various television shows, such as the sitcom Parenthood, and had his first major film part as author Tobias Wolff in This Boy's Life (1993). At age 19, he received critical acclaim and his first Academy Award and Golden Globe Award nominations for his performance as a developmentally disabled boy in What's Eating Gilbert Grape (1993). He achieved international stardom with the star-crossed romances Romeo + Juliet (1996) and Titanic (1997).\n\nAfter the latter became the highest-grossing film at the time, he reduced his workload for a few years. In an attempt to shed his image of a romantic hero, DiCaprio sought roles in other genres, including crime drama in Catch Me If You Can (2002) and Gangs of New York (2002); the latter marked the first of his many successful collaborations with director Martin Scorsese. DiCaprio portrayed Howard Hughes in The Aviator (2004) and received acclaim for his performances in the political thriller Blood Diamond (2006), the crime drama The Departed (2006), and the romantic drama Revolutionary Road (2008).\n\nIn the following decade, DiCaprio starred in several high-profile directors' projects, including the science fiction thriller Inception (2010), the western Django Unchained (2012), the biopic The Wolf of Wall Street (2013), the survival drama The Revenant (2015), for which he won an Academy Award and a BAFTA Award for Best Actor in a Leading Role, and the comedy-drama Once Upon a Time in Hollywood (2019), all of which were critical and commercial successes.\n\nDiCaprio is the founder of Appian Way Productions, a production company that has produced some of his films and the documentary series Greensburg (2008–2010), and the Leonardo DiCaprio Foundation, a nonprofit organization devoted to promoting environmental awareness. He regularly supports charitable causes and has produced several documentaries on the environment. In 2005, he was named a Commander of the Ordre des Arts et des Lettres for his contributions to the arts, and in 2016, he appeared in Time magazine's 100 most influential people in the world.",
-      "birthday": "1974-11-11",
+      "biography": "Sir Nigel John Dermot \"Sam\" Neill (born 14 September 1947) is a New Zealand actor. His career has included leading roles in both dramas and blockbusters. Considered an \"international leading man\", he is regarded as one of the most versatile actors of his generation.\n\nBorn in Northern Ireland to an English mother and New Zealand father, Neill moved to Christchurch with his family in 1954. He first achieved recognition with his appearance in the film Sleeping Dogs (1977), which he followed with leading roles in My Brilliant Career (1979), Omen III: The Final Conflict, Possession (both 1981), Evil Angels (also known as A Cry in the Dark) (1988), Dead Calm (1989), The Hunt For Red October (1990), The Piano (1993), and In the Mouth of Madness (1994). He came to international prominence as Dr. Alan Grant in Jurassic Park (1993), reprising the role in Jurassic Park III (2001) and Jurassic World Dominion (2022).\n\nOutside of film, Neill has appeared in numerous television series in guest and recurring roles, including Reilly, Ace of Spies (1983), The Simpsons (1994), The Tudors (2007), Crusoe (2008–2010), Happy Town (2010), Alcatraz (2012), and Rick and Morty (2019). He also starred as the titular character Merlin in Merlin (1998) and Merlin's Apprentice (2006) and as Major Chester Campbell in the first two series of Peaky Blinders (2013–2014). He has presented and narrated several documentaries.\n\nNeill receives the AACTA Award for Best Actor in a Leading Role, the Longford Lyell Award, the New Zealand Film Award, and the Logie Award for Most Outstanding Actor. He also has three Golden Globe and two Primetime Emmy Award nominations. He won the Silver Logie for Most Popular Actor at the 2023 Logies.\n\nDescription above from the Wikipedia article Sam Neill, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1947-09-14",
       "deathday": null,
       "homepage": null,
-      "imdb_id": "nm0000138",
+      "imdb_id": "nm0000554",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
       "known_for_department": "Acting",
-      "name": "Leonardo DiCaprio",
-      "person_id": 7,
+      "name": "Sam Neill",
+      "person_id": 303,
+      "place_of_birth": "Omagh, County Tyrone, Northern Ireland, UK",
+      "popularity": 3.88,
+      "profile_path": "/iIfuxalf37xUayuGyK0zG7z6WEZ.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/iIfuxalf37xUayuGyK0zG7z6WEZ.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "4783",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Laura Elizabeth Dern",
+        "로라 던",
+        "لورا درن"
+      ],
+      "biography": "Laura Elizabeth Dern (born February 10, 1967) is an American actress and filmmaker. She is the recipient of numerous accolades, including an Academy Award, a Primetime Emmy Award, and five Golden Globe Awards. Born to actors Bruce Dern and Diane Ladd, Dern embarked on an acting career in the 1980s and rose to some prominence for her performances in Mask (1985) and David Lynch's Blue Velvet (1986) and Wild at Heart (1990). She received an Academy Award nomination for her portrayal of the titular orphan in the drama film Rambling Rose (1991) and achieved international recognition for her role in Steven Spielberg's adventure film Jurassic Park (1993), a role that she reprised in the 2001 sequel Jurassic Park III.\n\nAfter winning two Golden Globe Awards for her performances as Katherine Harris in the television film Recount (2008) and Amy Jellicoe in the comedy-drama series Enlightened (2011–2013), Dern garnered her second Academy Award nomination for her work in the biopic Wild (2014). In 2017, she began starring as Renata Klein in the drama series Big Little Lies, winning a Primetime Emmy Award and Golden Globe Award, and reunited with David Lynch for Twin Peaks: The Return. She has since played supporting roles in the films Star Wars: The Last Jedi (2017), Marriage Story (2019), and Little Women (2019). Her performance in Marriage Story won her an Academy Award and Golden Globe Award, both for Best Supporting Actress.\n\nDescription above from the Wikipedia article Laura Dern, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1967-02-10",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0000368",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Laura Dern",
+      "person_id": 304,
       "place_of_birth": "Los Angeles, California, USA",
-      "popularity": 5.8268,
-      "profile_path": "/mkdRcVIQl4WZhDf1vXKWTD7HZrZ.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/mkdRcVIQl4WZhDf1vXKWTD7HZrZ.jpg",
+      "popularity": 2.444,
+      "profile_path": "/gB9PnGEvxKg33OSlcqptQwTBwPE.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/gB9PnGEvxKg33OSlcqptQwTBwPE.jpg",
       "source_name": "tmdb",
-      "source_person_id": "6193",
+      "source_person_id": "4784",
       "warnings": []
     },
     {
       "adult": false,
       "also_known_as": [
-        "조셉 고든 레빗",
-        "Джозеф Гордон-Левітт",
-        "ジョセフ・ゴードン=レヴィット",
-        "祖瑟夫哥頓利域",
-        "喬瑟夫·高登李維",
-        "RegularJOE  ",
-        "ג'וסף גורדון-לוויט"
+        "Jeffrey Lynn Goldblum"
       ],
-      "biography": "Joseph Leonard Gordon-Levitt (born February 17, 1981) is an American actor and filmmaker. He has received various accolades, including nominations for the Golden Globe Award for Best Actor – Motion Picture Musical or Comedy for his leading performances in 500 Days of Summer (2009) and 50/50 (2011). He is the founder of the online media platform HitRecord whose projects such as HitRecord on TV (2014–15) and Create Together (2020) won him two Primetime Emmy Awards in the category of Outstanding Interactive Program.\n\nBorn in Los Angeles to a Jewish family, he began his acting career as a child, appearing in the films A River Runs Through It (1992), Holy Matrimony (1994), and Angels in the Outfield (1994), which earned him a Young Artist Award and a Saturn Award nomination. He played the role of Tommy Solomon in the TV series 3rd Rock from the Sun (1996–2001) for which he received three nominations at the Screen Actors Guild Awards. He had a supporting role in 10 Things I Hate About You (1999) and voiced Jim Hawkins in the Disney animated Treasure Planet (2002) before taking a break from acting to study at Columbia University, but dropped out in 2004 to resume his acting career.\n\nSince returning to acting, he has starred in Manic (2001), Mysterious Skin (2004), Brick (2005), The Lookout (2007), The Brothers Bloom (2008), Miracle at St. Anna (2008), G.I. Joe: The Rise of Cobra (2009), Inception (2010), Hesher (2010), Premium Rush (2012), The Dark Knight Rises (2012), Looper (2012), and Lincoln (2012). He portrayed Philippe Petit in the Robert Zemeckis-directed film The Walk (2015) and whistleblower Edward Snowden in the Oliver Stone film Snowden (2016). In 2020, he starred in the legal drama The Trial of the Chicago 7, for which he won the Critics' Choice Movie Award for Best Acting Ensemble and the Screen Actors Guild Award for Outstanding Performance by a Cast in a Motion Picture.\n\nIn 2013, he wrote and directed Don Jon, a comedy-drama film that was released to critical acclaim, earning him an Independent Spirit Award nomination for Best First Screenplay. He previously directed and edited two short films, both of which were released in 2010: Morgan M. Morgansen's Date with Destiny and Morgan and Destiny's Eleventeenth Date: The Zeppelin Zoo. In 2021, he wrote, directed and starred in the comedy drama series Mr. Corman on Apple TV+.",
-      "birthday": "1981-02-17",
+      "biography": "Jeffrey Lynn Goldblum (born October 22, 1952) is an American actor and musician. He has starred in some of the highest-grossing films of his era, such as Jurassic Park (1993) and Independence Day (1996), as well as their respective sequels, The Lost World: Jurassic Park (1997) and Jurassic World: Fallen Kingdom (2018), and Independence Day: Resurgence (2016).\n\nGoldblum also starred in films including Invasion of the Body Snatchers (1978), The Big Chill (1983), and Into the Night (1985), before coming to wider attention as Seth Brundle in The Fly (1986), which earned him a Saturn Award for Best Actor. His other films include The Adventures of Buckaroo Banzai Across the 8th Dimension (1984), The Tall Guy (1989), Deep Cover (1992), Powder (1995), The Prince of Egypt (1998), Cats & Dogs (2001), Igby Goes Down (2002), The Life Aquatic with Steve Zissou (2004), Adam Resurrected (2008), Le Week-End (2013), The Grand Budapest Hotel (2014), and Thor: Ragnarok (2017).",
+      "birthday": "1952-10-22",
       "deathday": null,
       "homepage": null,
-      "imdb_id": "nm0330687",
+      "imdb_id": "nm0000156",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
       "known_for_department": "Acting",
-      "name": "Joseph Gordon-Levitt",
-      "person_id": 8,
-      "place_of_birth": "Los Angeles, California, USA",
-      "popularity": 4.1551,
-      "profile_path": "/z2FA8js799xqtfiFjBTicFYdfk.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/z2FA8js799xqtfiFjBTicFYdfk.jpg",
+      "name": "Jeff Goldblum",
+      "person_id": 305,
+      "place_of_birth": "Pittsburgh, Pennsylvania, USA",
+      "popularity": 3.7689,
+      "profile_path": "/kcyEPgYtBP5Pm6LLeLGfXKjYovL.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/kcyEPgYtBP5Pm6LLeLGfXKjYovL.jpg",
       "source_name": "tmdb",
-      "source_person_id": "24045",
+      "source_person_id": "4785",
       "warnings": []
     },
     {
       "adult": false,
       "also_known_as": [
-        "渡邊謙",
-        "渡辺 謙",
-        "کِن واتانابه",
-        "ک ِن واتانابه",
-        "Kensaku Watanabe",
-        "Ken Watanabe"
+        "Baron Attenborough",
+        "Lord Richard Samuel Attenborough, CBE",
+        "Ричард Аттенборо",
+        "Sir Richard Attenborough",
+        "Richard Samuel Attenborough",
+        "ریچارد اتنبرا"
       ],
-      "biography": "Ken Watanabe (born October 21, 1959) is a Japanese stage, film, and television actor. To English-speaking audiences he is known for playing tragic hero characters, such as General Tadamichi Kuribayashi in Letters from Iwo Jima and Lord Katsumoto Moritsugu in The Last Samurai, for which he was nominated for the Academy Award for Best Supporting Actor. Among other awards, he has won the Japan Academy Prize for Best Actor twice, in 2007 for Memories of Tomorrow and in 2010 for Shizumanu Taiyō. He is also known for his roles in director Christopher Nolan's Hollywood blockbusters Batman Begins and Inception.",
-      "birthday": "1959-10-21",
+      "biography": "Richard Samuel Attenborough, Baron Attenborough, Kt, CBE (August 29, 1923 – August 24, 2014) was an English actor, filmmaker, entrepreneur, and politician. He was the President of the Royal Academy of Dramatic Art (RADA) and the British Academy of Film and Television Arts (BAFTA). Attenborough joined the Royal Air Force during World War II and served in the film unit. He went on several bombing raids over Europe and filmed action from the rear gunner's position.\n\nAs a film director and producer, Attenborough won two Academy Awards for Gandhi in 1983. He also won four BAFTA Awards and four Golden Globe Awards. As an actor, he is perhaps best known for his roles in Brighton Rock, The Great Escape, 10 Rillington Place, Miracle on 34th Street (1994) and Jurassic Park.\n\nHe was the older brother of David Attenborough, a naturalist and broadcaster, and John Attenborough, an executive at Alfa Romeo. He was married to actress Sheila Sim from 1945 until his death.",
+      "birthday": "1923-08-29",
+      "deathday": "2014-08-24",
+      "homepage": null,
+      "imdb_id": "nm0000277",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Richard Attenborough",
+      "person_id": 306,
+      "place_of_birth": "Cambridge, Cambridgeshire, England, UK",
+      "popularity": 1.7333,
+      "profile_path": "/6DRvtpCCmgDT90EKifGTDN1sXY2.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/6DRvtpCCmgDT90EKifGTDN1sXY2.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "4786",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Robert Peck"
+      ],
+      "biography": "Robert Peck (23 August 1945 – 4 April 1999) was an English stage, television and film actor who was best known for his roles as Ronald Craven in the television serial Edge of Darkness and as gamekeeper Robert Muldoon in the film Jurassic Park.",
+      "birthday": "1945-08-23",
+      "deathday": "1999-04-04",
+      "homepage": null,
+      "imdb_id": "nm0669629",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Bob Peck",
+      "person_id": 307,
+      "place_of_birth": "Leeds, West Yorkshire, England, UK",
+      "popularity": 1.0326,
+      "profile_path": "/66wkMHY76swadwfHLcTEKEKhUbv.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/66wkMHY76swadwfHLcTEKEKhUbv.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "4789",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Steven Allan Spielberg"
+      ],
+      "biography": "Steven Allan Spielberg KBE (born December 18, 1946) is an American filmmaker. A major figure of the New Hollywood era and pioneer of the modern blockbuster, Spielberg is widely regarded as one of the greatest and most influential filmmakers in the history of cinema and is the highest-grossing film director of all time. Among other accolades, he has received three Academy Awards, four Golden Globe Awards and three BAFTA Awards, as well as the AFI Life Achievement Award in 1995, an honorary knighthood in 2001, the Kennedy Center Honors in 2006, the Cecil B. DeMille Award in 2009, the Presidential Medal of Freedom in 2015, and the National Medal of Arts in 2023. According to Forbes, he is the wealthiest celebrity.\n\nSpielberg was born in Cincinnati, Ohio, and grew up in Phoenix, Arizona. He moved to California and studied film in college. After directing several episodes for television, including Night Gallery and Columbo, he directed the television film Duel (1971), which Barry Diller approved. He made his theatrical debut with The Sugarland Express (1974), also beginning his decades-long collaboration with composer John Williams, with whom he has worked for all but five of his theatrical releases. He became a household name with the summer blockbuster Jaws (1975). He continued directing acclaimed escapist box-office hits with Close Encounters of the Third Kind (1977), E.T. the Extra-Terrestrial (1982), and the original Indiana Jones trilogy (1981–1989). He also explored drama in The Color Purple (1985) and Empire of the Sun (1987).\n\nIn 1993, Spielberg directed back-to-back hits with the science fiction thriller Jurassic Park, the highest-grossing film at the time, and the epic historical drama Schindler's List, which has often been ranked among the greatest films ever made. He won the Academy Award for Best Director for the latter as well as for the World War II epic Saving Private Ryan (1998). Spielberg has since directed the science fiction films A.I. Artificial Intelligence (2001), Minority Report (2002), War of the Worlds (2005) and Ready Player One (2018); the historical dramas Amistad (1997), Munich (2005), War Horse (2011), Lincoln (2012), Bridge of Spies (2015) and The Post (2017); the comedies Catch Me If You Can (2002) and The Terminal (2004); the animated film The Adventures of Tintin (2011); the musical West Side Story (2021); and the family drama The Fabelmans (2022).\n\nSpielberg co-founded Amblin Entertainment and DreamWorks Pictures, and he has served as a producer for many successful films and television series, among them Poltergeist (1982), Gremlins (1984), Back to the Future (1985), An American Tail (1986), Who Framed Roger Rabbit (1988), Animaniacs (1993), Freakazoid! (1995), Twister (1996), Band of Brothers (2001) and Transformers (2007). Several of Spielberg's works are considered among the greatest films in history, and some are among the highest-grossing films of all time. Seven of his films have been inducted into the National Film Registry by the Library of Congress as being \"culturally, historically or aesthetically significant\". In 2013, Time listed him among the 100 most influential people. In 2023, Spielberg was the recipient of the first-ever Time 100 Impact Award in the US.\n\nDescription above from the Wikipedia article Steven Spielberg, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1946-12-18",
       "deathday": null,
-      "homepage": "https://www.kenwatanabe-official.com/",
-      "imdb_id": "nm0913822",
+      "homepage": "https://amblin.com/steven-spielberg",
+      "imdb_id": "nm0000229",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
-      "known_for_department": "Acting",
-      "name": "Ken Watanabe",
-      "person_id": 9,
-      "place_of_birth": "Uonuma, Niigata, Japan",
-      "popularity": 3.0377,
-      "profile_path": "/psAXOYp9SBOXvg6AXzARDedNQ9P.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/psAXOYp9SBOXvg6AXzARDedNQ9P.jpg",
+      "known_for_department": "Directing",
+      "name": "Steven Spielberg",
+      "person_id": 308,
+      "place_of_birth": "Cincinnati, Ohio, USA",
+      "popularity": 6.6017,
+      "profile_path": "/tZxcg19YQ3e8fJ0pOs7hjlnmmr6.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/tZxcg19YQ3e8fJ0pOs7hjlnmmr6.jpg",
       "source_name": "tmdb",
-      "source_person_id": "3899",
+      "source_person_id": "488",
       "warnings": []
     },
     {
       "adult": false,
       "also_known_as": [
-        "Edward Thomas Hardy"
+        "Kate Elizabeth Winslet"
       ],
-      "biography": "Edward Thomas Hardy CBE (born 15 September 1977) is an English actor, producer, writer and former model. After studying acting at the Drama Centre London, he made his film debut in Ridley Scott's Black Hawk Down (2001). He has since been nominated for the Academy Award for Best Supporting Actor, two Critics' Choice Movie Awards and two British Academy Film Awards, receiving the 2011 BAFTA Rising Star Award.\n\nHardy has also appeared in films such as Star Trek: Nemesis (2002), RocknRolla (2008), Bronson (2008), Warrior (2011), Tinker Tailor Soldier Spy (2011), Lawless (2012), This Means War (2012), Locke (2013), The Drop (2014), and The Revenant (2015), for which he received a nomination for an Academy Award. In 2015, he portrayed \"Mad\" Max Rockatansky in Mad Max: Fury Road and both Kray twins in Legend. He has appeared in three Christopher Nolan films: Inception (2010) as Eames, The Dark Knight Rises (2012) as Bane, and Dunkirk (2017) as an RAF fighter-pilot. He starred as both Eddie Brock and Venom in the 2018 anti-hero film Venom and its sequel Venom: Let There Be Carnage (2021).\n\nHardy's television roles include the HBO war drama mini-series Band of Brothers (2001), the BBC historical drama mini-series The Virgin Queen (2005), Bill Sikes in the BBC's mini-series Oliver Twist (2007), Heathcliff in ITV's Wuthering Heights (2009), the Sky 1 drama series The Take (2009), and as Alfie Solomons in the BBC historical crime drama series Peaky Blinders (2014–present). He created, co-produced, and took the lead in the eight-part historical fiction series Taboo (2017) on BBC One and FX. In 2020, he also contributed narration work to the Amazon docuseries All or Nothing: Tottenham Hotspur.\n\nHardy has performed on both British and American stages. He was nominated for the Laurence Olivier Award for Most Promising Newcomer for his role as Skank in the production of In Arabia We'd All Be Kings (2003), and was awarded the 2003 Evening Standard Theatre Award for Outstanding Newcomer for his performances in both In Arabia We'd All Be Kings and Blood, in which he played Luca. He starred in the production of The Man of Mode (2007) and received positive reviews for his role in the play The Long Red Road (2010). Hardy is active in charity work and is an ambassador for the Prince's Trust. He was appointed a CBE in the 2018 Birthday Honours for services to drama.\n\nDescription above from the Wikipedia article Tom Hardy, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
-      "birthday": "1977-09-15",
+      "biography": "Kate Elizabeth Winslet (/ˈwɪnzlət/; born 5 October 1975) is an English actress. Primarily known for her roles as headstrong and complicated women in independent films, particularly period dramas, she has received numerous accolades, including an Academy Award, two Primetime Emmy Awards, five BAFTA Awards and five Golden Globe Awards. She was appointed Commander of the Order of the British Empire (CBE) in 2012.\n\nWinslet studied drama at the Redroofs Theatre School. Her first screen appearance, at age fifteen, was in the British television series Dark Season (1991). She made her film debut playing a teenage murderess in Heavenly Creatures (1994). She went on to win a BAFTA Award for playing Marianne Dashwood in Sense and Sensibility(1995). Global stardom followed with her leading role in James Cameron's epic romance Titanic (1997), which was the highest-grossing film at the time. Winslet then eschewed parts in blockbusters in favour of critically acclaimed period pieces, including Quills (2000) and Iris (2001).\n\nThe science fiction romance Eternal Sunshine of the Spotless Mind (2004), in which Winslet was cast against type in a contemporary setting, proved to be a turning point in her career. She gained further recognition for her performances in Finding Neverland (2004), Little Children (2006), The Holiday (2006), Revolutionary Road (2008), and The Reader (2008). For playing a former Nazi camp guard in the last, she won the BAFTA Award and the Academy Award for Best Actress. Winslet has since portrayed historical figures in Steve Jobs (2015) and Lee (2023), and has received two Primetime Emmy Awards for her performances in the HBO miniseries Mildred Pierce (2011) and Mare of Easttown (2021).\n\nFor her narration of a short story in the audiobook Listen to the Storyteller (1999), Winslet won a Grammy Award. She performed the song \"What If\" for the soundtrack of her film, Christmas Carol: The Movie (2001). A co-founder of the charity Golden Hat Foundation, which aims to create autism awareness, Winslet has also written a book on the topic. Divorced from film directors Jim Threapleton and Sam Mendes, Winslet has been married to businessman Edward Abel Smith since 2012. She has a child from each marriage, two of whom are the actors Mia Threapleton and Joe Anders.\n\nDescription above from the Wikipedia article Kate Winslet, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1975-10-05",
       "deathday": null,
       "homepage": null,
-      "imdb_id": "nm0362766",
+      "imdb_id": "nm0000701",
       "importable_fields": {
         "biography": true,
         "known_for_department": true,
         "profile_url": true
       },
       "known_for_department": "Acting",
-      "name": "Tom Hardy",
-      "person_id": 10,
+      "name": "Kate Winslet",
+      "person_id": 309,
+      "place_of_birth": "Reading, Berkshire, England, UK",
+      "popularity": 4.7879,
+      "profile_path": "/9xDnfZrWhM67wJlQJEsOOjQzDUQ.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/9xDnfZrWhM67wJlQJEsOOjQzDUQ.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "204",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "William George Zane, Jr. ",
+        "William Zane"
+      ],
+      "biography": "William George \"Billy\" Zane, Jr. (born February 24, 1966) is an American actor, producer and director. He is probably best known for his roles as Caledon \"Cal\" Hockley in Titanic, The Phantom from The Phantom, John Wheeler in Twin Peaks and Mr. E in CQ.",
+      "birthday": "1966-02-24",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0000708",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Billy Zane",
+      "person_id": 310,
+      "place_of_birth": "Chicago, Illinois, USA",
+      "popularity": 2.56,
+      "profile_path": "/wr4fuwLzQvW1G0MS7cmQ3ObFjvL.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/wr4fuwLzQvW1G0MS7cmQ3ObFjvL.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1954",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Kathleen Doyle Bates",
+        "Кейти Бейтс"
+      ],
+      "biography": "Kathleen Doyle Bates (born June 28, 1948) is an American actress and director. She has been the recipient of numerous accolades, including an Academy Award, two Primetime Emmy Awards, and two Golden Globe Awards.\n\nBorn in Memphis, Tennessee, she studied theatre at the Southern Methodist University before moving to New York City to pursue an acting career. She landed minor stage roles before being cast in her first on screen role in Taking Off (1971). Her first Off-Broadway stage performance was in the 1976 production of Vanities. Throughout the 1970s and early 1980s, she continued to perform on screen and on stage, and garnered a Tony Award nomination for Best Lead Actress in a Play in 1983 for her performance in 'night, Mother, and won an Obie Award in 1988 for her performance in Frankie and Johnny in the Clair de Lune.\n\nBates' performance as Annie Wilkes in the tense psychological thriller Misery (1990) marked her Hollywood breakthrough, winning her the Academy Award for Best Actress. Further acclaim came for her starring role in Dolores Claiborne (1995), The Waterboy (1998), and supporting roles in Fried Green Tomatoes (1991) and Titanic (1997). Bates received subsequent Oscar nods in the Best Supporting Actress category for her work in Primary Colors (1998), About Schmidt (2002), and Richard Jewell (2019).\n\nBates' television work has resulted in 14 Emmy Award nominations, including two for her leading role on the NBC series Harry's Law (2011–12). She won the Primetime Emmy Award for Outstanding Guest Actress in a Comedy Series for her appearance on the ninth season of Two and a Half Men (2012) and the Primetime Emmy Award for Outstanding Supporting Actress in a Miniseries or Movie for her portrayal of Delphine LaLaurie on the third season of American Horror Story (2013). She also received accolades for her portrayal of Miss Hannigan in the 1999 television adaptation of Annie. Her directing credits include several episodes of the HBO television series Six Feet Under (2001–03) and the television film Ambulance Girl (2005).",
+      "birthday": "1948-06-28",
+      "deathday": null,
+      "homepage": "https://mskathybates.com",
+      "imdb_id": "nm0000870",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Kathy Bates",
+      "person_id": 311,
+      "place_of_birth": "Memphis, Tennessee, USA",
+      "popularity": 2.1941,
+      "profile_path": "/qZRTzTjV4OC1Ii9a0n8QBS9zMOd.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/qZRTzTjV4OC1Ii9a0n8QBS9zMOd.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "8534",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Francis Fisher"
+      ],
+      "biography": "Frances Fisher (born 11 May 1952) is a British-born American actress. She is best known for her roles as Strawberry Alice, the madame prostitute in Unforgiven (1992), directed by Clint Eastwood; and Ruth DeWitt Bukater, the mother of Kate Winslet's character in Titanic (1997), directed by James Cameron. Both films won the Academy Award for Best Picture.\n\nShe is also known for her roles as Jane Crawford on the HBO series Watchmen, Mary Windsor in The Lincoln Lawyer, Evelyn Nolan (John Nolan's mother) on CBS's The Rookie, Barbara Schoenberg in Woman in Gold, Gwen in You're Not You, Lucille Langston on ABC's scifi drama Resurrection, Maggie Stryder in The Host (2013), Nicole Farmington on ABC's scifi drama Touch, Blanche Tipton on CBS's A Gifted Man, Elaine Flowers in The Kingdom (2007), The Mother on BBC's Torchwood, Eva Thorne on Syfy's Eureka, Connie Walsh in House of Sand and Fog, Sara Miller in Laws of Attraction, Junie in Gone in 60 Seconds, Donna Garcia in Striptease, Angie in FOX's Strange Luck, June in L.A. Story, and Rochelle Bossetti in Welcome Home, Roxy Carmichael.",
+      "birthday": "1952-05-11",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0004920",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Frances Fisher",
+      "person_id": 312,
+      "place_of_birth": "Milford-on-the-sea, Hampshire, England, UK",
+      "popularity": 3.3721,
+      "profile_path": "/3iNDgd54IIj8g8hGqhhUjM6TeWd.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/3iNDgd54IIj8g8hGqhhUjM6TeWd.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "3713",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "เจมส์ แคเมรอน",
+        "제임스 캐머런",
+        "Джеймс Кемерон",
+        "Jim Cameron",
+        "جیمز کامرون",
+        "James Francis Cameron"
+      ],
+      "biography": "James Francis Cameron (born August 16, 1954) is a Canadian filmmaker. He is a major figure in the post-New Hollywood era and often uses novel technologies with a classical filmmaking style. Cameron first gained recognition for writing and directing The Terminator (1984), and found further success with Aliens (1986), The Abyss (1989), Terminator 2: Judgment Day (1991), and True Lies (1994), as well as Avatar (2009) and its sequels. He directed, wrote, co-produced, and co-edited Titanic (1997), winning Academy Awards for Best Picture, Best Director, and Best Film Editing. He is a recipient of various other industry accolades, and three of his films have been selected for preservation in the National Film Registry by the Library of Congress.\n\nCameron co-founded the production companies Lightstorm Entertainment, Digital Domain, and Earthship Productions. In addition to filmmaking, he is a National Geographic explorer-in-residence. He has produced many documentaries on deep-ocean exploration, including Ghosts of the Abyss (2003) and Aliens of the Deep (2005). Cameron has also contributed to underwater filming and remote vehicle technologies and helped create the digital 3D Fusion Camera System. In 2012, Cameron became the first person to solo descend the Mariana Trench, the deepest part of the Earth's ocean, in the Deepsea Challenger submersible.\n\nCameron's films have grossed over $8 billion worldwide, making him the second-highest-grossing film director. Three of Cameron's films are among the top four highest-grossing films of all time; Avatar (2009), Avatar: The Way of Water (2022) and Titanic (1997) are the highest, third-highest and fourth-highest-grossing films of all time, respectively. Cameron directed the first film to gross over $1 billion, the first two films to gross over $2 billion, and is the only director to have had three films grossing over $2 billion. In 2010, Time named Cameron one of the 100 most influential people in the world. Cameron is also an environmentalist and runs several sustainability businesses.\n\nDescription above from the Wikipedia article James Cameron, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1954-08-16",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0000116",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Directing",
+      "name": "James Cameron",
+      "person_id": 313,
+      "place_of_birth": "Kapuskasing, Ontario, Canada",
+      "popularity": 4.078,
+      "profile_path": "/9NAZnTjBQ9WcXAQEzZpKy4vdQto.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/9NAZnTjBQ9WcXAQEzZpKy4vdQto.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "2710",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "יו מייקל ג'קמן",
+        "ヒュー ジャックマン",
+        "Хʼю Джекмен"
+      ],
+      "biography": "Hugh Michael Jackman (born 12 October 1968) is an Australian actor, singer, and producer. Beginning in theatre and television, Jackman landed his breakthrough role as Wolverine, playing it across the X-Men film franchise and in the Marvel Cinematic Universe from X-Men (2000) to Deadpool & Wolverine (2024). Prominent on both screen and stage, he has received various accolades, including a Primetime Emmy Award, a Grammy Award and two Tony Awards, along with nominations for an Academy Award and a British Academy Film Award. Jackman was appointed a Companion of the Order of Australia in 2019.\n\nJackman has headlined films in various genres, including the romantic comedy Kate & Leopold (2001), the action-horror Van Helsing (2004), the drama The Prestige (2006), the period romance Australia (2008), the science fiction Real Steel (2011), the musical Les Misérables (2012), the thriller Prisoners (2013), the musical The Greatest Showman (2017), the political drama The Front Runner (2018), and the crime drama Bad Education (2019). For his role as Jean Valjean in Les Misérables, he was nominated for the Academy Award for Best Actor and won a Golden Globe Award for Best Actor, and for The Greatest Showman soundtrack, Jackman received a Grammy Award for Best Compilation Soundtrack. He also provided voice roles in the animated films Flushed Away, Happy Feet (both 2006), Rise of the Guardians (2012) and Missing Link (2019).\n\nJackman is also known for his early theatre roles in the original Australian productions of Beauty and the Beast as Gaston in 1995 and Sunset Boulevard as Joe Gillis in 1996. He earned a Laurence Olivier Award nomination for his performance as Curly McLain in the West End revival of Oklahoma! in 1998. In 2002, he made his American stage debut in a concert of Carousel as Billy Bigelow at Carnegie Hall. On Broadway, he won the 2004 Tony Award and Drama Desk Award for Best Actor in a Musical for his role of Peter Allen in The Boy from Oz. From 2021 to 2023, Jackman starred as con man Harold Hill in the Broadway revival of the musical The Music Man, earning another Tony Award nomination. A four-time host of the Tony Awards, he won an Emmy Award for hosting the 2005 ceremony. He also hosted the 81st Academy Awards in 2009.\n\nDescription above from the Wikipedia article Hugh Jackman, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1968-10-12",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0413168",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Hugh Jackman",
+      "person_id": 314,
+      "place_of_birth": "Sydney, New South Wales, Australia",
+      "popularity": 3.9157,
+      "profile_path": "/oX6CpXmnXCHLyqsa4NEed1DZAKx.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/oX6CpXmnXCHLyqsa4NEed1DZAKx.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "6968",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Piper Lisa Perabo"
+      ],
+      "biography": "Piper Lisa Perabo (born October 31, 1976) is an American actress. Since her breakthrough role in Coyote Ugly (2000), she has appeared in films such as Lost and Delirious (2001), Cheaper by the Dozen (2003), Cheaper by the Dozen 2 (2005), The Prestige (2006), Beverly Hills Chihuahua (2008), and Looper (2012). From 2010 to 2014, she played Annie Walker on the USA Network series Covert Affairs, for which she was nominated for a Golden Globe Award for Best Actress.",
+      "birthday": "1976-10-31",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0005305",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Piper Perabo",
+      "person_id": 315,
+      "place_of_birth": "Dallas, Texas, USA",
+      "popularity": 3.899,
+      "profile_path": "/5XrzISDEox0KubRDzJU668Oxmxy.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/5XrzISDEox0KubRDzJU668Oxmxy.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "15555",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Rebecca Maria Hall"
+      ],
+      "biography": "Rebecca Maria Hall (born May 3, 1982) is an English actress and filmmaker. She made her first onscreen appearance at age 10 in the 1992 television adaptation of The Camomile Lawn, directed by her father, Sir Peter Hall. Her professional stage debut came in her father's 2002 production of Mrs. Warren's Profession, which earned her the Ian Charleson Award.\n\nIn 2006, following her film debut in Starter for 10, Hall got her breakthrough role in Christopher Nolan's thriller film The Prestige. In 2008, she starred as Vicky in Woody Allen's romantic comedy-drama Vicky Cristina Barcelona, for which she received a Golden Globe nomination for Best Actress. Hall then appeared in a wide array of films, including Ron Howard's historical drama Frost/Nixon (2008), Ben Affleck's crime drama The Town (2010), the horror thriller The Awakening (2011), the superhero film Iron Man 3 (2013), the science fiction film Transcendence (2014), the psychological thriller The Gift (2015), the live-action/CGI fantasy adventure film The BFG (2016), the biographical drama Professor Marston and the Wonder Women (2017) and the monster film Godzilla vs. Kong (2021). In 2016, Hall was praised by critics for her portrayal of news reporter Christine Chubbuck in the biographical drama Christine. She made her directorial debut with Passing (2021), receiving critical acclaim.\n\nHall has also made several notable appearances on British television. She won the British Academy Television Award for Best Supporting Actress for the 2009 Channel 4 miniseries Red Riding: 1974. In 2013, she was nominated for the British Academy Television Award for Best Actress for her performance in BBC Two's Parade's End.\n\nDescription above from the Wikipedia article Rebecca Hall, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1982-05-03",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0356017",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Rebecca Hall",
+      "person_id": 316,
+      "place_of_birth": "London, England, UK",
+      "popularity": 2.1533,
+      "profile_path": "/coC58ANiDbqRIyle5zEl9QDektf.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/coC58ANiDbqRIyle5zEl9QDektf.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "15556",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Rumi Hiragi",
+        "Руми Хираги",
+        "柊 瑠美"
+      ],
+      "biography": "Rumi Hiiragi (born August 1, 1987 in Tokyo) is a Japanese actress.",
+      "birthday": "1987-08-01",
+      "deathday": null,
+      "homepage": "http://www.fathers.jp/hiiragi.html",
+      "imdb_id": "nm0383708",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Rumi Hiiragi",
+      "person_id": 317,
+      "place_of_birth": "Tokyo, Japan",
+      "popularity": 1.4084,
+      "profile_path": "/nTKM4GgfkrZvAOFL55uhEuckt7M.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/nTKM4GgfkrZvAOFL55uhEuckt7M.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "19587",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "入野 自由"
+      ],
+      "biography": "Miyu Irino is a Japanese actor and voice actor from Tokyo. He voices the lead character Sora in the Kingdom Hearts video game series. His major anime voice roles include Todomatsu Matsuno in Osomatsu-san, Haku in Spirited Away, Daisuke Niwa in D.N.Angel, Syaoran Li in Tsubasa Reservoir Chronicle, Sena Kobayakawa in Eyeshield 21, Astral in Yu-Gi-Oh! Zexal, Jintan in Anohana: The Flower We Saw That Day, Yuichiro Hyakuya in Seraph of the End, and Ishida Shouya in A Silent Voice. On June 26, 2009, he released his debut mini-album called Soleil, and in August 2009, Irino played a leading role in the movie Monochrome Girl. His first single album, Faith, was released on November 25, 2009.",
+      "birthday": "1988-02-19",
+      "deathday": null,
+      "homepage": "https://junction99.com/?page_id=1134",
+      "imdb_id": "nm0997115",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Miyu Irino",
+      "person_id": 318,
+      "place_of_birth": "Tokyo, Japan",
+      "popularity": 1.9994,
+      "profile_path": "/8qEEhHUObNvGQr4e6eqLu5z4qTz.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/8qEEhHUObNvGQr4e6eqLu5z4qTz.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "19588",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "中島淳子",
+        "Nakajima Junko",
+        "夏木 マリ"
+      ],
+      "biography": "Mari Natsuki is a Japanese singer, dancer and actress. Born in Tokyo, she started work as a singer from a young age. In 2007 she announced her engagement to percussionist Nobu Saitō, with their marriage taking place in Spring 2008.",
+      "birthday": "1952-05-02",
+      "deathday": null,
+      "homepage": "https://www.natsukirock.com/",
+      "imdb_id": "nm0622412",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Mari Natsuki",
+      "person_id": 319,
+      "place_of_birth": "Toshima, Tokyo, Japan",
+      "popularity": 1.8313,
+      "profile_path": "/MIFzUc77Sx57FQOZsoiGWEbpH2.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/MIFzUc77Sx57FQOZsoiGWEbpH2.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "19589",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Takashi Naitô",
+        "Takashi Naitou",
+        "内藤 剛志"
+      ],
+      "biography": null,
+      "birthday": "1955-05-27",
+      "deathday": null,
+      "homepage": "http://sakaguchikyoko.com/free/naito",
+      "imdb_id": "nm0619822",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Takashi Naito",
+      "person_id": 320,
+      "place_of_birth": "Osaka, Japan",
+      "popularity": 1.5455,
+      "profile_path": "/xwsm0ygjG79jLIogutwo6r64igy.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/xwsm0ygjG79jLIogutwo6r64igy.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "19590",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": null,
+      "birthday": "1965-06-11",
+      "deathday": null,
+      "homepage": "https://www.toho-ent.co.jp/actor/1067",
+      "imdb_id": "nm0768005",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Yasuko Sawaguchi",
+      "person_id": 321,
+      "place_of_birth": "Sakai, Osaka, Japan",
+      "popularity": 1.4711,
+      "profile_path": "/rWspusb13VeJowmctnniXYYTcqq.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/rWspusb13VeJowmctnniXYYTcqq.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "19591",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Сабуро Акицу",
+        "宮崎 駿",
+        "秋津 三朗",
+        "Akitsu Saburo",
+        "हयाओ मियाज़ाकी",
+        "宮﨑駿",
+        "Hayao Miýazaki",
+        "ಹಯಾವೊ ಮಿಯಾಜಾಕಿ",
+        "ሃያኦ ሚያዛኪ",
+        "ฮายาโอะ มิยาซากิ",
+        "照樹務"
+      ],
+      "biography": "Hayao Miyazaki (Miyazaki Hayao, born January 5, 1941) is a Japanese manga artist and prominent film director and animator of many popular anime feature films. Through a career that has spanned nearly five decades, Miyazaki has attained international acclaim as a maker of animated feature films and, along with Isao Takahata, co-founded Studio Ghibli, an animation studio and production company. The success of Miyazaki's films has invited comparisons with American animator Walt Disney, British animator Nick Park as well as Robert Zemeckis, who pioneered Motion Capture animation, and he has been named one of the most influential people by Time Magazine.\n\nMiyazaki began his career at Toei Animation as an in-between artist for Gulliver's Travels Beyond the Moon where he pitched his own ideas that eventually became the movie's ending. He continued to work in various roles in the animation industry over the decade until he was able to direct his first feature film Lupin III: The Castle of Cagliostro which was published in 1979. After the success of his next film, Nausicaä of the Valley of the Wind, he co-founded Studio Ghibli where he continued to produce many feature films until Princess Mononoke whereafter he temporarily retired.\n\nWhile Miyazaki's films have long enjoyed both commercial and critical success in Japan, he remained largely unknown to the West until Miramax released his 1997 film, Princess Mononoke. Princess Mononoke was the highest-grossing film in Japan—until it was eclipsed by another 1997 film, Titanic—and the first animated film to win Picture of the Year at the Japanese Academy Awards. Miyazaki returned to animation with Spirited Away. The film topped Titanic's sales at the Japanese box office, also won Picture of the Year at the Japanese Academy Awards and was the first anime film to win an American Academy Award.\n\nMiyazaki's films often incorporate recurrent themes, such as humanity's relationship to nature and technology, and the difficulty of maintaining a pacifist ethic. Reflecting Miyazaki's feminism, the protagonists of his films are often strong, independent girls or young women. Miyazaki is a vocal critic of capitalism and globalization. While two of his films, The Castle of Cagliostro and Castle in the Sky, involve traditional villains, his other films such as Nausicaa or Princess Mononoke present morally ambiguous antagonists with redeeming qualities.",
+      "birthday": "1941-01-05",
+      "deathday": null,
+      "homepage": "https://studioghibli.com.br/hayao-miyazaki/",
+      "imdb_id": "nm0594503",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Directing",
+      "name": "Hayao Miyazaki",
+      "person_id": 322,
+      "place_of_birth": "Tokyo, Japan",
+      "popularity": 3.6324,
+      "profile_path": "/ouhjt9KugzhWtdEyBPipihB3ic8.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/ouhjt9KugzhWtdEyBPipihB3ic8.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "608",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "جاك نيكلسون",
+        "杰克·尼科尔森",
+        "แจ็ก นิโคลสัน",
+        "ジャック・ニコルソン",
+        "잭 니컬슨",
+        "John Joseph \"Jack\" Nicholson",
+        "John Joseph Nicholson",
+        "Jack Joseph Nicholson",
+        "Τζακ Τζόζεφ Νίκολσον",
+        "잭 니콜슨",
+        "傑克·尼克遜",
+        "جک نیکلسون",
+        "Джон Джозеф Николсон"
+      ],
+      "biography": "John Joseph \"Jack\" Nicholson (born April 22, 1937) is a retired American actor, film director, producer and writer. He is renowned for his often dark-themed portrayals of neurotic characters. Nicholson has been nominated for Academy Awards 12 times, winning Best Actor for One Flew Over the Cuckoo's Nest and for As Good as It Gets, and Best Supporting Actor for Terms of Endearment. He is tied with Walter Brennan for most acting wins by a male actor (three), and second to Katharine Hepburn for most acting wins overall (four).\n\nHe is also one of only two actors nominated for an Academy Award for acting (either lead or supporting) in every decade from the 1960s to 2000s (the other one being Michael Caine). He has won seven Golden Globe Awards, and received a Kennedy Center Honor in 2001. In 1994, he became one of the youngest actors to be awarded the American Film Institute's Life Achievement Award. Notable films in which he has starred include, Easy Rider, Chinatown, The Shining, Reds, Batman, A Few Good Men, About Schmidt, Something's Gotta Give, and The Departed.",
+      "birthday": "1937-04-22",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0000197",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Jack Nicholson",
+      "person_id": 323,
+      "place_of_birth": "Manhattan, New York, USA",
+      "popularity": 2.649,
+      "profile_path": "/hBHcQIEa6P48HQAlLZkh0eKSSkG.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/hBHcQIEa6P48HQAlLZkh0eKSSkG.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "514",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Marky Mark",
+        "Mark Robert Michael Wahlberg"
+      ],
+      "biography": "Mark Robert Michael Wahlberg (born June 5, 1971), formerly known by his stage name Marky Mark, is an American actor and former rapper. His work as a leading man spans the comedy, drama, and action genres. He has received multiple accolades, including a BAFTA Award, and nominations for two Academy Awards, three Golden Globe Awards, and nine Primetime Emmy Awards.\n\nWahlberg was born in Boston. As a youth, he took part in a number of violent and racially motivated attacks. He gained fame as a member of the hip hop group Marky Mark and the Funky Bunch in the 1990s, with whom he released the albums Music for the People (1991) and You Gotta Believe (1992). Wahlberg made his screen debut in Renaissance Man (1994) and had his first starring role in Fear (1996). He received critical praise for his performance as porn actor Dirk Diggler in Boogie Nights (1997).\n\nIn the early 2000s, Wahlberg ventured into big-budget action movies, such as The Perfect Storm (2000), Planet of the Apes (2001), and The Italian Job (2003). He was nominated for the Academy Award for Best Supporting Actor for playing a police officer in the crime drama The Departed (2006). Wahlberg was nominated for the Golden Globe Award for Best Actor for portraying Micky Ward in the sports drama biopic The Fighter (2010); as co-producer, he was nominated for the Academy Award for Best Picture. During the 2010s, he landed successful comedy roles with The Other Guys (2010), Ted (2012), Ted 2 (2015), Daddy's Home (2015), and Daddy's Home 2 (2017). Wahlberg also starred in the Transformers franchise films Transformers: Age of Extinction (2014) and Transformers: The Last Knight (2017). He was the world's highest-paid actor in 2017.\n\nWahlberg served as executive producer of five HBO series: the comedy-drama Entourage (2004–2011), the period crime drama Boardwalk Empire (2010–2014), the comedy-dramas How to Make It in America (2010–2011) and Ballers (2015–2019), and the documentary McMillions (2020). He is co-owner of the Wahlburgers chain and co-starred in the reality TV series about it. Wahlberg received a star on the Hollywood Walk of Fame in 2010.",
+      "birthday": "1971-06-05",
+      "deathday": null,
+      "homepage": "https://markwahlberg.com",
+      "imdb_id": "nm0000242",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Mark Wahlberg",
+      "person_id": 324,
+      "place_of_birth": "Boston, Massachusetts, USA",
+      "popularity": 4.7282,
+      "profile_path": "/1Oc3XSLyb8hxmjmlgFENu582Kqw.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/1Oc3XSLyb8hxmjmlgFENu582Kqw.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "13240",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Ramón Antonio Gerardo Estévez",
+        "Ramón Antonio Gerardo Estévez Phelan"
+      ],
+      "biography": "Ramón Antonio Gerardo Estévez (born August 3, 1940), known professionally as Martin Sheen, is an American actor. He first became known for his roles in the films The Subject Was Roses (1968) and Badlands (1973), and later achieved wide recognition for his leading role as Captain Benjamin Willard in Apocalypse Now (1979), as U.S. President Josiah Bartlet in the television series The West Wing (1999–2006), and as Robert Hanson in the Netflix television series Grace and Frankie (2015–2022).\n\nIn film, Sheen has won the Best Actor award at the San Sebastián International Film Festival for his performance as Kit Carruthers in Badlands. Sheen's portrayal of Capt. Willard in Apocalypse Now earned a nomination for the BAFTA Award for Best Actor.\n\nSheen has worked with a wide variety of film directors, including Richard Attenborough, Francis Ford Coppola, Terrence Malick, David Cronenberg, Mike Nichols, Martin Scorsese, Steven Spielberg, and Oliver Stone. Sheen received a star on the Hollywood Walk of Fame in 1989. In television, Sheen has won a Golden Globe and two Screen Actors Guild awards for playing the role of President Josiah Bartlet in The West Wing, and an Emmy for guest starring in the sitcom Murphy Brown. In 2012, he portrayed Uncle Ben in The Amazing Spider-Man directed by Marc Webb.\n\nBorn and raised in the United States by a Spanish father and an Irish mother, he adopted the stage name Martin Sheen to help him gain acting parts. He is the father of four children, all of whom are actors.\n\nSheen has directed one film, Cadence (1990), in which he appears alongside his sons Charlie and Ramón. He has narrated, produced, and directed documentary television, earning two Daytime Emmy awards in the 1980s, and has been active in liberal politics.",
+      "birthday": "1940-08-03",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0000640",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Martin Sheen",
+      "person_id": 325,
+      "place_of_birth": "Dayton, Ohio, USA",
+      "popularity": 2.6909,
+      "profile_path": "/m2Y3Q0uyuW6htrn2W9UWCWMkpZu.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/m2Y3Q0uyuW6htrn2W9UWCWMkpZu.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "8349",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Daniel Wroughton Craig"
+      ],
+      "biography": "Daniel Wroughton Craig (born March 2, 1968) is an English actor. He gained international fame by playing the fictional secret agent James Bond for five installments in the film series: Casino Royale (2006), Quantum of Solace (2008), Skyfall (2012), Spectre (2015), and No Time to Die (2021).\n\nAfter training at the National Youth Theatre in London and graduating from the Guildhall School of Music and Drama in 1991, Craig began his career on stage. He began acting with the drama The Power of One (1992) and had his breakthrough role in the drama serial Our Friends in the North (1996). He gained prominence for his supporting roles in films such as Elizabeth (1998), Lara Croft: Tomb Raider (2001), Road to Perdition (2002), Layer Cake (2004), and Munich (2005).\n\nIn 2006, Craig played Bond in Casino Royale, a reboot of the Bond franchise that was favourably received by critics and earned Craig a nomination for the BAFTA Award for Best Actor in a Leading Role. His non-Bond appearances since then include roles in the fantasy film The Golden Compass (2007), the drama Defiance (2008), the science fiction Western Cowboys & Aliens (2011), the mystery thriller The Girl with the Dragon Tattoo (2011), and the heist film Logan Lucky (2017). For his performance as Detective Benoit Blanc in the Knives Out film series (2019, 2022), he received two Golden Globe Award nominations.\n\nOn stage, Craig starred in the Royal National Theatre's production of Angels in America (1993) on the West End. He made his Broadway debut in the play A Steady Rain (2009) and returned to Broadway in the revivals of Harold Pinter's Betrayal (2011) and William Shakespeare's Macbeth (2022). He starred as Iago in the New York Theatre Workshop production of Othello (2016).",
+      "birthday": "1968-03-02",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0185819",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Daniel Craig",
+      "person_id": 326,
+      "place_of_birth": "Chester, Cheshire, England, UK",
+      "popularity": 4.8767,
+      "profile_path": "/iFerDZUmC5Fu26i4qI8xnUVEHc7.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/iFerDZUmC5Fu26i4qI8xnUVEHc7.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "8784",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Christopher Robert Evans"
+      ],
+      "biography": "Christopher Robert Evans (born June 13, 1981) is an American actor. He gained worldwide recognition for portraying Steve Rogers / Captain America in various Marvel Cinematic Universe films, from Captain America: The First Avenger (2011) to Avengers: Secret Wars (2027). His work in the franchise established him as one of the world's highest-paid actors. Evans's films as a leading actor, particularly in the franchise, have grossed $11.4 billion worldwide, making him one of the highest-grossing film stars of all time.\n\nHe began his career with roles in television series, including Opposite Sex in 2000. Following appearances in several teen films, including 2001's Not Another Teen Movie, he gained further attention for his portrayal of Marvel Comics character the Human Torch in Fantastic Four (2005) and Fantastic Four: Rise of the Silver Surfer (2007), which he later reprised in Deadpool & Wolverine (2024). Evans made further appearances in film adaptations of comic books and graphic novels: TMNT (2007), Scott Pilgrim vs. the World (2010), and Snowpiercer (2013).\n\nAside from comic book roles, Evans has starred in the drama Gifted (2017), the mystery film Knives Out (2019), the television miniseries Defending Jacob (2020), and the action films The Gray Man (2022) and Red One (2024). He also voiced Buzz Lightyear in Lightyear (2022) and Lucas Lee in the animated series Scott Pilgrim Takes Off (2023), reprising his live-action role.\n\nEvans made his directorial debut in 2014 with the romantic drama Before We Go, which he also produced and starred in. Evans made his Broadway debut in the 2018 revival of Kenneth Lonergan's play Lobby Hero, which earned him a Drama League Award nomination.\n\nDescription above from the Wikipedia article Chris Evans (actor), licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1981-06-13",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0262635",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Chris Evans",
+      "person_id": 327,
+      "place_of_birth": "Boston, Massachusetts, USA",
+      "popularity": 4.1574,
+      "profile_path": "/3bOGNsHlrswhyW79uvIHH1V43JI.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/3bOGNsHlrswhyW79uvIHH1V43JI.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "16828",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Mike Shannon",
+        "Michael Corbett Shannon"
+      ],
+      "biography": "Michael Corbett Shannon (born August 7, 1974) is an American actor, producer, musician, and theatre director. He has been nominated twice for the Academy Award for Best Supporting Actor for his roles in the Sam Mendes period drama Revolutionary Road (2008) and the Tom Ford psychological thriller Nocturnal Animals (2016). He earned Screen Actors Guild Award and Golden Globe Award nominations for his role in 99 Homes (2014), and a Tony Award nomination for Best Featured Actor in a Play for the Broadway revival of Eugene O'Neill's Long Day's Journey into Night (2016).\n\nShannon made his film debut in 1993 with Groundhog Day and received widespread attention for his performance in 8 Mile (2002). He is known for his on-screen versatility, performing in both comedies and dramas such as Pearl Harbor (2001), Bad Boys II (2003), Bug (2006), Before the Devil Knows You're Dead (2007), Bad Lieutenant: Port of Call New Orleans (2009), The Iceman (2012), Premium Rush (2012), The Night Before (2015), The Shape of Water (2017) and Knives Out (2019). He played Superman's Kryptonian adversary General Zod in Man of Steel (2013) and Batman v Superman: Dawn of Justice (2016), and is set to reprise the role in The Flash (2022). Shannon is a frequent collaborator of Jeff Nichols, appearing in all of his films: Shotgun Stories (2007), Take Shelter (2011), Mud (2012), Midnight Special, and Loving (both 2016). He is also known for his role as Nelson Van Alden in the HBO period drama series Boardwalk Empire (2010–2014), for which he was nominated for three Screen Actors Guild Awards. In 2021, he had a main role in the Hulu drama miniseries Nine Perfect Strangers.",
+      "birthday": "1974-08-07",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0788335",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Michael Shannon",
+      "person_id": 328,
+      "place_of_birth": "Lexington, Kentucky, USA",
+      "popularity": 2.4865,
+      "profile_path": "/6mMczfjM8CiS1WuBOgo5Xom1TcR.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/6mMczfjM8CiS1WuBOgo5Xom1TcR.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "335",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Rian Craig Johnson"
+      ],
+      "biography": "Rian Craig Johnson (born December 17, 1973) is an American filmmaker. He made his directorial debut with the neo-noir mystery film Brick (2005), which received positive reviews and grossed nearly $4 million on a $450,000 budget. Transitioning to higher-profile films, Johnson achieved mainstream recognition for writing and directing the science-fiction thriller Looper (2012) to critical and commercial success. Johnson landed his largest project when he wrote and directed the space opera Star Wars: The Last Jedi (2017), which grossed over $1 billion. He returned to the mystery genre with Knives Out (2019) and its sequel Glass Onion (2022), both of which earned him Academy Award nominations for Best Original Screenplay and Best Adapted Screenplay, respectively.\n\nAdditionally, Johnson is also known for directing three highly acclaimed episodes for the television series Breaking Bad (2008–2013), namely \"Ozymandias,\" \"Fly,\" and \"Fifty-One\"; for the latter, he received the Directors Guild of America Award for Outstanding Directing—Drama Series in 2013. He also created a murder mystery series titled Poker Face for Peacock with Natasha Lyonne. Johnson was named one of the 100 most influential people in the world by Time magazine in 2023.\n\nDescription above from the Wikipedia article Rian Johnson, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1973-12-17",
+      "deathday": null,
+      "homepage": "https://www.rian-johnson.com/",
+      "imdb_id": "nm0426059",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Directing",
+      "name": "Rian Johnson",
+      "person_id": 329,
+      "place_of_birth": "Silver Spring, Maryland, USA",
+      "popularity": 1.2442,
+      "profile_path": "/ggwlJvCn0laNGjcvwGchuwC00hQ.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/ggwlJvCn0laNGjcvwGchuwC00hQ.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "67367",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": "Daniel Kaluuya (/kəˈluːjə/; born 24 February 1989) is a British actor and filmmaker. His work encompasses both screen and stage, and his accolades include an Academy Award, two British Academy Film Awards, and a Golden Globe Award. In 2021, he was named among the 100 most influential people in the world by Time magazine.\n\nKaluuya began his acting career as a teenager in improvisational theatre. He played Posh Kenneth in the first two seasons of the television series Skins (2007–2009); he also co-wrote some of the episodes. Kaluuya drew praise for his leading performance in Sucker Punch at the Royal Court Theatre in 2010. He went on to gain attention for his television roles in Psychoville (2009–2011), The Fades (2011), and the Black Mirror episode \"Fifteen Million Merits\" (2011). He also had supporting roles in the films Johnny English Reborn (2011), Kick-Ass 2 (2013), and Sicario (2015).\n\nIn 2017, Kaluuya had his breakthrough starring in Jordan Peele's horror film Get Out, which garnered him a nomination for the Academy Award for Best Actor. This was followed by roles in Ryan Coogler's superhero film Black Panther (2018), Steve McQueen's crime drama Widows (2018), Peele's horror film Nope (2022), and Sony Pictures Animation's animated superhero film Spider-Man: Across the Spider-Verse (2023). For his portrayal of Black Panther Party leader Fred Hampton in the biopic Judas and the Black Messiah (2021), he won the BAFTA and Academy Award for Best Supporting Actor. He has since co-directed the drama The Kitchen (2023).\n\nDescription above from the Wikipedia article Daniel Kaluuya, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1989-02-24",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm2257207",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Daniel Kaluuya",
+      "person_id": 330,
+      "place_of_birth": "London, England, UK",
+      "popularity": 1.9262,
+      "profile_path": "/jj2kZqJobjom36wlhlYhc38nTwN.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/jj2kZqJobjom36wlhlYhc38nTwN.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "206919",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Allison Howell Williams"
+      ],
+      "biography": "Allison Howell Williams (born April 13, 1988) is an American actress. She first became known for starring as Marnie Michaels in the HBO comedy-drama series Girls (2012–2017), which earned her a Critics' Choice Award nomination. Her breakthrough came with the role of Rose Armitage in the horror film Get Out (2017), which earned her nominations from the MTV Movie Awards and the Screen Actors Guild Awards, among other accolades. She starred in the horror films The Perfection (2018) and M3GAN (2022), the latter of which she also executive produced. For her work in horror films, she has been deemed a scream queen by some in the media. Her latest on-screen appearance was in the role of Lucy Smith in Showtime's Peabody Award-winning miniseries Fellow Travelers (2023).\n\nDescription above from the Wikipedia article Allison Williams, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1988-04-13",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm4129745",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Allison Williams",
+      "person_id": 331,
+      "place_of_birth": "New Canaan, Connecticut, USA",
+      "popularity": 1.5948,
+      "profile_path": "/5Jy9HELKS1OYg7moRl8870OSfJq.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/5Jy9HELKS1OYg7moRl8870OSfJq.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1255540",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Catherine Ann Keener"
+      ],
+      "biography": "Catherine Ann Keener (born March 26, 1959) is an American actress. Considered one of the independent film industry's most reliable performers, Keener is known for portraying disgruntled and melancholic yet sympathetic women in independent films, as well as supporting roles in studio films. She has been twice nominated for the Academy Award for Best Supporting Actress for Being John Malkovich (1999) and for her portrayal of author Harper Lee in Capote (2005).\n\nKeener also appeared in the films The 40-Year-Old Virgin (2005), Into the Wild (2007), Synecdoche, New York (2008), and Get Out (2017), which were all well received by critics. Keener is the muse of director Nicole Holofcener, having appeared in each of Holofcener's first five films. She also appeared in each of director Tom DiCillo's first four films, and three films directed by Spike Jonze. From 2018 to 2020, she starred in the Showtime dramedy series Kidding.",
+      "birthday": "1959-03-26",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0001416",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Catherine Keener",
+      "person_id": 332,
+      "place_of_birth": "Miami, Florida, USA",
+      "popularity": 2.7397,
+      "profile_path": "/n4CTwGszs6cwS1wJRlDQ5Mlh7Ex.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/n4CTwGszs6cwS1wJRlDQ5Mlh7Ex.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "2229",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "布拉德利·惠特福德",
+        "بردلی وایتفورد",
+        "בראדלי וויטפורד"
+      ],
+      "biography": "Bradley Whitford (born October 10, 1959) is an American actor and producer. From 1999 to 2006, Whitford starred as Josh Lyman, White House Deputy Chief of Staff, in NBC's political drama television series The West Wing. He won a Primetime Emmy Award for Outstanding Supporting Actor in a Drama Series for the role in 2001.\n\nIn addition to The West Wing, Whitford played Danny Tripp in Studio 60 on the Sunset Strip, Dan Stark in the Fox police buddy-comedy The Good Guys, Timothy Carter, a character who was believed to be Red John, in the CBS series The Mentalist, antagonist Eric Gordon in the film Billy Madison, Arthur Parsons in The Post, Dean Armitage in the horror film Get Out, Roger Peralta in Brooklyn Nine-Nine, President Gray in the dystopian science fiction film The Darkest Minds and Rick Stanton in the monster film Godzilla: King of the Monsters.\n\nIn 2015, he won a second Primetime Emmy Award for his guest role as Marcy in Transparent and later garnered a fifth Primetime Emmy Award nomination for portraying Magnus Hirschfeld in the same series. From 2018 to 2025, Whitford portrayed Commander Joseph Lawrence in Hulu dystopian drama The Handmaid's Tale, for which he won his third Primetime Emmy Award in 2019.\n\nDescription above from the Wikipedia article Bradley Whitford, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1959-10-10",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0925966",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Bradley Whitford",
+      "person_id": 333,
+      "place_of_birth": "Madison, Wisconsin, USA",
+      "popularity": 2.4603,
+      "profile_path": "/oeDv2qZWTxELLaNtOIoeG72leNY.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/oeDv2qZWTxELLaNtOIoeG72leNY.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "11367",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Caleb Jones"
+      ],
+      "biography": "Caleb Landry Jones (born, December 7, 1989) is an American actor and musician. He is known for his roles as Banshee in X-Men: First Class (2011), Jeremy Armitage in Get Out (2017), Red Welby in Three Billboards Outside Ebbing, Missouri (2017), Ty Carter in The Outpost (2019), Jeff in Finch (2021), and Martin Bryant in Nitram (2021).",
+      "birthday": "1989-12-07",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm2655177",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Caleb Landry Jones",
+      "person_id": 334,
+      "place_of_birth": "Garland, Texas, USA",
+      "popularity": 1.9805,
+      "profile_path": "/8M5lPHrERwAIfWK56RkH30FOjhV.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/8M5lPHrERwAIfWK56RkH30FOjhV.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "572541",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Τζόρνταν Πιλ",
+        "Jordan Haworth Peele",
+        "조던 필",
+        "Key & Peele",
+        "ジョーダン・ピール",
+        "جوردن پیل"
+      ],
+      "biography": "Jordan Haworth Peele (born February 21, 1979) is an American actor, comedian, and filmmaker. He is known for his film and television work in the comedy and horror genres. Peele started his career in sketch comedy before transitioning his career as a writer and director of psychological horror and satirical films. In 2017, Peele was included on the annual Time 100 list of the most influential people in the world.\n\nPeele's breakout role came in 2003, when he was hired as a cast member on the Fox sketch comedy series Mad TV, where he spent five seasons, leaving the show in 2008. In the following years, he and his frequent Mad TV collaborator, Keegan-Michael Key, created and starred in their own Comedy Central sketch comedy series Key & Peele (2012–2015). The series was critically acclaimed, winning two Primetime Emmy Awards and a Peabody Award. The two wrote, produced, and starred in the comedy film Keanu (2016) and appeared in various projects since.\n\nHis 2017 directorial debut, the horror film Get Out, was a critical and box office success, for which he received numerous accolades, including the Academy Award for Best Original Screenplay, along with nominations for Best Picture and Best Director. Critics have frequently named Get Out as one of the best films of the 21st century. He received another Academy Award nomination for Best Picture for producing Spike Lee's drama BlacKkKlansman (2018). He directed, wrote, and produced the acclaimed films Us (2019) and Nope (2022). He founded the film and television production company Monkeypaw Productions in 2012. He wrote and produced Candyman (2021), and Wendell and Wild (2022).\n\nPeele has also voice acted in the animated films Storks (2016), Captain Underpants: The First Epic Movie (2017) and Toy Story 4 (2019), as well as in the adult animated sitcom Big Mouth (2017–present). He co-created the TBS comedy series The Last O.G. (2018–2022) and the YouTube Premium comedy series Weird City (2019). He also served as the host and producer of the CBS All Access revival of the anthology series The Twilight Zone (2019–2020).",
+      "birthday": "1979-02-21",
+      "deathday": null,
+      "homepage": "https://www.monkeypawproductions.com/",
+      "imdb_id": "nm1443502",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Jordan Peele",
+      "person_id": 335,
+      "place_of_birth": "New York City, New York, USA",
+      "popularity": 2.4131,
+      "profile_path": "/kFUKn5g3ebpyZ3CSZZZo2HFWRNQ.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/kFUKn5g3ebpyZ3CSZZZo2HFWRNQ.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "291263",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Доминик Уэст",
+        "도미닉 웨스트",
+        "دومینیک وست"
+      ],
+      "biography": "Dominic Gerard Francis Eagleton West (born 15 October 1969) is an English actor, director, producer, and musician. He is best known for playing Jimmy McNulty in HBO's The Wire (2002–2008) and Noah Solloway in Showtime's The Affair (2014–2019), the latter of which earned him a Golden Globe Award for Best Actor – Television Series Drama nomination, Ebenezer Scrooge's nephew Fred in A Christmas Carol (1999), and Charles, Prince of Wales, in the Netflix drama The Crown (2022–2023), the latter of which earned him nominations for another Golden Globe Award and a Primetime Emmy Award.\n\nWest made his television debut in the 1998 BBC medical drama Out of Hours before appearing in the television films A Christmas Carol, 28 Days with Sandra Bullock in 2000, and Nicholas Nickleby (2001). His breakthrough came with the role of Detective Jimmy McNulty in the series The Wire. He then starred in the BBC series The Hour (2011–2012), earning a Golden Globe Award nomination. He received a BAFTA Award for his performance as the serial killer Fred West in the ITV drama Appropriate Adult (2011) and a nomination for his portrayal as Richard Burton in BBC Four's Burton & Taylor (2013). He played Jean Valjean in the 2018 BBC miniseries adaptation of Les Misérables. He has since starred in the Netflix series Stateless (2020) and the Amazon Studios The Pursuit of Love (2021). West is currently playing the role of Dr Chris Cox in the Sky One series Brassic (2019–present).\n\nHis film debut came with his portrayal of Henry, Earl of Richmond, in Ian McKellen's adaptation of Richard III (1995). He has since appeared in Chicago (2002), Mona Lisa Smile (2003), 300 (2007), Punisher: War Zone (2008), Johnny English Reborn (2011), John Carter (2012), Pride (2014), Testament of Youth (2014), Money Monster (2016), Genius (2016), The Square (2017), Tomb Raider (2018), Colette (2018) and Downton Abbey: A New Era (2022).\n\nDescription above from the Wikipedia article Dominic West, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1969-10-15",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0922035",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Dominic West",
+      "person_id": 336,
+      "place_of_birth": "Sheffield, Yorkshire, England, UK",
+      "popularity": 1.9171,
+      "profile_path": "/6y2M3EWslBPwPlugEFg8XDHfSJ0.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/6y2M3EWslBPwPlugEFg8XDHfSJ0.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "17287",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "랜스 레드딕",
+        "Lance Solomon Reddick"
+      ],
+      "biography": "Lance Solomon Reddick (June 7, 1962 – March 17, 2023) was an American actor. He portrayed Cedric Daniels in The Wire (2002–2008), Phillip Broyles in Fringe (2008–2013), and Chief Irvin Irving in Bosch (2014–2020). In film, he played Charon in the John Wick franchise (2014–2025) and General Caulfield in White House Down (2013).\n\nHe also portrayed Detective Johnny Basil in the fourth season of Oz (2000–01), Matthew Abaddon in Lost (2004–10), Albert Wesker and his clones in the Netflix series Resident Evil (2022), and Zeus in Percy Jackson and the Olympians (2024), the latter released posthumously and earned him a Children's and Family Emmy Award for Outstanding Supporting Performer nomination. He provided the voice and likeness for video game characters Martin Hatch in Quantum Break, Sylens in Horizon Zero Dawn and Horizon Forbidden West, and Commander Zavala in the Destiny franchise.\n\nDescription above from the Wikipedia article Lance Reddick, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1962-06-07",
+      "deathday": "2023-03-17",
+      "homepage": null,
+      "imdb_id": "nm0714698",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Lance Reddick",
+      "person_id": 337,
+      "place_of_birth": "Baltimore, Maryland, USA",
+      "popularity": 2.5146,
+      "profile_path": "/22mVtEXZbpt0J7S0LhIhdkfRrZV.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/22mVtEXZbpt0J7S0LhIhdkfRrZV.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "129101",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "소냐 손",
+        "宋雅·孫"
+      ],
+      "biography": "From Wikipedia, the free encyclopedia. Sonja Sohn is an American actress and community activist. She is best known for her role as Detective Kima Greggs on the hit HBO drama The Wire, which has led to her current work as the leader of the Baltimore community initiative ReWired for Change.  She is currently starring as Detective Samantha Baker on the ABC drama series Body of Proof.\n\nDescription above from the Wikipedia article Sonja Sohn, licensed under CC-BY-SA,full list of contributors on Wikipedia.",
+      "birthday": "1964-05-09",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0812308",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Sonja Sohn",
+      "person_id": 338,
+      "place_of_birth": "Newport News, Virginia",
+      "popularity": 1.9568,
+      "profile_path": "/8zjUsesMnQSOJtXmFl9O37ZYdQ5.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/8zjUsesMnQSOJtXmFl9O37ZYdQ5.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "203683",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Sherwin David \"Wood\" Harris",
+        "Sherwin David Harris",
+        "وود هریس"
+      ],
+      "biography": "Sherwin David \"Wood\" Harris (born October 17, 1969) is an American actor. He first garnered attention for his role as Motaw in the Jeff Pollack film Above the Rim (1994), prior to portraying high school football player Julius Campbell in the Walt Disney Pictures film Remember the Titans (2000) and Jimi Hendrix in the Showtime television film Hendrix (2000). He attained further recognition for his portrayal of drug kingpin Avon Barksdale on the HBO crime drama The Wire (2002–2008). Harris also played the role of cocaine dealer Ace, based on the life of Azie Faison, in the crime film Paid in Full in 2002.\n\nOn television, Harris is known for playing Avon Barksdale in The Wire and Brooke Payne on the BET miniseries The New Edition Story in 2017. In addition, Harris starred as Barry Fouray on the VH1 miniseries The Breaks (2016–2017), Damon Cross on the Fox series Empire for its fifth and sixth season, and currently portrays the drug lord \"Pat\" in the Starz series BMF.\n\nHe has also starred in films such as the 2009 dark comedy film Next Day Air, the 2015 Marvel Studios superhero film Ant-Man, the science fiction films Dredd (2012) and Blade Runner 2049 (2017), and the sports drama Creed (2015), along with its sequels Creed II (2018) and Creed III (2023).\n\nDescription above from the Wikipedia article Wood Harris, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1969-10-17",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0365445",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Wood Harris",
+      "person_id": 339,
+      "place_of_birth": "Chicago, Illinois, USA",
+      "popularity": 1.2989,
+      "profile_path": "/v3puIl2KncqUd6amDyD1Y0crzkF.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/v3puIl2KncqUd6amDyD1Y0crzkF.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "65829",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "웬델 피어스",
+        "Wendell Edward Pierce",
+        "وندل پیرس"
+      ],
+      "biography": "Wendell Edward Pierce (born December 8, 1963) is an American actor and businessman. Having trained at Juilliard School, Pierce rose to prominence as a character actor portraying roles on both stage and screen. He first gained recognition portraying the role of Detective Bunk Moreland in the acclaimed HBO drama series The Wire from 2002 to 2008.\n\nHis other notable television roles include the trombonist Antoine Batiste in Treme (2010–2013), James Greer in Tom Clancy's Jack Ryan (2018–2023), the attorney Robert Zane in Suits (2013–2019), and Clarence Thomas in Confirmation (2016). He earned Independent Spirit Awards nominations for his film roles in Four (2012) and Burning Cane (2019), on which he also served as a producer. Other notable film roles include Malcolm X (1992), Waiting to Exhale (1995), Ray (2004), Selma (2014), The Gift (2015), and Clemency (2019).\n\nPierce made his Broadway debut in John Pielmeier's 1985 play The Boys of Winter, followed by Caryl Churchill's Serious Money in 1988. As a theatrical producer, he earned a Tony Award for Best Play nomination for August Wilson's Radio Golf (2007), then won for Bruce Norris's Clybourne Park (2012). He performed the lead role of Willy Loman in the revival of Death of a Salesman on the West End in London in 2019 and on Broadway in New York in 2022, for which he earned Laurence Olivier Award and Tony Award nominations.\n\nDescription above from the Wikipedia article Wendell Pierce, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1963-12-08",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0682495",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Wendell Pierce",
+      "person_id": 340,
+      "place_of_birth": "New Orleans, Louisiana, USA",
+      "popularity": 3.1995,
+      "profile_path": "/r6yKahL6Z8l9aUX5qvWxTmWl8Nm.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/r6yKahL6Z8l9aUX5qvWxTmWl8Nm.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "17859",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "David Judah Simon",
+        "데이비드 시몬",
+        "데이빗 시먼",
+        "데이비드 시먼",
+        "데이빗 시몬"
+      ],
+      "biography": "David Judah Simon (born February 9, 1960) is an American author, journalist, screenwriter, and producer best known for his work on The Wire (2002–2008).\n\nHe worked for The Baltimore Sun City Desk for twelve years (1982–1995), wrote Homicide: A Year on the Killing Streets (1991), and co-wrote The Corner: A Year in the Life of an Inner-City Neighborhood (1997) with Ed Burns. The former book was the basis for the NBC series Homicide: Life on the Street (1993–1999), on which Simon served as a writer and producer. Simon adapted the latter book into the HBO mini-series The Corner (2000).\n\nHe is the creator, executive producer, head writer, and showrunner of the HBO television series The Wire (2002–2008). He adapted the non-fiction book Generation Kill into a television mini-series and served as the showrunner for the project. He was selected as one of the 2010 MacArthur Fellows and named a Utne Reader visionary in 2011. Simon also created the HBO series Treme with Eric Overmyer, which aired for four seasons. Following Treme, Simon wrote the HBO mini-series Show Me a Hero with journalist William F. Zorzi, a colleague at The Baltimore Sun and on The Wire. Simon and frequent collaborator George Pelecanos reunited to create the original series The Deuce. The drama about the New York porn industry in the 1970s and 1980s starred producer Maggie Gyllenhaal and executive producer James Franco and aired from 2017 to 2019. Simon's next series, The Plot Against America, debuted in 2020.\n\nWe Own This City was developed and written by George Pelecanos and Simon and directed by Reinaldo Marcus Green. The six-episode limited series premiered on HBO on April 25, 2022.\n\nDescription above from the Wikipedia article David Simon, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1960-02-09",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0800108",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "David Simon",
+      "person_id": 341,
+      "place_of_birth": "Washington, District of Columbia, USA",
+      "popularity": 0.7832,
+      "profile_path": "/rby7VXKgmcQtkgTHCWW6dE3sWF4.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/rby7VXKgmcQtkgTHCWW6dE3sWF4.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1218279",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Juno Violet Temple"
+      ],
+      "biography": "Juno Temple (born 21 July 1989) is a British actress. She is known for her roles in the comedy series Ted Lasso (2020–2023) and in the fifth season of the crime drama series Fargo (2023–2024). She earned Primetime Emmy Award nominations for both as well as a Golden Globe Award nomination for the latter. She also portrayed Teddy Payne in the superhero film Venom: The Last Dance (2024).\n\nTemple, the daughter of film director Julien Temple, began working as a child actress, appearing in Notes on a Scandal (2006), Atonement (2007), The Other Boleyn Girl (2008) and Mr. Nobody (2009). Her subsequent film roles were in The Three Musketeers (2011), The Dark Knight Rises (2012), Magic Magic (2013), Maleficent (2014), Black Mass (2015), Unsane (2018), and Maleficent: Mistress of Evil (2019). Temple received the BAFTA Rising Star Award in 2013. She has also starred in the television series Vinyl (2016), Dirty John (2018–2019) and The Offer (2022).\n\nJuno Temple was born in the Hammersmith area of London on 21 July 1989, the daughter of film producer Amanda Pirie and film director Julien Temple. She has two younger brothers, Leo and Felix. Her aunt Nina Temple was the last General Secretary of the Communist Party of Great Britain.  She grew up in Taunton, Somerset, where she attended Enmore Primary School, then Bedales School, returning to Taunton to finish at King's College.\n\nIn 2012, she appeared in The Dark Knight Rises, as a \"street-smart Gotham girl\", and portrayed Diane in the lesbian werewolf tale Jack & Diane. In February 2013, Temple won the EE Rising Star BAFTA Award, voted for by the public. Temple had a supporting role as Deborah Hussey in the true-crime film Black Mass (2015), which starred Johnny Depp; and played Jamie Vine, an A&R assistant for the fictional American Century record company, in the 2016 HBO series Vinyl.\n\nIn 2018–2019, Temple played a focal role as the protagonist's daughter in the Bravo series Dirty John, which was later acquired by Netflix. In 2020, she won the Best Actress award at the Prague Independent Film Festival for her role in the film Lost Transmissions. In August 2020, Temple began a regular role as Keeley, a former girlfriend of one of the team players and the unofficial team publicist, on the Apple TV+ series Ted Lasso.\n\nIn 2022, Temple appeared in the Paramount+ miniseries The Offer, depicting the production of The Godfather. In 2023, Temple appeared in a starring role in the fifth season of the American crime anthology series Fargo.",
+      "birthday": "1989-07-21",
+      "deathday": null,
+      "homepage": "https://maisontwo.com/juno-temple/",
+      "imdb_id": "nm1017334",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Juno Temple",
+      "person_id": 342,
       "place_of_birth": "Hammersmith, London, England, UK",
-      "popularity": 5.2157,
-      "profile_path": "/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg",
-      "profile_url": "https://image.tmdb.org/t/p/w185/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg",
+      "popularity": 3.373,
+      "profile_path": "/n20TNExAma6q9iVcWtPRxLl7pEc.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/n20TNExAma6q9iVcWtPRxLl7pEc.jpg",
       "source_name": "tmdb",
-      "source_person_id": "2524",
+      "source_person_id": "36594",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Patrick Joseph Wilson"
+      ],
+      "biography": "Patrick Joseph Wilson (born July 3, 1973) is an American actor, director, and singer. He began his career in 1995, starring in Broadway musicals. He is a two-time Tony Award nominee for his roles in The Full Monty (2000–2001) and Oklahoma! (2002). He co-starred in the acclaimed HBO miniseries Angels in America (2003), for which he was nominated for both the Golden Globe Award and Primetime Emmy Award for Outstanding Supporting Actor in a Miniseries or a Movie.\n\nWilson has also appeared in films such as The Phantom of the Opera (2004), Hard Candy (2005), Little Children (2006), Watchmen (2009), Insidious (2010), The A-Team (2010), Insidious: Chapter 2 (2013), and as demonologist Ed Warren in the Conjuring Universe (2013–present). He has earned a reputation as a \"scream king\" due to his frequent casting in horror films.\n\nOn television, Wilson starred in the CBS drama series A Gifted Man (2011–2012) and as Lou Solverson in the second season of FX's anthology series Fargo (2015), for which he received a second Golden Globe Award nomination. In the DC Extended Universe, he portrayed Orm Marius / Ocean Master in the superhero film Aquaman (2018) and voiced the U.S. President in Batman v Superman: Dawn of Justice (2016).\n\nDescription above from the Wikipedia article Patrick Wilson (American actor), licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1973-07-03",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0933940",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Patrick Wilson",
+      "person_id": 343,
+      "place_of_birth": "Norfolk, Virginia, USA",
+      "popularity": 2.9996,
+      "profile_path": "/oym6H2QD9esk4yABjCHaUoNAOa8.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/oym6H2QD9esk4yABjCHaUoNAOa8.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "17178",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Jennifer Leigh Morrow",
+        "Jennifer Leigh",
+        "JJL"
+      ],
+      "biography": "Jennifer Jason Leigh (born Jennifer Leigh Morrow; February 5, 1962) is an American actress. She began her career on television during the 1970s before making her film breakthrough in the teen film Fast Times at Ridgemont High (1982). She received critical praise for her performances in Last Exit to Brooklyn (1989), Miami Blues (1990), Backdraft (1991), Single White Female (1992), and The Hudsucker Proxy (1994). She was nominated for a Golden Globe for her portrayal of Dorothy Parker in Mrs Parker and the Vicious Circle (1994).\n\nLeigh starred in a 1995 film written by her mother, screenwriter Barbara Turner, titled Georgia. She co-wrote and co-directed a film with Alan Cumming titled The Anniversary Party (2001). Leigh starred in the crime drama Road to Perdition (2002) and the family drama Margot at the Wedding (2007). She had a recurring role on the Showtime comedy-drama series Weeds (2009–2012). She received critical acclaim for her voice work in Charlie Kaufman's Anomalisa (2015). For her role as fugitive Daisy Domergue in The Hateful Eight (2015), she was nominated for the Golden Globe and Academy Award for Best Supporting Actress. From 2017 to 2021, she starred in the Netflix comedy-drama series Atypical while featuring in the science fiction films Annihilation (2018) and Possessor (2020). She has since starred in the fifth season of the crime drama series Fargo (2023).\n\nFor her stage work, Leigh was nominated for a Drama Desk award for her off-Broadway performance as Beverly Moss in Mike Leigh's Abigail's Party. Her Broadway debut occurred in 1998 when she became the replacement for the role of Sally Bowles in the musical Cabaret.",
+      "birthday": "1962-02-05",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0000492",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Jennifer Jason Leigh",
+      "person_id": 344,
+      "place_of_birth": "Hollywood, Los Angeles, California, USA",
+      "popularity": 3.8267,
+      "profile_path": "/9nT2mbQ9P8UpCXirssDxDT75jlm.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/9nT2mbQ9P8UpCXirssDxDT75jlm.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "10431",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "大衛·里斯達爾"
+      ],
+      "biography": "David Rysdahl is an American actor and screenwriter. He is best known for his lead role in the fifth season of the television series Fargo and for his starring roles in the fantasy drama film Nine Days and the thriller film No Exit. He also appeared in Oppenheimer.",
+      "birthday": "1987-04-02",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm3314705",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "David Rysdahl",
+      "person_id": 345,
+      "place_of_birth": "New Ulm, Minnesota, United States",
+      "popularity": 0.6806,
+      "profile_path": "/yYTsO3nH4ikZJ3K2XTgQASEOWiU.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/yYTsO3nH4ikZJ3K2XTgQASEOWiU.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1541178",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Allison Cara Tolman",
+        "الیسون تولمن",
+        "艾莉森托爾曼"
+      ],
+      "biography": "Allison Cara Tolman (born November 18, 1981) is an American actress. She is best known for her role as Minnesota police officer Molly Solverson in the first season of the FX black comedy crime series Fargo. For her role, she won the Critics' Choice Television Award for Best Supporting Actress in a Movie/Miniseries and received Best Actress nominations at the Emmy Awards and for the Golden Globes.\n\nIn 2015, she had a supporting role in Michael Dougherty's comedy horror film Krampus. In 2017, Tolman starred in ABC's Downward Dog, based on the Animal Media Group web series, It was canceled after one season. She starred in the ABC drama series Emergence (2019-2020), which was cancelled after one season.\n\nIn 2021, she starred as Alma Filcott in the second season of the drama series Why Women Kill, and played Natalie Green in The Facts of Life portion of the third edition of Live in Front of a Studio Audience.",
+      "birthday": "1981-11-18",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm2798112",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Allison Tolman",
+      "person_id": 346,
+      "place_of_birth": "Houston, Texas, USA",
+      "popularity": 1.4853,
+      "profile_path": "/uMn33sVI4bhYdUhLJPxntOmisio.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/uMn33sVI4bhYdUhLJPxntOmisio.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1331652",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": "Noah Hawley (born 1967) is an American screenwriter, director, producer, author, and singer. He is best known for creating and writing the FX series Fargo (2014–present) and Legion (2017–2019). He also worked on the series Bones (2005–2008), The Unusuals (2009), and My Generation (2010).\n\nHawley wrote the film The Alibi (2006) and directed the film Lucy in the Sky (2019). He has also written six novels and is a singer, contributing to the soundtracks of Fargo and Legion by singing covers of popular music produced by composer Jeff Russo. He will write and direct the upcoming FX series Alien: Earth, based on the film franchise and expected to premiere in 2025.\n\nDescription above from the Wikipedia article Noah Hawley, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1967-05-10",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1279638",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Noah Hawley",
+      "person_id": 347,
+      "place_of_birth": "New York City, New York, USA",
+      "popularity": 1.3829,
+      "profile_path": "/pxVP1lywEBA9y8x5Xe3kM7m4ai3.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/pxVP1lywEBA9y8x5Xe3kM7m4ai3.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "202816",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Anya-Josephine Marie Taylor-Joy"
+      ],
+      "biography": "Anya-Josephine Marie Taylor-Joy (/ˈænjə/; born 16 April 1996) is an actress. Born in Miami and raised in Buenos Aires and London, she left school at 16 to pursue an acting career. After several minor television roles, her breakthrough came with a leading role in the horror film The Witch (2015). Her career progressed with roles in the horror film Split (2016) and its sequel Glass (2019), the black comedy film Thoroughbreds (2017), and playing Emma Woodhouse in the period drama Emma (2020). \n\nTaylor-Joy featured in the television crime drama series Peaky Blinders (2019–2022) and earned international recognition for playing Beth Harmon in the period drama miniseries The Queen's Gambit (2020), winning a Golden Globe Award and a SAG Award, in addition to a nomination for a Primetime Emmy Award. She then starred in the horror film Last Night in Soho (2021), the action films The Northman (2022) and The Gorge (2025), and the black comedy The Menu (2022). She also voiced Princess Peach in the animated film The Super Mario Bros. Movie (2023). She starred as Imperator Furiosa in the apocalyptic film Furiosa: A Mad Max Saga (2024).\n\nDescription above from the Wikipedia article Anya Taylor-Joy, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1996-04-16",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm5896355",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Anya Taylor-Joy",
+      "person_id": 348,
+      "place_of_birth": "Miami, Florida, USA",
+      "popularity": 6.9794,
+      "profile_path": "/jxAbDJWvz4p1hoFpJYG5vY2dQmq.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/jxAbDJWvz4p1hoFpJYG5vY2dQmq.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1397778",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "克洛伊·皮里"
+      ],
+      "biography": "Chloe Pirrie (born August 25, 1987) is a Scottish actress. She has played main roles in the 2014 miniseries The Game, the 2012 film Shell, and the 2015 television film An Inspector Calls. She has also appeared in the 2016 miniseries War & Peace, the 2015 film Youth, the 2015 film Blood Cells and a 2013 episode of Black Mirror. In 2015 she also co-starred in the Academy Award winner for Best Live Action Short Film, Stutterer.\n\nPirrie was raised in Stockbridge, Edinburgh, and attended the Mary Erskine School. She began acting in school and decided to pursue it as a career after being cast in a school production of The Cherry Orchard. She moved to London at the age of 18 to attend the Guildhall School of Music and Drama and graduated in 2009. Pirrie's professional acting career began in 2009. She made her debut at the Royal National Theatre in a 2010 production of Men Should Weep alongside numerous other Scottish actors. Shortly afterwards, she appeared in Solstice, a short film released in 2010. Her first role in a feature film was in Shell (2012), a Scottish drama in which Pirrie played the eponymous main character. For this performance she won Most Promising Newcomer at the British Independent Film Awards 2013 and was nominated for Best British Newcomer at the 2012 BFI London Film Festival Awards. In 2013, she played a politician in \"The Waldo Moment\", an episode of the anthology series Black Mirror. In the same year she was named as one of BAFTA's \"Breakthrough Brits\" and Screen International's \"UK Stars of Tomorrow\".\n\nIn 2014, Pirrie starred in the BBC miniseries The Game, a Cold War spy thriller in which she played an MI5 secretary. The following year she appeared as Sheila Birling in Helen Edmundson's BBC One adaptation of J. B. Priestley's An Inspector Calls, in the miniseries The Last Panthers, the British independent film Burn Burn Burn, and the Italian film Youth.\n\nIn 2015, she starred as Ellie in the Academy Award winner for Best Live Action Short Film, Stutterer. Ellie is the love interest for Greenwood (played by Matthew Needham). Greenwood has a major stuttering problem and can't speak effectively, causing him to panic when Ellie suggests they take what had only been an online relationship, offline to meet in person. After finally giving in, Greenwood learns a secret about Ellie that changes everything.\n\nShe played Julie Karagina in the 2016 BBC miniseries War & Peace and was cast as Emily Brontë in To Walk Invisible, a BBC drama about the Brontë family created by Sally Wainwright. She also starred in the Death In Paradise episode 'In The Footsteps Of A Killer' as Grace Matlock, an employee at the Saint Marie Times.\n\nShe also plays Lara in the 2016 BBC thriller series, The Living and the Dead. In 2017, she starred in the Netflix series, The Crown for its second season, playing Eileen Parker. In 2018, she appeared in the BBC/Netflix miniseries Troy: Fall of a City.",
+      "birthday": "1987-08-25",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm4006608",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Chloe Pirrie",
+      "person_id": 349,
+      "place_of_birth": "Edinburgh, Scotland, UK",
+      "popularity": 0.9376,
+      "profile_path": "/t5pUoG5kDk8F0uNQ1reMD8Cd4V0.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/t5pUoG5kDk8F0uNQ1reMD8Cd4V0.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1125581",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": null,
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm5238667",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Matthew Dennis Lewis",
+      "person_id": 350,
+      "place_of_birth": null,
+      "popularity": 0.2967,
+      "profile_path": "/e9n1gwjTgezUwvdJ3rfguukcSaY.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/e9n1gwjTgezUwvdJ3rfguukcSaY.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1855149",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Russell Lewis"
+      ],
+      "biography": null,
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm2452495",
+      "importable_fields": {
+        "biography": false,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Russell Dennis Lewis",
+      "person_id": 351,
+      "place_of_birth": null,
+      "popularity": 0.2322,
+      "profile_path": "/ldKPHjGhtInlnKkjm84LLQIw7a2.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/ldKPHjGhtInlnKkjm84LLQIw7a2.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1267379",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": "Sergio Di Zio is a Canadian actor.",
+      "birthday": "1972-09-20",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0224391",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Sergio Di Zio",
+      "person_id": 352,
+      "place_of_birth": "Toronto, Ontario, Canada",
+      "popularity": 0.8197,
+      "profile_path": "/e5sQM8rEXQW1UiVgzYM5C4GHScF.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/e5sQM8rEXQW1UiVgzYM5C4GHScF.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "54193",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "A. Scott Frank",
+        "سكوت فرانك"
+      ],
+      "biography": "A. Scott Frank (born March 10, 1960) is an American film director, producer, screenwriter, and author. Frank has received two Academy Award nominations for Best Adapted Screenplay, the first for Out of Sight (1998) and the second for Logan (2017). His film work, credited and uncredited, extends to dozens of films. In recent years, he has worked for Netflix on television miniseries, most prominently writing and directing Godless, The Queen's Gambit and Dept. Q.\n\nDescription above from the Wikipedia article Scott Frank, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1960-03-10",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0291082",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Scott Frank",
+      "person_id": 353,
+      "place_of_birth": "Fort Walton Beach, Florida, USA",
+      "popularity": 1.1756,
+      "profile_path": "/xoaCq1717lTUl89dHU4WdO1BM2L.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/xoaCq1717lTUl89dHU4WdO1BM2L.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "2199",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Allan Shiach",
+        "Allan George Shiach",
+        "Alan Scott"
+      ],
+      "biography": "Allan Scott (born September 16, 1939, as Allan George Shiach) is a Scottish screenwriter and producer for film and television.",
+      "birthday": "1939-09-16",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0778819",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Allan Scott",
+      "person_id": 354,
+      "place_of_birth": "Elgin, Moray, Scotland, UK",
+      "popularity": 0.4354,
+      "profile_path": "/6kLDCH5pKF1grTxPjOxi5qr3Kj9.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/6kLDCH5pKF1grTxPjOxi5qr3Kj9.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "589662",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Imelda Mary Philomena Bernadette Staunton"
+      ],
+      "biography": "Imelda Mary Philomena Bernadette Staunton (born January 9, 1956) is an English actress and singer. After training at the Royal Academy of Dramatic Art, Staunton began her career in repertory theatre in 1976 and appeared in various theatre productions in the United Kingdom.\n\nStaunton has performed in a variety of plays and musicals in London throughout her career, winning four Laurence Olivier Awards; three for Best Actress in a Leading Role in a Musical for her roles in the musicals Into the Woods, Sweeney Todd, and Gypsy, and one for Best Performance in a Supporting Role in a Play for her work in both A Chorus of Disapproval and The Corn is Green. Her other stage appearances include The Beggar's Opera, The Wizard of Oz, Uncle Vanya, Guys and Dolls, Entertaining Mr Sloane, and Good People. She has been nominated for 13 Olivier Awards.\n\nOn film, Staunton starred in Antonia and Jane; in several supporting roles in Kenneth Branagh's comedy Peter's Friends, his adaptation of Much Ado About Nothing; Ang Lee's adaptation of Sense and Sensibility; and the costume romantic comedy Shakespeare in Love. She drew critical acclaim for her performance in the title role in Mike Leigh's Vera Drake, for which she won the BAFTA Award for Best Actress in a Leading Role and the Venice Film Festival Volpi Cup for Best Actress, in addition to being nominated for Best Actress by the Academy Awards, the Golden Globe Awards and the Screen Actors Guild Awards. She later gained a wider audience for her portrayal as Dolores Umbridge in the Harry Potter films The Order of the Phoenix and The Deathly Hallows - Part 1. She continued supporting roles in Nanny McPhee, reunited with Leigh in Another Year, and the film continuation of Downton Abbey. She portrayed human rights activist Hefina Headon in the historical film Pride, and starred in the British comedy Finding Your Feet. She also provided voice acting roles for the films Chicken Run, Arthur Christmas, and Paddington.\n\nOn television, Staunton starred in the sitcoms Up the Garden Path and Is it Legal?. Her performance in My Family and Other Animals earned her a nomination for the International Emmy Award for Best Actress, while her roles in Return to Cranford and The Girl earned her BAFTA TV Award nominations for Best Actress in a Supporting Role. For the latter, she was also nominated for the Primetime Emmy Award for Outstanding Supporting Actress in a Miniseries or a Movie. She portrayed Queen Elizabeth II in the final two seasons of The Crown.",
+      "birthday": "1956-01-09",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0001767",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Imelda Staunton",
+      "person_id": 355,
+      "place_of_birth": "Archway, London, England, UK",
+      "popularity": 1.9689,
+      "profile_path": "/96LYLMnUOWZ4DFXEeQPItNsxzEP.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/96LYLMnUOWZ4DFXEeQPItNsxzEP.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "11356",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "John Price"
+      ],
+      "biography": "Jonathan Pryce, CBE (born June 1, 1947) is a Welsh stage and film actor and singer. He earned an Academy Award nomination for his performance in the 2019 film \"The Two Popes.\"\n\nAfter studying at the Royal Academy of Dramatic Art and meeting his long time partner, English actress Kate Fahy, in 1974, he began his career as a stage actor in the 1970s. His work in theatre, including an award-winning performance in the title role of the Royal Court Theatre's \"Hamlet\", led to several supporting roles in film and television. He made his breakthrough screen performance in Terry Gilliam's 1985 cult film \"Brazil\". Critically lauded for his versatility, Pryce has participated in big-budget films such as \"Evita\", \"Tomorrow Never Dies\", \"Pirates of the Caribbean\" and \"The New World\", as well as independent projects such as \"Glengarry Glen Ross\" and \"Carrington\". His career in theatre has also been prolific, and he has won two Tony Awards—the first in 1977 for his Broadway debut in \"Comedians\", the second for his 1991 role as \"The Engineer\" in the musical \"Miss Saigon\".",
+      "birthday": "1947-06-01",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0000596",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Jonathan Pryce",
+      "person_id": 356,
+      "place_of_birth": "Carmel, Flintshire, Wales, UK",
+      "popularity": 2.3711,
+      "profile_path": "/zwSv5uXzPTtmitFe39UdqnVwmdL.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/zwSv5uXzPTtmitFe39UdqnVwmdL.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "378",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Sarah Caroline Colman",
+        "Sarah Caroline Olivia Colman",
+        "Sarah Caroline Olivia Sinclair",
+        "Sarah Caroline Sinclair CBE"
+      ],
+      "biography": "Sarah Caroline Sinclair CBE (born January 30, 1974), known professionally as Olivia Colman, is an English actress. Known for her comedic and dramatic roles in film and television, she has received various accolades, including an Academy Award, a British Academy Film Award, two Emmy Awards, three British Academy Television Awards and three Golden Globe Awards.\n\nShe was acclaimed for her performance in the ITV crime-drama series Broadchurch (2013–2017), for which she received a British Academy Television Award for Best Actress. She played Queen Elizabeth II from 2019 to 2020 in the Netflix period-drama series The Crown, for which she received a Golden Globe Award and a Primetime Emmy Award for Outstanding Lead Actress in a Drama Series.\n\nFor her portrayal of Anne, Queen of Great Britain in the period black-comedy film The Favourite (2018), Colman received the Academy Award for Best Actress. She received additional Academy Award nominations for her performances in The Father (2020) and The Lost Daughter (2021). Other notable film and television credits include Hot Fuzz (2007), Tyrannosaur (2011), The Iron Lady (2011), Hyde Park on Hudson (2012), Locke (2013), The Lobster (2015), Fleabag (2016-2019), Murder on the Orient Express (2017), The Mitchells vs. the Machines (2021), Landscapers (2021), Empire of Light (2022), Puss in Boots: The Last Wish (2022), Secret Invasion (2023), Wonka (2023), Wicked Little Letters (2023) and Paddington in Peru (2024).",
+      "birthday": "1974-01-30",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1469236",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Olivia Colman",
+      "person_id": 357,
+      "place_of_birth": "Norwich, Norfolk, England, UK",
+      "popularity": 2.7495,
+      "profile_path": "/4kceB4JYBcFTdzVhfq3cDnExcGa.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/4kceB4JYBcFTdzVhfq3cDnExcGa.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "39187",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Lesley Ann Manville",
+        "Леслі Менвілл",
+        "莱丝利·曼维尔 饰",
+        "لزلی منویل"
+      ],
+      "biography": "Lesley Manville was born on March 12, 1956 in Brighton, East Sussex, England. She is a multi award-winning actress of theatre, film, and television, and has worked extensively with director Mike Leigh. She is known for Another Year (2010), All or Nothing (2002), Topsy-Turvy (1999), and Secrets & Lies (1996), and her performance in Phantom Thread (2017), which was nominated for the Academy Award for Best Supporting Actress. She also had a supporting role in Maleficent (2014). Manville's extensive stage career includes roles in As You Like It, Les Liaisons Dangereuses and The Alchemist. Her film debut was in Dance with a Stranger (1985).",
+      "birthday": "1956-03-12",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0544334",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Lesley Manville",
+      "person_id": 358,
+      "place_of_birth": "Brighton, England, UK",
+      "popularity": 2.2058,
+      "profile_path": "/tioPlSoypjdME3oMu3g7XmgIIKS.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/tioPlSoypjdME3oMu3g7XmgIIKS.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "72305",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": "Peter Julian Robin Morgan CBE (born 10 April 1963) is a British screenwriter and playwright. He has written for theatre, films and television, often about historical events or figures such as Queen Elizabeth II, which he has covered extensively in all major media. He has received several accolades, including five BAFTA Awards, two Primetime Emmy Awards, four Golden Globe Awards, and nominations for two Academy Awards, a Tony Award and a Laurence Olivier Award. In February 2017, Morgan was awarded a British Film Institute Fellowship.\n\nHe is the playwright behind the plays Frost/Nixon(2005), The Audience (2013), and Patriots (2022), the former of which was nominated for the Tony Award for Best Play. As a screenwriter, Morgan received Academy Award nominations for The Queen (2006) and Frost/Nixon (2008). He also wrote the screenplays for The Last King of Scotland (2006), The Other Boleyn Girl (2008), The Damned United (2009), and Rush (2013). Morgan is also known for his work in television, writing the ITV series The Jury (2002), the Channel 4 film The Deal (2003), and the HBO films Longford (2006) and The Special Relationship (2010). He served as creator and show-runner of the Netflix series The Crown (2016–2023).\n\nDescription above from the Wikipedia article Peter Morgan, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1963-04-10",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0604948",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Peter Morgan",
+      "person_id": 359,
+      "place_of_birth": "London, England, UK",
+      "popularity": 1.0603,
+      "profile_path": "/vk80yEw6cxiKQugrN9J90qE1x6r.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/vk80yEw6cxiKQugrN9J90qE1x6r.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "15730",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Jonathan Drew Groff ",
+        "ジョナサン・グロフ",
+        "조나단 그로프",
+        "強納森・葛洛夫",
+        "جاناتان گروف"
+      ],
+      "biography": "Jonathan Drew Groff (born March 26, 1985) is an American actor and singer. Known for his performances on stage and screen, he has received several accolades, including a Tony Award and a Grammy Award, as well as a  Primetime Emmy Award nomination. He was included in the annual Time 100 list of the most influential people in the world in 2026.\n\nHe began his career on Broadway, making his debut in the musical In My Life (2005). He later received Tony Award nominations for playing Melchior Gabor in the original production of the rock musical Spring Awakening (2006), King George III in the original production of the historical musical Hamilton (2015), and Bobby Darin in the original production of the jukebox musical Just in Time (2025). In 2024, he won the Tony Award for Best Actor in a Musical for playing Franklin Shepard in the musical revival of Stephen Sondheim's Merrily We Roll Along. He also starred as Seymour Krelborn in the Off-Broadway musical revival of Little Shop of Horrors in 2019.\n\nOn television, he began his career as a recurring guest star as Jesse St. James on the Fox musical-comedy series Glee (2009–15). He starred as Patrick Murray in the HBO comedy-drama series Looking (2014–15), the network's first series centring on the lives of gay men, as well as its subsequent television film, Looking: The Movie (2016). He portrayed FBI Special Agent Holden Ford in the Netflix period crime drama Mindhunter (2017–19). He was Primetime Emmy Award-nominated for his role in the Disney+ live stage recording of Hamilton (2020).\n\nGroff made his film debut playing Michael Lang in Ang Lee's Taking Woodstock (2009). He has since played Louis J. Weichmann in The Conspirator (2010), Smith in The Matrix Resurrections (2021), and a father held hostage in Knock at the Cabin (2023). He also voiced both Kristoff and Sven in the Disney animated Frozen franchise, including Frozen (2013) and Frozen II (2019). In 2022, he executive-produced the HBO documentary film Spring Awakening: Those You've Known, which saw the 15-year reunion of the original cast of the musical.\n\nDescription above from the Wikipedia article Jonathan Groff, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1985-03-26",
+      "deathday": null,
+      "homepage": "https://www.caa.com/caaspeakers/jonathan-groff",
+      "imdb_id": "nm2676147",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Jonathan Groff",
+      "person_id": 360,
+      "place_of_birth": "Lancaster, Pennsylvania, USA",
+      "popularity": 1.7361,
+      "profile_path": "/3kmnYKAzSc3Lp7iK5pcj97Hx9Cm.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/3kmnYKAzSc3Lp7iK5pcj97Hx9Cm.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "221611",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Holt Mccallany ",
+        "Holt McAloney",
+        "홀트 맥칼라니",
+        "Голт МакКеллані",
+        "هولت مک کالانی",
+        "הולט מק'קלני"
+      ],
+      "biography": "Holt McCallany (born Holt Quinn McAloney; September 3, 1963) is an American actor. He is known for his portrayal of FBI Special Agent Bill Tench on the series Mindhunter (2017–19). He has had leading and supporting roles in various television series and films, including Lights Out, Fight Club, Three Kings, Shot Caller, Wrath of Man, Nightmare Alley, and The Iron Claw.\n\nDescription above from the Wikipedia article Holt McCallany, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1963-09-03",
+      "deathday": null,
+      "homepage": "https://holtmccallany.net",
+      "imdb_id": "nm0564697",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Holt McCallany",
+      "person_id": 361,
+      "place_of_birth": "New York City, New York, USA",
+      "popularity": 2.5026,
+      "profile_path": "/iRo9YUNMwZg4UCq7dapo0HydDmI.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/iRo9YUNMwZg4UCq7dapo0HydDmI.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "7497",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "한나 그로스"
+      ],
+      "biography": "Hannah Gross (born September 25, 1992) is a Canadian actress, known for her roles in Mindhunter (2017), Joker (2019), and Colewell (2019). Gross grew up in Toronto. She is the daughter of actors Martha Burns and Paul Gross. She attended New York University's Tisch School of the Arts and graduated with a Bachelor of Fine Arts in Theatre, minoring in Religious Studies.",
+      "birthday": "1992-09-25",
+      "deathday": null,
+      "homepage": "https://www.documentaries.org/filmmakers/hannah-gross/",
+      "imdb_id": "nm2193120",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Hannah Gross",
+      "person_id": 362,
+      "place_of_birth": "Toronto, Ontario, Canada",
+      "popularity": 1.0691,
+      "profile_path": "/p94oyYrrywfSH3vkimTL1cbaWQt.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/p94oyYrrywfSH3vkimTL1cbaWQt.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1049916",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "ანა ტორვი"
+      ],
+      "biography": "Anna Torv (born 7 June 1979) is an Australian actress. She is known for her roles as Olivia Dunham on the Fox science fiction series Fringe (2008–2013), Wendy Carr in the Netflix crime thriller series Mindhunter (2017–2019), and Tess in the HBO post-apocalyptic drama series The Last of Us (2023). Her performance in Fringe earned her four Saturn Awards for Best Actress on Television and nominations for the Critics' Choice Television Award for Best Actress in a Drama Series.",
+      "birthday": "1979-06-07",
+      "deathday": null,
+      "homepage": "https://app.showcast.com.au/profile/320F7507",
+      "imdb_id": "nm1396022",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Anna Torv",
+      "person_id": 363,
+      "place_of_birth": "Melbourne, Victoria, Australia",
+      "popularity": 2.0815,
+      "profile_path": "/2oOYpdlQyNQfXvtyaoAHNsWhqZz.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/2oOYpdlQyNQfXvtyaoAHNsWhqZz.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "30084",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": "Stacey Roca (born 12 September 1978 in Southport) is an English actress, known for portraying Rachel in The Office, Claudie Stephenson in Strictly Confidential and Nancy Tench in Netflix drama Mindhunter.\n\nBorn in Southport, Roca spent her childhood in Johannesburg, South Africa, and then moved back to England. She attended Formby High School and did her A levels at King George V College in Southport, after which she moved to London.\n\nRoca trained at the Webber Douglas Academy of Dramatic Art. and studied the Meisner technique with Bill Esper at the Esper Studio in New York.",
+      "birthday": "1978-09-12",
+      "deathday": null,
+      "homepage": "https://www.celebritytalent.net/sampletalent/19518/stacey-roca/",
+      "imdb_id": "nm1306344",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Stacey Roca",
+      "person_id": 364,
+      "place_of_birth": "Southport, Lancashire, UK",
+      "popularity": 0.5133,
+      "profile_path": "/sk7NshCULQUON7drnxTuqwD3Kv3.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/sk7NshCULQUON7drnxTuqwD3Kv3.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1233173",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Joe Penhall",
+        "جو بينهال"
+      ],
+      "biography": "Joe Scott Penhall (born 1967) is an English-Australian playwright and screenwriter, best known for his award-winning stage play Blue/Orange, the award-winning West End musical Sunny Afternoon, and creating the Netflix original series Mindhunter.\n\nDescription above from the Wikipedia article Joe Penhall, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1967-01-01",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0671856",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Joe Penhall",
+      "person_id": 365,
+      "place_of_birth": "London, England, UK",
+      "popularity": 0.5069,
+      "profile_path": "/9dXtvOKfFyeAp8jNBxM0OAqosWv.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/9dXtvOKfFyeAp8jNBxM0OAqosWv.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "57573",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Steven A. Strait",
+        "Стивен Стрейт",
+        "استیون استریت"
+      ],
+      "biography": "Steven Strait (born March 23, 1986) is an American actor and singer. He is best known for starring in the adventure film Sky High (2005) as Warren Peace and the science fiction series The Expanse (2015–2022).",
+      "birthday": "1986-03-23",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1711829",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Steven Strait",
+      "person_id": 366,
+      "place_of_birth": "New York City, New York, USA",
+      "popularity": 1.5472,
+      "profile_path": "/m7heTGlIKOZJgWrTtY5TS3LaZxS.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/m7heTGlIKOZJgWrTtY5TS3LaZxS.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "54815",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Доминик Типпер",
+        "دومینیک تیپر"
+      ],
+      "biography": "Dominique Jade Tipper is a British actress, dancer, and singer-songwriter. She rose to prominence in her role as Naomi Nagata, the engineer in the sci-fi series The Expanse. In 2022, she had a recurring role in the Norwegian miniseries Headhunters, based on the famous Jo Nesbø novel.",
+      "birthday": "1985-06-24",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm4625680",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Dominique Tipper",
+      "person_id": 367,
+      "place_of_birth": "London, England",
+      "popularity": 0.6482,
+      "profile_path": "/tYsdlDNJON9hTdqrkFL0twkNTjo.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/tYsdlDNJON9hTdqrkFL0twkNTjo.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1361876",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Кэс Анвар",
+        "کاس انور"
+      ],
+      "biography": "Cas Anvar (Persian: کاس انور; born March 15, 1966) is a Canadian actor and known for the SyFy/Amazon Prime Video science fiction television series The Expanse.",
+      "birthday": "1966-03-15",
+      "deathday": null,
+      "homepage": "http://www.casanvar.com/",
+      "imdb_id": "nm0031679",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Cas Anvar",
+      "person_id": 368,
+      "place_of_birth": "Regina - Saskatchewan - Canada",
+      "popularity": 0.8945,
+      "profile_path": "/ohEulMvF1Ji2osI3aSBVGb5FFUb.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/ohEulMvF1Ji2osI3aSBVGb5FFUb.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "59214",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "John Wesley Chatham ",
+        "Уэс Чэтэм"
+      ],
+      "biography": "Wes Chatham (born 11 October 1978) is an American actor best known for his roles as Amos Burton in the science fiction series The Expanse (2015–2022) and Castor in The Hunger Games film series (2014-2015).\n\nChatham was born in Atlanta and grew up in North Georgia. Wes's parents divorced when he was two and he spent most of his childhood with his mother, sister, and brother. On a whim, Wes's mother took his sister to a audition for a Tide commercial in Savannah, Georgia and brought him along. While waiting for his sister in the lobby, the casting director discovered Wes and, at the age of seven, he received his first acting job for Tide.\n\nAt the age of thirteen, Chatham moved in with his father and, without a lot of supervision and as a restless and rebellious teen, he was kicked out of high school and sent to a second chance school in Lawrenceville to finish his education. While attending classes, a professional theater company out of Atlanta started a mentoring program with the school and Chatham was chosen to write a play that was later performed by his classmates. From this experience, Chatham found his passion for the arts.\n\nAfter graduating high school, Chatham joined the military as an aviation firefighter on the flight deck of the USS Essex, working in crash and salvage for four years. Chatham's break into acting came just three months before his tour was finished when Denzel Washington chose his ship to shoot the movie Antwone Fisher. While searching for some authentic military personnel for the film, Chatham was discovered by casting director Robi Reed and given his first movie-making experience; that's when he decided he wanted to pursue his lifelong dream of acting. Following Antwone Fisher, Reed convinced Chatham to make the move to Hollywood and shortly thereafter cast him in his first series regular role on Showtime's Barbershop.\n\nChatham gained further attention acting alongside Tommy Lee Jones as Corporal Steve Penning in Paul Haggis's In the Valley of Elah (2007) and as Frank Benedict, George W. Bush's fraternity brother, in Oliver Stone's biopic W. (2008). The following year, Chatham landed another series regular role on CBS' hit TV show The Unit as Staff Sergeant Sam McBride, working with showrunners David Mamet and Shawn Ryan. Chatham also starred as Brian in the supernatural horror film Husk (2011).\n\nIn 2011, Chatham was a part of the ensemble cast of The Help, portraying Carleton Phelan, the brother of Emma Stone's character. In 2012, the film won Outstanding Ensemble at the Screen Actors Guild Awards, and went on to receive four Academy Award nominations including Best Picture. In 2012, he landed his first title role in Joel Silver's The Philly Kid; as a fan of mixed martial arts, Chatham dived into the character of Dillion McGwire, performing all of his own stunts. Chatham gained wider recognition for playing Castor in The Hunger Games: Mockingjay - Part 1 (2014) and Part 2 (2015), an adaptation of Suzanne Collins' best-selling young adult dystopian novel, before landing a starring role as Amos Burton in the SyFy series The Expanse (2015-2022).",
+      "birthday": "1978-10-11",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1434871",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Wes Chatham",
+      "person_id": 369,
+      "place_of_birth": "Atlanta, Georgia, USA",
+      "popularity": 1.4066,
+      "profile_path": "/lFoUyX8FZs3XvUWWItCm2ezvAEs.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/lFoUyX8FZs3XvUWWItCm2ezvAEs.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "51682",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "شهره آغداشلو"
+      ],
+      "biography": "Shohreh Aghdashloo (born May 11, 1952) is an Iranian American actress.\n\nAfter establishing a theatre and film career in Iran, Aghdashloo moved to England during the Iranian Revolution in 1979, and subsequently became a citizen of the United States. After several years playing supporting roles in television and film, her performance in House of Sand and Fog (2003) brought her several film critics' awards and a nomination for an Academy Award for Best Supporting Actress. She has continued to play supporting and character roles in film and television and won an Emmy Award for her work in the television drama House of Saddam (2008).\n\nDescription above from the Wikipedia Shohreh Aghdashloo, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1952-05-11",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0013037",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Shohreh Aghdashloo",
+      "person_id": 370,
+      "place_of_birth": "Tehran, Iran",
+      "popularity": 2.5849,
+      "profile_path": "/7josGC8QO9V6V8AuFdaS2tjUF8W.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/7josGC8QO9V6V8AuFdaS2tjUF8W.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "21041",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": "Mark Fergus is a screenwriter, working alongside his writing partner, Hawk Ostby. They are best known for their work on Children of Men (for which they were nominated for the Academy Award for Best Adapted Screenplay) and Iron Man. Their other work includes First Snow, which was also directed by Fergus, and Cowboys & Aliens.\n\nThey are the creators and executive producers of the TV series The Expanse, which debuted on Syfy in December 2015 and ended its six-season run on Amazon Prime Video on January 14, 2022.\n\nDescription above from the Wikipedia article Mark Fergus and Hawk Ostby, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1318843",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Mark Fergus",
+      "person_id": 371,
+      "place_of_birth": "Queens, New York City, New York, USA",
+      "popularity": 0.6696,
+      "profile_path": "/d4KsPbLTyDiudrBVjTfVm82WATA.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/d4KsPbLTyDiudrBVjTfVm82WATA.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "79207",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [],
+      "biography": "Hawk Ostby is a screenwriter, working alongside his writing partner, Mark Fergus. They are best known for their work on Children of Men (for which they were nominated for the Academy Award for Best Adapted Screenplay) and Iron Man. Their other work includes First Snow, which was also directed by Fergus, and Cowboys & Aliens.\n\nThey are the creators and executive producers of the TV series The Expanse, which debuted on Syfy in December 2015 and ended its six-season run on Amazon Prime Video on January 14, 2022.\n\nDescription above from the Wikipedia article Mark Fergus and Hawk Ostby, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": null,
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1319757",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Hawk Ostby",
+      "person_id": 372,
+      "place_of_birth": "India",
+      "popularity": 0.7112,
+      "profile_path": "/w34js6H3uW0TZxp33Bne39V1g7v.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/w34js6H3uW0TZxp33Bne39V1g7v.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "79209",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "保罗·安德森",
+        "保羅·安德森",
+        "پُل اندرسون",
+        "پائول اندرسون"
+      ],
+      "biography": "Paul Anderson is an English actor who started his acting career in the late 2000s. He was previously a ticket scalper who decided to attend Webber Douglas drama school, subsequently landing roles in theatre and in films such as The Firm, Sherlock Holmes: A Game of Shadows and Passion. Anderson is known for his breakout role as Arthur Shelby in British television series Peaky Blinders.",
+      "birthday": "1978-02-12",
+      "deathday": null,
+      "homepage": "https://wiflix.nu/",
+      "imdb_id": "nm2167957",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Paul Anderson",
+      "person_id": 373,
+      "place_of_birth": "London, England, UK",
+      "popularity": 2.3823,
+      "profile_path": "/nds5rTBZvJ4rEsP4N6OaoEgQDkW.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/nds5rTBZvJ4rEsP4N6OaoEgQDkW.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "220448",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "조 콜",
+        "جو کول"
+      ],
+      "biography": "Joseph Michael Cole (born 28 November 1988) is an English actor. Some of his most notable roles include Luke in Skins, John Shelby in Peaky Blinders, Marzin and Beckwith in Secret in Their Eyes, Billy Moore in A Prayer Before Dawn, Frank in the Black Mirror episode \"Hang the DJ\", Sean Wallace in Gangs of London, and Iver Iversen in Against the Ice.\n\nDescription above from the Wikipedia article Joe Cole (actor), licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1988-11-28",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm3771184",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Joe Cole",
+      "person_id": 374,
+      "place_of_birth": "Kingston upon Thames, London, England, UK",
+      "popularity": 2.0393,
+      "profile_path": "/tJ4g1Zit0IqAhKiImTwAQrHHKuA.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/tJ4g1Zit0IqAhKiImTwAQrHHKuA.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "1081875",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Хелен Маккрори",
+        "헬렌 맥크로리",
+        "هلن مک‌کروری"
+      ],
+      "biography": "Helen McCrory (August 17, 1968 - April 16, 2021) was an English actress. She portrayed Cherie Blair in both the 2006 film The Queen and the 2010 film The Special Relationship. She also portrayed Narcissa Malfoy in the final three installments of the Harry Potter movies.\n\nDescription above from the Wikipedia article Helen McCrory, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1968-08-17",
+      "deathday": "2021-04-16",
+      "homepage": null,
+      "imdb_id": "nm0567031",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Helen McCrory",
+      "person_id": 375,
+      "place_of_birth": "London, England, UK",
+      "popularity": 1.7418,
+      "profile_path": "/dVtwKuGce3BhUcqfdpxFvpCT8YT.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/dVtwKuGce3BhUcqfdpxFvpCT8YT.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "15737",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "艾多·戈爾德伯格",
+        "ایدو گلدبرگ"
+      ],
+      "biography": "Iddo Goldberg (born 5 August 1975) is an Israeli actor known for his roles as Freddie Thorne in Peaky Blinders (2013), Ben in Secret Diary of a Call Girl (2007–2011),  Isaac Walton in Salem (2014–2017), and Bennett Knox in Snowpiercer (2020–2024).",
+      "birthday": "1975-08-05",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm0325221",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Acting",
+      "name": "Iddo Goldberg",
+      "person_id": 376,
+      "place_of_birth": "Tel Aviv, Israel",
+      "popularity": 1.2253,
+      "profile_path": "/dJGHbLmYKxLy87jduKGm5jDtBnR.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/dJGHbLmYKxLy87jduKGm5jDtBnR.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "94958",
+      "warnings": []
+    },
+    {
+      "adult": false,
+      "also_known_as": [
+        "Steven Knight CBE"
+      ],
+      "biography": "Steven Knight (born 5 August 1959) is a British screenwriter, producer, and director for film and television. He wrote the screenplays for the films Closed Circuit, Dirty Pretty Things, and Eastern Promises. Also, he wrote and directed the films Locke and Hummingbird (a.k.a. Redemption). In July 2025, it was announced that he would write the 26th official James Bond film, to be directed by Denis Villeneuve.\n\nKnight is one of three creators of Who Wants to Be a Millionaire?, a game show that has been remade and aired in around 160 countries worldwide. He is also the creator of the BBC's Peaky Blinders and SAS: Rogue Heroes, and has written for Commercial Breakdown, The Detectives, See, and Taboo.\n\nHe has built a large film and television studio complex in inner-city Birmingham called Digbeth Loc., opened in 2024.\n\nDescription above from the Wikipedia article Steven Knight, licensed under CC-BY-SA, full list of contributors on Wikipedia.",
+      "birthday": "1959-08-05",
+      "deathday": null,
+      "homepage": null,
+      "imdb_id": "nm1140275",
+      "importable_fields": {
+        "biography": true,
+        "known_for_department": true,
+        "profile_url": true
+      },
+      "known_for_department": "Writing",
+      "name": "Steven Knight",
+      "person_id": 377,
+      "place_of_birth": "Marlborough, England, UK",
+      "popularity": 1.4666,
+      "profile_path": "/vmM9j2yXI8A3AccX3YgOEZHQWcO.jpg",
+      "profile_url": "https://image.tmdb.org/t/p/w185/vmM9j2yXI8A3AccX3YgOEZHQWcO.jpg",
+      "source_name": "tmdb",
+      "source_person_id": "23227",
       "warnings": []
     }
   ],
-  "people_with_biography": 10,
-  "people_without_biography": 0,
+  "people_with_biography": 77,
+  "people_without_biography": 15,
   "source_provider": "tmdb",
-  "total_people": 10,
+  "total_people": 92,
   "warnings": []
 }

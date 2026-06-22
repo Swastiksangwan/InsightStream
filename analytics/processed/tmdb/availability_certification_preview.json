@@ -2,698 +2,37 @@
   "fallback_regions": [
     "US"
   ],
-  "generated_at": "2026-06-20T19:36:37.513081+00:00",
+  "generated_at": "2026-06-21T17:45:24.467060+00:00",
   "inspection_only": true,
   "items": [
     {
       "availability": [
         {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "U",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 1,
-          "release_type_name": "premiere",
-          "source_name": "tmdb",
-          "source_priority": 101
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 1,
-          "release_type_name": "premiere",
-          "source_name": "tmdb",
-          "source_priority": 102
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
-          "source_name": "tmdb",
-          "source_priority": 104
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
-          "source_name": "tmdb",
-          "source_priority": 105
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 106
-        }
-      ],
-      "chosen_certification": {
-        "certification": "U",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "278",
-      "source_name": "tmdb",
-      "title": "The Shawshank Redemption",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
           "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
+          "display_priority": 77,
+          "logo_path": "/efu1Cqc63XrPBoreYnf2mn0Nizj.jpg",
+          "provider_name": "MGM Plus Amazon Channel",
           "region_code": "IN",
           "source_name": "tmdb",
-          "source_provider_id": "2336"
+          "source_provider_id": "2141"
         },
         {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "free",
-          "display_priority": 33,
-          "logo_path": "/rcBwnERpNfPfWB5DaSTyEMCZbCA.jpg",
-          "provider_name": "Kanopy",
+          "availability_type": "ads",
+          "display_priority": 74,
+          "logo_path": "/dB8G41Q6tSL5NBisrIeqByfepBc.jpg",
+          "provider_name": "Pluto TV",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "191"
+          "source_provider_id": "300"
         },
         {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
+          "availability_type": "ads",
+          "display_priority": 346,
+          "logo_path": "/zLYr7OPvpskMA4S79E3vlCi71iC.jpg",
+          "provider_name": "Tubi TV",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 43,
-          "logo_path": "/g2IaWyo6jCY0rIFjb4qgZ0bSmm3.jpg",
-          "provider_name": "JustWatch TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2285"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 95,
-          "logo_path": "/yFGu4sSzwUMfhwmSsZgez8QhaVl.jpg",
-          "provider_name": "FlixFling",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "331"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 9,
-          "logo_path": "/9BgaNQRMDvVlji1JBZi6tcfxpKx.jpg",
-          "provider_name": "fuboTV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "257"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 14,
-          "logo_path": "/fts6X10Jn4QT0X6ac3udKEn2tJA.jpg",
-          "provider_name": "Paramount Plus Premium",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2303"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 23,
-          "logo_path": "/hExO4PtimLIYn3kBOrzsejNv7cT.jpg",
-          "provider_name": "Paramount+ Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "582"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 64,
-          "logo_path": "/ywIoxSjoYJGUIbR6BfxUiCHdPi3.jpg",
-          "provider_name": "Paramount+ Roku Premium Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "633"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 1,
-          "release_type_name": "premiere",
-          "source_name": "tmdb",
-          "source_priority": 101
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 102
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 104
-        }
-      ],
-      "chosen_certification": {
-        "certification": "R",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "238",
-      "source_name": "tmdb",
-      "title": "The Godfather",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 14,
-          "logo_path": "/fts6X10Jn4QT0X6ac3udKEn2tJA.jpg",
-          "provider_name": "Paramount Plus Premium",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2303"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 15,
-          "logo_path": "/5wym1C0jAvJeGirPdgVpcW0CCuy.jpg",
-          "provider_name": "Paramount Plus Essential",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2616"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 23,
-          "logo_path": "/hExO4PtimLIYn3kBOrzsejNv7cT.jpg",
-          "provider_name": "Paramount+ Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "582"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 50,
-          "logo_path": "/ctiRpS16dlaTXQBSsiFncMrgWmh.jpg",
-          "provider_name": "MGM Plus",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "34"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 64,
-          "logo_path": "/ywIoxSjoYJGUIbR6BfxUiCHdPi3.jpg",
-          "provider_name": "Paramount+ Roku Premium Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "633"
+          "source_provider_id": "73"
         },
         {
           "availability_type": "free",
@@ -760,323 +99,6 @@
         },
         {
           "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 102
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 104
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 105
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 106
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 107
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 108
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 109
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 110
-        }
-      ],
-      "chosen_certification": {
-        "certification": "R",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "680",
-      "source_name": "tmdb",
-      "title": "Pulp Fiction",
-      "warnings": [
-        "No IN certification region returned."
-      ]
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "free",
-          "display_priority": 33,
-          "logo_path": "/rcBwnERpNfPfWB5DaSTyEMCZbCA.jpg",
-          "provider_name": "Kanopy",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "191"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 95,
-          "logo_path": "/yFGu4sSzwUMfhwmSsZgez8QhaVl.jpg",
-          "provider_name": "FlixFling",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "331"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
           "display_priority": 125,
           "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
           "provider_name": "Plex",
@@ -1086,510 +108,21 @@
         },
         {
           "availability_type": "streaming",
-          "display_priority": 14,
-          "logo_path": "/fts6X10Jn4QT0X6ac3udKEn2tJA.jpg",
-          "provider_name": "Paramount Plus Premium",
+          "display_priority": 9,
+          "logo_path": "/9BgaNQRMDvVlji1JBZi6tcfxpKx.jpg",
+          "provider_name": "fuboTV",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "2303"
+          "source_provider_id": "257"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 15,
-          "logo_path": "/5wym1C0jAvJeGirPdgVpcW0CCuy.jpg",
-          "provider_name": "Paramount Plus Essential",
+          "display_priority": 12,
+          "logo_path": "/efu1Cqc63XrPBoreYnf2mn0Nizj.jpg",
+          "provider_name": "MGM+ Amazon Channel",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "2616"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 23,
-          "logo_path": "/hExO4PtimLIYn3kBOrzsejNv7cT.jpg",
-          "provider_name": "Paramount+ Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "582"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 353,
-          "logo_path": "/aCEpg6aKYM6UUYP95frtKYyVQWD.jpg",
-          "provider_name": "Wonder Project Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2668"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 1,
-          "release_type_name": "premiere",
-          "source_name": "tmdb",
-          "source_priority": 101
-        },
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 104
-        },
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 105
-        },
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 106
-        }
-      ],
-      "chosen_certification": {
-        "certification": "PG-13",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "13",
-      "source_name": "tmdb",
-      "title": "Forrest Gump",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 1,
-          "release_type_name": "premiere",
-          "source_name": "tmdb",
-          "source_priority": 101
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
-          "source_name": "tmdb",
-          "source_priority": 102
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 103
-        }
-      ],
-      "chosen_certification": {
-        "certification": "R",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "769",
-      "source_name": "tmdb",
-      "title": "Goodfellas",
-      "warnings": [
-        "No IN certification region returned."
-      ]
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 0,
-          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
-          "provider_name": "Netflix",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "8"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 35,
-          "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
-          "provider_name": "VI movies and tv",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "614"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 11,
-          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
-          "provider_name": "HBO Max Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1825"
+          "source_provider_id": "583"
         },
         {
           "availability_type": "streaming",
@@ -1602,252 +135,21 @@
         },
         {
           "availability_type": "streaming",
-          "display_priority": 154,
-          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
-          "provider_name": "HBO Max",
+          "display_priority": 50,
+          "logo_path": "/ctiRpS16dlaTXQBSsiFncMrgWmh.jpg",
+          "provider_name": "MGM Plus",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "1899"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
-          "source_name": "tmdb",
-          "source_priority": 101
-        },
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 102
-        },
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 104
-        }
-      ],
-      "chosen_certification": {
-        "certification": "PG-13",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "120",
-      "source_name": "tmdb",
-      "title": "The Lord of the Rings: The Fellowship of the Ring",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
+          "source_provider_id": "34"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 0,
-          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
-          "provider_name": "Netflix",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "8"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 35,
-          "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
-          "provider_name": "VI movies and tv",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "614"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
+          "display_priority": 52,
+          "logo_path": "/ptmbGSttkyzawLbxx9MElmxKuVo.jpg",
+          "provider_name": "Philo",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 11,
-          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
-          "provider_name": "HBO Max Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1825"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 154,
-          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
-          "provider_name": "HBO Max",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1899"
+          "source_provider_id": "2383"
         },
         {
           "availability_type": "buy",
@@ -1897,7 +199,17 @@
       ],
       "certifications": [
         {
-          "certification": "PG-13",
+          "certification": "A",
+          "country_code": "IN",
+          "notes": null,
+          "rating_system": "IN",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 2
+        },
+        {
+          "certification": "R",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
@@ -1907,17 +219,17 @@
           "source_priority": 101
         },
         {
-          "certification": "PG-13",
+          "certification": "R",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
+          "release_type": 1,
+          "release_type_name": "premiere",
           "source_name": "tmdb",
           "source_priority": 102
         },
         {
-          "certification": "PG-13",
+          "certification": "R",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
@@ -1925,62 +237,23 @@
           "release_type_name": "theatrical",
           "source_name": "tmdb",
           "source_priority": 103
-        },
-        {
-          "certification": "PG-13",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 104
         }
       ],
       "chosen_certification": {
-        "certification": "PG-13",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
+        "certification": "A",
+        "country_code": "IN",
+        "notes": null,
+        "rating_system": "IN",
         "source_name": "tmdb"
       },
       "content_type": "movie",
-      "source_id": "122",
+      "source_id": "274",
       "source_name": "tmdb",
-      "title": "The Lord of the Rings: The Return of the King",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
+      "title": "The Silence of the Lambs",
+      "warnings": []
     },
     {
       "availability": [
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
         {
           "availability_type": "rent",
           "display_priority": 4,
@@ -2036,6 +309,42 @@
           "source_provider_id": "10"
         },
         {
+          "availability_type": "buy",
+          "display_priority": 4,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 7,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 10,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 0,
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_name": "Netflix",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "8"
+        },
+        {
           "availability_type": "streaming",
           "display_priority": 1,
           "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
@@ -2043,6 +352,15 @@
           "region_code": "IN",
           "source_name": "tmdb",
           "source_provider_id": "119"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 3,
+          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
+          "provider_name": "JioHotstar",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "2336"
         },
         {
           "availability_type": "streaming",
@@ -2054,40 +372,67 @@
           "source_provider_id": "2100"
         },
         {
-          "availability_type": "streaming",
-          "display_priority": 6,
-          "logo_path": "/bxBlRPEPpMVDc4jMhSrTf2339DW.jpg",
-          "provider_name": "Hulu",
+          "availability_type": "buy",
+          "display_priority": 7,
+          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
+          "provider_name": "Amazon Video",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "15"
+          "source_provider_id": "10"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 8,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 17,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 18,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 35,
+          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+          "provider_name": "Fandango At Home",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "7"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 14,
-          "logo_path": "/fts6X10Jn4QT0X6ac3udKEn2tJA.jpg",
-          "provider_name": "Paramount Plus Premium",
+          "display_priority": 16,
+          "logo_path": "/2aGrp1xw3qhwCYvNGAJZPdjfeeX.jpg",
+          "provider_name": "Peacock Premium",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "2303"
+          "source_provider_id": "386"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 15,
-          "logo_path": "/5wym1C0jAvJeGirPdgVpcW0CCuy.jpg",
-          "provider_name": "Paramount Plus Essential",
+          "display_priority": 21,
+          "logo_path": "/oTQdXIqM9iewlN4MC2nhKB0gHw.jpg",
+          "provider_name": "AMC Plus Apple TV Channel ",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "2616"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 23,
-          "logo_path": "/hExO4PtimLIYn3kBOrzsejNv7cT.jpg",
-          "provider_name": "Paramount+ Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "582"
+          "source_provider_id": "1854"
         },
         {
           "availability_type": "streaming",
@@ -2097,15 +442,6 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 33,
-          "logo_path": "/rcBwnERpNfPfWB5DaSTyEMCZbCA.jpg",
-          "provider_name": "Kanopy",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "191"
         },
         {
           "availability_type": "streaming",
@@ -2135,58 +471,13 @@
           "source_provider_id": "2383"
         },
         {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
+          "availability_type": "streaming",
+          "display_priority": 213,
+          "logo_path": "/drPlq5beqXtBaP7MNs8W616YRhm.jpg",
+          "provider_name": "Peacock Premium Plus",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "free",
-          "display_priority": 33,
-          "logo_path": "/rcBwnERpNfPfWB5DaSTyEMCZbCA.jpg",
-          "provider_name": "Kanopy",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "191"
+          "source_provider_id": "387"
         },
         {
           "availability_type": "rent",
@@ -2232,38 +523,11 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 43,
-          "logo_path": "/g2IaWyo6jCY0rIFjb4qgZ0bSmm3.jpg",
-          "provider_name": "JustWatch TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2285"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
         }
       ],
       "certifications": [
         {
-          "certification": "R",
+          "certification": "PG-13",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
@@ -2273,67 +537,97 @@
           "source_priority": 101
         },
         {
-          "certification": "R",
+          "certification": "PG-13",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
+          "release_type": 2,
+          "release_type_name": "theatrical_limited",
           "source_name": "tmdb",
           "source_priority": 102
         },
         {
-          "certification": "R",
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 2,
+          "release_type_name": "theatrical_limited",
+          "source_name": "tmdb",
+          "source_priority": 103
+        },
+        {
+          "certification": "PG-13",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
           "release_type": 3,
           "release_type_name": "theatrical",
           "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
           "source_priority": 104
         },
         {
-          "certification": "R",
+          "certification": "PG-13",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
+          "release_type": 3,
+          "release_type_name": "theatrical",
           "source_name": "tmdb",
           "source_priority": 105
         },
         {
-          "certification": "R",
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 4,
+          "release_type_name": "digital",
+          "source_name": "tmdb",
+          "source_priority": 106
+        },
+        {
+          "certification": "PG-13",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
           "release_type": 5,
           "release_type_name": "physical",
           "source_name": "tmdb",
-          "source_priority": 106
+          "source_priority": 108
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 109
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 110
         }
       ],
       "chosen_certification": {
-        "certification": "R",
+        "certification": "PG-13",
         "country_code": "US",
         "notes": "Used US fallback because IN certification was unavailable.",
         "rating_system": "US",
         "source_name": "tmdb"
       },
       "content_type": "movie",
-      "source_id": "98",
+      "source_id": "329",
       "source_name": "tmdb",
-      "title": "Gladiator",
+      "title": "Jurassic Park",
       "warnings": [
         "No non-empty IN certification returned."
       ]
@@ -2341,13 +635,40 @@
     {
       "availability": [
         {
-          "availability_type": "streaming",
-          "display_priority": 1,
-          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
-          "provider_name": "Amazon Prime Video",
+          "availability_type": "rent",
+          "display_priority": 7,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
           "region_code": "IN",
           "source_name": "tmdb",
-          "source_provider_id": "119"
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 10,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 7,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 10,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
         },
         {
           "availability_type": "streaming",
@@ -2359,132 +680,6 @@
           "source_provider_id": "2336"
         },
         {
-          "availability_type": "streaming",
-          "display_priority": 35,
-          "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
-          "provider_name": "VI movies and tv",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "614"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 73,
-          "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
-          "provider_name": "Amazon Prime Video with Ads",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2100"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
           "availability_type": "rent",
           "display_priority": 7,
           "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
@@ -2531,261 +726,12 @@
         },
         {
           "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
+          "display_priority": 95,
+          "logo_path": "/yFGu4sSzwUMfhwmSsZgez8QhaVl.jpg",
+          "provider_name": "FlixFling",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "A",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 1,
-          "release_type_name": "premiere",
-          "source_name": "tmdb",
-          "source_priority": 101
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 104
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 105
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 106
-        }
-      ],
-      "chosen_certification": {
-        "certification": "A",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "76341",
-      "source_name": "tmdb",
-      "title": "Mad Max: Fury Road",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 1,
-          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
-          "provider_name": "Amazon Prime Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "119"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 73,
-          "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
-          "provider_name": "Amazon Prime Video with Ads",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2100"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
+          "source_provider_id": "331"
         },
         {
           "availability_type": "rent",
@@ -2805,145 +751,50 @@
           "source_name": "tmdb",
           "source_provider_id": "538"
         },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 50,
-          "logo_path": "/ctiRpS16dlaTXQBSsiFncMrgWmh.jpg",
-          "provider_name": "MGM Plus",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "34"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 104
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 105
-        }
-      ],
-      "chosen_certification": {
-        "certification": "R",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "244786",
-      "source_name": "tmdb",
-      "title": "Whiplash",
-      "warnings": [
-        "No IN certification region returned."
-      ]
-    },
-    {
-      "availability": [
         {
           "availability_type": "streaming",
           "display_priority": 9,
-          "logo_path": "/3973zlBbBXdXxaWqRWzGG2GYxbT.jpg",
-          "provider_name": "Sony Liv",
-          "region_code": "IN",
+          "logo_path": "/9BgaNQRMDvVlji1JBZi6tcfxpKx.jpg",
+          "provider_name": "fuboTV",
+          "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "237"
+          "source_provider_id": "257"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 35,
-          "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
-          "provider_name": "VI movies and tv",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "614"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
+          "display_priority": 14,
+          "logo_path": "/fts6X10Jn4QT0X6ac3udKEn2tJA.jpg",
+          "provider_name": "Paramount Plus Premium",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
+          "source_provider_id": "2303"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 11,
-          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
-          "provider_name": "HBO Max Amazon Channel",
+          "display_priority": 15,
+          "logo_path": "/5wym1C0jAvJeGirPdgVpcW0CCuy.jpg",
+          "provider_name": "Paramount Plus Essential",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "1825"
+          "source_provider_id": "2616"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 20,
+          "logo_path": "/1C5EVCWyQD798CE1DFfcm6oAbxP.jpg",
+          "provider_name": "Starz Apple TV Channel",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "1855"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 23,
+          "logo_path": "/hExO4PtimLIYn3kBOrzsejNv7cT.jpg",
+          "provider_name": "Paramount+ Amazon Channel",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "582"
         },
         {
           "availability_type": "streaming",
@@ -2956,317 +807,12 @@
         },
         {
           "availability_type": "streaming",
-          "display_priority": 154,
-          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
-          "provider_name": "HBO Max",
+          "display_priority": 64,
+          "logo_path": "/ywIoxSjoYJGUIbR6BfxUiCHdPi3.jpg",
+          "provider_name": "Paramount+ Roku Premium Channel",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "1899"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "A",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
-          "source_name": "tmdb",
-          "source_priority": 102
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 2,
-          "release_type_name": "theatrical_limited",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 104
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 105
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 4,
-          "release_type_name": "digital",
-          "source_name": "tmdb",
-          "source_priority": 106
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 4,
-          "release_type_name": "digital",
-          "source_name": "tmdb",
-          "source_priority": 107
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 108
-        }
-      ],
-      "chosen_certification": {
-        "certification": "A",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "movie",
-      "source_id": "545611",
-      "source_name": "tmdb",
-      "title": "Everything Everywhere All at Once",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 54,
-          "logo_path": "/i7FaDWpD2xoIWB5lyF191cykfck.jpg",
-          "provider_name": "Sony Pictures Amazon Channel",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2180"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 6,
-          "logo_path": "/gP67NRy1ShUJilrzMsbOmEmdmcv.jpg",
-          "provider_name": "Zee5",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "232"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
+          "source_provider_id": "633"
         },
         {
           "availability_type": "buy",
@@ -3320,10 +866,90 @@
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
+          "release_type": 1,
+          "release_type_name": "premiere",
+          "source_name": "tmdb",
+          "source_priority": 101
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 2,
+          "release_type_name": "theatrical_limited",
+          "source_name": "tmdb",
+          "source_priority": 102
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 2,
+          "release_type_name": "theatrical_limited",
+          "source_name": "tmdb",
+          "source_priority": 103
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
           "release_type": 3,
           "release_type_name": "theatrical",
           "source_name": "tmdb",
-          "source_priority": 102
+          "source_priority": 104
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 3,
+          "release_type_name": "theatrical",
+          "source_name": "tmdb",
+          "source_priority": 105
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 107
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 108
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 109
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 110
         }
       ],
       "chosen_certification": {
@@ -3334,15 +960,51 @@
         "source_name": "tmdb"
       },
       "content_type": "movie",
-      "source_id": "37799",
+      "source_id": "597",
       "source_name": "tmdb",
-      "title": "The Social Network",
+      "title": "Titanic",
       "warnings": [
         "No non-empty IN certification returned."
       ]
     },
     {
       "availability": [
+        {
+          "availability_type": "buy",
+          "display_priority": 4,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 7,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 10,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 4,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
         {
           "availability_type": "rent",
           "display_priority": 7,
@@ -3371,42 +1033,6 @@
           "source_provider_id": "10"
         },
         {
-          "availability_type": "streaming",
-          "display_priority": 1,
-          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
-          "provider_name": "Amazon Prime Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "119"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 73,
-          "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
-          "provider_name": "Amazon Prime Video with Ads",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2100"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
           "availability_type": "buy",
           "display_priority": 7,
           "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
@@ -3414,6 +1040,15 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "10"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 8,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
         },
         {
           "availability_type": "buy",
@@ -3443,6 +1078,15 @@
           "source_provider_id": "7"
         },
         {
+          "availability_type": "streaming",
+          "display_priority": 6,
+          "logo_path": "/bxBlRPEPpMVDc4jMhSrTf2339DW.jpg",
+          "provider_name": "Hulu",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "15"
+        },
+        {
           "availability_type": "rent",
           "display_priority": 7,
           "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
@@ -3450,6 +1094,15 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "10"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 8,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
         },
         {
           "availability_type": "rent",
@@ -3481,27 +1134,220 @@
       ],
       "certifications": [
         {
-          "certification": "R",
+          "certification": "U",
+          "country_code": "IN",
+          "notes": null,
+          "rating_system": "IN",
+          "release_type": 3,
+          "release_type_name": "theatrical",
+          "source_name": "tmdb",
+          "source_priority": 1
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 1,
+          "release_type_name": "premiere",
+          "source_name": "tmdb",
+          "source_priority": 101
+        },
+        {
+          "certification": "PG-13",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
           "release_type": 3,
           "release_type_name": "theatrical",
           "source_name": "tmdb",
-          "source_priority": 101
+          "source_priority": 102
+        }
+      ],
+      "chosen_certification": {
+        "certification": "U",
+        "country_code": "IN",
+        "notes": null,
+        "rating_system": "IN",
+        "source_name": "tmdb"
+      },
+      "content_type": "movie",
+      "source_id": "1124",
+      "source_name": "tmdb",
+      "title": "The Prestige",
+      "warnings": []
+    },
+    {
+      "availability": [
+        {
+          "availability_type": "streaming",
+          "display_priority": 0,
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_name": "Netflix",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "8"
         },
         {
-          "certification": "R",
+          "availability_type": "buy",
+          "display_priority": 7,
+          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
+          "provider_name": "Amazon Video",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "10"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 8,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 17,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 18,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 35,
+          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+          "provider_name": "Fandango At Home",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "7"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 7,
+          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
+          "provider_name": "Amazon Video",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "10"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 8,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 17,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 18,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 35,
+          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+          "provider_name": "Fandango At Home",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "7"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 125,
+          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
+          "provider_name": "Plex",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "538"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 11,
+          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
+          "provider_name": "HBO Max Amazon Channel",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "1825"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 36,
+          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
+          "provider_name": "YouTube TV",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2528"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 154,
+          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
+          "provider_name": "HBO Max",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "1899"
+        }
+      ],
+      "certifications": [
+        {
+          "certification": "PG",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
+          "release_type": 2,
+          "release_type_name": "theatrical_limited",
+          "source_name": "tmdb",
+          "source_priority": 102
+        },
+        {
+          "certification": "PG",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 3,
+          "release_type_name": "theatrical",
+          "source_name": "tmdb",
+          "source_priority": 103
+        },
+        {
+          "certification": "PG",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 4,
+          "release_type_name": "digital",
           "source_name": "tmdb",
           "source_priority": 104
         },
         {
-          "certification": "R",
+          "certification": "PG",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
@@ -3511,7 +1357,7 @@
           "source_priority": 105
         },
         {
-          "certification": "R",
+          "certification": "PG",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
@@ -3522,18 +1368,18 @@
         }
       ],
       "chosen_certification": {
-        "certification": "R",
+        "certification": "PG",
         "country_code": "US",
         "notes": "Used US fallback because IN certification was unavailable.",
         "rating_system": "US",
         "source_name": "tmdb"
       },
       "content_type": "movie",
-      "source_id": "78",
+      "source_id": "129",
       "source_name": "tmdb",
-      "title": "Blade Runner",
+      "title": "Spirited Away",
       "warnings": [
-        "No non-empty IN certification returned."
+        "No IN certification region returned."
       ]
     },
     {
@@ -3549,24 +1395,6 @@
         },
         {
           "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 35,
-          "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
-          "provider_name": "VI movies and tv",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "614"
-        },
-        {
-          "availability_type": "streaming",
           "display_priority": 73,
           "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
           "provider_name": "Amazon Prime Video with Ads",
@@ -3575,33 +1403,6 @@
           "source_provider_id": "2100"
         },
         {
-          "availability_type": "buy",
-          "display_priority": 4,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
           "availability_type": "rent",
           "display_priority": 4,
           "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
@@ -3611,31 +1412,67 @@
           "source_provider_id": "2"
         },
         {
-          "availability_type": "rent",
+          "availability_type": "buy",
+          "display_priority": 4,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 50,
+          "logo_path": "/ctiRpS16dlaTXQBSsiFncMrgWmh.jpg",
+          "provider_name": "MGM Plus",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "34"
+        },
+        {
+          "availability_type": "buy",
           "display_priority": 7,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 10,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 38,
           "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
           "provider_name": "Amazon Video",
-          "region_code": "IN",
+          "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "10"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 8,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 17,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 18,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 35,
+          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+          "provider_name": "Fandango At Home",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "7"
         },
         {
           "availability_type": "rent",
@@ -3690,63 +1527,29 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "486"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 125,
-          "logo_path": "/vLZKlXUNDcZR7ilvfY9Wr9k80FZ.jpg",
-          "provider_name": "Plex",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "538"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 18,
-          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
-          "provider_name": "YouTube",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "192"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
         }
       ],
       "certifications": [
+        {
+          "certification": "A",
+          "country_code": "IN",
+          "notes": null,
+          "rating_system": "IN",
+          "release_type": 3,
+          "release_type_name": "theatrical",
+          "source_name": "tmdb",
+          "source_priority": 1
+        },
+        {
+          "certification": "R",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 1,
+          "release_type_name": "premiere",
+          "source_name": "tmdb",
+          "source_priority": 101
+        },
         {
           "certification": "R",
           "country_code": "US",
@@ -3756,47 +1559,34 @@
           "release_type_name": "theatrical",
           "source_name": "tmdb",
           "source_priority": 102
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 4,
-          "release_type_name": "digital",
-          "source_name": "tmdb",
-          "source_priority": 103
-        },
-        {
-          "certification": "R",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "release_type": 5,
-          "release_type_name": "physical",
-          "source_name": "tmdb",
-          "source_priority": 104
         }
       ],
       "chosen_certification": {
-        "certification": "R",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
+        "certification": "A",
+        "country_code": "IN",
+        "notes": null,
+        "rating_system": "IN",
         "source_name": "tmdb"
       },
       "content_type": "movie",
-      "source_id": "335984",
+      "source_id": "1422",
       "source_name": "tmdb",
-      "title": "Blade Runner 2049",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
+      "title": "The Departed",
+      "warnings": []
     },
     {
       "availability": [
         {
-          "availability_type": "rent",
+          "availability_type": "buy",
+          "display_priority": 4,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "buy",
           "display_priority": 7,
           "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
           "provider_name": "Google Play Movies",
@@ -3805,7 +1595,7 @@
           "source_provider_id": "3"
         },
         {
-          "availability_type": "rent",
+          "availability_type": "buy",
           "display_priority": 10,
           "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
           "provider_name": "YouTube",
@@ -3814,13 +1604,22 @@
           "source_provider_id": "192"
         },
         {
-          "availability_type": "rent",
-          "display_priority": 38,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
+          "availability_type": "streaming",
+          "display_priority": 0,
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_name": "Netflix",
           "region_code": "IN",
           "source_name": "tmdb",
-          "source_provider_id": "10"
+          "source_provider_id": "8"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 1,
+          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
+          "provider_name": "Amazon Prime Video",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "119"
         },
         {
           "availability_type": "streaming",
@@ -3833,24 +1632,24 @@
         },
         {
           "availability_type": "streaming",
-          "display_priority": 46,
-          "logo_path": "/p8i1zUcZYQ7qU6RrGvGbDItvcx4.jpg",
-          "provider_name": "Lionsgate Play Apple TV Channel",
+          "display_priority": 73,
+          "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
+          "provider_name": "Amazon Prime Video with Ads",
           "region_code": "IN",
           "source_name": "tmdb",
-          "source_provider_id": "2053"
+          "source_provider_id": "2100"
         },
         {
-          "availability_type": "streaming",
-          "display_priority": 48,
-          "logo_path": "/yVbjPWEbsStanRAxwKMDARVOvsn.jpg",
-          "provider_name": "Lionsgate Play Amazon Channel",
+          "availability_type": "rent",
+          "display_priority": 4,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
           "region_code": "IN",
           "source_name": "tmdb",
-          "source_provider_id": "2074"
+          "source_provider_id": "2"
         },
         {
-          "availability_type": "buy",
+          "availability_type": "rent",
           "display_priority": 7,
           "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
           "provider_name": "Google Play Movies",
@@ -3859,7 +1658,7 @@
           "source_provider_id": "3"
         },
         {
-          "availability_type": "buy",
+          "availability_type": "rent",
           "display_priority": 10,
           "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
           "provider_name": "YouTube",
@@ -3869,30 +1668,57 @@
         },
         {
           "availability_type": "streaming",
-          "display_priority": 14,
-          "logo_path": "/fts6X10Jn4QT0X6ac3udKEn2tJA.jpg",
-          "provider_name": "Paramount Plus Premium",
+          "display_priority": 3,
+          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
+          "provider_name": "Amazon Prime Video",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "2303"
+          "source_provider_id": "9"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 23,
-          "logo_path": "/hExO4PtimLIYn3kBOrzsejNv7cT.jpg",
-          "provider_name": "Paramount+ Amazon Channel",
+          "display_priority": 21,
+          "logo_path": "/oTQdXIqM9iewlN4MC2nhKB0gHw.jpg",
+          "provider_name": "AMC Plus Apple TV Channel ",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "582"
+          "source_provider_id": "1854"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 64,
-          "logo_path": "/ywIoxSjoYJGUIbR6BfxUiCHdPi3.jpg",
-          "provider_name": "Paramount+ Roku Premium Channel",
+          "display_priority": 25,
+          "logo_path": "/2ino0WmHA4GROB7NYKzT6PGqLcb.jpg",
+          "provider_name": "AMC+ Amazon Channel",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "633"
+          "source_provider_id": "528"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 36,
+          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
+          "provider_name": "YouTube TV",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2528"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 52,
+          "logo_path": "/ptmbGSttkyzawLbxx9MElmxKuVo.jpg",
+          "provider_name": "Philo",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2383"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 202,
+          "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
+          "provider_name": "Amazon Prime Video with Ads",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2100"
         },
         {
           "availability_type": "rent",
@@ -3938,15 +1764,6 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "7"
-        },
-        {
-          "availability_type": "rent",
-          "display_priority": 43,
-          "logo_path": "/g2IaWyo6jCY0rIFjb4qgZ0bSmm3.jpg",
-          "provider_name": "JustWatch TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2285"
         },
         {
           "availability_type": "rent",
@@ -3967,24 +1784,6 @@
           "source_provider_id": "538"
         },
         {
-          "availability_type": "free",
-          "display_priority": 33,
-          "logo_path": "/rcBwnERpNfPfWB5DaSTyEMCZbCA.jpg",
-          "provider_name": "Kanopy",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "191"
-        },
-        {
-          "availability_type": "free",
-          "display_priority": 34,
-          "logo_path": "/j7D006Uy3UWwZ6G0xH6BMgIWTzH.jpg",
-          "provider_name": "Hoopla",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "212"
-        },
-        {
           "availability_type": "buy",
           "display_priority": 7,
           "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
@@ -4032,16 +1831,6 @@
       ],
       "certifications": [
         {
-          "certification": "UA",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "release_type": 3,
-          "release_type_name": "theatrical",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
           "certification": "PG-13",
           "country_code": "US",
           "notes": null,
@@ -4049,7 +1838,17 @@
           "release_type": 3,
           "release_type_name": "theatrical",
           "source_name": "tmdb",
-          "source_priority": 105
+          "source_priority": 102
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 4,
+          "release_type_name": "digital",
+          "source_name": "tmdb",
+          "source_priority": 103
         },
         {
           "certification": "PG-13",
@@ -4059,21 +1858,245 @@
           "release_type": 5,
           "release_type_name": "physical",
           "source_name": "tmdb",
-          "source_priority": 106
+          "source_priority": 104
+        },
+        {
+          "certification": "PG-13",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 105
         }
       ],
       "chosen_certification": {
-        "certification": "UA",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
+        "certification": "PG-13",
+        "country_code": "US",
+        "notes": "Used US fallback because IN certification was unavailable.",
+        "rating_system": "US",
         "source_name": "tmdb"
       },
       "content_type": "movie",
-      "source_id": "329865",
+      "source_id": "546554",
       "source_name": "tmdb",
-      "title": "Arrival",
-      "warnings": []
+      "title": "Knives Out",
+      "warnings": [
+        "No non-empty IN certification returned."
+      ]
+    },
+    {
+      "availability": [
+        {
+          "availability_type": "streaming",
+          "display_priority": 3,
+          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
+          "provider_name": "JioHotstar",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "2336"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 6,
+          "logo_path": "/gP67NRy1ShUJilrzMsbOmEmdmcv.jpg",
+          "provider_name": "Zee5",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "232"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 38,
+          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
+          "provider_name": "Amazon Video",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "10"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 7,
+          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
+          "provider_name": "Amazon Video",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "10"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 8,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 17,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 18,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "buy",
+          "display_priority": 35,
+          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+          "provider_name": "Fandango At Home",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "7"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 7,
+          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
+          "provider_name": "Amazon Video",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "10"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 8,
+          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
+          "provider_name": "Apple TV Store",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 17,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "3"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 18,
+          "logo_path": "/pTnn5JwWr4p3pG8H6VrpiQo7Vs0.jpg",
+          "provider_name": "YouTube",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "192"
+        },
+        {
+          "availability_type": "rent",
+          "display_priority": 35,
+          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+          "provider_name": "Fandango At Home",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "7"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 11,
+          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
+          "provider_name": "HBO Max Amazon Channel",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "1825"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 36,
+          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
+          "provider_name": "YouTube TV",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2528"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 70,
+          "logo_path": "/ohcwolMl8E743CkS8MnhmJKOlRj.jpg",
+          "provider_name": "Cinemax Amazon Channel",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "289"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 154,
+          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
+          "provider_name": "HBO Max",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "1899"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 193,
+          "logo_path": "/zXCdY4pczONheFCU9GkrMbGI1o5.jpg",
+          "provider_name": "Cinemax Apple TV Channel",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2061"
+        }
+      ],
+      "certifications": [
+        {
+          "certification": "R",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 1,
+          "release_type_name": "premiere",
+          "source_name": "tmdb",
+          "source_priority": 101
+        },
+        {
+          "certification": "R",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 3,
+          "release_type_name": "theatrical",
+          "source_name": "tmdb",
+          "source_priority": 102
+        },
+        {
+          "certification": "R",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "release_type": 5,
+          "release_type_name": "physical",
+          "source_name": "tmdb",
+          "source_priority": 103
+        }
+      ],
+      "chosen_certification": {
+        "certification": "R",
+        "country_code": "US",
+        "notes": "Used US fallback because IN certification was unavailable.",
+        "rating_system": "US",
+        "source_name": "tmdb"
+      },
+      "content_type": "movie",
+      "source_id": "419430",
+      "source_name": "tmdb",
+      "title": "Get Out",
+      "warnings": [
+        "No non-empty IN certification returned."
+      ]
     },
     {
       "availability": [
@@ -4161,14 +2184,6 @@
       ],
       "certifications": [
         {
-          "certification": "A",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
           "certification": "TV-MA",
           "country_code": "US",
           "notes": null,
@@ -4178,385 +2193,22 @@
         }
       ],
       "chosen_certification": {
-        "certification": "A",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
+        "certification": "TV-MA",
+        "country_code": "US",
+        "notes": "Used US fallback because IN certification was unavailable.",
+        "rating_system": "US",
         "source_name": "tmdb"
       },
       "content_type": "series",
-      "source_id": "1399",
+      "source_id": "1438",
       "source_name": "tmdb",
-      "title": "Game of Thrones",
-      "warnings": []
+      "title": "The Wire",
+      "warnings": [
+        "No IN certification region returned."
+      ]
     },
     {
       "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 0,
-          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
-          "provider_name": "Netflix",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "8"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 0,
-          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
-          "provider_name": "Netflix",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "8"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 153,
-          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
-          "provider_name": "Netflix Standard with Ads",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1796"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "A",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "TV-MA",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "A",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "60059",
-      "source_name": "tmdb",
-      "title": "Better Call Saul",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 30,
-          "logo_path": "/e2hCUg2Z3sJ6yWF9NLU24SIKeWa.jpg",
-          "provider_name": "Lionsgate Play",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "561"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 46,
-          "logo_path": "/p8i1zUcZYQ7qU6RrGvGbDItvcx4.jpg",
-          "provider_name": "Lionsgate Play Apple TV Channel",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2053"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 48,
-          "logo_path": "/yVbjPWEbsStanRAxwKMDARVOvsn.jpg",
-          "provider_name": "Lionsgate Play Amazon Channel",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2074"
-        },
-        {
-          "availability_type": "free",
-          "display_priority": 1,
-          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
-          "provider_name": "Amazon Prime Video",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "119"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 6,
-          "logo_path": "/bxBlRPEPpMVDc4jMhSrTf2339DW.jpg",
-          "provider_name": "Hulu",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "15"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 21,
-          "logo_path": "/oTQdXIqM9iewlN4MC2nhKB0gHw.jpg",
-          "provider_name": "AMC Plus Apple TV Channel ",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1854"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 22,
-          "logo_path": "/bzEv2wssRqVgl12IVBfYhCIvvG.jpg",
-          "provider_name": "Britbox Apple TV Channel ",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1852"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 25,
-          "logo_path": "/2ino0WmHA4GROB7NYKzT6PGqLcb.jpg",
-          "provider_name": "AMC+ Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 29,
-          "logo_path": "/ovmu6uot1XVvsemM2dDySXLiX57.jpg",
-          "provider_name": "AMC+",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "526"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 40,
-          "logo_path": "/iLjStQKQwzyxXJb3jyNpvDmW9mx.jpg",
-          "provider_name": "PBS",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "209"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 52,
-          "logo_path": "/ptmbGSttkyzawLbxx9MElmxKuVo.jpg",
-          "provider_name": "Philo",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2383"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 60,
-          "logo_path": "/8oA7IcDNNUtBa9JYB5kQ8hrDz5o.jpg",
-          "provider_name": "BritBox",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "151"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 72,
-          "logo_path": "/xN1vKpcypShJrWmf1t3dyGJM7sO.jpg",
-          "provider_name": "PBS Masterpiece Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "294"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 89,
-          "logo_path": "/49qepIM2KqtRwENEmfskTGShD7G.jpg",
-          "provider_name": "BritBox Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "197"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 120,
-          "logo_path": "/aAb9CUHjFe9Y3O57qnrJH0KOF1B.jpg",
-          "provider_name": "Spectrum On Demand",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "486"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 349,
-          "logo_path": "/jpQn5rQZmwo7VdKe5lAcgbQYMYw.jpg",
-          "provider_name": "Thirteen",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2622"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 350,
-          "logo_path": "/yAX7g4FBEqr7Qk3Rgq9BZgbCxwJ.jpg",
-          "provider_name": "WETA+",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2657"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 353,
-          "logo_path": "/aCEpg6aKYM6UUYP95frtKYyVQWD.jpg",
-          "provider_name": "Wonder Project Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2668"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "ads",
-          "display_priority": 348,
-          "logo_path": "/trKuSZLIe3KX01ihS40qJIpDryQ.jpg",
-          "provider_name": "KQED",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2621"
-        },
-        {
-          "availability_type": "free",
-          "display_priority": 34,
-          "logo_path": "/j7D006Uy3UWwZ6G0xH6BMgIWTzH.jpg",
-          "provider_name": "Hoopla",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "212"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "A",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "TV-14",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "A",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "19885",
-      "source_name": "tmdb",
-      "title": "Sherlock",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 0,
-          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
-          "provider_name": "Netflix",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "8"
-        },
         {
           "availability_type": "streaming",
           "display_priority": 1,
@@ -4565,24 +2217,6 @@
           "region_code": "IN",
           "source_name": "tmdb",
           "source_provider_id": "119"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 35,
-          "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
-          "provider_name": "VI movies and tv",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "614"
         },
         {
           "availability_type": "streaming",
@@ -4594,33 +2228,6 @@
           "source_provider_id": "2100"
         },
         {
-          "availability_type": "streaming",
-          "display_priority": 16,
-          "logo_path": "/2aGrp1xw3qhwCYvNGAJZPdjfeeX.jpg",
-          "provider_name": "Peacock Premium",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "386"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 213,
-          "logo_path": "/drPlq5beqXtBaP7MNs8W616YRhm.jpg",
-          "provider_name": "Peacock Premium Plus",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "387"
-        },
-        {
           "availability_type": "buy",
           "display_priority": 7,
           "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
@@ -4655,191 +2262,15 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "7"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "U/A 13+",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "TV-14",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "U/A 13+",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "2316",
-      "source_name": "tmdb",
-      "title": "The Office",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
         },
         {
           "availability_type": "streaming",
-          "display_priority": 11,
-          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
-          "provider_name": "HBO Max Amazon Channel",
+          "display_priority": 6,
+          "logo_path": "/bxBlRPEPpMVDc4jMhSrTf2339DW.jpg",
+          "provider_name": "Hulu",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "1825"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 100,
-          "logo_path": "/76CvnJAKAPbJuiXYwQGN7PFqOci.jpg",
-          "provider_name": "TNT",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "363"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 154,
-          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
-          "provider_name": "HBO Max",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1899"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "U",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "TV-MA",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "U",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "46648",
-      "source_name": "tmdb",
-      "title": "True Detective",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
+          "source_provider_id": "15"
         }
       ],
       "certifications": [
@@ -4868,329 +2299,9 @@
         "source_name": "tmdb"
       },
       "content_type": "series",
-      "source_id": "63247",
+      "source_id": "60622",
       "source_name": "tmdb",
-      "title": "Westworld",
-      "warnings": [
-        "No IN availability returned."
-      ]
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 11,
-          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
-          "provider_name": "HBO Max Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1825"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 154,
-          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
-          "provider_name": "HBO Max",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1899"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "U",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "TV-MA",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "U",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "76331",
-      "source_name": "tmdb",
-      "title": "Succession",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 11,
-          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
-          "provider_name": "HBO Max Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1825"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 154,
-          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
-          "provider_name": "HBO Max",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1899"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "A",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "TV-MA",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "A",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "1398",
-      "source_name": "tmdb",
-      "title": "The Sopranos",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 11,
-          "logo_path": "/embS4GPK7c8pjbuY2O2irV5rYch.jpg",
-          "provider_name": "HBO Max Amazon Channel",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1825"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 36,
-          "logo_path": "/x9zOHTUkQzt3PgPVKbMH9CKBwLK.jpg",
-          "provider_name": "YouTube TV",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2528"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 154,
-          "logo_path": "/jbe4gVSfRlbPTdESXhEKpornsfu.jpg",
-          "provider_name": "HBO Max",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1899"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "10"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 8,
-          "logo_path": "/SPnB1qiCkYfirS2it3hZORwGVn.jpg",
-          "provider_name": "Apple TV Store",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "U",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
-        },
-        {
-          "certification": "TV-MA",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "U",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "4613",
-      "source_name": "tmdb",
-      "title": "Band of Brothers",
+      "title": "Fargo",
       "warnings": []
     },
     {
@@ -5221,18 +2332,17 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "1796"
-        },
-        {
-          "availability_type": "ads",
-          "display_priority": 141,
-          "logo_path": "/gZlCYHPx9a0TRUCEeTvHXBf9ibX.jpg",
-          "provider_name": "Amazon Prime Video Free with Ads",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "613"
         }
       ],
       "certifications": [
+        {
+          "certification": "A",
+          "country_code": "IN",
+          "notes": null,
+          "rating_system": "IN",
+          "source_name": "tmdb",
+          "source_priority": 1
+        },
         {
           "certification": "TV-MA",
           "country_code": "US",
@@ -5243,19 +2353,17 @@
         }
       ],
       "chosen_certification": {
-        "certification": "TV-MA",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
+        "certification": "A",
+        "country_code": "IN",
+        "notes": null,
+        "rating_system": "IN",
         "source_name": "tmdb"
       },
       "content_type": "series",
-      "source_id": "63351",
+      "source_id": "87739",
       "source_name": "tmdb",
-      "title": "Narcos",
-      "warnings": [
-        "No IN certification region returned."
-      ]
+      "title": "The Queen's Gambit",
+      "warnings": []
     },
     {
       "availability": [
@@ -5285,15 +2393,119 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "1796"
+        }
+      ],
+      "certifications": [
+        {
+          "certification": "A",
+          "country_code": "IN",
+          "notes": null,
+          "rating_system": "IN",
+          "source_name": "tmdb",
+          "source_priority": 1
         },
         {
-          "availability_type": "buy",
-          "display_priority": 7,
-          "logo_path": "/qR6FKvnPBx2O37FDg8PNM7efwF3.jpg",
-          "provider_name": "Amazon Video",
+          "certification": "TV-MA",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "source_name": "tmdb",
+          "source_priority": 101
+        }
+      ],
+      "chosen_certification": {
+        "certification": "A",
+        "country_code": "IN",
+        "notes": null,
+        "rating_system": "IN",
+        "source_name": "tmdb"
+      },
+      "content_type": "series",
+      "source_id": "65494",
+      "source_name": "tmdb",
+      "title": "The Crown",
+      "warnings": []
+    },
+    {
+      "availability": [
+        {
+          "availability_type": "streaming",
+          "display_priority": 0,
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_name": "Netflix",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "8"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 0,
+          "logo_path": "/pbpMk2JmcoNnQwx5JGpXngfoWtp.jpg",
+          "provider_name": "Netflix",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "10"
+          "source_provider_id": "8"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 153,
+          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
+          "provider_name": "Netflix Standard with Ads",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "1796"
+        }
+      ],
+      "certifications": [
+        {
+          "certification": "A",
+          "country_code": "IN",
+          "notes": null,
+          "rating_system": "IN",
+          "source_name": "tmdb",
+          "source_priority": 1
+        },
+        {
+          "certification": "TV-MA",
+          "country_code": "US",
+          "notes": null,
+          "rating_system": "US",
+          "source_name": "tmdb",
+          "source_priority": 101
+        }
+      ],
+      "chosen_certification": {
+        "certification": "A",
+        "country_code": "IN",
+        "notes": null,
+        "rating_system": "IN",
+        "source_name": "tmdb"
+      },
+      "content_type": "series",
+      "source_id": "67744",
+      "source_name": "tmdb",
+      "title": "Mindhunter",
+      "warnings": []
+    },
+    {
+      "availability": [
+        {
+          "availability_type": "streaming",
+          "display_priority": 1,
+          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
+          "provider_name": "Amazon Prime Video",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "119"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 73,
+          "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
+          "provider_name": "Amazon Prime Video with Ads",
+          "region_code": "IN",
+          "source_name": "tmdb",
+          "source_provider_id": "2100"
         },
         {
           "availability_type": "buy",
@@ -5303,137 +2515,42 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "2"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "A",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
         },
         {
-          "certification": "TV-MA",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "A",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "42009",
-      "source_name": "tmdb",
-      "title": "Black Mirror",
-      "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 2,
-          "logo_path": "/mcbz1LgtErU9p4UdbZ0rG6RTWHX.jpg",
-          "provider_name": "Apple TV",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "350"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 68,
-          "logo_path": "/mHrYMgnZIp6lgW2aXg7ix9zGOnA.jpg",
-          "provider_name": "Apple TV Amazon Channel",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2243"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 4,
-          "logo_path": "/mcbz1LgtErU9p4UdbZ0rG6RTWHX.jpg",
-          "provider_name": "Apple TV",
+          "availability_type": "buy",
+          "display_priority": 17,
+          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
+          "provider_name": "Google Play Movies",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "350"
+          "source_provider_id": "3"
         },
         {
-          "availability_type": "streaming",
-          "display_priority": 215,
-          "logo_path": "/mHrYMgnZIp6lgW2aXg7ix9zGOnA.jpg",
-          "provider_name": "Apple TV Amazon Channel",
+          "availability_type": "buy",
+          "display_priority": 35,
+          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
+          "provider_name": "Fandango At Home",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "2243"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "A",
-          "country_code": "IN",
-          "notes": null,
-          "rating_system": "IN",
-          "source_name": "tmdb",
-          "source_priority": 1
+          "source_provider_id": "7"
         },
-        {
-          "certification": "TV-MA",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "A",
-        "country_code": "IN",
-        "notes": null,
-        "rating_system": "IN",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "95396",
-      "source_name": "tmdb",
-      "title": "Severance",
-      "warnings": []
-    },
-    {
-      "availability": [
         {
           "availability_type": "streaming",
           "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 35,
-          "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
-          "provider_name": "VI movies and tv",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "614"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 5,
-          "logo_path": "/97yvRBw1GzX7fXprcF80er19ot.jpg",
-          "provider_name": "Disney Plus",
+          "logo_path": "/pvske1MyAoymrs5bguRfVqYiM9a.jpg",
+          "provider_name": "Amazon Prime Video",
           "region_code": "US",
           "source_name": "tmdb",
-          "source_provider_id": "337"
+          "source_provider_id": "9"
+        },
+        {
+          "availability_type": "streaming",
+          "display_priority": 202,
+          "logo_path": "/8aBqoNeGGr0oSA85iopgNZUOTOc.jpg",
+          "provider_name": "Amazon Prime Video with Ads",
+          "region_code": "US",
+          "source_name": "tmdb",
+          "source_provider_id": "2100"
         }
       ],
       "certifications": [
@@ -5454,9 +2571,9 @@
         "source_name": "tmdb"
       },
       "content_type": "series",
-      "source_id": "83867",
+      "source_id": "63639",
       "source_name": "tmdb",
-      "title": "Andor",
+      "title": "The Expanse",
       "warnings": [
         "No IN certification region returned."
       ]
@@ -5480,15 +2597,6 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "8"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 153,
-          "logo_path": "/dpR8r13zWDeUR0QkzWidrdMxa56.jpg",
-          "provider_name": "Netflix Standard with Ads",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "1796"
         },
         {
           "availability_type": "buy",
@@ -5507,24 +2615,6 @@
           "region_code": "US",
           "source_name": "tmdb",
           "source_provider_id": "2"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 17,
-          "logo_path": "/8z7rC8uIDaTM91X0ZfkRf04ydj2.jpg",
-          "provider_name": "Google Play Movies",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "3"
-        },
-        {
-          "availability_type": "buy",
-          "display_priority": 35,
-          "logo_path": "/19fkcOz0xeUgCVW8tO85uOYnYK9.jpg",
-          "provider_name": "Fandango At Home",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "7"
         }
       ],
       "certifications": [
@@ -5537,7 +2627,7 @@
           "source_priority": 1
         },
         {
-          "certification": "TV-14",
+          "certification": "TV-MA",
           "country_code": "US",
           "notes": null,
           "rating_system": "US",
@@ -5553,84 +2643,20 @@
         "source_name": "tmdb"
       },
       "content_type": "series",
-      "source_id": "94605",
+      "source_id": "60574",
       "source_name": "tmdb",
-      "title": "Arcane",
+      "title": "Peaky Blinders",
       "warnings": []
-    },
-    {
-      "availability": [
-        {
-          "availability_type": "streaming",
-          "display_priority": 3,
-          "logo_path": "/kVqjgpcwvDJOhCupjcLzwwtOp52.jpg",
-          "provider_name": "JioHotstar",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "2336"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 35,
-          "logo_path": "/9YJY5OwsIPMoX3xC3TdtZVbKBpE.jpg",
-          "provider_name": "VI movies and tv",
-          "region_code": "IN",
-          "source_name": "tmdb",
-          "source_provider_id": "614"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 5,
-          "logo_path": "/97yvRBw1GzX7fXprcF80er19ot.jpg",
-          "provider_name": "Disney Plus",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "337"
-        },
-        {
-          "availability_type": "streaming",
-          "display_priority": 6,
-          "logo_path": "/bxBlRPEPpMVDc4jMhSrTf2339DW.jpg",
-          "provider_name": "Hulu",
-          "region_code": "US",
-          "source_name": "tmdb",
-          "source_provider_id": "15"
-        }
-      ],
-      "certifications": [
-        {
-          "certification": "TV-MA",
-          "country_code": "US",
-          "notes": null,
-          "rating_system": "US",
-          "source_name": "tmdb",
-          "source_priority": 101
-        }
-      ],
-      "chosen_certification": {
-        "certification": "TV-MA",
-        "country_code": "US",
-        "notes": "Used US fallback because IN certification was unavailable.",
-        "rating_system": "US",
-        "source_name": "tmdb"
-      },
-      "content_type": "series",
-      "source_id": "136315",
-      "source_name": "tmdb",
-      "title": "The Bear",
-      "warnings": [
-        "No IN certification region returned."
-      ]
     }
   ],
   "primary_region": "IN",
   "source_provider": "tmdb",
   "summary": {
-    "availability_rows": 459,
-    "certification_rows": 97,
-    "targets_loaded": 51,
-    "targets_processed": 30,
+    "availability_rows": 207,
+    "certification_rows": 52,
+    "targets_loaded": 66,
+    "targets_processed": 15,
     "targets_skipped": 0,
-    "warnings": 15
+    "warnings": 7
   }
 }

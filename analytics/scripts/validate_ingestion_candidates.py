@@ -40,15 +40,13 @@ DEFAULT_CANDIDATES_PATH = (
     REPO_ROOT / "analytics" / "config" / "content_ingestion_candidates_batch_2.json"
 )
 DEFAULT_TARGETS_PATH = REPO_ROOT / "analytics" / "config" / "content_ingestion_targets.json"
-REPORT_PATH = (
+RUN_REPORT_DIR = (
     REPO_ROOT
     / "analytics"
     / "processed"
     / "tmdb"
     / "run_reports"
-    / "batch_2_target_validation_report.json"
 )
-EXPECTED_PRIORITY = "batch_test_2"
 SUPPORTED_CONTENT_TYPES = {"movie", "series"}
 SUPPORTED_SOURCE_NAMES = {"tmdb"}
 SUPPORTED_STATUSES = {"candidate", "verified", "needs_review"}
@@ -89,6 +87,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help=(
             "Existing target JSON path. Defaults to "
             f"{DEFAULT_TARGETS_PATH.relative_to(REPO_ROOT)}."
+        ),
+    )
+    parser.add_argument(
+        "--priority",
+        help=(
+            "Expected priority for all candidates. If omitted, the validator "
+            "infers it when all candidates share one priority."
         ),
     )
     return parser.parse_args(argv)
@@ -135,6 +140,20 @@ def title_matches(expected: str | None, actual: str | None) -> bool:
             or actual_normalized in expected_normalized
         )
     )
+
+
+def safe_slug(value: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
+    return slug or "candidate"
+
+
+def report_path_for_priority(priority: str) -> Path:
+    batch_match = re.fullmatch(r"batch_test_(\d+)", priority)
+    if batch_match:
+        filename = f"batch_{batch_match.group(1)}_target_validation_report.json"
+    else:
+        filename = f"{safe_slug(priority)}_target_validation_report.json"
+    return RUN_REPORT_DIR / filename
 
 
 def load_json_object(path: Path) -> dict[str, Any]:
@@ -189,6 +208,30 @@ def load_candidates(path: Path) -> list[Candidate]:
         raise ValidationError("; ".join(shape_errors))
 
     return candidates
+
+
+def infer_expected_priority(
+    candidates: list[Candidate],
+    explicit_priority: str | None,
+) -> str:
+    if explicit_priority:
+        return explicit_priority
+
+    priorities = sorted({candidate.priority for candidate in candidates if candidate.priority})
+    missing_priority_count = sum(1 for candidate in candidates if not candidate.priority)
+
+    if missing_priority_count:
+        raise ValidationError(
+            f"Cannot infer priority because {missing_priority_count} candidate(s) are missing priority."
+        )
+
+    if len(priorities) != 1:
+        values = ", ".join(priorities) if priorities else "none"
+        raise ValidationError(
+            f"Cannot infer expected priority from mixed candidate priorities: {values}."
+        )
+
+    return priorities[0]
 
 
 def load_existing_targets(path: Path) -> tuple[set[str], set[tuple[str, str]], list[str]]:
@@ -293,6 +336,7 @@ def validate_remote_candidate(
 
 def base_candidate_status(
     candidate: Candidate,
+    expected_priority: str,
     seen_source_ids: set[str],
     seen_title_types: set[tuple[str, str]],
     existing_source_ids: set[str],
@@ -312,8 +356,8 @@ def base_candidate_status(
         failures.append("Missing source_id.")
     elif not candidate.source_id.isdigit() or int(candidate.source_id) <= 0:
         failures.append("source_id must be a positive integer string.")
-    if candidate.priority != EXPECTED_PRIORITY:
-        failures.append(f"priority must be {EXPECTED_PRIORITY}.")
+    if candidate.priority != expected_priority:
+        failures.append(f"priority must be {expected_priority}.")
     if candidate.ingestion_status not in SUPPORTED_STATUSES:
         failures.append(
             "ingestion_status must be candidate, verified, or needs_review."
@@ -354,9 +398,9 @@ def validation_status(warnings: list[str], failures: list[str]) -> str:
     return "valid"
 
 
-def write_report(report: dict[str, Any]) -> None:
-    REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    REPORT_PATH.write_text(
+def write_report(path: Path, report: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
         json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
@@ -369,6 +413,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         candidates = load_candidates(candidates_path)
+        expected_priority = infer_expected_priority(candidates, clean_text(args.priority))
         existing_source_ids, existing_title_types, existing_warnings = load_existing_targets(
             targets_path
         )
@@ -376,6 +421,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Validation setup failed: {exc}", file=sys.stderr)
         return 1
 
+    report_path = report_path_for_priority(expected_priority)
     token = os.environ.get(TOKEN_ENV_VAR)
     remote_validation_ran = bool(token)
     top_level_warnings = existing_warnings.copy()
@@ -392,6 +438,7 @@ def main(argv: list[str] | None = None) -> int:
     for candidate in candidates:
         warnings, failures, candidate_duplicates = base_candidate_status(
             candidate,
+            expected_priority,
             seen_source_ids,
             seen_title_types,
             existing_source_ids,
@@ -442,6 +489,7 @@ def main(argv: list[str] | None = None) -> int:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "candidate_file": relative_path(candidates_path),
         "existing_target_file": relative_path(targets_path),
+        "expected_priority": expected_priority,
         "remote_validation_ran": remote_validation_ran,
         "total_candidates": len(candidates),
         "valid_candidates": valid_candidates,
@@ -451,10 +499,11 @@ def main(argv: list[str] | None = None) -> int:
         "failures": all_failures,
         "per_candidate": per_candidate,
     }
-    write_report(report)
+    write_report(report_path, report)
 
     print(f"Candidate file: {relative_path(candidates_path)}")
     print(f"Existing target file: {relative_path(targets_path)}")
+    print(f"Expected priority: {expected_priority}")
     print(f"Remote TMDb validation ran: {'yes' if remote_validation_ran else 'no'}")
     print(f"Total candidates: {len(candidates)}")
     print(f"Valid candidates: {valid_candidates}")
@@ -462,7 +511,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Duplicates: {duplicate_count}")
     print(f"Warnings: {len(all_warnings)}")
     print(f"Failures: {len(all_failures)}")
-    print(f"Report path: {relative_path(REPORT_PATH)}")
+    print(f"Report path: {relative_path(report_path)}")
 
     if all_warnings:
         print("\nWarnings:")

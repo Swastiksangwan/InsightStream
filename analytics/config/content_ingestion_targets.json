@@ -459,6 +459,141 @@
       "priority": "batch_test_2",
       "ingestion_status": "verified",
       "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "The Silence of the Lambs",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "274",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Jurassic Park",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "329",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Titanic",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "597",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "The Prestige",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1124",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Spirited Away",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "129",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "The Departed",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1422",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Knives Out",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "546554",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Get Out",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "419430",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "The Wire",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1438",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Fargo",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "60622",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "The Queen's Gambit",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "87739",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "The Crown",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "65494",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Mindhunter",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "67744",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "The Expanse",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "63639",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Peaky Blinders",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "60574",
+      "priority": "batch_test_3",
+      "ingestion_status": "verified",
+      "notes": "Verified batch-2 scalable ingestion target."
     }
   ]
 }

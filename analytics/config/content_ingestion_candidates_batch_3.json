@@ -1,0 +1,140 @@
+{
+  "description": "Candidate InsightStream content targets for the third controlled manual ingestion batch. Review and validate before merging into content_ingestion_targets.json.",
+  "targets": [
+    {
+      "title": "The Silence of the Lambs",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "274",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "Jurassic Park",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "329",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "Titanic",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "597",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "The Prestige",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1124",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "Spirited Away",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "129",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "The Departed",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1422",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "Knives Out",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "546554",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "Get Out",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "419430",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "The Wire",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1438",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "Fargo",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "60622",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "The Queen's Gambit",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "87739",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "The Crown",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "65494",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "Mindhunter",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "67744",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "The Expanse",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "63639",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    },
+    {
+      "title": "Peaky Blinders",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "60574",
+      "priority": "batch_test_3",
+      "ingestion_status": "candidate",
+      "notes": "Candidate for batch-test-3 controlled manual ingestion."
+    }
+  ]
+}
