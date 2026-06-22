@@ -539,6 +539,30 @@ analytics/processed/tmdb/run_reports/ingestion_health_report.json
 
 Use `--fail-on-warning` in CI or review workflows when warnings should block the run.
 
+## Series Lifecycle Metadata Refresh
+
+Series lifecycle metadata comes from TMDb TV details payloads already fetched as:
+
+```text
+analytics/raw/tmdb/tv_{id}_details.json
+```
+
+The metadata is series-level only. It records season count, episode count, provider status, normalized app status, first/last aired dates, last episode air date, next episode air date, and series type. It does not create episode pages or season pages.
+
+For a targeted ongoing-series refresh:
+
+```bash
+python3 analytics/scripts/fetch_tmdb_sample.py --source-id TMDB_SERIES_ID --refresh
+
+python3 analytics/scripts/import_content_metadata_from_preview.py
+python3 analytics/scripts/import_content_metadata_from_preview.py --apply
+python3 analytics/scripts/import_content_metadata_from_preview.py
+```
+
+The targeted fetch rebuilds `sample_mapping_preview.json` for the selected title. The importer safely refreshes dynamic series lifecycle fields in `content_series_metadata` and updates `content.latest_activity_date` from the latest valid aired date. It does not use future `next_episode_air_date` values for recency.
+
+For a full backfill, regenerate a full content preview before importing so every series target is present in `sample_mapping_preview.json`.
+
 ## Full Batch Command Sequence
 
 Use this compact sequence after a candidate batch has passed validation and has been merged into `content_ingestion_targets.json`.

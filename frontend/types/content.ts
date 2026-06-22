@@ -15,6 +15,19 @@ export type Content = {
   age_rating_system?: string | null;
 };
 
+export type SeriesMetadata = {
+  number_of_seasons?: number | null;
+  number_of_episodes?: number | null;
+  series_status?: string | null;
+  series_status_normalized?: string | null;
+  in_production?: boolean | null;
+  first_air_date?: string | null;
+  last_air_date?: string | null;
+  last_episode_air_date?: string | null;
+  next_episode_air_date?: string | null;
+  series_type?: string | null;
+};
+
 export type PaginatedContentResponse = {
   items: Content[];
   total: number;
@@ -79,6 +92,7 @@ export type ContentDetailsResponse = {
   genres: string[];
   platforms: PlatformAvailability[];
   ratings: Rating[];
+  series_metadata?: SeriesMetadata | null;
   summary?: Summary | null;
 };
 

@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import type { Content } from "@/types/content";
+import type { Content, SeriesMetadata } from "@/types/content";
 import type { ContentCreditsResponse, CreditCrewMember } from "@/types/credits";
 
 type DetailHeroProps = {
   content: Content;
   credits?: ContentCreditsResponse | null;
+  seriesMetadata?: SeriesMetadata | null;
 };
 
 function formatType(type: Content["type"]) {
@@ -47,13 +48,30 @@ function certificationLabel(content: Content) {
   return "Age rating";
 }
 
-export function DetailHero({ content, credits }: DetailHeroProps) {
+function titleCaseStatus(status?: string | null) {
+  if (!status) {
+    return null;
+  }
+
+  return status
+    .split(/[_\s-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps) {
   const [showBackdrop, setShowBackdrop] = useState(Boolean(content.backdrop));
   const [showPoster, setShowPoster] = useState(Boolean(content.poster));
   const primaryPeople =
     content.type === "movie" ? credits?.directors || [] : credits?.creators || [];
   const primaryPeopleLabel =
     content.type === "movie" ? "Directed by" : "Created by";
+  const seriesStatusLabel =
+    content.type === "series"
+      ? titleCaseStatus(seriesMetadata?.series_status_normalized) ||
+        seriesMetadata?.series_status
+      : null;
   const metadata = [
     { label: formatType(content.type), title: "Content type" },
     content.year ? { label: String(content.year), title: "Release year" } : null,
@@ -65,6 +83,17 @@ export function DetailHero({ content, credits }: DetailHeroProps) {
       ? {
           label: content.age_rating,
           title: certificationLabel(content) || "Age rating",
+        }
+      : null,
+    seriesStatusLabel
+      ? { label: seriesStatusLabel, title: "Series lifecycle status" }
+      : null,
+    content.type === "series" && seriesMetadata?.number_of_seasons
+      ? {
+          label: `${seriesMetadata.number_of_seasons} season${
+            seriesMetadata.number_of_seasons === 1 ? "" : "s"
+          }`,
+          title: "Season count",
         }
       : null,
   ].filter((item): item is { label: string; title: string } => Boolean(item));

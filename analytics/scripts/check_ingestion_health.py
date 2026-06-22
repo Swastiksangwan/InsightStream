@@ -409,7 +409,10 @@ def run_duplicate_checks(
     return results, failures
 
 
-def read_database_snapshot(connection: Any) -> dict[str, Any]:
+def read_database_snapshot(
+    connection: Any,
+    table_columns: dict[str, set[str]],
+) -> dict[str, Any]:
     content_rows = fetch_rows(
         connection,
         """
@@ -479,6 +482,26 @@ def read_database_snapshot(connection: Any) -> dict[str, Any]:
             """,
         )
     }
+    series_metadata_rows: list[dict[str, Any]] = []
+    if table_columns.get("content_series_metadata"):
+        series_metadata_rows = fetch_rows(
+            connection,
+            """
+            SELECT
+                content_id,
+                number_of_seasons,
+                number_of_episodes,
+                series_status,
+                series_status_normalized,
+                in_production,
+                first_air_date,
+                last_air_date,
+                last_episode_air_date,
+                next_episode_air_date,
+                series_type
+            FROM content_series_metadata;
+            """,
+        )
 
     return {
         "content_rows": content_rows,
@@ -487,6 +510,9 @@ def read_database_snapshot(connection: Any) -> dict[str, Any]:
         "content_people_counts": content_people_counts,
         "availability_counts": availability_counts,
         "certification_counts": certification_counts,
+        "series_metadata_by_content": {
+            row["content_id"]: row for row in series_metadata_rows
+        },
     }
 
 
@@ -636,6 +662,9 @@ def check_metadata_completeness(
         "missing_genres",
         "missing_imdb_external_id",
         "missing_content_people",
+        "missing_series_metadata",
+        "missing_series_number_of_seasons",
+        "missing_series_status_normalized",
     }
 
     for target in matched_targets:
@@ -662,6 +691,23 @@ def check_metadata_completeness(
                 and is_blank(content.get("age_rating")),
             ),
         ]
+        series_metadata = snapshot["series_metadata_by_content"].get(content_id)
+        if content.get("content_type") == "series":
+            checks.extend(
+                [
+                    ("missing_series_metadata", series_metadata is None),
+                    (
+                        "missing_series_number_of_seasons",
+                        series_metadata is not None
+                        and series_metadata.get("number_of_seasons") is None,
+                    ),
+                    (
+                        "missing_series_status_normalized",
+                        series_metadata is not None
+                        and is_blank(series_metadata.get("series_status_normalized")),
+                    ),
+                ]
+            )
 
         for code, failed in checks:
             if not failed:
@@ -735,6 +781,33 @@ def person_detail_summary(connection: Any) -> dict[str, Any]:
     }
 
 
+def series_lifecycle_summary(snapshot: dict[str, Any]) -> dict[str, Any]:
+    content_rows = snapshot["content_rows"]
+    series_rows = [row for row in content_rows if row.get("content_type") == "series"]
+    metadata_by_content = snapshot["series_metadata_by_content"]
+    status_counts = Counter(
+        (metadata_by_content.get(row["id"]) or {}).get("series_status_normalized")
+        or "missing"
+        for row in series_rows
+    )
+
+    return {
+        "total_series": len(series_rows),
+        "series_with_lifecycle_metadata": sum(
+            1 for row in series_rows if row["id"] in metadata_by_content
+        ),
+        "series_missing_lifecycle_metadata": sum(
+            1 for row in series_rows if row["id"] not in metadata_by_content
+        ),
+        "ongoing_series_count": status_counts.get("ongoing", 0),
+        "ended_series_count": status_counts.get("ended", 0),
+        "cancelled_series_count": status_counts.get("cancelled", 0),
+        "upcoming_series_count": status_counts.get("upcoming", 0),
+        "unknown_status_count": status_counts.get("unknown", 0),
+        "missing_status_count": status_counts.get("missing", 0),
+    }
+
+
 def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     generated_at = datetime.now(timezone.utc).isoformat()
     targets_path = resolve_path(args.targets)
@@ -753,6 +826,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     target_db_coverage: dict[str, Any] = {}
     metadata_completeness: dict[str, Any] = {}
     person_summary: dict[str, Any] = {}
+    series_summary: dict[str, Any] = {}
 
     try:
         raw_targets, _ = load_targets(targets_path)
@@ -782,6 +856,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                         "content_people",
                         "content_availability",
                         "content_certifications",
+                        "content_series_metadata",
                     ]
                 }
                 missing_required_tables = [
@@ -800,7 +875,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                 )
                 failures.extend(duplicate_failures)
 
-                snapshot = read_database_snapshot(connection)
+                snapshot = read_database_snapshot(connection, table_columns)
                 database_summary_data = database_summary(snapshot)
 
                 target_db_coverage, matched_targets, coverage_warnings, coverage_failures = (
@@ -816,6 +891,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                 failures.extend(metadata_failures)
 
                 person_summary = person_detail_summary(connection)
+                series_summary = series_lifecycle_summary(snapshot)
         except SQLAlchemyError as exc:
             failures.append(f"Database health check failed: {exc}")
 
@@ -831,6 +907,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "target_db_coverage": target_db_coverage,
         "metadata_completeness": metadata_completeness,
         "person_detail_summary": person_summary,
+        "series_lifecycle_summary": series_summary,
         "warnings": warnings,
         "failures": failures,
         "status": status,
@@ -847,6 +924,7 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
     coverage = report.get("target_db_coverage") or {}
     metadata = report.get("metadata_completeness") or {}
     person = report.get("person_detail_summary") or {}
+    series = report.get("series_lifecycle_summary") or {}
     duplicate_checks = report.get("duplicate_checks") or {}
     duplicate_failures = [
         name for name, result in duplicate_checks.items() if result.get("status") != "passed"
@@ -872,6 +950,16 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
         f"{person.get('total_people', 0)} total, "
         f"{person.get('people_with_biography', 0)} with biography, "
         f"{person.get('people_without_biography', 0)} without biography"
+    )
+    print(
+        "Series lifecycle: "
+        f"{series.get('series_with_lifecycle_metadata', 0)}/"
+        f"{series.get('total_series', 0)} with metadata, "
+        f"{series.get('ongoing_series_count', 0)} ongoing, "
+        f"{series.get('ended_series_count', 0)} ended, "
+        f"{series.get('cancelled_series_count', 0)} cancelled, "
+        f"{series.get('upcoming_series_count', 0)} upcoming, "
+        f"{series.get('unknown_status_count', 0)} unknown"
     )
     print(f"Warnings: {len(report.get('warnings') or [])}")
     print(f"Failures: {len(report.get('failures') or [])}")

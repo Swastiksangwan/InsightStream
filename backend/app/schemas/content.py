@@ -59,6 +59,19 @@ class Summary(BaseModel):
     verdict: Optional[str]
 
 
+class SeriesMetadata(BaseModel):
+    number_of_seasons: Optional[int] = None
+    number_of_episodes: Optional[int] = None
+    series_status: Optional[str] = None
+    series_status_normalized: Optional[str] = None
+    in_production: Optional[bool] = None
+    first_air_date: Optional[date] = None
+    last_air_date: Optional[date] = None
+    last_episode_air_date: Optional[date] = None
+    next_episode_air_date: Optional[date] = None
+    series_type: Optional[str] = None
+
+
 class Genre(BaseModel):
     id: int
     name: str
@@ -103,4 +116,5 @@ class ContentDetailsResponse(BaseModel):
     genres: List[str]
     platforms: List[Platform]
     ratings: List[Rating]
+    series_metadata: Optional[SeriesMetadata] = None
     summary: Optional[Summary] = None

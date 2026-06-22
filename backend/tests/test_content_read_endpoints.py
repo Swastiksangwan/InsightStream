@@ -152,6 +152,21 @@ def first_legacy_age_rating_only(db_session):
     ).mappings().first()
 
 
+def first_series_with_lifecycle_metadata(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT c.id, c.title, csm.number_of_seasons, csm.series_status_normalized
+            FROM content c
+            JOIN content_series_metadata csm ON csm.content_id = c.id
+            WHERE c.content_type = 'series'
+            ORDER BY c.title
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
 def test_get_content_returns_seed_or_larger_catalog(client):
     response = client.get("/content?limit=20")
     data = response.json()
@@ -319,6 +334,40 @@ def test_get_content_details_for_seeded_title(client, content_id_by_title):
     assert data["platforms"]
     assert data["ratings"]
     assert data["summary"] is not None
+    assert data["series_metadata"] is None
+
+
+def test_content_details_include_series_metadata_when_imported(client, db_session):
+    row = first_series_with_lifecycle_metadata(db_session)
+    if row is None:
+        pytest.skip("No imported series lifecycle metadata exists in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["content"]["title"] == row["title"]
+    assert data["content"]["type"] == "series"
+    assert data["series_metadata"] is not None
+    assert data["series_metadata"]["number_of_seasons"] == row["number_of_seasons"]
+    assert (
+        data["series_metadata"]["series_status_normalized"]
+        == row["series_status_normalized"]
+    )
+
+
+def test_content_details_return_null_series_metadata_for_movie(
+    client,
+    content_id_by_title,
+):
+    content_id = content_id_by_title("Interstellar")
+
+    response = client.get(f"/content/{content_id}/details")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["content"]["type"] == "movie"
+    assert data["series_metadata"] is None
 
 
 def test_content_details_include_imported_region_aware_availability(client, db_session):

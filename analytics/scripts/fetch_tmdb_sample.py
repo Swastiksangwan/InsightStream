@@ -20,7 +20,7 @@ import os
 import re
 import sys
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -391,37 +391,79 @@ def is_date_string(value: Any) -> bool:
     return isinstance(value, str) and bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", value))
 
 
-def latest_valid_season_air_date(details: dict[str, Any]) -> str | None:
-    seasons = details.get("seasons")
-    if not isinstance(seasons, list):
-        return None
-
-    season_dates = [
-        season.get("air_date")
-        for season in seasons
-        if isinstance(season, dict) and is_date_string(season.get("air_date"))
-    ]
-    return max(season_dates) if season_dates else None
+def is_non_future_date_string(value: Any) -> bool:
+    if not is_date_string(value):
+        return False
+    try:
+        parsed = datetime.strptime(value, "%Y-%m-%d").date()
+    except ValueError:
+        return False
+    return parsed <= date.today()
 
 
 def latest_tv_activity_date(details: dict[str, Any]) -> str | None:
     last_episode = details.get("last_episode_to_air")
-    if isinstance(last_episode, dict) and is_date_string(last_episode.get("air_date")):
+    if (
+        isinstance(last_episode, dict)
+        and is_non_future_date_string(last_episode.get("air_date"))
+    ):
         return last_episode.get("air_date")
 
     last_air_date = details.get("last_air_date")
-    if is_date_string(last_air_date):
+    if is_non_future_date_string(last_air_date):
         return last_air_date
 
-    season_air_date = latest_valid_season_air_date(details)
-    if season_air_date:
-        return season_air_date
-
     first_air_date = details.get("first_air_date")
-    if is_date_string(first_air_date):
+    if is_non_future_date_string(first_air_date):
         return first_air_date
 
     return None
+
+
+SERIES_STATUS_MAP = {
+    "Returning Series": "ongoing",
+    "In Production": "ongoing",
+    "Planned": "upcoming",
+    "Pilot": "upcoming",
+    "Ended": "ended",
+    "Canceled": "cancelled",
+    "Cancelled": "cancelled",
+}
+
+
+def normalize_series_status(status: Any) -> str:
+    text_value = status.strip() if isinstance(status, str) else ""
+    if not text_value:
+        return "unknown"
+    return SERIES_STATUS_MAP.get(text_value, "unknown")
+
+
+def nested_air_date(details: dict[str, Any], field_name: str) -> str | None:
+    value = details.get(field_name)
+    if isinstance(value, dict) and is_date_string(value.get("air_date")):
+        return value.get("air_date")
+    return None
+
+
+def build_series_metadata(details: dict[str, Any]) -> dict[str, Any]:
+    series_status = details.get("status")
+    return {
+        "number_of_seasons": details.get("number_of_seasons"),
+        "number_of_episodes": details.get("number_of_episodes"),
+        "series_status": series_status,
+        "series_status_normalized": normalize_series_status(series_status),
+        "in_production": details.get("in_production"),
+        "first_air_date": details.get("first_air_date")
+        if is_date_string(details.get("first_air_date"))
+        else None,
+        "last_air_date": details.get("last_air_date")
+        if is_date_string(details.get("last_air_date"))
+        else None,
+        "last_episode_air_date": nested_air_date(details, "last_episode_to_air"),
+        "next_episode_air_date": nested_air_date(details, "next_episode_to_air"),
+        "series_type": details.get("type"),
+        "source_name": "tmdb",
+    }
 
 
 def choose_image_size(
@@ -560,6 +602,7 @@ def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[st
         "imdb_id": None,
         "top_cast_names": [],
         "director_or_creator_names": [],
+        "series_metadata": None,
         "mapping_notes": [error_message],
     }, sample)
 
@@ -769,6 +812,7 @@ def map_tmdb_movie_preview(
             "year": year_from_date(release_date),
             "runtime": details.get("runtime"),
             "director_or_creator_names": crew_names_by_jobs(credits, {"Director"}),
+            "series_metadata": None,
         }
     )
 
@@ -825,6 +869,7 @@ def map_tmdb_tv_preview(
             "year": year_from_date(release_date),
             "runtime": runtime,
             "director_or_creator_names": director_or_creator_names,
+            "series_metadata": build_series_metadata(details),
         }
     )
 

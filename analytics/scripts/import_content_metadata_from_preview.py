@@ -104,6 +104,28 @@ ALWAYS_UPDATE_FIELDS = ("latest_activity_date",)
 PROVIDER_SIGNAL_FIELDS = ("vote_average", "vote_count", "popularity")
 SEPARATE_PIPELINE_FIELDS = ("top_cast_names", "director_or_creator_names")
 NO_COLUMN_FIELDS = ("poster_path", "backdrop_path")
+SERIES_STATUS_MAP = {
+    "Returning Series": "ongoing",
+    "In Production": "ongoing",
+    "Planned": "upcoming",
+    "Pilot": "upcoming",
+    "Ended": "ended",
+    "Canceled": "cancelled",
+    "Cancelled": "cancelled",
+}
+SERIES_METADATA_FIELDS = (
+    "number_of_seasons",
+    "number_of_episodes",
+    "series_status",
+    "series_status_normalized",
+    "in_production",
+    "first_air_date",
+    "last_air_date",
+    "last_episode_air_date",
+    "next_episode_air_date",
+    "series_type",
+    "source_name",
+)
 
 
 @dataclass(frozen=True)
@@ -115,6 +137,7 @@ class ContentPreviewRecord:
     imdb_id: Optional[str]
     content_values: Dict[str, Any]
     genres: List[str]
+    series_metadata: Optional[Dict[str, Any]]
 
 
 @dataclass
@@ -129,6 +152,10 @@ class ImportStats:
     external_ids_inserted: int = 0
     genres_inserted: int = 0
     content_genres_inserted: int = 0
+    series_metadata_inserted: int = 0
+    series_metadata_updated: int = 0
+    series_metadata_unchanged: int = 0
+    latest_activity_date_updates: int = 0
     conflicts_preserved: int = 0
     skipped_fields: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
     field_updates: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
@@ -202,6 +229,18 @@ def clean_date(value: Any) -> Optional[str]:
     except ValueError:
         return None
     return text_value
+
+
+def clean_bool(value: Any) -> Optional[bool]:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"true", "t", "1", "yes"}:
+            return True
+        if normalized in {"false", "f", "0", "no"}:
+            return False
+    return None
 
 
 def db_value(value: Any) -> Any:
@@ -290,6 +329,13 @@ def normalize_status(value: Any, title: str, warnings: List[str]) -> Optional[st
     return "Unknown"
 
 
+def normalize_series_status(value: Any) -> str:
+    status = clean_text(value)
+    if not status:
+        return "unknown"
+    return SERIES_STATUS_MAP.get(status, "unknown")
+
+
 def normalize_genres(raw_genres: Any, title: str, warnings: List[str]) -> List[str]:
     if not isinstance(raw_genres, list):
         warnings.append(f"{title}: preview genres field is not a list; skipped.")
@@ -310,6 +356,38 @@ def normalize_genres(raw_genres: Any, title: str, warnings: List[str]) -> List[s
                 normalized.append(mapped_genre)
 
     return normalized
+
+
+def series_metadata_from_item(
+    item: Dict[str, Any],
+    title: str,
+    warnings: List[str],
+) -> Optional[Dict[str, Any]]:
+    raw_metadata = item.get("series_metadata")
+    if raw_metadata is None:
+        return None
+    if not isinstance(raw_metadata, dict):
+        warnings.append(f"{title}: series_metadata is not an object; skipped.")
+        return None
+
+    series_status = clean_text(raw_metadata.get("series_status"))
+    normalized_status = clean_text(raw_metadata.get("series_status_normalized"))
+    if normalized_status not in {"ongoing", "ended", "cancelled", "upcoming", "unknown"}:
+        normalized_status = normalize_series_status(series_status)
+
+    return {
+        "number_of_seasons": clean_int(raw_metadata.get("number_of_seasons")),
+        "number_of_episodes": clean_int(raw_metadata.get("number_of_episodes")),
+        "series_status": series_status,
+        "series_status_normalized": normalized_status or "unknown",
+        "in_production": clean_bool(raw_metadata.get("in_production")),
+        "first_air_date": clean_date(raw_metadata.get("first_air_date")),
+        "last_air_date": clean_date(raw_metadata.get("last_air_date")),
+        "last_episode_air_date": clean_date(raw_metadata.get("last_episode_air_date")),
+        "next_episode_air_date": clean_date(raw_metadata.get("next_episode_air_date")),
+        "series_type": clean_text(raw_metadata.get("series_type")),
+        "source_name": clean_text(raw_metadata.get("source_name")) or "tmdb",
+    }
 
 
 def preview_genres(item: Dict[str, Any]) -> Any:
@@ -383,6 +461,11 @@ def preview_record_from_item(
         "age_rating": clean_text(item.get("age_rating")),
     }
     genres = normalize_genres(preview_genres(item), title, local_warnings)
+    series_metadata = (
+        series_metadata_from_item(item, title, local_warnings)
+        if content_type == "series"
+        else None
+    )
 
     stats.warnings.extend(local_warnings)
     collect_skipped_preview_fields(item, stats)
@@ -395,6 +478,7 @@ def preview_record_from_item(
         imdb_id=clean_text(item.get("imdb_id")),
         content_values=content_values,
         genres=genres,
+        series_metadata=series_metadata,
     )
 
 
@@ -759,6 +843,143 @@ def ensure_genres(
         stats.content_genres_inserted += 1
 
 
+def fetch_series_metadata(connection, content_id: int):
+    return connection.execute(
+        text(
+            """
+            SELECT
+                content_id,
+                number_of_seasons,
+                number_of_episodes,
+                series_status,
+                series_status_normalized,
+                in_production,
+                first_air_date,
+                last_air_date,
+                last_episode_air_date,
+                next_episode_air_date,
+                series_type,
+                source_name
+            FROM content_series_metadata
+            WHERE content_id = :content_id;
+            """
+        ),
+        {"content_id": content_id},
+    ).mappings().first()
+
+
+def insert_series_metadata(
+    connection,
+    content_id: int,
+    series_metadata: Dict[str, Any],
+) -> None:
+    params = {"content_id": content_id, **series_metadata}
+    connection.execute(
+        text(
+            """
+            INSERT INTO content_series_metadata (
+                content_id,
+                number_of_seasons,
+                number_of_episodes,
+                series_status,
+                series_status_normalized,
+                in_production,
+                first_air_date,
+                last_air_date,
+                last_episode_air_date,
+                next_episode_air_date,
+                series_type,
+                source_name,
+                last_refreshed_at
+            )
+            VALUES (
+                :content_id,
+                :number_of_seasons,
+                :number_of_episodes,
+                :series_status,
+                :series_status_normalized,
+                :in_production,
+                :first_air_date,
+                :last_air_date,
+                :last_episode_air_date,
+                :next_episode_air_date,
+                :series_type,
+                :source_name,
+                CURRENT_TIMESTAMP
+            )
+            ON CONFLICT (content_id) DO NOTHING;
+            """
+        ),
+        params,
+    )
+
+
+def update_series_metadata(
+    connection,
+    content_id: int,
+    updates: Dict[str, Any],
+) -> None:
+    if not updates:
+        return
+
+    set_clauses = []
+    params: Dict[str, Any] = {"content_id": content_id}
+    for field_name, value in updates.items():
+        set_clauses.append(f"{field_name} = :{field_name}")
+        params[field_name] = value
+    set_clauses.append("last_refreshed_at = CURRENT_TIMESTAMP")
+
+    connection.execute(
+        text(
+            f"""
+            UPDATE content_series_metadata
+            SET {", ".join(set_clauses)}
+            WHERE content_id = :content_id;
+            """
+        ),
+        params,
+    )
+
+
+def ensure_series_metadata(
+    connection,
+    content_id: int,
+    record: ContentPreviewRecord,
+    stats: ImportStats,
+    apply: bool,
+) -> None:
+    if record.content_type != "series":
+        return
+
+    if not record.series_metadata:
+        stats.warnings.append(
+            f"{record.title}: missing series_metadata in preview; skipped lifecycle upsert."
+        )
+        return
+
+    existing = fetch_series_metadata(connection, content_id)
+    if not existing:
+        if apply:
+            insert_series_metadata(connection, content_id, record.series_metadata)
+        stats.series_metadata_inserted += 1
+        return
+
+    existing_values = dict(existing)
+    updates = {
+        field_name: record.series_metadata.get(field_name)
+        for field_name in SERIES_METADATA_FIELDS
+        if not values_equal(existing_values.get(field_name), record.series_metadata.get(field_name))
+    }
+
+    if updates:
+        if apply:
+            update_series_metadata(connection, content_id, updates)
+        stats.series_metadata_updated += 1
+        return
+
+    stats.series_metadata_unchanged += 1
+
+
 def resolve_content(
     connection,
     record: ContentPreviewRecord,
@@ -826,6 +1047,8 @@ def process_preview(
                     stats.content_fields_updated += len(updates)
                     for field_name in updates:
                         stats.field_updates[field_name] += 1
+                        if field_name == "latest_activity_date":
+                            stats.latest_activity_date_updates += 1
             else:
                 if apply:
                     content_id = insert_content(connection, record)
@@ -862,6 +1085,13 @@ def process_preview(
                 planned_genres,
                 planned_content_genres,
             )
+            ensure_series_metadata(
+                connection,
+                content_id,
+                record,
+                stats,
+                apply,
+            )
 
     return stats
 
@@ -878,6 +1108,10 @@ def print_summary(stats: ImportStats) -> None:
     print(f"- External IDs inserted: {stats.external_ids_inserted}")
     print(f"- Genres inserted: {stats.genres_inserted}")
     print(f"- Content genre relationships inserted: {stats.content_genres_inserted}")
+    print(f"- Series metadata rows inserted: {stats.series_metadata_inserted}")
+    print(f"- Series metadata rows updated: {stats.series_metadata_updated}")
+    print(f"- Series metadata rows unchanged: {stats.series_metadata_unchanged}")
+    print(f"- Latest activity date updates: {stats.latest_activity_date_updates}")
     print(f"- Conflicts preserved: {stats.conflicts_preserved}")
 
     if stats.field_updates:

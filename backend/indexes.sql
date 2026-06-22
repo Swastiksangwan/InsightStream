@@ -159,6 +159,23 @@ ON content_certifications (source_name);
 
 
 -- ------------------------------------------------------------
+-- Series lifecycle metadata indexes
+-- ------------------------------------------------------------
+
+-- Speeds up filtering and reporting by normalized series lifecycle status.
+CREATE INDEX IF NOT EXISTS idx_content_series_metadata_status_normalized
+ON content_series_metadata (series_status_normalized);
+
+-- Speeds up series recency and lifecycle reporting.
+CREATE INDEX IF NOT EXISTS idx_content_series_metadata_last_air_date
+ON content_series_metadata (last_air_date);
+
+-- Speeds up upcoming/returning series lookup.
+CREATE INDEX IF NOT EXISTS idx_content_series_metadata_next_episode_air_date
+ON content_series_metadata (next_episode_air_date);
+
+
+-- ------------------------------------------------------------
 -- Ratings indexes
 -- ------------------------------------------------------------
 

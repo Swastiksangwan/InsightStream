@@ -102,7 +102,11 @@ export default async function ContentDetailPage({ params }: ContentDetailPagePro
 
     return (
       <main className="detail-page-shell">
-        <DetailHero content={details.content} credits={credits} />
+        <DetailHero
+          content={details.content}
+          credits={credits}
+          seriesMetadata={details.series_metadata}
+        />
 
         <section className="detail-content-grid" aria-label="Content detail sections">
           <div className="detail-main-column detail-main-column--overview">
@@ -115,6 +119,7 @@ export default async function ContentDetailPage({ params }: ContentDetailPagePro
             initialMessage={initialWatchState.message}
             platforms={details.platforms}
             ratings={details.ratings}
+            seriesMetadata={details.series_metadata}
           />
 
           <div className="detail-main-column detail-main-column--supporting">

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-22T06:56:05.153167+00:00",
+  "generated_at": "2026-06-22T08:24:19.858933+00:00",
   "script_name": "check_ingestion_health.py",
   "target_config_path": "analytics/config/content_ingestion_targets.json",
   "filters_used": {
@@ -107,6 +107,17 @@
     "people_without_known_for_department": 0,
     "person_external_ids_count": 543,
     "people_without_external_ids": 0
+  },
+  "series_lifecycle_summary": {
+    "total_series": 45,
+    "series_with_lifecycle_metadata": 45,
+    "series_missing_lifecycle_metadata": 0,
+    "ongoing_series_count": 8,
+    "ended_series_count": 35,
+    "cancelled_series_count": 2,
+    "upcoming_series_count": 0,
+    "unknown_status_count": 0,
+    "missing_status_count": 0
   },
   "warnings": [],
   "failures": [],

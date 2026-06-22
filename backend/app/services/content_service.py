@@ -175,6 +175,31 @@ def get_display_certification(
     }
 
 
+def get_series_metadata(db: Session, content_id: int):
+    series_query = text("""
+        SELECT
+            number_of_seasons,
+            number_of_episodes,
+            series_status,
+            series_status_normalized,
+            in_production,
+            first_air_date,
+            last_air_date,
+            last_episode_air_date,
+            next_episode_air_date,
+            series_type
+        FROM content_series_metadata
+        WHERE content_id = :content_id;
+    """)
+    series_result = db.execute(series_query, {"content_id": content_id})
+    series_row = series_result.mappings().first()
+
+    if not series_row:
+        return None
+
+    return dict(series_row)
+
+
 def get_all_content_service(
     db: Session,
     content_type: str = None,
@@ -713,6 +738,10 @@ def get_content_details_service(content_id: int, db: Session):
         )
     )
 
+    series_metadata = None
+    if content_row["content_type"] == "series":
+        series_metadata = get_series_metadata(db, content_id)
+
     genres_query = text("""
         SELECT g.name
         FROM content_genres cg
@@ -782,5 +811,6 @@ def get_content_details_service(content_id: int, db: Session):
         "genres": genres,
         "platforms": platforms,
         "ratings": ratings,
+        "series_metadata": series_metadata,
         "summary": summary
     }

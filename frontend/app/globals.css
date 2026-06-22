@@ -1543,6 +1543,42 @@ main {
   line-height: 1.6;
 }
 
+.series-info__grid {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.series-info__grid div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: 10px;
+}
+
+.series-info__grid div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.series-info__grid dt {
+  color: var(--subtle);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.series-info__grid dd {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 850;
+  text-align: right;
+}
+
 .watch-actions {
   display: grid;
   gap: 13px;

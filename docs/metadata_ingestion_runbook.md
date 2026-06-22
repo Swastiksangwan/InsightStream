@@ -276,6 +276,14 @@ python3 analytics/scripts/fetch_tmdb_person_details.py --source-person-id 525 --
 python3 analytics/scripts/fetch_tmdb_person_details.py --all --limit 10
 ```
 
+Series lifecycle metadata notes:
+
+- Series-level lifecycle metadata is stored in `content_series_metadata`.
+- It is refreshed from TMDb TV details through `fetch_tmdb_sample.py` and `import_content_metadata_from_preview.py`.
+- It supports seasons, episodes, normalized lifecycle status, first/last aired dates, last episode date, and next episode date.
+- It does not create episode-level or season-level pages.
+- For targeted refreshes, run `python3 analytics/scripts/fetch_tmdb_sample.py --source-id TMDB_SERIES_ID --refresh`, then dry-run/apply the content metadata importer.
+
 ## 10. Verification SQL
 
 These queries use the current schema column names. Provider IDs are stored in `external_ids.external_id` and `person_external_ids.external_id`.

@@ -1,7 +1,13 @@
 import { PlatformList } from "@/components/PlatformList";
 import { RatingList } from "@/components/RatingList";
+import { SeriesInfoPanel } from "@/components/SeriesInfoPanel";
 import { WatchActionButtons } from "@/components/WatchActionButtons";
-import type { PlatformAvailability, Rating, WatchStatus } from "@/types/content";
+import type {
+  PlatformAvailability,
+  Rating,
+  SeriesMetadata,
+  WatchStatus,
+} from "@/types/content";
 
 type DetailSidebarProps = {
   contentId: number;
@@ -9,6 +15,7 @@ type DetailSidebarProps = {
   initialMessage?: string;
   platforms: PlatformAvailability[];
   ratings: Rating[];
+  seriesMetadata?: SeriesMetadata | null;
 };
 
 export function DetailSidebar({
@@ -17,6 +24,7 @@ export function DetailSidebar({
   initialMessage,
   platforms,
   ratings,
+  seriesMetadata,
 }: DetailSidebarProps) {
   return (
     <aside className="detail-sidebar" aria-label="Personal and availability details">
@@ -25,6 +33,7 @@ export function DetailSidebar({
         initialStatus={initialStatus}
         initialMessage={initialMessage}
       />
+      <SeriesInfoPanel seriesMetadata={seriesMetadata} />
       <PlatformList platforms={platforms} />
       <RatingList ratings={ratings} />
     </aside>

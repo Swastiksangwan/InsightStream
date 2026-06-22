@@ -134,6 +134,22 @@ CREATE TABLE IF NOT EXISTS content_certifications (
         UNIQUE (content_id, country_code, rating_system, source_name)
 );
 
+CREATE TABLE IF NOT EXISTS content_series_metadata (
+    content_id INTEGER PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
+    number_of_seasons INTEGER,
+    number_of_episodes INTEGER,
+    series_status TEXT,
+    series_status_normalized TEXT,
+    in_production BOOLEAN,
+    first_air_date DATE,
+    last_air_date DATE,
+    last_episode_air_date DATE,
+    next_episode_air_date DATE,
+    series_type TEXT,
+    source_name TEXT DEFAULT 'tmdb',
+    last_refreshed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE ratings (
     id SERIAL PRIMARY KEY,
     content_id INTEGER NOT NULL,
