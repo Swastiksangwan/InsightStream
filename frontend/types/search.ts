@@ -11,6 +11,8 @@ export type ContentSearchResult = {
   latest_activity_date?: string | null;
   age_rating?: string | null;
   genres: string[];
+  matched_people?: string[];
+  match_reason?: string | null;
   result_type: "content";
 };
 
@@ -20,6 +22,7 @@ export type PersonSearchResult = {
   profile_url?: string | null;
   known_for_department?: string | null;
   biography_snippet?: string | null;
+  match_reason?: string | null;
   result_type: "person";
 };
 

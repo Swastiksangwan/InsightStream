@@ -130,6 +130,9 @@ function ContentResultCard({ item }: { item: ContentSearchResult }) {
           ))}
         </div>
         <h3>{item.title}</h3>
+        {item.match_reason ? (
+          <span className="search-result-card__reason">{item.match_reason}</span>
+        ) : null}
         <p>{item.overview_snippet || "No overview is available yet."}</p>
         {item.genres.length > 0 ? (
           <div className="search-result-card__tags">
@@ -163,6 +166,9 @@ function PersonResultCard({ item }: { item: PersonSearchResult }) {
           <span>{item.known_for_department || "Person"}</span>
         </div>
         <h3>{item.name}</h3>
+        {item.match_reason ? (
+          <span className="search-result-card__reason">{item.match_reason}</span>
+        ) : null}
         <p>{item.biography_snippet || "Biography not available yet."}</p>
       </div>
     </Link>
@@ -185,7 +191,7 @@ function SearchResults({
     return (
       <EmptyState
         title="No local matches"
-        message="No ingested content or people match this search yet."
+        message="No local matches found. Missing titles or people need to be added through ingestion first."
       />
     );
   }
@@ -271,10 +277,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <main className="search-page">
         <section className="search-hero">
           <span className="eyebrow">Local Search</span>
-          <h1>Search results</h1>
+          <h1>Results for “{results.query}”</h1>
           <p>
-            Showing local database matches for <strong>{results.query}</strong>.
-            Missing titles need to be added through ingestion first.
+            Showing local database matches from the InsightStream catalog. Results
+            can match titles, genres, people, credits, and biographies. Missing
+            titles need to be added through ingestion first.
           </p>
         </section>
 

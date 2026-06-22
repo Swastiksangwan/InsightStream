@@ -15,6 +15,8 @@ class ContentSearchResult(BaseModel):
     latest_activity_date: Optional[date] = None
     age_rating: Optional[str] = None
     genres: List[str] = Field(default_factory=list)
+    matched_people: List[str] = Field(default_factory=list)
+    match_reason: Optional[str] = None
     result_type: Literal["content"] = "content"
 
 
@@ -24,6 +26,7 @@ class PersonSearchResult(BaseModel):
     profile_url: Optional[str] = None
     known_for_department: Optional[str] = None
     biography_snippet: Optional[str] = None
+    match_reason: Optional[str] = None
     result_type: Literal["person"] = "person"
 
 

@@ -143,9 +143,10 @@ Backend API docs are available at:
 http://127.0.0.1:8000/docs
 ```
 
-Search uses the local PostgreSQL catalog only. It covers ingested content and
-imported people, and it does not call TMDb or any other live provider. Missing
-titles must first be added through the ingestion pipeline.
+Search uses the local PostgreSQL catalog only. It covers ingested content,
+imported people, and content connected to people through cast, crew, director,
+and creator credits. It does not call TMDb or any other live provider. Missing
+titles or people must first be added through the ingestion pipeline.
 
 ## 6. Database Setup
 

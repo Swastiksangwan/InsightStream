@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -15,7 +15,15 @@ const navItems = [
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (pathname === "/search") {
+      const searchParams = new URLSearchParams(window.location.search);
+      setSearchQuery(searchParams.get("q") || "");
+    }
+  }, [pathname]);
 
   function isActiveRoute(href: string) {
     if (href === "/") {
@@ -35,6 +43,15 @@ export function Navbar() {
     }
 
     router.push(`/search?q=${encodeURIComponent(query)}`);
+  }
+
+  function handleClearSearch() {
+    setSearchQuery("");
+    inputRef.current?.focus();
+
+    if (pathname === "/search") {
+      router.push("/search");
+    }
   }
 
   return (
@@ -67,12 +84,23 @@ export function Navbar() {
           onSubmit={handleSearchSubmit}
         >
           <input
+            ref={inputRef}
             aria-label="Search local catalog"
             type="search"
             placeholder="Search catalog"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
           />
+          {searchQuery ? (
+            <button
+              className="navbar-search__clear"
+              type="button"
+              aria-label="Clear search"
+              onClick={handleClearSearch}
+            >
+              Clear
+            </button>
+          ) : null}
           <button type="submit">Search</button>
         </form>
       </div>
