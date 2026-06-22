@@ -10,11 +10,11 @@
     "refresh": false,
     "source_person_id": null
   },
-  "generated_at": "2026-06-21T17:42:23.783749+00:00",
-  "people_selected": 92,
-  "people_skipped_complete": 285,
-  "people_with_biography": 77,
-  "people_without_biography": 15,
+  "generated_at": "2026-06-22T06:51:29.205356+00:00",
+  "people_selected": 182,
+  "people_skipped_complete": 361,
+  "people_with_biography": 161,
+  "people_without_biography": 21,
   "per_person": [
     {
       "name": "Matthew McConaughey",
@@ -2297,6 +2297,614 @@
       "warnings": []
     },
     {
+      "name": "Anthony Hopkins",
+      "person_id": 298,
+      "raw_file": "analytics/raw/tmdb/person_4173_details.json",
+      "source_person_id": "4173",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Scott Glenn",
+      "person_id": 299,
+      "raw_file": "analytics/raw/tmdb/person_349_details.json",
+      "source_person_id": "349",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Ted Levine",
+      "person_id": 300,
+      "raw_file": "analytics/raw/tmdb/person_15854_details.json",
+      "source_person_id": "15854",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Anthony Heald",
+      "person_id": 301,
+      "raw_file": "analytics/raw/tmdb/person_16293_details.json",
+      "source_person_id": "16293",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Jonathan Demme",
+      "person_id": 302,
+      "raw_file": "analytics/raw/tmdb/person_16294_details.json",
+      "source_person_id": "16294",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Sam Neill",
+      "person_id": 303,
+      "raw_file": "analytics/raw/tmdb/person_4783_details.json",
+      "source_person_id": "4783",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Laura Dern",
+      "person_id": 304,
+      "raw_file": "analytics/raw/tmdb/person_4784_details.json",
+      "source_person_id": "4784",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Jeff Goldblum",
+      "person_id": 305,
+      "raw_file": "analytics/raw/tmdb/person_4785_details.json",
+      "source_person_id": "4785",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Richard Attenborough",
+      "person_id": 306,
+      "raw_file": "analytics/raw/tmdb/person_4786_details.json",
+      "source_person_id": "4786",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Bob Peck",
+      "person_id": 307,
+      "raw_file": "analytics/raw/tmdb/person_4789_details.json",
+      "source_person_id": "4789",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Steven Spielberg",
+      "person_id": 308,
+      "raw_file": "analytics/raw/tmdb/person_488_details.json",
+      "source_person_id": "488",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Kate Winslet",
+      "person_id": 309,
+      "raw_file": "analytics/raw/tmdb/person_204_details.json",
+      "source_person_id": "204",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Billy Zane",
+      "person_id": 310,
+      "raw_file": "analytics/raw/tmdb/person_1954_details.json",
+      "source_person_id": "1954",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Kathy Bates",
+      "person_id": 311,
+      "raw_file": "analytics/raw/tmdb/person_8534_details.json",
+      "source_person_id": "8534",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Frances Fisher",
+      "person_id": 312,
+      "raw_file": "analytics/raw/tmdb/person_3713_details.json",
+      "source_person_id": "3713",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "James Cameron",
+      "person_id": 313,
+      "raw_file": "analytics/raw/tmdb/person_2710_details.json",
+      "source_person_id": "2710",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Hugh Jackman",
+      "person_id": 314,
+      "raw_file": "analytics/raw/tmdb/person_6968_details.json",
+      "source_person_id": "6968",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Piper Perabo",
+      "person_id": 315,
+      "raw_file": "analytics/raw/tmdb/person_15555_details.json",
+      "source_person_id": "15555",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Rebecca Hall",
+      "person_id": 316,
+      "raw_file": "analytics/raw/tmdb/person_15556_details.json",
+      "source_person_id": "15556",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Rumi Hiiragi",
+      "person_id": 317,
+      "raw_file": "analytics/raw/tmdb/person_19587_details.json",
+      "source_person_id": "19587",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Miyu Irino",
+      "person_id": 318,
+      "raw_file": "analytics/raw/tmdb/person_19588_details.json",
+      "source_person_id": "19588",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Mari Natsuki",
+      "person_id": 319,
+      "raw_file": "analytics/raw/tmdb/person_19589_details.json",
+      "source_person_id": "19589",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Hayao Miyazaki",
+      "person_id": 322,
+      "raw_file": "analytics/raw/tmdb/person_608_details.json",
+      "source_person_id": "608",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Jack Nicholson",
+      "person_id": 323,
+      "raw_file": "analytics/raw/tmdb/person_514_details.json",
+      "source_person_id": "514",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Mark Wahlberg",
+      "person_id": 324,
+      "raw_file": "analytics/raw/tmdb/person_13240_details.json",
+      "source_person_id": "13240",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Martin Sheen",
+      "person_id": 325,
+      "raw_file": "analytics/raw/tmdb/person_8349_details.json",
+      "source_person_id": "8349",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Daniel Craig",
+      "person_id": 326,
+      "raw_file": "analytics/raw/tmdb/person_8784_details.json",
+      "source_person_id": "8784",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Chris Evans",
+      "person_id": 327,
+      "raw_file": "analytics/raw/tmdb/person_16828_details.json",
+      "source_person_id": "16828",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Michael Shannon",
+      "person_id": 328,
+      "raw_file": "analytics/raw/tmdb/person_335_details.json",
+      "source_person_id": "335",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Rian Johnson",
+      "person_id": 329,
+      "raw_file": "analytics/raw/tmdb/person_67367_details.json",
+      "source_person_id": "67367",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Daniel Kaluuya",
+      "person_id": 330,
+      "raw_file": "analytics/raw/tmdb/person_206919_details.json",
+      "source_person_id": "206919",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Allison Williams",
+      "person_id": 331,
+      "raw_file": "analytics/raw/tmdb/person_1255540_details.json",
+      "source_person_id": "1255540",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Catherine Keener",
+      "person_id": 332,
+      "raw_file": "analytics/raw/tmdb/person_2229_details.json",
+      "source_person_id": "2229",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Bradley Whitford",
+      "person_id": 333,
+      "raw_file": "analytics/raw/tmdb/person_11367_details.json",
+      "source_person_id": "11367",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Caleb Landry Jones",
+      "person_id": 334,
+      "raw_file": "analytics/raw/tmdb/person_572541_details.json",
+      "source_person_id": "572541",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Jordan Peele",
+      "person_id": 335,
+      "raw_file": "analytics/raw/tmdb/person_291263_details.json",
+      "source_person_id": "291263",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Dominic West",
+      "person_id": 336,
+      "raw_file": "analytics/raw/tmdb/person_17287_details.json",
+      "source_person_id": "17287",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Lance Reddick",
+      "person_id": 337,
+      "raw_file": "analytics/raw/tmdb/person_129101_details.json",
+      "source_person_id": "129101",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Sonja Sohn",
+      "person_id": 338,
+      "raw_file": "analytics/raw/tmdb/person_203683_details.json",
+      "source_person_id": "203683",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Wood Harris",
+      "person_id": 339,
+      "raw_file": "analytics/raw/tmdb/person_65829_details.json",
+      "source_person_id": "65829",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Wendell Pierce",
+      "person_id": 340,
+      "raw_file": "analytics/raw/tmdb/person_17859_details.json",
+      "source_person_id": "17859",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "David Simon",
+      "person_id": 341,
+      "raw_file": "analytics/raw/tmdb/person_1218279_details.json",
+      "source_person_id": "1218279",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Juno Temple",
+      "person_id": 342,
+      "raw_file": "analytics/raw/tmdb/person_36594_details.json",
+      "source_person_id": "36594",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Patrick Wilson",
+      "person_id": 343,
+      "raw_file": "analytics/raw/tmdb/person_17178_details.json",
+      "source_person_id": "17178",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Jennifer Jason Leigh",
+      "person_id": 344,
+      "raw_file": "analytics/raw/tmdb/person_10431_details.json",
+      "source_person_id": "10431",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "David Rysdahl",
+      "person_id": 345,
+      "raw_file": "analytics/raw/tmdb/person_1541178_details.json",
+      "source_person_id": "1541178",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Allison Tolman",
+      "person_id": 346,
+      "raw_file": "analytics/raw/tmdb/person_1331652_details.json",
+      "source_person_id": "1331652",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Noah Hawley",
+      "person_id": 347,
+      "raw_file": "analytics/raw/tmdb/person_202816_details.json",
+      "source_person_id": "202816",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Anya Taylor-Joy",
+      "person_id": 348,
+      "raw_file": "analytics/raw/tmdb/person_1397778_details.json",
+      "source_person_id": "1397778",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Chloe Pirrie",
+      "person_id": 349,
+      "raw_file": "analytics/raw/tmdb/person_1125581_details.json",
+      "source_person_id": "1125581",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Sergio Di Zio",
+      "person_id": 352,
+      "raw_file": "analytics/raw/tmdb/person_54193_details.json",
+      "source_person_id": "54193",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Scott Frank",
+      "person_id": 353,
+      "raw_file": "analytics/raw/tmdb/person_2199_details.json",
+      "source_person_id": "2199",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Allan Scott",
+      "person_id": 354,
+      "raw_file": "analytics/raw/tmdb/person_589662_details.json",
+      "source_person_id": "589662",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Imelda Staunton",
+      "person_id": 355,
+      "raw_file": "analytics/raw/tmdb/person_11356_details.json",
+      "source_person_id": "11356",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Jonathan Pryce",
+      "person_id": 356,
+      "raw_file": "analytics/raw/tmdb/person_378_details.json",
+      "source_person_id": "378",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Olivia Colman",
+      "person_id": 357,
+      "raw_file": "analytics/raw/tmdb/person_39187_details.json",
+      "source_person_id": "39187",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Lesley Manville",
+      "person_id": 358,
+      "raw_file": "analytics/raw/tmdb/person_72305_details.json",
+      "source_person_id": "72305",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Peter Morgan",
+      "person_id": 359,
+      "raw_file": "analytics/raw/tmdb/person_15730_details.json",
+      "source_person_id": "15730",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Jonathan Groff",
+      "person_id": 360,
+      "raw_file": "analytics/raw/tmdb/person_221611_details.json",
+      "source_person_id": "221611",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Holt McCallany",
+      "person_id": 361,
+      "raw_file": "analytics/raw/tmdb/person_7497_details.json",
+      "source_person_id": "7497",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Hannah Gross",
+      "person_id": 362,
+      "raw_file": "analytics/raw/tmdb/person_1049916_details.json",
+      "source_person_id": "1049916",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Anna Torv",
+      "person_id": 363,
+      "raw_file": "analytics/raw/tmdb/person_30084_details.json",
+      "source_person_id": "30084",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Stacey Roca",
+      "person_id": 364,
+      "raw_file": "analytics/raw/tmdb/person_1233173_details.json",
+      "source_person_id": "1233173",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Joe Penhall",
+      "person_id": 365,
+      "raw_file": "analytics/raw/tmdb/person_57573_details.json",
+      "source_person_id": "57573",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Steven Strait",
+      "person_id": 366,
+      "raw_file": "analytics/raw/tmdb/person_54815_details.json",
+      "source_person_id": "54815",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Dominique Tipper",
+      "person_id": 367,
+      "raw_file": "analytics/raw/tmdb/person_1361876_details.json",
+      "source_person_id": "1361876",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Cas Anvar",
+      "person_id": 368,
+      "raw_file": "analytics/raw/tmdb/person_59214_details.json",
+      "source_person_id": "59214",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Wes Chatham",
+      "person_id": 369,
+      "raw_file": "analytics/raw/tmdb/person_51682_details.json",
+      "source_person_id": "51682",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Shohreh Aghdashloo",
+      "person_id": 370,
+      "raw_file": "analytics/raw/tmdb/person_21041_details.json",
+      "source_person_id": "21041",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Mark Fergus",
+      "person_id": 371,
+      "raw_file": "analytics/raw/tmdb/person_79207_details.json",
+      "source_person_id": "79207",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Hawk Ostby",
+      "person_id": 372,
+      "raw_file": "analytics/raw/tmdb/person_79209_details.json",
+      "source_person_id": "79209",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Paul Anderson",
+      "person_id": 373,
+      "raw_file": "analytics/raw/tmdb/person_220448_details.json",
+      "source_person_id": "220448",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Joe Cole",
+      "person_id": 374,
+      "raw_file": "analytics/raw/tmdb/person_1081875_details.json",
+      "source_person_id": "1081875",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Helen McCrory",
+      "person_id": 375,
+      "raw_file": "analytics/raw/tmdb/person_15737_details.json",
+      "source_person_id": "15737",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Iddo Goldberg",
+      "person_id": 376,
+      "raw_file": "analytics/raw/tmdb/person_94958_details.json",
+      "source_person_id": "94958",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
+      "name": "Steven Knight",
+      "person_id": 377,
+      "raw_file": "analytics/raw/tmdb/person_23227_details.json",
+      "source_person_id": "23227",
+      "status": "skipped_complete",
+      "warnings": []
+    },
+    {
       "name": "Jantje Friese",
       "person_id": 78,
       "raw_file": "analytics/raw/tmdb/person_1075096_details.json",
@@ -2393,187 +3001,11 @@
       "warnings": []
     },
     {
-      "name": "Anthony Hopkins",
-      "person_id": 298,
-      "raw_file": "analytics/raw/tmdb/person_4173_details.json",
-      "source_person_id": "4173",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Scott Glenn",
-      "person_id": 299,
-      "raw_file": "analytics/raw/tmdb/person_349_details.json",
-      "source_person_id": "349",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Ted Levine",
-      "person_id": 300,
-      "raw_file": "analytics/raw/tmdb/person_15854_details.json",
-      "source_person_id": "15854",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Anthony Heald",
-      "person_id": 301,
-      "raw_file": "analytics/raw/tmdb/person_16293_details.json",
-      "source_person_id": "16293",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Jonathan Demme",
-      "person_id": 302,
-      "raw_file": "analytics/raw/tmdb/person_16294_details.json",
-      "source_person_id": "16294",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Sam Neill",
-      "person_id": 303,
-      "raw_file": "analytics/raw/tmdb/person_4783_details.json",
-      "source_person_id": "4783",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Laura Dern",
-      "person_id": 304,
-      "raw_file": "analytics/raw/tmdb/person_4784_details.json",
-      "source_person_id": "4784",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Jeff Goldblum",
-      "person_id": 305,
-      "raw_file": "analytics/raw/tmdb/person_4785_details.json",
-      "source_person_id": "4785",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Richard Attenborough",
-      "person_id": 306,
-      "raw_file": "analytics/raw/tmdb/person_4786_details.json",
-      "source_person_id": "4786",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Bob Peck",
-      "person_id": 307,
-      "raw_file": "analytics/raw/tmdb/person_4789_details.json",
-      "source_person_id": "4789",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Steven Spielberg",
-      "person_id": 308,
-      "raw_file": "analytics/raw/tmdb/person_488_details.json",
-      "source_person_id": "488",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Kate Winslet",
-      "person_id": 309,
-      "raw_file": "analytics/raw/tmdb/person_204_details.json",
-      "source_person_id": "204",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Billy Zane",
-      "person_id": 310,
-      "raw_file": "analytics/raw/tmdb/person_1954_details.json",
-      "source_person_id": "1954",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Kathy Bates",
-      "person_id": 311,
-      "raw_file": "analytics/raw/tmdb/person_8534_details.json",
-      "source_person_id": "8534",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Frances Fisher",
-      "person_id": 312,
-      "raw_file": "analytics/raw/tmdb/person_3713_details.json",
-      "source_person_id": "3713",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "James Cameron",
-      "person_id": 313,
-      "raw_file": "analytics/raw/tmdb/person_2710_details.json",
-      "source_person_id": "2710",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Hugh Jackman",
-      "person_id": 314,
-      "raw_file": "analytics/raw/tmdb/person_6968_details.json",
-      "source_person_id": "6968",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Piper Perabo",
-      "person_id": 315,
-      "raw_file": "analytics/raw/tmdb/person_15555_details.json",
-      "source_person_id": "15555",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Rebecca Hall",
-      "person_id": 316,
-      "raw_file": "analytics/raw/tmdb/person_15556_details.json",
-      "source_person_id": "15556",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Rumi Hiiragi",
-      "person_id": 317,
-      "raw_file": "analytics/raw/tmdb/person_19587_details.json",
-      "source_person_id": "19587",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Miyu Irino",
-      "person_id": 318,
-      "raw_file": "analytics/raw/tmdb/person_19588_details.json",
-      "source_person_id": "19588",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Mari Natsuki",
-      "person_id": 319,
-      "raw_file": "analytics/raw/tmdb/person_19589_details.json",
-      "source_person_id": "19589",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
       "name": "Takashi Naito",
       "person_id": 320,
       "raw_file": "analytics/raw/tmdb/person_19590_details.json",
       "source_person_id": "19590",
-      "status": "fetched",
+      "status": "reused",
       "warnings": []
     },
     {
@@ -2581,231 +3013,7 @@
       "person_id": 321,
       "raw_file": "analytics/raw/tmdb/person_19591_details.json",
       "source_person_id": "19591",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Hayao Miyazaki",
-      "person_id": 322,
-      "raw_file": "analytics/raw/tmdb/person_608_details.json",
-      "source_person_id": "608",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Jack Nicholson",
-      "person_id": 323,
-      "raw_file": "analytics/raw/tmdb/person_514_details.json",
-      "source_person_id": "514",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Mark Wahlberg",
-      "person_id": 324,
-      "raw_file": "analytics/raw/tmdb/person_13240_details.json",
-      "source_person_id": "13240",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Martin Sheen",
-      "person_id": 325,
-      "raw_file": "analytics/raw/tmdb/person_8349_details.json",
-      "source_person_id": "8349",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Daniel Craig",
-      "person_id": 326,
-      "raw_file": "analytics/raw/tmdb/person_8784_details.json",
-      "source_person_id": "8784",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Chris Evans",
-      "person_id": 327,
-      "raw_file": "analytics/raw/tmdb/person_16828_details.json",
-      "source_person_id": "16828",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Michael Shannon",
-      "person_id": 328,
-      "raw_file": "analytics/raw/tmdb/person_335_details.json",
-      "source_person_id": "335",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Rian Johnson",
-      "person_id": 329,
-      "raw_file": "analytics/raw/tmdb/person_67367_details.json",
-      "source_person_id": "67367",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Daniel Kaluuya",
-      "person_id": 330,
-      "raw_file": "analytics/raw/tmdb/person_206919_details.json",
-      "source_person_id": "206919",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Allison Williams",
-      "person_id": 331,
-      "raw_file": "analytics/raw/tmdb/person_1255540_details.json",
-      "source_person_id": "1255540",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Catherine Keener",
-      "person_id": 332,
-      "raw_file": "analytics/raw/tmdb/person_2229_details.json",
-      "source_person_id": "2229",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Bradley Whitford",
-      "person_id": 333,
-      "raw_file": "analytics/raw/tmdb/person_11367_details.json",
-      "source_person_id": "11367",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Caleb Landry Jones",
-      "person_id": 334,
-      "raw_file": "analytics/raw/tmdb/person_572541_details.json",
-      "source_person_id": "572541",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Jordan Peele",
-      "person_id": 335,
-      "raw_file": "analytics/raw/tmdb/person_291263_details.json",
-      "source_person_id": "291263",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Dominic West",
-      "person_id": 336,
-      "raw_file": "analytics/raw/tmdb/person_17287_details.json",
-      "source_person_id": "17287",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Lance Reddick",
-      "person_id": 337,
-      "raw_file": "analytics/raw/tmdb/person_129101_details.json",
-      "source_person_id": "129101",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Sonja Sohn",
-      "person_id": 338,
-      "raw_file": "analytics/raw/tmdb/person_203683_details.json",
-      "source_person_id": "203683",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Wood Harris",
-      "person_id": 339,
-      "raw_file": "analytics/raw/tmdb/person_65829_details.json",
-      "source_person_id": "65829",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Wendell Pierce",
-      "person_id": 340,
-      "raw_file": "analytics/raw/tmdb/person_17859_details.json",
-      "source_person_id": "17859",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "David Simon",
-      "person_id": 341,
-      "raw_file": "analytics/raw/tmdb/person_1218279_details.json",
-      "source_person_id": "1218279",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Juno Temple",
-      "person_id": 342,
-      "raw_file": "analytics/raw/tmdb/person_36594_details.json",
-      "source_person_id": "36594",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Patrick Wilson",
-      "person_id": 343,
-      "raw_file": "analytics/raw/tmdb/person_17178_details.json",
-      "source_person_id": "17178",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Jennifer Jason Leigh",
-      "person_id": 344,
-      "raw_file": "analytics/raw/tmdb/person_10431_details.json",
-      "source_person_id": "10431",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "David Rysdahl",
-      "person_id": 345,
-      "raw_file": "analytics/raw/tmdb/person_1541178_details.json",
-      "source_person_id": "1541178",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Allison Tolman",
-      "person_id": 346,
-      "raw_file": "analytics/raw/tmdb/person_1331652_details.json",
-      "source_person_id": "1331652",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Noah Hawley",
-      "person_id": 347,
-      "raw_file": "analytics/raw/tmdb/person_202816_details.json",
-      "source_person_id": "202816",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Anya Taylor-Joy",
-      "person_id": 348,
-      "raw_file": "analytics/raw/tmdb/person_1397778_details.json",
-      "source_person_id": "1397778",
-      "status": "fetched",
-      "warnings": []
-    },
-    {
-      "name": "Chloe Pirrie",
-      "person_id": 349,
-      "raw_file": "analytics/raw/tmdb/person_1125581_details.json",
-      "source_person_id": "1125581",
-      "status": "fetched",
+      "status": "reused",
       "warnings": []
     },
     {
@@ -2813,7 +3021,7 @@
       "person_id": 350,
       "raw_file": "analytics/raw/tmdb/person_1855149_details.json",
       "source_person_id": "1855149",
-      "status": "fetched",
+      "status": "reused",
       "warnings": []
     },
     {
@@ -2821,299 +3029,1505 @@
       "person_id": 351,
       "raw_file": "analytics/raw/tmdb/person_1267379_details.json",
       "source_person_id": "1267379",
+      "status": "reused",
+      "warnings": []
+    },
+    {
+      "name": "Liam Neeson",
+      "person_id": 378,
+      "raw_file": "analytics/raw/tmdb/person_3896_details.json",
+      "source_person_id": "3896",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Sergio Di Zio",
-      "person_id": 352,
-      "raw_file": "analytics/raw/tmdb/person_54193_details.json",
-      "source_person_id": "54193",
+      "name": "Ben Kingsley",
+      "person_id": 379,
+      "raw_file": "analytics/raw/tmdb/person_2282_details.json",
+      "source_person_id": "2282",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Scott Frank",
-      "person_id": 353,
-      "raw_file": "analytics/raw/tmdb/person_2199_details.json",
-      "source_person_id": "2199",
+      "name": "Ralph Fiennes",
+      "person_id": 380,
+      "raw_file": "analytics/raw/tmdb/person_5469_details.json",
+      "source_person_id": "5469",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Allan Scott",
-      "person_id": 354,
-      "raw_file": "analytics/raw/tmdb/person_589662_details.json",
-      "source_person_id": "589662",
+      "name": "Caroline Goodall",
+      "person_id": 381,
+      "raw_file": "analytics/raw/tmdb/person_6692_details.json",
+      "source_person_id": "6692",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Imelda Staunton",
-      "person_id": 355,
-      "raw_file": "analytics/raw/tmdb/person_11356_details.json",
-      "source_person_id": "11356",
+      "name": "Jonathan Sagall",
+      "person_id": 382,
+      "raw_file": "analytics/raw/tmdb/person_6693_details.json",
+      "source_person_id": "6693",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Jonathan Pryce",
-      "person_id": 356,
-      "raw_file": "analytics/raw/tmdb/person_378_details.json",
-      "source_person_id": "378",
+      "name": "Tom Sizemore",
+      "person_id": 383,
+      "raw_file": "analytics/raw/tmdb/person_3197_details.json",
+      "source_person_id": "3197",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Olivia Colman",
-      "person_id": 357,
-      "raw_file": "analytics/raw/tmdb/person_39187_details.json",
-      "source_person_id": "39187",
+      "name": "Edward Burns",
+      "person_id": 384,
+      "raw_file": "analytics/raw/tmdb/person_12833_details.json",
+      "source_person_id": "12833",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Lesley Manville",
-      "person_id": 358,
-      "raw_file": "analytics/raw/tmdb/person_72305_details.json",
-      "source_person_id": "72305",
+      "name": "Barry Pepper",
+      "person_id": 385,
+      "raw_file": "analytics/raw/tmdb/person_12834_details.json",
+      "source_person_id": "12834",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Peter Morgan",
-      "person_id": 359,
-      "raw_file": "analytics/raw/tmdb/person_15730_details.json",
-      "source_person_id": "15730",
+      "name": "Adam Goldberg",
+      "person_id": 386,
+      "raw_file": "analytics/raw/tmdb/person_6163_details.json",
+      "source_person_id": "6163",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Jonathan Groff",
-      "person_id": 360,
-      "raw_file": "analytics/raw/tmdb/person_221611_details.json",
-      "source_person_id": "221611",
+      "name": "Gwyneth Paltrow",
+      "person_id": 387,
+      "raw_file": "analytics/raw/tmdb/person_12052_details.json",
+      "source_person_id": "12052",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Holt McCallany",
-      "person_id": 361,
-      "raw_file": "analytics/raw/tmdb/person_7497_details.json",
-      "source_person_id": "7497",
+      "name": "John Cassini",
+      "person_id": 388,
+      "raw_file": "analytics/raw/tmdb/person_12055_details.json",
+      "source_person_id": "12055",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Hannah Gross",
-      "person_id": 362,
-      "raw_file": "analytics/raw/tmdb/person_1049916_details.json",
-      "source_person_id": "1049916",
+      "name": "Peter Crombie",
+      "person_id": 389,
+      "raw_file": "analytics/raw/tmdb/person_30487_details.json",
+      "source_person_id": "30487",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Anna Torv",
-      "person_id": 363,
-      "raw_file": "analytics/raw/tmdb/person_30084_details.json",
-      "source_person_id": "30084",
+      "name": "Guy Pearce",
+      "person_id": 390,
+      "raw_file": "analytics/raw/tmdb/person_529_details.json",
+      "source_person_id": "529",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Stacey Roca",
-      "person_id": 364,
-      "raw_file": "analytics/raw/tmdb/person_1233173_details.json",
-      "source_person_id": "1233173",
+      "name": "Joe Pantoliano",
+      "person_id": 391,
+      "raw_file": "analytics/raw/tmdb/person_532_details.json",
+      "source_person_id": "532",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Joe Penhall",
-      "person_id": 365,
-      "raw_file": "analytics/raw/tmdb/person_57573_details.json",
-      "source_person_id": "57573",
+      "name": "Mark Boone Junior",
+      "person_id": 392,
+      "raw_file": "analytics/raw/tmdb/person_534_details.json",
+      "source_person_id": "534",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Steven Strait",
-      "person_id": 366,
-      "raw_file": "analytics/raw/tmdb/person_54815_details.json",
-      "source_person_id": "54815",
+      "name": "Russ Fega",
+      "person_id": 393,
+      "raw_file": "analytics/raw/tmdb/person_535_details.json",
+      "source_person_id": "535",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Dominique Tipper",
-      "person_id": 367,
-      "raw_file": "analytics/raw/tmdb/person_1361876_details.json",
-      "source_person_id": "1361876",
+      "name": "Tommy Lee Jones",
+      "person_id": 394,
+      "raw_file": "analytics/raw/tmdb/person_2176_details.json",
+      "source_person_id": "2176",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Cas Anvar",
-      "person_id": 368,
-      "raw_file": "analytics/raw/tmdb/person_59214_details.json",
-      "source_person_id": "59214",
+      "name": "Woody Harrelson",
+      "person_id": 395,
+      "raw_file": "analytics/raw/tmdb/person_57755_details.json",
+      "source_person_id": "57755",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Wes Chatham",
-      "person_id": 369,
-      "raw_file": "analytics/raw/tmdb/person_51682_details.json",
-      "source_person_id": "51682",
+      "name": "Kelly Macdonald",
+      "person_id": 396,
+      "raw_file": "analytics/raw/tmdb/person_9015_details.json",
+      "source_person_id": "9015",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Shohreh Aghdashloo",
-      "person_id": 370,
-      "raw_file": "analytics/raw/tmdb/person_21041_details.json",
-      "source_person_id": "21041",
+      "name": "Joel Coen",
+      "person_id": 397,
+      "raw_file": "analytics/raw/tmdb/person_1223_details.json",
+      "source_person_id": "1223",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Mark Fergus",
-      "person_id": 371,
-      "raw_file": "analytics/raw/tmdb/person_79207_details.json",
-      "source_person_id": "79207",
+      "name": "Ethan Coen",
+      "person_id": 398,
+      "raw_file": "analytics/raw/tmdb/person_1224_details.json",
+      "source_person_id": "1224",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Hawk Ostby",
-      "person_id": 372,
-      "raw_file": "analytics/raw/tmdb/person_79209_details.json",
-      "source_person_id": "79209",
+      "name": "Daniel Day-Lewis",
+      "person_id": 399,
+      "raw_file": "analytics/raw/tmdb/person_11856_details.json",
+      "source_person_id": "11856",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Paul Anderson",
-      "person_id": 373,
-      "raw_file": "analytics/raw/tmdb/person_220448_details.json",
-      "source_person_id": "220448",
+      "name": "Paul Dano",
+      "person_id": 400,
+      "raw_file": "analytics/raw/tmdb/person_17142_details.json",
+      "source_person_id": "17142",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Joe Cole",
-      "person_id": 374,
-      "raw_file": "analytics/raw/tmdb/person_1081875_details.json",
-      "source_person_id": "1081875",
+      "name": "Kevin J. O'Connor",
+      "person_id": 401,
+      "raw_file": "analytics/raw/tmdb/person_18916_details.json",
+      "source_person_id": "18916",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Helen McCrory",
-      "person_id": 375,
-      "raw_file": "analytics/raw/tmdb/person_15737_details.json",
-      "source_person_id": "15737",
+      "name": "Ciarán Hinds",
+      "person_id": 402,
+      "raw_file": "analytics/raw/tmdb/person_8785_details.json",
+      "source_person_id": "8785",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Iddo Goldberg",
-      "person_id": 376,
-      "raw_file": "analytics/raw/tmdb/person_94958_details.json",
-      "source_person_id": "94958",
+      "name": "Dillon Freasier",
+      "person_id": 403,
+      "raw_file": "analytics/raw/tmdb/person_52564_details.json",
+      "source_person_id": "52564",
       "status": "fetched",
       "warnings": []
     },
     {
-      "name": "Steven Knight",
-      "person_id": 377,
-      "raw_file": "analytics/raw/tmdb/person_23227_details.json",
-      "source_person_id": "23227",
+      "name": "Paul Thomas Anderson",
+      "person_id": 404,
+      "raw_file": "analytics/raw/tmdb/person_4762_details.json",
+      "source_person_id": "4762",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "F. Murray Abraham",
+      "person_id": 405,
+      "raw_file": "analytics/raw/tmdb/person_1164_details.json",
+      "source_person_id": "1164",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mathieu Amalric",
+      "person_id": 406,
+      "raw_file": "analytics/raw/tmdb/person_8789_details.json",
+      "source_person_id": "8789",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Adrien Brody",
+      "person_id": 407,
+      "raw_file": "analytics/raw/tmdb/person_3490_details.json",
+      "source_person_id": "3490",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Willem Dafoe",
+      "person_id": 408,
+      "raw_file": "analytics/raw/tmdb/person_5293_details.json",
+      "source_person_id": "5293",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Wes Anderson",
+      "person_id": 409,
+      "raw_file": "analytics/raw/tmdb/person_5655_details.json",
+      "source_person_id": "5655",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Emma Stone",
+      "person_id": 410,
+      "raw_file": "analytics/raw/tmdb/person_54693_details.json",
+      "source_person_id": "54693",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "John Legend",
+      "person_id": 411,
+      "raw_file": "analytics/raw/tmdb/person_113461_details.json",
+      "source_person_id": "113461",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Rosemarie DeWitt",
+      "person_id": 412,
+      "raw_file": "analytics/raw/tmdb/person_14892_details.json",
+      "source_person_id": "14892",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Finn Wittrock",
+      "person_id": 413,
+      "raw_file": "analytics/raw/tmdb/person_168877_details.json",
+      "source_person_id": "168877",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jonah Hill",
+      "person_id": 414,
+      "raw_file": "analytics/raw/tmdb/person_21007_details.json",
+      "source_person_id": "21007",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kyle Chandler",
+      "person_id": 415,
+      "raw_file": "analytics/raw/tmdb/person_3497_details.json",
+      "source_person_id": "3497",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jamie Foxx",
+      "person_id": 416,
+      "raw_file": "analytics/raw/tmdb/person_134_details.json",
+      "source_person_id": "134",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Christoph Waltz",
+      "person_id": 417,
+      "raw_file": "analytics/raw/tmdb/person_27319_details.json",
+      "source_person_id": "27319",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kerry Washington",
+      "person_id": 418,
+      "raw_file": "analytics/raw/tmdb/person_11703_details.json",
+      "source_person_id": "11703",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jim Carrey",
+      "person_id": 419,
+      "raw_file": "analytics/raw/tmdb/person_206_details.json",
+      "source_person_id": "206",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Laura Linney",
+      "person_id": 420,
+      "raw_file": "analytics/raw/tmdb/person_350_details.json",
+      "source_person_id": "350",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Noah Emmerich",
+      "person_id": 421,
+      "raw_file": "analytics/raw/tmdb/person_11315_details.json",
+      "source_person_id": "11315",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Natascha McElhone",
+      "person_id": 422,
+      "raw_file": "analytics/raw/tmdb/person_11317_details.json",
+      "source_person_id": "11317",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Holland Taylor",
+      "person_id": 423,
+      "raw_file": "analytics/raw/tmdb/person_11318_details.json",
+      "source_person_id": "11318",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Peter Weir",
+      "person_id": 424,
+      "raw_file": "analytics/raw/tmdb/person_2690_details.json",
+      "source_person_id": "2690",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kirsten Dunst",
+      "person_id": 425,
+      "raw_file": "analytics/raw/tmdb/person_205_details.json",
+      "source_person_id": "205",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mark Ruffalo",
+      "person_id": 426,
+      "raw_file": "analytics/raw/tmdb/person_103_details.json",
+      "source_person_id": "103",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Michel Gondry",
+      "person_id": 427,
+      "raw_file": "analytics/raw/tmdb/person_201_details.json",
+      "source_person_id": "201",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Scarlett Johansson",
+      "person_id": 428,
+      "raw_file": "analytics/raw/tmdb/person_1245_details.json",
+      "source_person_id": "1245",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Lynn Adrianna",
+      "person_id": 429,
+      "raw_file": "analytics/raw/tmdb/person_549831_details.json",
+      "source_person_id": "549831",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Lisa Renee Pitts",
+      "person_id": 430,
+      "raw_file": "analytics/raw/tmdb/person_154798_details.json",
+      "source_person_id": "154798",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Gabe Gomez",
+      "person_id": 431,
+      "raw_file": "analytics/raw/tmdb/person_1509453_details.json",
+      "source_person_id": "1509453",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Spike Jonze",
+      "person_id": 432,
+      "raw_file": "analytics/raw/tmdb/person_5953_details.json",
+      "source_person_id": "5953",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Alicia Vikander",
+      "person_id": 433,
+      "raw_file": "analytics/raw/tmdb/person_227454_details.json",
+      "source_person_id": "227454",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Oscar Isaac",
+      "person_id": 434,
+      "raw_file": "analytics/raw/tmdb/person_25072_details.json",
+      "source_person_id": "25072",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Sonoya Mizuno",
+      "person_id": 435,
+      "raw_file": "analytics/raw/tmdb/person_1457238_details.json",
+      "source_person_id": "1457238",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Corey Johnson",
+      "person_id": 436,
+      "raw_file": "analytics/raw/tmdb/person_17199_details.json",
+      "source_person_id": "17199",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Alex Garland",
+      "person_id": 437,
+      "raw_file": "analytics/raw/tmdb/person_2036_details.json",
+      "source_person_id": "2036",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kristen Wiig",
+      "person_id": 438,
+      "raw_file": "analytics/raw/tmdb/person_41091_details.json",
+      "source_person_id": "41091",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jeff Daniels",
+      "person_id": 439,
+      "raw_file": "analytics/raw/tmdb/person_8447_details.json",
+      "source_person_id": "8447",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Michael Peña",
+      "person_id": 440,
+      "raw_file": "analytics/raw/tmdb/person_454_details.json",
+      "source_person_id": "454",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Amy Poehler",
+      "person_id": 441,
+      "raw_file": "analytics/raw/tmdb/person_56322_details.json",
+      "source_person_id": "56322",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Phyllis Smith",
+      "person_id": 442,
+      "raw_file": "analytics/raw/tmdb/person_169200_details.json",
+      "source_person_id": "169200",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Richard Kind",
+      "person_id": 443,
+      "raw_file": "analytics/raw/tmdb/person_21125_details.json",
+      "source_person_id": "21125",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Bill Hader",
+      "person_id": 444,
+      "raw_file": "analytics/raw/tmdb/person_19278_details.json",
+      "source_person_id": "19278",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Lewis Black",
+      "person_id": 445,
+      "raw_file": "analytics/raw/tmdb/person_59258_details.json",
+      "source_person_id": "59258",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Pete Docter",
+      "person_id": 446,
+      "raw_file": "analytics/raw/tmdb/person_12890_details.json",
+      "source_person_id": "12890",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Anthony Gonzalez",
+      "person_id": 447,
+      "raw_file": "analytics/raw/tmdb/person_1193391_details.json",
+      "source_person_id": "1193391",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Gael García Bernal",
+      "person_id": 448,
+      "raw_file": "analytics/raw/tmdb/person_258_details.json",
+      "source_person_id": "258",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Benjamin Bratt",
+      "person_id": 449,
+      "raw_file": "analytics/raw/tmdb/person_4589_details.json",
+      "source_person_id": "4589",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Alanna Ubach",
+      "person_id": 450,
+      "raw_file": "analytics/raw/tmdb/person_10402_details.json",
+      "source_person_id": "10402",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Renée Victor",
+      "person_id": 451,
+      "raw_file": "analytics/raw/tmdb/person_154004_details.json",
+      "source_person_id": "154004",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Lee Unkrich",
+      "person_id": 452,
+      "raw_file": "analytics/raw/tmdb/person_8_details.json",
+      "source_person_id": "8",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Ryunosuke Kamiki",
+      "person_id": 453,
+      "raw_file": "analytics/raw/tmdb/person_225730_details.json",
+      "source_person_id": "225730",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mone Kamishiraishi",
+      "person_id": 454,
+      "raw_file": "analytics/raw/tmdb/person_1369100_details.json",
+      "source_person_id": "1369100",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Ryo Narita",
+      "person_id": 455,
+      "raw_file": "analytics/raw/tmdb/person_1668610_details.json",
+      "source_person_id": "1668610",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Aoi Yuuki",
+      "person_id": 456,
+      "raw_file": "analytics/raw/tmdb/person_936275_details.json",
+      "source_person_id": "936275",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Nobunaga Shimazaki",
+      "person_id": 457,
+      "raw_file": "analytics/raw/tmdb/person_1210634_details.json",
+      "source_person_id": "1210634",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Makoto Shinkai",
+      "person_id": 458,
+      "raw_file": "analytics/raw/tmdb/person_74091_details.json",
+      "source_person_id": "74091",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Alexandre Rodrigues",
+      "person_id": 459,
+      "raw_file": "analytics/raw/tmdb/person_8595_details.json",
+      "source_person_id": "8595",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Leandro Firmino",
+      "person_id": 460,
+      "raw_file": "analytics/raw/tmdb/person_8596_details.json",
+      "source_person_id": "8596",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Phellipe Haagensen",
+      "person_id": 461,
+      "raw_file": "analytics/raw/tmdb/person_8597_details.json",
+      "source_person_id": "8597",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Douglas Silva",
+      "person_id": 462,
+      "raw_file": "analytics/raw/tmdb/person_8598_details.json",
+      "source_person_id": "8598",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jonathan Haagensen",
+      "person_id": 463,
+      "raw_file": "analytics/raw/tmdb/person_8599_details.json",
+      "source_person_id": "8599",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Fernando Meirelles",
+      "person_id": 464,
+      "raw_file": "analytics/raw/tmdb/person_8557_details.json",
+      "source_person_id": "8557",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Ivana Baquero",
+      "person_id": 465,
+      "raw_file": "analytics/raw/tmdb/person_16970_details.json",
+      "source_person_id": "16970",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Sergi López",
+      "person_id": 466,
+      "raw_file": "analytics/raw/tmdb/person_16972_details.json",
+      "source_person_id": "16972",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Maribel Verdú",
+      "person_id": 467,
+      "raw_file": "analytics/raw/tmdb/person_16971_details.json",
+      "source_person_id": "16971",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Doug Jones",
+      "person_id": 468,
+      "raw_file": "analytics/raw/tmdb/person_17005_details.json",
+      "source_person_id": "17005",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Ariadna Gil",
+      "person_id": 469,
+      "raw_file": "analytics/raw/tmdb/person_17006_details.json",
+      "source_person_id": "17006",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Guillermo del Toro",
+      "person_id": 470,
+      "raw_file": "analytics/raw/tmdb/person_10828_details.json",
+      "source_person_id": "10828",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Matthew Fox",
+      "person_id": 471,
+      "raw_file": "analytics/raw/tmdb/person_28657_details.json",
+      "source_person_id": "28657",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Evangeline Lilly",
+      "person_id": 472,
+      "raw_file": "analytics/raw/tmdb/person_19034_details.json",
+      "source_person_id": "19034",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Terry O'Quinn",
+      "person_id": 473,
+      "raw_file": "analytics/raw/tmdb/person_12646_details.json",
+      "source_person_id": "12646",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Josh Holloway",
+      "person_id": 474,
+      "raw_file": "analytics/raw/tmdb/person_142636_details.json",
+      "source_person_id": "142636",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jorge Garcia",
+      "person_id": 475,
+      "raw_file": "analytics/raw/tmdb/person_1215525_details.json",
+      "source_person_id": "1215525",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "J.J. Abrams",
+      "person_id": 476,
+      "raw_file": "analytics/raw/tmdb/person_15344_details.json",
+      "source_person_id": "15344",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Damon Lindelof",
+      "person_id": 477,
+      "raw_file": "analytics/raw/tmdb/person_28974_details.json",
+      "source_person_id": "28974",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jeffrey Lieber",
+      "person_id": 478,
+      "raw_file": "analytics/raw/tmdb/person_1237491_details.json",
+      "source_person_id": "1237491",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Michael C. Hall",
+      "person_id": 479,
+      "raw_file": "analytics/raw/tmdb/person_53820_details.json",
+      "source_person_id": "53820",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Julia Stiles",
+      "person_id": 480,
+      "raw_file": "analytics/raw/tmdb/person_12041_details.json",
+      "source_person_id": "12041",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Julie Benz",
+      "person_id": 481,
+      "raw_file": "analytics/raw/tmdb/person_35551_details.json",
+      "source_person_id": "35551",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jennifer Carpenter",
+      "person_id": 482,
+      "raw_file": "analytics/raw/tmdb/person_53828_details.json",
+      "source_person_id": "53828",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "James Manos Jr.",
+      "person_id": 483,
+      "raw_file": "analytics/raw/tmdb/person_1223737_details.json",
+      "source_person_id": "1223737",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Rami Malek",
+      "person_id": 484,
+      "raw_file": "analytics/raw/tmdb/person_17838_details.json",
+      "source_person_id": "17838",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Christian Slater",
+      "person_id": 485,
+      "raw_file": "analytics/raw/tmdb/person_2224_details.json",
+      "source_person_id": "2224",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Carly Chaikin",
+      "person_id": 486,
+      "raw_file": "analytics/raw/tmdb/person_114601_details.json",
+      "source_person_id": "114601",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Martin Wallström",
+      "person_id": 487,
+      "raw_file": "analytics/raw/tmdb/person_213486_details.json",
+      "source_person_id": "213486",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Stephanie Corneliussen",
+      "person_id": 488,
+      "raw_file": "analytics/raw/tmdb/person_1142724_details.json",
+      "source_person_id": "1142724",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Sam Esmail",
+      "person_id": 489,
+      "raw_file": "analytics/raw/tmdb/person_1331163_details.json",
+      "source_person_id": "1331163",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "David Duchovny",
+      "person_id": 490,
+      "raw_file": "analytics/raw/tmdb/person_12640_details.json",
+      "source_person_id": "12640",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Gillian Anderson",
+      "person_id": 491,
+      "raw_file": "analytics/raw/tmdb/person_12214_details.json",
+      "source_person_id": "12214",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Robert Patrick",
+      "person_id": 492,
+      "raw_file": "analytics/raw/tmdb/person_418_details.json",
+      "source_person_id": "418",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Annabeth Gish",
+      "person_id": 493,
+      "raw_file": "analytics/raw/tmdb/person_49425_details.json",
+      "source_person_id": "49425",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mitch Pileggi",
+      "person_id": 494,
+      "raw_file": "analytics/raw/tmdb/person_12644_details.json",
+      "source_person_id": "12644",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Chris Carter",
+      "person_id": 495,
+      "raw_file": "analytics/raw/tmdb/person_12524_details.json",
+      "source_person_id": "12524",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kyle MacLachlan",
+      "person_id": 496,
+      "raw_file": "analytics/raw/tmdb/person_6677_details.json",
+      "source_person_id": "6677",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Michael Ontkean",
+      "person_id": 497,
+      "raw_file": "analytics/raw/tmdb/person_6678_details.json",
+      "source_person_id": "6678",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Lara Flynn Boyle",
+      "person_id": 498,
+      "raw_file": "analytics/raw/tmdb/person_6684_details.json",
+      "source_person_id": "6684",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Dana Ashbrook",
+      "person_id": 499,
+      "raw_file": "analytics/raw/tmdb/person_6715_details.json",
+      "source_person_id": "6715",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Richard Beymer",
+      "person_id": 500,
+      "raw_file": "analytics/raw/tmdb/person_6679_details.json",
+      "source_person_id": "6679",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mark Frost",
+      "person_id": 501,
+      "raw_file": "analytics/raw/tmdb/person_58837_details.json",
+      "source_person_id": "58837",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "David Lynch",
+      "person_id": 502,
+      "raw_file": "analytics/raw/tmdb/person_5602_details.json",
+      "source_person_id": "5602",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Zach Tyler Eisen",
+      "person_id": 503,
+      "raw_file": "analytics/raw/tmdb/person_60251_details.json",
+      "source_person_id": "60251",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mae Whitman",
+      "person_id": 504,
+      "raw_file": "analytics/raw/tmdb/person_52404_details.json",
+      "source_person_id": "52404",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jack De Sena",
+      "person_id": 505,
+      "raw_file": "analytics/raw/tmdb/person_60230_details.json",
+      "source_person_id": "60230",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Dante Basco",
+      "person_id": 506,
+      "raw_file": "analytics/raw/tmdb/person_13391_details.json",
+      "source_person_id": "13391",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mako",
+      "person_id": 507,
+      "raw_file": "analytics/raw/tmdb/person_10134_details.json",
+      "source_person_id": "10134",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Michael Dante DiMartino",
+      "person_id": 508,
+      "raw_file": "analytics/raw/tmdb/person_1190517_details.json",
+      "source_person_id": "1190517",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Bryan Konietzko",
+      "person_id": 509,
+      "raw_file": "analytics/raw/tmdb/person_1190518_details.json",
+      "source_person_id": "1190518",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Koichi Yamadera",
+      "person_id": 510,
+      "raw_file": "analytics/raw/tmdb/person_20664_details.json",
+      "source_person_id": "20664",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Unsho Ishizuka",
+      "person_id": 511,
+      "raw_file": "analytics/raw/tmdb/person_68916_details.json",
+      "source_person_id": "68916",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Megumi Hayashibara",
+      "person_id": 512,
+      "raw_file": "analytics/raw/tmdb/person_40325_details.json",
+      "source_person_id": "40325",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Aoi Tada",
+      "person_id": 513,
+      "raw_file": "analytics/raw/tmdb/person_68917_details.json",
+      "source_person_id": "68917",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Takeshi Aono",
+      "person_id": 514,
+      "raw_file": "analytics/raw/tmdb/person_81852_details.json",
+      "source_person_id": "81852",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mamoru Miyano",
+      "person_id": 515,
+      "raw_file": "analytics/raw/tmdb/person_93803_details.json",
+      "source_person_id": "93803",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Shido Nakamura",
+      "person_id": 516,
+      "raw_file": "analytics/raw/tmdb/person_72202_details.json",
+      "source_person_id": "72202",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Aya Hirano",
+      "person_id": 517,
+      "raw_file": "analytics/raw/tmdb/person_144650_details.json",
+      "source_person_id": "144650",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kappei Yamaguchi",
+      "person_id": 518,
+      "raw_file": "analytics/raw/tmdb/person_68472_details.json",
+      "source_person_id": "68472",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kimiko Saito",
+      "person_id": 519,
+      "raw_file": "analytics/raw/tmdb/person_1241603_details.json",
+      "source_person_id": "1241603",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Yuki Kaji",
+      "person_id": 520,
+      "raw_file": "analytics/raw/tmdb/person_149894_details.json",
+      "source_person_id": "149894",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Yui Ishikawa",
+      "person_id": 521,
+      "raw_file": "analytics/raw/tmdb/person_1224288_details.json",
+      "source_person_id": "1224288",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Marina Inoue",
+      "person_id": 522,
+      "raw_file": "analytics/raw/tmdb/person_90135_details.json",
+      "source_person_id": "90135",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Hiroshi Kamiya",
+      "person_id": 523,
+      "raw_file": "analytics/raw/tmdb/person_93801_details.json",
+      "source_person_id": "93801",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kisho Taniyama",
+      "person_id": 524,
+      "raw_file": "analytics/raw/tmdb/person_553959_details.json",
+      "source_person_id": "553959",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Úrsula Corberó",
+      "person_id": 525,
+      "raw_file": "analytics/raw/tmdb/person_1042728_details.json",
+      "source_person_id": "1042728",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Itziar Ituño",
+      "person_id": 526,
+      "raw_file": "analytics/raw/tmdb/person_947514_details.json",
+      "source_person_id": "947514",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Álvaro Morte",
+      "person_id": 527,
+      "raw_file": "analytics/raw/tmdb/person_1340020_details.json",
+      "source_person_id": "1340020",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Paco Tous",
+      "person_id": 528,
+      "raw_file": "analytics/raw/tmdb/person_1027740_details.json",
+      "source_person_id": "1027740",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Pedro Alonso",
+      "person_id": 529,
+      "raw_file": "analytics/raw/tmdb/person_1109836_details.json",
+      "source_person_id": "1109836",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Álex Pina",
+      "person_id": 530,
+      "raw_file": "analytics/raw/tmdb/person_82725_details.json",
+      "source_person_id": "82725",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Lee Jung-jae",
+      "person_id": 531,
+      "raw_file": "analytics/raw/tmdb/person_73249_details.json",
+      "source_person_id": "73249",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Yim Si-wan",
+      "person_id": 532,
+      "raw_file": "analytics/raw/tmdb/person_1296713_details.json",
+      "source_person_id": "1296713",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Wi Ha-jun",
+      "person_id": 533,
+      "raw_file": "analytics/raw/tmdb/person_1557181_details.json",
+      "source_person_id": "1557181",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Jo Yu-ri",
+      "person_id": 534,
+      "raw_file": "analytics/raw/tmdb/person_2359937_details.json",
+      "source_person_id": "2359937",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Lee Byung-hun",
+      "person_id": 535,
+      "raw_file": "analytics/raw/tmdb/person_25002_details.json",
+      "source_person_id": "25002",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Hwang Dong-hyuk",
+      "person_id": 536,
+      "raw_file": "analytics/raw/tmdb/person_1294471_details.json",
+      "source_person_id": "1294471",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Michiel Huisman",
+      "person_id": 537,
+      "raw_file": "analytics/raw/tmdb/person_91520_details.json",
+      "source_person_id": "91520",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Elizabeth Reaser",
+      "person_id": 538,
+      "raw_file": "analytics/raw/tmdb/person_53755_details.json",
+      "source_person_id": "53755",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Kate Siegel",
+      "person_id": 539,
+      "raw_file": "analytics/raw/tmdb/person_932076_details.json",
+      "source_person_id": "932076",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Oliver Jackson-Cohen",
+      "person_id": 540,
+      "raw_file": "analytics/raw/tmdb/person_551020_details.json",
+      "source_person_id": "551020",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Victoria Pedretti",
+      "person_id": 541,
+      "raw_file": "analytics/raw/tmdb/person_2117434_details.json",
+      "source_person_id": "2117434",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "Mike Flanagan",
+      "person_id": 542,
+      "raw_file": "analytics/raw/tmdb/person_551463_details.json",
+      "source_person_id": "551463",
+      "status": "fetched",
+      "warnings": []
+    },
+    {
+      "name": "David Attenborough",
+      "person_id": 543,
+      "raw_file": "analytics/raw/tmdb/person_86543_details.json",
+      "source_person_id": "86543",
       "status": "fetched",
       "warnings": []
     }
   ],
   "raw_files_fetched": [
-    "analytics/raw/tmdb/person_4173_details.json",
-    "analytics/raw/tmdb/person_349_details.json",
-    "analytics/raw/tmdb/person_15854_details.json",
-    "analytics/raw/tmdb/person_16293_details.json",
-    "analytics/raw/tmdb/person_16294_details.json",
-    "analytics/raw/tmdb/person_4783_details.json",
-    "analytics/raw/tmdb/person_4784_details.json",
-    "analytics/raw/tmdb/person_4785_details.json",
-    "analytics/raw/tmdb/person_4786_details.json",
-    "analytics/raw/tmdb/person_4789_details.json",
-    "analytics/raw/tmdb/person_488_details.json",
-    "analytics/raw/tmdb/person_204_details.json",
-    "analytics/raw/tmdb/person_1954_details.json",
-    "analytics/raw/tmdb/person_8534_details.json",
-    "analytics/raw/tmdb/person_3713_details.json",
-    "analytics/raw/tmdb/person_2710_details.json",
-    "analytics/raw/tmdb/person_6968_details.json",
-    "analytics/raw/tmdb/person_15555_details.json",
-    "analytics/raw/tmdb/person_15556_details.json",
-    "analytics/raw/tmdb/person_19587_details.json",
-    "analytics/raw/tmdb/person_19588_details.json",
-    "analytics/raw/tmdb/person_19589_details.json",
-    "analytics/raw/tmdb/person_19590_details.json",
-    "analytics/raw/tmdb/person_19591_details.json",
-    "analytics/raw/tmdb/person_608_details.json",
-    "analytics/raw/tmdb/person_514_details.json",
-    "analytics/raw/tmdb/person_13240_details.json",
-    "analytics/raw/tmdb/person_8349_details.json",
-    "analytics/raw/tmdb/person_8784_details.json",
-    "analytics/raw/tmdb/person_16828_details.json",
-    "analytics/raw/tmdb/person_335_details.json",
-    "analytics/raw/tmdb/person_67367_details.json",
-    "analytics/raw/tmdb/person_206919_details.json",
-    "analytics/raw/tmdb/person_1255540_details.json",
-    "analytics/raw/tmdb/person_2229_details.json",
-    "analytics/raw/tmdb/person_11367_details.json",
-    "analytics/raw/tmdb/person_572541_details.json",
-    "analytics/raw/tmdb/person_291263_details.json",
-    "analytics/raw/tmdb/person_17287_details.json",
-    "analytics/raw/tmdb/person_129101_details.json",
-    "analytics/raw/tmdb/person_203683_details.json",
-    "analytics/raw/tmdb/person_65829_details.json",
-    "analytics/raw/tmdb/person_17859_details.json",
-    "analytics/raw/tmdb/person_1218279_details.json",
-    "analytics/raw/tmdb/person_36594_details.json",
-    "analytics/raw/tmdb/person_17178_details.json",
-    "analytics/raw/tmdb/person_10431_details.json",
-    "analytics/raw/tmdb/person_1541178_details.json",
-    "analytics/raw/tmdb/person_1331652_details.json",
-    "analytics/raw/tmdb/person_202816_details.json",
-    "analytics/raw/tmdb/person_1397778_details.json",
-    "analytics/raw/tmdb/person_1125581_details.json",
-    "analytics/raw/tmdb/person_1855149_details.json",
-    "analytics/raw/tmdb/person_1267379_details.json",
-    "analytics/raw/tmdb/person_54193_details.json",
-    "analytics/raw/tmdb/person_2199_details.json",
-    "analytics/raw/tmdb/person_589662_details.json",
-    "analytics/raw/tmdb/person_11356_details.json",
-    "analytics/raw/tmdb/person_378_details.json",
-    "analytics/raw/tmdb/person_39187_details.json",
-    "analytics/raw/tmdb/person_72305_details.json",
-    "analytics/raw/tmdb/person_15730_details.json",
-    "analytics/raw/tmdb/person_221611_details.json",
-    "analytics/raw/tmdb/person_7497_details.json",
-    "analytics/raw/tmdb/person_1049916_details.json",
-    "analytics/raw/tmdb/person_30084_details.json",
-    "analytics/raw/tmdb/person_1233173_details.json",
-    "analytics/raw/tmdb/person_57573_details.json",
-    "analytics/raw/tmdb/person_54815_details.json",
-    "analytics/raw/tmdb/person_1361876_details.json",
-    "analytics/raw/tmdb/person_59214_details.json",
-    "analytics/raw/tmdb/person_51682_details.json",
-    "analytics/raw/tmdb/person_21041_details.json",
-    "analytics/raw/tmdb/person_79207_details.json",
-    "analytics/raw/tmdb/person_79209_details.json",
-    "analytics/raw/tmdb/person_220448_details.json",
-    "analytics/raw/tmdb/person_1081875_details.json",
-    "analytics/raw/tmdb/person_15737_details.json",
-    "analytics/raw/tmdb/person_94958_details.json",
-    "analytics/raw/tmdb/person_23227_details.json"
+    "analytics/raw/tmdb/person_3896_details.json",
+    "analytics/raw/tmdb/person_2282_details.json",
+    "analytics/raw/tmdb/person_5469_details.json",
+    "analytics/raw/tmdb/person_6692_details.json",
+    "analytics/raw/tmdb/person_6693_details.json",
+    "analytics/raw/tmdb/person_3197_details.json",
+    "analytics/raw/tmdb/person_12833_details.json",
+    "analytics/raw/tmdb/person_12834_details.json",
+    "analytics/raw/tmdb/person_6163_details.json",
+    "analytics/raw/tmdb/person_12052_details.json",
+    "analytics/raw/tmdb/person_12055_details.json",
+    "analytics/raw/tmdb/person_30487_details.json",
+    "analytics/raw/tmdb/person_529_details.json",
+    "analytics/raw/tmdb/person_532_details.json",
+    "analytics/raw/tmdb/person_534_details.json",
+    "analytics/raw/tmdb/person_535_details.json",
+    "analytics/raw/tmdb/person_2176_details.json",
+    "analytics/raw/tmdb/person_57755_details.json",
+    "analytics/raw/tmdb/person_9015_details.json",
+    "analytics/raw/tmdb/person_1223_details.json",
+    "analytics/raw/tmdb/person_1224_details.json",
+    "analytics/raw/tmdb/person_11856_details.json",
+    "analytics/raw/tmdb/person_17142_details.json",
+    "analytics/raw/tmdb/person_18916_details.json",
+    "analytics/raw/tmdb/person_8785_details.json",
+    "analytics/raw/tmdb/person_52564_details.json",
+    "analytics/raw/tmdb/person_4762_details.json",
+    "analytics/raw/tmdb/person_1164_details.json",
+    "analytics/raw/tmdb/person_8789_details.json",
+    "analytics/raw/tmdb/person_3490_details.json",
+    "analytics/raw/tmdb/person_5293_details.json",
+    "analytics/raw/tmdb/person_5655_details.json",
+    "analytics/raw/tmdb/person_54693_details.json",
+    "analytics/raw/tmdb/person_113461_details.json",
+    "analytics/raw/tmdb/person_14892_details.json",
+    "analytics/raw/tmdb/person_168877_details.json",
+    "analytics/raw/tmdb/person_21007_details.json",
+    "analytics/raw/tmdb/person_3497_details.json",
+    "analytics/raw/tmdb/person_134_details.json",
+    "analytics/raw/tmdb/person_27319_details.json",
+    "analytics/raw/tmdb/person_11703_details.json",
+    "analytics/raw/tmdb/person_206_details.json",
+    "analytics/raw/tmdb/person_350_details.json",
+    "analytics/raw/tmdb/person_11315_details.json",
+    "analytics/raw/tmdb/person_11317_details.json",
+    "analytics/raw/tmdb/person_11318_details.json",
+    "analytics/raw/tmdb/person_2690_details.json",
+    "analytics/raw/tmdb/person_205_details.json",
+    "analytics/raw/tmdb/person_103_details.json",
+    "analytics/raw/tmdb/person_201_details.json",
+    "analytics/raw/tmdb/person_1245_details.json",
+    "analytics/raw/tmdb/person_549831_details.json",
+    "analytics/raw/tmdb/person_154798_details.json",
+    "analytics/raw/tmdb/person_1509453_details.json",
+    "analytics/raw/tmdb/person_5953_details.json",
+    "analytics/raw/tmdb/person_227454_details.json",
+    "analytics/raw/tmdb/person_25072_details.json",
+    "analytics/raw/tmdb/person_1457238_details.json",
+    "analytics/raw/tmdb/person_17199_details.json",
+    "analytics/raw/tmdb/person_2036_details.json",
+    "analytics/raw/tmdb/person_41091_details.json",
+    "analytics/raw/tmdb/person_8447_details.json",
+    "analytics/raw/tmdb/person_454_details.json",
+    "analytics/raw/tmdb/person_56322_details.json",
+    "analytics/raw/tmdb/person_169200_details.json",
+    "analytics/raw/tmdb/person_21125_details.json",
+    "analytics/raw/tmdb/person_19278_details.json",
+    "analytics/raw/tmdb/person_59258_details.json",
+    "analytics/raw/tmdb/person_12890_details.json",
+    "analytics/raw/tmdb/person_1193391_details.json",
+    "analytics/raw/tmdb/person_258_details.json",
+    "analytics/raw/tmdb/person_4589_details.json",
+    "analytics/raw/tmdb/person_10402_details.json",
+    "analytics/raw/tmdb/person_154004_details.json",
+    "analytics/raw/tmdb/person_8_details.json",
+    "analytics/raw/tmdb/person_225730_details.json",
+    "analytics/raw/tmdb/person_1369100_details.json",
+    "analytics/raw/tmdb/person_1668610_details.json",
+    "analytics/raw/tmdb/person_936275_details.json",
+    "analytics/raw/tmdb/person_1210634_details.json",
+    "analytics/raw/tmdb/person_74091_details.json",
+    "analytics/raw/tmdb/person_8595_details.json",
+    "analytics/raw/tmdb/person_8596_details.json",
+    "analytics/raw/tmdb/person_8597_details.json",
+    "analytics/raw/tmdb/person_8598_details.json",
+    "analytics/raw/tmdb/person_8599_details.json",
+    "analytics/raw/tmdb/person_8557_details.json",
+    "analytics/raw/tmdb/person_16970_details.json",
+    "analytics/raw/tmdb/person_16972_details.json",
+    "analytics/raw/tmdb/person_16971_details.json",
+    "analytics/raw/tmdb/person_17005_details.json",
+    "analytics/raw/tmdb/person_17006_details.json",
+    "analytics/raw/tmdb/person_10828_details.json",
+    "analytics/raw/tmdb/person_28657_details.json",
+    "analytics/raw/tmdb/person_19034_details.json",
+    "analytics/raw/tmdb/person_12646_details.json",
+    "analytics/raw/tmdb/person_142636_details.json",
+    "analytics/raw/tmdb/person_1215525_details.json",
+    "analytics/raw/tmdb/person_15344_details.json",
+    "analytics/raw/tmdb/person_28974_details.json",
+    "analytics/raw/tmdb/person_1237491_details.json",
+    "analytics/raw/tmdb/person_53820_details.json",
+    "analytics/raw/tmdb/person_12041_details.json",
+    "analytics/raw/tmdb/person_35551_details.json",
+    "analytics/raw/tmdb/person_53828_details.json",
+    "analytics/raw/tmdb/person_1223737_details.json",
+    "analytics/raw/tmdb/person_17838_details.json",
+    "analytics/raw/tmdb/person_2224_details.json",
+    "analytics/raw/tmdb/person_114601_details.json",
+    "analytics/raw/tmdb/person_213486_details.json",
+    "analytics/raw/tmdb/person_1142724_details.json",
+    "analytics/raw/tmdb/person_1331163_details.json",
+    "analytics/raw/tmdb/person_12640_details.json",
+    "analytics/raw/tmdb/person_12214_details.json",
+    "analytics/raw/tmdb/person_418_details.json",
+    "analytics/raw/tmdb/person_49425_details.json",
+    "analytics/raw/tmdb/person_12644_details.json",
+    "analytics/raw/tmdb/person_12524_details.json",
+    "analytics/raw/tmdb/person_6677_details.json",
+    "analytics/raw/tmdb/person_6678_details.json",
+    "analytics/raw/tmdb/person_6684_details.json",
+    "analytics/raw/tmdb/person_6715_details.json",
+    "analytics/raw/tmdb/person_6679_details.json",
+    "analytics/raw/tmdb/person_58837_details.json",
+    "analytics/raw/tmdb/person_5602_details.json",
+    "analytics/raw/tmdb/person_60251_details.json",
+    "analytics/raw/tmdb/person_52404_details.json",
+    "analytics/raw/tmdb/person_60230_details.json",
+    "analytics/raw/tmdb/person_13391_details.json",
+    "analytics/raw/tmdb/person_10134_details.json",
+    "analytics/raw/tmdb/person_1190517_details.json",
+    "analytics/raw/tmdb/person_1190518_details.json",
+    "analytics/raw/tmdb/person_20664_details.json",
+    "analytics/raw/tmdb/person_68916_details.json",
+    "analytics/raw/tmdb/person_40325_details.json",
+    "analytics/raw/tmdb/person_68917_details.json",
+    "analytics/raw/tmdb/person_81852_details.json",
+    "analytics/raw/tmdb/person_93803_details.json",
+    "analytics/raw/tmdb/person_72202_details.json",
+    "analytics/raw/tmdb/person_144650_details.json",
+    "analytics/raw/tmdb/person_68472_details.json",
+    "analytics/raw/tmdb/person_1241603_details.json",
+    "analytics/raw/tmdb/person_149894_details.json",
+    "analytics/raw/tmdb/person_1224288_details.json",
+    "analytics/raw/tmdb/person_90135_details.json",
+    "analytics/raw/tmdb/person_93801_details.json",
+    "analytics/raw/tmdb/person_553959_details.json",
+    "analytics/raw/tmdb/person_1042728_details.json",
+    "analytics/raw/tmdb/person_947514_details.json",
+    "analytics/raw/tmdb/person_1340020_details.json",
+    "analytics/raw/tmdb/person_1027740_details.json",
+    "analytics/raw/tmdb/person_1109836_details.json",
+    "analytics/raw/tmdb/person_82725_details.json",
+    "analytics/raw/tmdb/person_73249_details.json",
+    "analytics/raw/tmdb/person_1296713_details.json",
+    "analytics/raw/tmdb/person_1557181_details.json",
+    "analytics/raw/tmdb/person_2359937_details.json",
+    "analytics/raw/tmdb/person_25002_details.json",
+    "analytics/raw/tmdb/person_1294471_details.json",
+    "analytics/raw/tmdb/person_91520_details.json",
+    "analytics/raw/tmdb/person_53755_details.json",
+    "analytics/raw/tmdb/person_932076_details.json",
+    "analytics/raw/tmdb/person_551020_details.json",
+    "analytics/raw/tmdb/person_2117434_details.json",
+    "analytics/raw/tmdb/person_551463_details.json",
+    "analytics/raw/tmdb/person_86543_details.json"
   ],
   "raw_files_reused": [
     "analytics/raw/tmdb/person_1075096_details.json",
@@ -3127,10 +4541,14 @@
     "analytics/raw/tmdb/person_121479_details.json",
     "analytics/raw/tmdb/person_3442409_details.json",
     "analytics/raw/tmdb/person_3709350_details.json",
-    "analytics/raw/tmdb/person_3299121_details.json"
+    "analytics/raw/tmdb/person_3299121_details.json",
+    "analytics/raw/tmdb/person_19590_details.json",
+    "analytics/raw/tmdb/person_19591_details.json",
+    "analytics/raw/tmdb/person_1855149_details.json",
+    "analytics/raw/tmdb/person_1267379_details.json"
   ],
   "script_name": "fetch_tmdb_person_details.py",
-  "total_fetched_or_reused": 92,
-  "total_people_found": 377,
+  "total_fetched_or_reused": 182,
+  "total_people_found": 543,
   "warnings": []
 }
