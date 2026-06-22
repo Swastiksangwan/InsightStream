@@ -34,6 +34,10 @@ ON content (content_type, latest_activity_date DESC);
 CREATE INDEX IF NOT EXISTS idx_content_title_lower
 ON content (LOWER(title));
 
+-- Speeds up local catalog search over content type labels.
+CREATE INDEX IF NOT EXISTS idx_content_content_type_lower
+ON content (LOWER(content_type));
+
 
 -- ------------------------------------------------------------
 -- People and credits indexes
@@ -43,9 +47,17 @@ ON content (LOWER(title));
 CREATE INDEX IF NOT EXISTS idx_people_name
 ON people (name);
 
+-- Speeds up case-insensitive person search.
+CREATE INDEX IF NOT EXISTS idx_people_name_lower
+ON people (LOWER(name));
+
 -- Speeds up filtering people by known department if needed later.
 CREATE INDEX IF NOT EXISTS idx_people_known_for_department
 ON people (known_for_department);
+
+-- Speeds up case-insensitive department search.
+CREATE INDEX IF NOT EXISTS idx_people_known_for_department_lower
+ON people (LOWER(known_for_department));
 
 -- Speeds up joining person external IDs back to people.
 CREATE INDEX IF NOT EXISTS idx_person_external_ids_person_id

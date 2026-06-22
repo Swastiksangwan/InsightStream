@@ -16,6 +16,7 @@ Completed:
 
 - 15-title movie/series seed catalog.
 - Content listing, details, discovery, genres, platforms, and personal watch-state APIs.
+- Local catalog search for ingested content and imported people.
 - Real poster/backdrop URLs persisted in `backend/sample_data.sql`.
 - Provider-neutral `external_ids` table with TMDb and IMDb IDs.
 - Metadata normalization and reconciliation docs.
@@ -68,6 +69,7 @@ Analytics and ingestion:
 Content:
 
 - Content listing
+- Local search across ingested content titles, overviews, content types, and genres
 - Content detail responses
 - Discovery filtering by type, genre, platform, availability, and sort mode
 - Genre and platform metadata
@@ -88,6 +90,7 @@ Metadata:
 Frontend:
 
 - Homepage
+- Local search page
 - Discovery page
 - Content detail page
 - Watch Later page
@@ -101,6 +104,7 @@ Frontend:
 
 Content:
 
+- `GET /search`
 - `GET /content`
 - `GET /content/{content_id}`
 - `GET /content/{content_id}/details`
@@ -138,6 +142,10 @@ Backend API docs are available at:
 ```text
 http://127.0.0.1:8000/docs
 ```
+
+Search uses the local PostgreSQL catalog only. It covers ingested content and
+imported people, and it does not call TMDb or any other live provider. Missing
+titles must first be added through the ingestion pipeline.
 
 ## 6. Database Setup
 

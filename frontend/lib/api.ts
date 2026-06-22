@@ -11,6 +11,7 @@ import type {
 } from "@/types/content";
 import type { ContentCreditsResponse } from "@/types/credits";
 import type { PersonCreditsResponse, PersonDetail } from "@/types/people";
+import type { SearchResponse, SearchType } from "@/types/search";
 
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
 
@@ -112,6 +113,22 @@ export function getPerson(personId: number | string) {
 export function getPersonCredits(personId: number | string) {
   return fetchFromApi<PersonCreditsResponse>(
     buildUrl(`/people/${personId}/credits`, {}),
+  );
+}
+
+export function searchCatalog(
+  query: string,
+  searchType: SearchType = "all",
+  limit = 20,
+  offset = 0,
+) {
+  return fetchFromApi<SearchResponse>(
+    buildUrl("/search", {
+      q: query,
+      type: searchType,
+      limit: normalizeLimit(limit),
+      offset,
+    }),
   );
 }
 

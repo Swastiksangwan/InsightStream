@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import type { FormEvent } from "react";
+import { useState } from "react";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -12,6 +14,8 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
 
   function isActiveRoute(href: string) {
     if (href === "/") {
@@ -19,6 +23,18 @@ export function Navbar() {
     }
 
     return pathname.startsWith(href);
+  }
+
+  function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const query = searchQuery.trim();
+
+    if (!query) {
+      return;
+    }
+
+    router.push(`/search?q=${encodeURIComponent(query)}`);
   }
 
   return (
@@ -45,7 +61,20 @@ export function Navbar() {
           })}
         </nav>
 
-        <span className="navbar__status">API-powered MVP</span>
+        <form
+          className="navbar-search"
+          role="search"
+          onSubmit={handleSearchSubmit}
+        >
+          <input
+            aria-label="Search local catalog"
+            type="search"
+            placeholder="Search catalog"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
+          <button type="submit">Search</button>
+        </form>
       </div>
     </header>
   );
