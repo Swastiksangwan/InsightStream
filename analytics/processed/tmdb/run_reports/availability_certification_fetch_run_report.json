@@ -3,775 +3,1120 @@
   "filters_used": {
     "all": false,
     "limit": null,
-    "priority": "batch_test_4",
+    "priority": "batch_test_5",
     "refresh": false,
     "source_id": null,
     "title": null
   },
-  "generated_at": "2026-06-22T06:55:10.226705+00:00",
+  "generated_at": "2026-06-23T08:13:02.392957+00:00",
   "per_target": [
     {
       "content_type": "movie",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_424_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_299534_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_424_release_dates.json",
+          "path": "analytics/raw/tmdb/movie_299534_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "424",
+      "source_id": "299534",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Schindler's List",
+      "title": "Avengers: Endgame",
       "warnings": []
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_857_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_299536_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_857_release_dates.json",
+          "path": "analytics/raw/tmdb/movie_299536_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "857",
+      "source_id": "299536",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Saving Private Ryan",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_807_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_807_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "807",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "Se7en",
+      "title": "Avengers: Infinity War",
       "warnings": []
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_77_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_447365_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_77_release_dates.json",
+          "path": "analytics/raw/tmdb/movie_447365_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "77",
+      "source_id": "447365",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Memento",
-      "warnings": []
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_6977_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_6977_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "6977",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "No Country for Old Men",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_7345_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_7345_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "7345",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "There Will Be Blood",
-      "warnings": []
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_120467_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_120467_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "120467",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "The Grand Budapest Hotel",
+      "title": "Guardians of the Galaxy Vol. 3",
       "warnings": [
         "No IN certification region returned."
       ]
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_313369_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_533535_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_313369_release_dates.json",
+          "path": "analytics/raw/tmdb/movie_533535_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "313369",
+      "source_id": "533535",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "La La Land",
+      "title": "Deadpool & Wolverine",
       "warnings": []
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_106646_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_603692_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_106646_release_dates.json",
+          "path": "analytics/raw/tmdb/movie_603692_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "106646",
+      "source_id": "603692",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "The Wolf of Wall Street",
-      "warnings": []
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_68718_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_68718_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "68718",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "Django Unchained",
-      "warnings": []
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_37165_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_37165_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "37165",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "The Truman Show",
+      "title": "John Wick: Chapter 4",
       "warnings": [
         "No IN certification region returned."
       ]
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_38_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_575264_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_38_release_dates.json",
+          "path": "analytics/raw/tmdb/movie_575264_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "38",
+      "source_id": "575264",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Eternal Sunshine of the Spotless Mind",
+      "title": "Mission: Impossible - Dead Reckoning Part One",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_438631_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_438631_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "438631",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Dune",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_414906_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_414906_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "414906",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Batman",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_475557_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_475557_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "475557",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Joker",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_933260_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_933260_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "933260",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Substance",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_792307_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_792307_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "792307",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Poor Things",
       "warnings": [
         "No IN certification region returned."
       ]
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_152601_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_915935_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_152601_release_dates.json",
+          "path": "analytics/raw/tmdb/movie_915935_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "152601",
+      "source_id": "915935",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Her",
-      "warnings": [
-        "No IN availability returned."
-      ]
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_264660_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_264660_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "264660",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "Ex Machina",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_286217_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_286217_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "286217",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "The Martian",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_150540_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_150540_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "150540",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "Inside Out",
-      "warnings": [
-        "No non-empty IN certification returned."
-      ]
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_354912_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_354912_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "354912",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "Coco",
+      "title": "Anatomy of a Fall",
       "warnings": []
     },
     {
       "content_type": "movie",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/movie_372058_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_666277_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/movie_372058_release_dates.json",
+          "path": "analytics/raw/tmdb/movie_666277_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "372058",
+      "source_id": "666277",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Your Name.",
-      "warnings": []
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_598_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_598_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "598",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "City of God",
-      "warnings": []
-    },
-    {
-      "content_type": "movie",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/movie_1417_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/movie_1417_release_dates.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "1417",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "Pan's Labyrinth",
+      "title": "Past Lives",
       "warnings": [
         "No IN availability returned.",
         "No IN certification region returned."
       ]
     },
     {
-      "content_type": "series",
-      "priority": "batch_test_4",
+      "content_type": "movie",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_4607_watch_providers.json",
+          "path": "analytics/raw/tmdb/movie_940721_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_4607_content_ratings.json",
+          "path": "analytics/raw/tmdb/movie_940721_release_dates.json",
           "status": "fetched"
         }
       ],
-      "source_id": "4607",
+      "source_id": "940721",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Lost",
+      "title": "Godzilla Minus One",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_467244_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_467244_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "467244",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Zone of Interest",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_906126_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_906126_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "906126",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Society of the Snow",
       "warnings": [
-        "No IN availability returned."
+        "No non-empty IN certification returned."
+      ]
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_579974_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_579974_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "579974",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "RRR",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_634649_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_634649_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "634649",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Spider-Man: No Way Home",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_1022789_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_1022789_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "1022789",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Inside Out 2",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_502356_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_502356_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "502356",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Super Mario Bros. Movie",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_315162_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_315162_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "315162",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Puss in Boots: The Last Wish",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_1184918_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_1184918_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "1184918",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Wild Robot",
+      "warnings": [
+        "No non-empty IN certification returned."
+      ]
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_840430_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_840430_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "840430",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Holdovers",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_965150_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_965150_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "965150",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Aftersun",
+      "warnings": [
+        "No non-empty IN certification returned."
+      ]
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_466420_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_466420_release_dates.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "466420",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Killers of the Flower Moon",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_126308_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_126308_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "126308",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Shōgun",
+      "warnings": [
+        "No IN certification region returned."
       ]
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_1405_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_106379_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_1405_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_106379_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "1405",
+      "source_id": "106379",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Dexter",
+      "title": "Fallout",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_62560_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_194764_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_62560_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_194764_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "62560",
+      "source_id": "194764",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Mr. Robot",
-      "warnings": []
-    },
-    {
-      "content_type": "series",
-      "priority": "batch_test_4",
-      "raw_files": [
-        {
-          "path": "analytics/raw/tmdb/tv_4087_watch_providers.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/tv_4087_content_ratings.json",
-          "status": "fetched"
-        }
-      ],
-      "source_id": "4087",
-      "source_name": "tmdb",
-      "status": "fetched",
-      "title": "The X-Files",
+      "title": "The Penguin",
       "warnings": [
-        "No IN availability returned."
+        "No IN certification region returned."
       ]
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_1920_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_125988_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_1920_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_125988_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "1920",
+      "source_id": "125988",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Twin Peaks",
+      "title": "Silo",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_246_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_203857_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_246_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_203857_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "246",
+      "source_id": "203857",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Avatar: The Last Airbender",
+      "title": "The Diplomat",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_30991_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_129552_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_30991_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_129552_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "30991",
+      "source_id": "129552",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Cowboy Bebop",
+      "title": "The Night Agent",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_13916_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_119051_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_13916_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_119051_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "13916",
+      "source_id": "119051",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Death Note",
+      "title": "Wednesday",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_1429_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_111110_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_1429_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_111110_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "1429",
+      "source_id": "111110",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Attack on Titan",
+      "title": "One Piece",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_71446_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_84958_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_71446_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_84958_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "71446",
+      "source_id": "84958",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Money Heist",
+      "title": "Loki",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_93405_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_85271_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_93405_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_85271_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "93405",
+      "source_id": "85271",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Squid Game",
+      "title": "WandaVision",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_72844_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_92749_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_72844_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_92749_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "72844",
+      "source_id": "92749",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "The Haunting of Hill House",
+      "title": "Moon Knight",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_1044_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_88329_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_1044_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_88329_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "1044",
+      "source_id": "88329",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Planet Earth",
+      "title": "Hawkeye",
       "warnings": []
     },
     {
       "content_type": "series",
-      "priority": "batch_test_4",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_83880_watch_providers.json",
+          "path": "analytics/raw/tmdb/tv_90802_watch_providers.json",
           "status": "fetched"
         },
         {
-          "path": "analytics/raw/tmdb/tv_83880_content_ratings.json",
+          "path": "analytics/raw/tmdb/tv_90802_content_ratings.json",
           "status": "fetched"
         }
       ],
-      "source_id": "83880",
+      "source_id": "90802",
       "source_name": "tmdb",
       "status": "fetched",
-      "title": "Our Planet",
+      "title": "The Sandman",
       "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_97546_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_97546_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "97546",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Ted Lasso",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_270476_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_270476_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "270476",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Widow's Bay",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_107113_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_107113_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "107113",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Only Murders in the Building",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_111803_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_111803_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "111803",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The White Lotus",
+      "warnings": [
+        "No IN certification region returned."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_117488_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_117488_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "117488",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Yellowjackets",
+      "warnings": [
+        "No IN certification region returned."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_95480_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95480_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "95480",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Slow Horses",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_108978_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_108978_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "108978",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Reacher",
+      "warnings": [
+        "No IN certification region returned."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_84773_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_84773_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "84773",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "The Lord of the Rings: The Rings of Power",
+      "warnings": [
+        "No IN certification region returned."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_93740_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_93740_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "93740",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Foundation",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_124364_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_124364_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "124364",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "From",
+      "warnings": [
+        "No IN certification region returned."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_92830_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_92830_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "92830",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Obi-Wan Kenobi",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_95557_watch_providers.json",
+          "status": "fetched"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95557_content_ratings.json",
+          "status": "fetched"
+        }
+      ],
+      "source_id": "95557",
+      "source_name": "tmdb",
+      "status": "fetched",
+      "title": "Invincible",
+      "warnings": [
+        "No IN certification region returned."
+      ]
     }
   ],
   "raw_files_fetched": [
-    "analytics/raw/tmdb/movie_424_watch_providers.json",
-    "analytics/raw/tmdb/movie_424_release_dates.json",
-    "analytics/raw/tmdb/movie_857_watch_providers.json",
-    "analytics/raw/tmdb/movie_857_release_dates.json",
-    "analytics/raw/tmdb/movie_807_watch_providers.json",
-    "analytics/raw/tmdb/movie_807_release_dates.json",
-    "analytics/raw/tmdb/movie_77_watch_providers.json",
-    "analytics/raw/tmdb/movie_77_release_dates.json",
-    "analytics/raw/tmdb/movie_6977_watch_providers.json",
-    "analytics/raw/tmdb/movie_6977_release_dates.json",
-    "analytics/raw/tmdb/movie_7345_watch_providers.json",
-    "analytics/raw/tmdb/movie_7345_release_dates.json",
-    "analytics/raw/tmdb/movie_120467_watch_providers.json",
-    "analytics/raw/tmdb/movie_120467_release_dates.json",
-    "analytics/raw/tmdb/movie_313369_watch_providers.json",
-    "analytics/raw/tmdb/movie_313369_release_dates.json",
-    "analytics/raw/tmdb/movie_106646_watch_providers.json",
-    "analytics/raw/tmdb/movie_106646_release_dates.json",
-    "analytics/raw/tmdb/movie_68718_watch_providers.json",
-    "analytics/raw/tmdb/movie_68718_release_dates.json",
-    "analytics/raw/tmdb/movie_37165_watch_providers.json",
-    "analytics/raw/tmdb/movie_37165_release_dates.json",
-    "analytics/raw/tmdb/movie_38_watch_providers.json",
-    "analytics/raw/tmdb/movie_38_release_dates.json",
-    "analytics/raw/tmdb/movie_152601_watch_providers.json",
-    "analytics/raw/tmdb/movie_152601_release_dates.json",
-    "analytics/raw/tmdb/movie_264660_watch_providers.json",
-    "analytics/raw/tmdb/movie_264660_release_dates.json",
-    "analytics/raw/tmdb/movie_286217_watch_providers.json",
-    "analytics/raw/tmdb/movie_286217_release_dates.json",
-    "analytics/raw/tmdb/movie_150540_watch_providers.json",
-    "analytics/raw/tmdb/movie_150540_release_dates.json",
-    "analytics/raw/tmdb/movie_354912_watch_providers.json",
-    "analytics/raw/tmdb/movie_354912_release_dates.json",
-    "analytics/raw/tmdb/movie_372058_watch_providers.json",
-    "analytics/raw/tmdb/movie_372058_release_dates.json",
-    "analytics/raw/tmdb/movie_598_watch_providers.json",
-    "analytics/raw/tmdb/movie_598_release_dates.json",
-    "analytics/raw/tmdb/movie_1417_watch_providers.json",
-    "analytics/raw/tmdb/movie_1417_release_dates.json",
-    "analytics/raw/tmdb/tv_4607_watch_providers.json",
-    "analytics/raw/tmdb/tv_4607_content_ratings.json",
-    "analytics/raw/tmdb/tv_1405_watch_providers.json",
-    "analytics/raw/tmdb/tv_1405_content_ratings.json",
-    "analytics/raw/tmdb/tv_62560_watch_providers.json",
-    "analytics/raw/tmdb/tv_62560_content_ratings.json",
-    "analytics/raw/tmdb/tv_4087_watch_providers.json",
-    "analytics/raw/tmdb/tv_4087_content_ratings.json",
-    "analytics/raw/tmdb/tv_1920_watch_providers.json",
-    "analytics/raw/tmdb/tv_1920_content_ratings.json",
-    "analytics/raw/tmdb/tv_246_watch_providers.json",
-    "analytics/raw/tmdb/tv_246_content_ratings.json",
-    "analytics/raw/tmdb/tv_30991_watch_providers.json",
-    "analytics/raw/tmdb/tv_30991_content_ratings.json",
-    "analytics/raw/tmdb/tv_13916_watch_providers.json",
-    "analytics/raw/tmdb/tv_13916_content_ratings.json",
-    "analytics/raw/tmdb/tv_1429_watch_providers.json",
-    "analytics/raw/tmdb/tv_1429_content_ratings.json",
-    "analytics/raw/tmdb/tv_71446_watch_providers.json",
-    "analytics/raw/tmdb/tv_71446_content_ratings.json",
-    "analytics/raw/tmdb/tv_93405_watch_providers.json",
-    "analytics/raw/tmdb/tv_93405_content_ratings.json",
-    "analytics/raw/tmdb/tv_72844_watch_providers.json",
-    "analytics/raw/tmdb/tv_72844_content_ratings.json",
-    "analytics/raw/tmdb/tv_1044_watch_providers.json",
-    "analytics/raw/tmdb/tv_1044_content_ratings.json",
-    "analytics/raw/tmdb/tv_83880_watch_providers.json",
-    "analytics/raw/tmdb/tv_83880_content_ratings.json"
+    "analytics/raw/tmdb/movie_299534_watch_providers.json",
+    "analytics/raw/tmdb/movie_299534_release_dates.json",
+    "analytics/raw/tmdb/movie_299536_watch_providers.json",
+    "analytics/raw/tmdb/movie_299536_release_dates.json",
+    "analytics/raw/tmdb/movie_447365_watch_providers.json",
+    "analytics/raw/tmdb/movie_447365_release_dates.json",
+    "analytics/raw/tmdb/movie_533535_watch_providers.json",
+    "analytics/raw/tmdb/movie_533535_release_dates.json",
+    "analytics/raw/tmdb/movie_603692_watch_providers.json",
+    "analytics/raw/tmdb/movie_603692_release_dates.json",
+    "analytics/raw/tmdb/movie_575264_watch_providers.json",
+    "analytics/raw/tmdb/movie_575264_release_dates.json",
+    "analytics/raw/tmdb/movie_438631_watch_providers.json",
+    "analytics/raw/tmdb/movie_438631_release_dates.json",
+    "analytics/raw/tmdb/movie_414906_watch_providers.json",
+    "analytics/raw/tmdb/movie_414906_release_dates.json",
+    "analytics/raw/tmdb/movie_475557_watch_providers.json",
+    "analytics/raw/tmdb/movie_475557_release_dates.json",
+    "analytics/raw/tmdb/movie_933260_watch_providers.json",
+    "analytics/raw/tmdb/movie_933260_release_dates.json",
+    "analytics/raw/tmdb/movie_792307_watch_providers.json",
+    "analytics/raw/tmdb/movie_792307_release_dates.json",
+    "analytics/raw/tmdb/movie_915935_watch_providers.json",
+    "analytics/raw/tmdb/movie_915935_release_dates.json",
+    "analytics/raw/tmdb/movie_666277_watch_providers.json",
+    "analytics/raw/tmdb/movie_666277_release_dates.json",
+    "analytics/raw/tmdb/movie_940721_watch_providers.json",
+    "analytics/raw/tmdb/movie_940721_release_dates.json",
+    "analytics/raw/tmdb/movie_467244_watch_providers.json",
+    "analytics/raw/tmdb/movie_467244_release_dates.json",
+    "analytics/raw/tmdb/movie_906126_watch_providers.json",
+    "analytics/raw/tmdb/movie_906126_release_dates.json",
+    "analytics/raw/tmdb/movie_579974_watch_providers.json",
+    "analytics/raw/tmdb/movie_579974_release_dates.json",
+    "analytics/raw/tmdb/movie_634649_watch_providers.json",
+    "analytics/raw/tmdb/movie_634649_release_dates.json",
+    "analytics/raw/tmdb/movie_1022789_watch_providers.json",
+    "analytics/raw/tmdb/movie_1022789_release_dates.json",
+    "analytics/raw/tmdb/movie_502356_watch_providers.json",
+    "analytics/raw/tmdb/movie_502356_release_dates.json",
+    "analytics/raw/tmdb/movie_315162_watch_providers.json",
+    "analytics/raw/tmdb/movie_315162_release_dates.json",
+    "analytics/raw/tmdb/movie_1184918_watch_providers.json",
+    "analytics/raw/tmdb/movie_1184918_release_dates.json",
+    "analytics/raw/tmdb/movie_840430_watch_providers.json",
+    "analytics/raw/tmdb/movie_840430_release_dates.json",
+    "analytics/raw/tmdb/movie_965150_watch_providers.json",
+    "analytics/raw/tmdb/movie_965150_release_dates.json",
+    "analytics/raw/tmdb/movie_466420_watch_providers.json",
+    "analytics/raw/tmdb/movie_466420_release_dates.json",
+    "analytics/raw/tmdb/tv_126308_watch_providers.json",
+    "analytics/raw/tmdb/tv_126308_content_ratings.json",
+    "analytics/raw/tmdb/tv_106379_watch_providers.json",
+    "analytics/raw/tmdb/tv_106379_content_ratings.json",
+    "analytics/raw/tmdb/tv_194764_watch_providers.json",
+    "analytics/raw/tmdb/tv_194764_content_ratings.json",
+    "analytics/raw/tmdb/tv_125988_watch_providers.json",
+    "analytics/raw/tmdb/tv_125988_content_ratings.json",
+    "analytics/raw/tmdb/tv_203857_watch_providers.json",
+    "analytics/raw/tmdb/tv_203857_content_ratings.json",
+    "analytics/raw/tmdb/tv_129552_watch_providers.json",
+    "analytics/raw/tmdb/tv_129552_content_ratings.json",
+    "analytics/raw/tmdb/tv_119051_watch_providers.json",
+    "analytics/raw/tmdb/tv_119051_content_ratings.json",
+    "analytics/raw/tmdb/tv_111110_watch_providers.json",
+    "analytics/raw/tmdb/tv_111110_content_ratings.json",
+    "analytics/raw/tmdb/tv_84958_watch_providers.json",
+    "analytics/raw/tmdb/tv_84958_content_ratings.json",
+    "analytics/raw/tmdb/tv_85271_watch_providers.json",
+    "analytics/raw/tmdb/tv_85271_content_ratings.json",
+    "analytics/raw/tmdb/tv_92749_watch_providers.json",
+    "analytics/raw/tmdb/tv_92749_content_ratings.json",
+    "analytics/raw/tmdb/tv_88329_watch_providers.json",
+    "analytics/raw/tmdb/tv_88329_content_ratings.json",
+    "analytics/raw/tmdb/tv_90802_watch_providers.json",
+    "analytics/raw/tmdb/tv_90802_content_ratings.json",
+    "analytics/raw/tmdb/tv_97546_watch_providers.json",
+    "analytics/raw/tmdb/tv_97546_content_ratings.json",
+    "analytics/raw/tmdb/tv_270476_watch_providers.json",
+    "analytics/raw/tmdb/tv_270476_content_ratings.json",
+    "analytics/raw/tmdb/tv_107113_watch_providers.json",
+    "analytics/raw/tmdb/tv_107113_content_ratings.json",
+    "analytics/raw/tmdb/tv_111803_watch_providers.json",
+    "analytics/raw/tmdb/tv_111803_content_ratings.json",
+    "analytics/raw/tmdb/tv_117488_watch_providers.json",
+    "analytics/raw/tmdb/tv_117488_content_ratings.json",
+    "analytics/raw/tmdb/tv_95480_watch_providers.json",
+    "analytics/raw/tmdb/tv_95480_content_ratings.json",
+    "analytics/raw/tmdb/tv_108978_watch_providers.json",
+    "analytics/raw/tmdb/tv_108978_content_ratings.json",
+    "analytics/raw/tmdb/tv_84773_watch_providers.json",
+    "analytics/raw/tmdb/tv_84773_content_ratings.json",
+    "analytics/raw/tmdb/tv_93740_watch_providers.json",
+    "analytics/raw/tmdb/tv_93740_content_ratings.json",
+    "analytics/raw/tmdb/tv_124364_watch_providers.json",
+    "analytics/raw/tmdb/tv_124364_content_ratings.json",
+    "analytics/raw/tmdb/tv_92830_watch_providers.json",
+    "analytics/raw/tmdb/tv_92830_content_ratings.json",
+    "analytics/raw/tmdb/tv_95557_watch_providers.json",
+    "analytics/raw/tmdb/tv_95557_content_ratings.json"
   ],
   "raw_files_reused": [],
   "script_name": "fetch_tmdb_availability_certification.py",
   "target_config_path": "analytics/config/content_ingestion_targets.json",
-  "targets_loaded": 100,
-  "targets_processed": 34,
-  "targets_selected": 34,
+  "targets_loaded": 150,
+  "targets_processed": 50,
+  "targets_selected": 50,
   "targets_skipped": 0,
   "warnings": [
-    "Saving Private Ryan: No non-empty IN certification returned.",
-    "No Country for Old Men: No non-empty IN certification returned.",
-    "The Grand Budapest Hotel: No IN certification region returned.",
-    "The Truman Show: No IN certification region returned.",
-    "Eternal Sunshine of the Spotless Mind: No IN certification region returned.",
-    "Her: No IN availability returned.",
-    "Ex Machina: No non-empty IN certification returned.",
-    "The Martian: No non-empty IN certification returned.",
-    "Inside Out: No non-empty IN certification returned.",
-    "Pan's Labyrinth: No IN availability returned.",
-    "Pan's Labyrinth: No IN certification region returned.",
-    "Lost: No IN availability returned.",
-    "The X-Files: No IN availability returned."
+    "Guardians of the Galaxy Vol. 3: No IN certification region returned.",
+    "John Wick: Chapter 4: No IN certification region returned.",
+    "Poor Things: No IN certification region returned.",
+    "Past Lives: No IN availability returned.",
+    "Past Lives: No IN certification region returned.",
+    "Society of the Snow: No non-empty IN certification returned.",
+    "The Wild Robot: No non-empty IN certification returned.",
+    "Aftersun: No non-empty IN certification returned.",
+    "Shōgun: No IN certification region returned.",
+    "The Penguin: No IN certification region returned.",
+    "The White Lotus: No IN certification region returned.",
+    "Yellowjackets: No IN certification region returned.",
+    "Reacher: No IN certification region returned.",
+    "The Lord of the Rings: The Rings of Power: No IN certification region returned.",
+    "From: No IN certification region returned.",
+    "Invincible: No IN certification region returned."
   ]
 }

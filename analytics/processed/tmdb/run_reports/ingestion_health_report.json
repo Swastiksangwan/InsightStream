@@ -1,40 +1,41 @@
 {
-  "generated_at": "2026-06-23T06:52:48.962628+00:00",
+  "generated_at": "2026-06-23T08:30:41.489942+00:00",
   "script_name": "check_ingestion_health.py",
   "target_config_path": "analytics/config/content_ingestion_targets.json",
   "filters_used": {
-    "priority": null,
+    "priority": "batch_test_5",
     "strict": false,
     "fail_on_warning": false
   },
   "config_summary": {
-    "total_targets": 100,
-    "valid_targets": 100,
+    "total_targets": 150,
+    "valid_targets": 150,
     "invalid_targets": 0,
-    "selected_targets": 100,
+    "selected_targets": 50,
     "priority_counts": {
       "batch_test_1": 5,
       "batch_test_2": 30,
       "batch_test_3": 15,
       "batch_test_4": 34,
+      "batch_test_5": 50,
       "pipeline_test": 1,
       "seed": 15
     },
     "ingestion_status_counts": {
-      "verified": 100
+      "verified": 150
     },
     "duplicate_source_targets": [],
     "duplicate_title_targets": []
   },
   "database_summary": {
-    "content_count": 100,
+    "content_count": 150,
     "content_type_counts": {
-      "movie": 55,
-      "series": 45
+      "movie": 80,
+      "series": 70
     },
     "external_id_counts": {
-      "imdb": 100,
-      "tmdb": 100
+      "imdb": 150,
+      "tmdb": 150
     }
   },
   "duplicate_checks": {
@@ -85,35 +86,35 @@
     }
   },
   "target_db_coverage": {
-    "selected_targets": 100,
-    "matched_targets": 100,
+    "selected_targets": 50,
+    "matched_targets": 50,
     "missing_targets": 0,
     "content_type_mismatches": [],
     "extra_db_tmdb_external_ids": [],
     "missing_target_details": []
   },
   "metadata_completeness": {
-    "checked_content_count": 100,
+    "checked_content_count": 50,
     "content_with_warnings_or_failures": 0,
     "items": []
   },
   "person_detail_summary": {
-    "total_people": 543,
-    "people_with_biography": 522,
-    "people_without_biography": 21,
-    "people_with_profile_url": 540,
-    "people_without_profile_url": 3,
-    "people_with_known_for_department": 543,
+    "total_people": 789,
+    "people_with_biography": 743,
+    "people_without_biography": 46,
+    "people_with_profile_url": 781,
+    "people_without_profile_url": 8,
+    "people_with_known_for_department": 789,
     "people_without_known_for_department": 0,
-    "person_external_ids_count": 543,
+    "person_external_ids_count": 789,
     "people_without_external_ids": 0
   },
   "series_lifecycle_summary": {
-    "total_series": 45,
-    "series_with_lifecycle_metadata": 45,
+    "total_series": 70,
+    "series_with_lifecycle_metadata": 70,
     "series_missing_lifecycle_metadata": 0,
-    "ongoing_series_count": 8,
-    "ended_series_count": 35,
+    "ongoing_series_count": 26,
+    "ended_series_count": 42,
     "cancelled_series_count": 2,
     "upcoming_series_count": 0,
     "unknown_status_count": 0,

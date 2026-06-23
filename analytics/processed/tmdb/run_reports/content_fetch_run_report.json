@@ -2,92 +2,1530 @@
   "failures": [],
   "filters_used": {
     "limit": null,
-    "priority": null,
-    "refresh": true,
+    "priority": "batch_test_5",
+    "refresh": false,
     "source_id": null,
     "title": null
   },
-  "generated_at": "2026-06-23T06:46:57.332868+00:00",
+  "generated_at": "2026-06-23T08:29:45.564201+00:00",
   "per_target": [
     {
-      "content_type": "series",
-      "priority": "series_refresh",
+      "content_type": "movie",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_94997_details.json",
-          "status": "fetched"
+          "path": "analytics/raw/tmdb/movie_299534_details.json",
+          "status": "reused"
         },
         {
-          "path": "analytics/raw/tmdb/tv_94997_external_ids.json",
-          "status": "fetched"
+          "path": "analytics/raw/tmdb/movie_299534_external_ids.json",
+          "status": "reused"
         },
         {
-          "path": "analytics/raw/tmdb/tv_94997_credits.json",
-          "status": "fetched"
-        },
-        {
-          "path": "analytics/raw/tmdb/tv_94997_aggregate_credits.json",
-          "status": "fetched"
+          "path": "analytics/raw/tmdb/movie_299534_credits.json",
+          "status": "reused"
         }
       ],
-      "source_id": "94997",
+      "source_id": "299534",
       "source_name": "tmdb",
-      "status": "fetched",
-      "title": "House of the Dragon",
+      "status": "reused",
+      "title": "Avengers: Endgame",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_299536_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_299536_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_299536_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "299536",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Avengers: Infinity War",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_447365_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_447365_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_447365_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "447365",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Guardians of the Galaxy Vol. 3",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_533535_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_533535_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_533535_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "533535",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Deadpool & Wolverine",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_603692_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_603692_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_603692_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "603692",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "John Wick: Chapter 4",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_575264_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_575264_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_575264_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "575264",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Mission: Impossible - Dead Reckoning Part One",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_438631_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_438631_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_438631_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "438631",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Dune",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_414906_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_414906_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_414906_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "414906",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Batman",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_475557_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_475557_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_475557_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "475557",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Joker",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_933260_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_933260_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_933260_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "933260",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Substance",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_792307_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_792307_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_792307_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "792307",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Poor Things",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_915935_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_915935_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_915935_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "915935",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Anatomy of a Fall",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_666277_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_666277_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_666277_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "666277",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Past Lives",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_940721_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_940721_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_940721_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "940721",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Godzilla Minus One",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_467244_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_467244_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_467244_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "467244",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Zone of Interest",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_906126_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_906126_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_906126_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "906126",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Society of the Snow",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_579974_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_579974_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_579974_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "579974",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "RRR",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_634649_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_634649_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_634649_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "634649",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Spider-Man: No Way Home",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_1022789_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_1022789_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_1022789_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "1022789",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Inside Out 2",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_502356_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_502356_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_502356_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "502356",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Super Mario Bros. Movie",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_315162_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_315162_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_315162_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "315162",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Puss in Boots: The Last Wish",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_1184918_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_1184918_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_1184918_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "1184918",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Wild Robot",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_840430_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_840430_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_840430_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "840430",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Holdovers",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_965150_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_965150_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_965150_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "965150",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Aftersun",
+      "warnings": []
+    },
+    {
+      "content_type": "movie",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/movie_466420_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_466420_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/movie_466420_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "466420",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Killers of the Flower Moon",
+      "warnings": []
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_126308_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_126308_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_126308_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_126308_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "126308",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Shōgun",
       "warnings": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ]
     },
     {
       "content_type": "series",
-      "priority": "series_refresh",
+      "priority": "batch_test_5",
       "raw_files": [
         {
-          "path": "analytics/raw/tmdb/tv_136315_details.json",
-          "status": "fetched"
+          "path": "analytics/raw/tmdb/tv_106379_details.json",
+          "status": "reused"
         },
         {
-          "path": "analytics/raw/tmdb/tv_136315_external_ids.json",
-          "status": "fetched"
+          "path": "analytics/raw/tmdb/tv_106379_external_ids.json",
+          "status": "reused"
         },
         {
-          "path": "analytics/raw/tmdb/tv_136315_credits.json",
-          "status": "fetched"
+          "path": "analytics/raw/tmdb/tv_106379_credits.json",
+          "status": "reused"
         },
         {
-          "path": "analytics/raw/tmdb/tv_136315_aggregate_credits.json",
-          "status": "fetched"
+          "path": "analytics/raw/tmdb/tv_106379_aggregate_credits.json",
+          "status": "reused"
         }
       ],
-      "source_id": "136315",
+      "source_id": "106379",
       "source_name": "tmdb",
-      "status": "fetched",
-      "title": "The Bear",
+      "status": "reused",
+      "title": "Fallout",
       "warnings": [
         "Missing or empty episode_run_time; runtime is approximate/null."
       ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_194764_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_194764_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_194764_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_194764_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "194764",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Penguin",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_125988_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_125988_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_125988_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_125988_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "125988",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Silo",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_203857_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_203857_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_203857_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_203857_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "203857",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Diplomat",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_129552_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_129552_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_129552_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_129552_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "129552",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Night Agent",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_119051_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_119051_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_119051_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_119051_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "119051",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Wednesday",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_111110_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_111110_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_111110_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_111110_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "111110",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "One Piece",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_84958_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_84958_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_84958_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_84958_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "84958",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Loki",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_85271_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_85271_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_85271_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_85271_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "85271",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "WandaVision",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_92749_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_92749_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_92749_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_92749_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "92749",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Moon Knight",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_88329_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_88329_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_88329_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_88329_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "88329",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Hawkeye",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_90802_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_90802_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_90802_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_90802_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "90802",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Sandman",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_97546_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_97546_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_97546_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_97546_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "97546",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Ted Lasso",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_270476_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_270476_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_270476_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_270476_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "270476",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Widow's Bay",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_107113_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_107113_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_107113_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_107113_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "107113",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Only Murders in the Building",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_111803_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_111803_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_111803_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_111803_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "111803",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The White Lotus",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_117488_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_117488_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_117488_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_117488_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "117488",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Yellowjackets",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_95480_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95480_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95480_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95480_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "95480",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Slow Horses",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null.",
+        "No creator/director names found."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_108978_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_108978_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_108978_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_108978_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "108978",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Reacher",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_84773_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_84773_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_84773_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_84773_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "84773",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "The Lord of the Rings: The Rings of Power",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_93740_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_93740_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_93740_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_93740_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "93740",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Foundation",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_124364_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_124364_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_124364_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_124364_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "124364",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "From",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_92830_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_92830_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_92830_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_92830_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "92830",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Obi-Wan Kenobi",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null.",
+        "No creator/director names found."
+      ]
+    },
+    {
+      "content_type": "series",
+      "priority": "batch_test_5",
+      "raw_files": [
+        {
+          "path": "analytics/raw/tmdb/tv_95557_details.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95557_external_ids.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95557_credits.json",
+          "status": "reused"
+        },
+        {
+          "path": "analytics/raw/tmdb/tv_95557_aggregate_credits.json",
+          "status": "reused"
+        }
+      ],
+      "source_id": "95557",
+      "source_name": "tmdb",
+      "status": "reused",
+      "title": "Invincible",
+      "warnings": [
+        "Missing or empty episode_run_time; runtime is approximate/null.",
+        "No creator/director names found."
+      ]
     }
   ],
-  "raw_files_fetched": [
+  "raw_files_fetched": [],
+  "raw_files_reused": [
     "analytics/raw/tmdb/configuration.json",
-    "analytics/raw/tmdb/tv_94997_details.json",
-    "analytics/raw/tmdb/tv_94997_external_ids.json",
-    "analytics/raw/tmdb/tv_94997_credits.json",
-    "analytics/raw/tmdb/tv_94997_aggregate_credits.json",
-    "analytics/raw/tmdb/tv_136315_details.json",
-    "analytics/raw/tmdb/tv_136315_external_ids.json",
-    "analytics/raw/tmdb/tv_136315_credits.json",
-    "analytics/raw/tmdb/tv_136315_aggregate_credits.json"
+    "analytics/raw/tmdb/movie_299534_details.json",
+    "analytics/raw/tmdb/movie_299534_external_ids.json",
+    "analytics/raw/tmdb/movie_299534_credits.json",
+    "analytics/raw/tmdb/movie_299536_details.json",
+    "analytics/raw/tmdb/movie_299536_external_ids.json",
+    "analytics/raw/tmdb/movie_299536_credits.json",
+    "analytics/raw/tmdb/movie_447365_details.json",
+    "analytics/raw/tmdb/movie_447365_external_ids.json",
+    "analytics/raw/tmdb/movie_447365_credits.json",
+    "analytics/raw/tmdb/movie_533535_details.json",
+    "analytics/raw/tmdb/movie_533535_external_ids.json",
+    "analytics/raw/tmdb/movie_533535_credits.json",
+    "analytics/raw/tmdb/movie_603692_details.json",
+    "analytics/raw/tmdb/movie_603692_external_ids.json",
+    "analytics/raw/tmdb/movie_603692_credits.json",
+    "analytics/raw/tmdb/movie_575264_details.json",
+    "analytics/raw/tmdb/movie_575264_external_ids.json",
+    "analytics/raw/tmdb/movie_575264_credits.json",
+    "analytics/raw/tmdb/movie_438631_details.json",
+    "analytics/raw/tmdb/movie_438631_external_ids.json",
+    "analytics/raw/tmdb/movie_438631_credits.json",
+    "analytics/raw/tmdb/movie_414906_details.json",
+    "analytics/raw/tmdb/movie_414906_external_ids.json",
+    "analytics/raw/tmdb/movie_414906_credits.json",
+    "analytics/raw/tmdb/movie_475557_details.json",
+    "analytics/raw/tmdb/movie_475557_external_ids.json",
+    "analytics/raw/tmdb/movie_475557_credits.json",
+    "analytics/raw/tmdb/movie_933260_details.json",
+    "analytics/raw/tmdb/movie_933260_external_ids.json",
+    "analytics/raw/tmdb/movie_933260_credits.json",
+    "analytics/raw/tmdb/movie_792307_details.json",
+    "analytics/raw/tmdb/movie_792307_external_ids.json",
+    "analytics/raw/tmdb/movie_792307_credits.json",
+    "analytics/raw/tmdb/movie_915935_details.json",
+    "analytics/raw/tmdb/movie_915935_external_ids.json",
+    "analytics/raw/tmdb/movie_915935_credits.json",
+    "analytics/raw/tmdb/movie_666277_details.json",
+    "analytics/raw/tmdb/movie_666277_external_ids.json",
+    "analytics/raw/tmdb/movie_666277_credits.json",
+    "analytics/raw/tmdb/movie_940721_details.json",
+    "analytics/raw/tmdb/movie_940721_external_ids.json",
+    "analytics/raw/tmdb/movie_940721_credits.json",
+    "analytics/raw/tmdb/movie_467244_details.json",
+    "analytics/raw/tmdb/movie_467244_external_ids.json",
+    "analytics/raw/tmdb/movie_467244_credits.json",
+    "analytics/raw/tmdb/movie_906126_details.json",
+    "analytics/raw/tmdb/movie_906126_external_ids.json",
+    "analytics/raw/tmdb/movie_906126_credits.json",
+    "analytics/raw/tmdb/movie_579974_details.json",
+    "analytics/raw/tmdb/movie_579974_external_ids.json",
+    "analytics/raw/tmdb/movie_579974_credits.json",
+    "analytics/raw/tmdb/movie_634649_details.json",
+    "analytics/raw/tmdb/movie_634649_external_ids.json",
+    "analytics/raw/tmdb/movie_634649_credits.json",
+    "analytics/raw/tmdb/movie_1022789_details.json",
+    "analytics/raw/tmdb/movie_1022789_external_ids.json",
+    "analytics/raw/tmdb/movie_1022789_credits.json",
+    "analytics/raw/tmdb/movie_502356_details.json",
+    "analytics/raw/tmdb/movie_502356_external_ids.json",
+    "analytics/raw/tmdb/movie_502356_credits.json",
+    "analytics/raw/tmdb/movie_315162_details.json",
+    "analytics/raw/tmdb/movie_315162_external_ids.json",
+    "analytics/raw/tmdb/movie_315162_credits.json",
+    "analytics/raw/tmdb/movie_1184918_details.json",
+    "analytics/raw/tmdb/movie_1184918_external_ids.json",
+    "analytics/raw/tmdb/movie_1184918_credits.json",
+    "analytics/raw/tmdb/movie_840430_details.json",
+    "analytics/raw/tmdb/movie_840430_external_ids.json",
+    "analytics/raw/tmdb/movie_840430_credits.json",
+    "analytics/raw/tmdb/movie_965150_details.json",
+    "analytics/raw/tmdb/movie_965150_external_ids.json",
+    "analytics/raw/tmdb/movie_965150_credits.json",
+    "analytics/raw/tmdb/movie_466420_details.json",
+    "analytics/raw/tmdb/movie_466420_external_ids.json",
+    "analytics/raw/tmdb/movie_466420_credits.json",
+    "analytics/raw/tmdb/tv_126308_details.json",
+    "analytics/raw/tmdb/tv_126308_external_ids.json",
+    "analytics/raw/tmdb/tv_126308_credits.json",
+    "analytics/raw/tmdb/tv_126308_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_106379_details.json",
+    "analytics/raw/tmdb/tv_106379_external_ids.json",
+    "analytics/raw/tmdb/tv_106379_credits.json",
+    "analytics/raw/tmdb/tv_106379_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_194764_details.json",
+    "analytics/raw/tmdb/tv_194764_external_ids.json",
+    "analytics/raw/tmdb/tv_194764_credits.json",
+    "analytics/raw/tmdb/tv_194764_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_125988_details.json",
+    "analytics/raw/tmdb/tv_125988_external_ids.json",
+    "analytics/raw/tmdb/tv_125988_credits.json",
+    "analytics/raw/tmdb/tv_125988_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_203857_details.json",
+    "analytics/raw/tmdb/tv_203857_external_ids.json",
+    "analytics/raw/tmdb/tv_203857_credits.json",
+    "analytics/raw/tmdb/tv_203857_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_129552_details.json",
+    "analytics/raw/tmdb/tv_129552_external_ids.json",
+    "analytics/raw/tmdb/tv_129552_credits.json",
+    "analytics/raw/tmdb/tv_129552_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_119051_details.json",
+    "analytics/raw/tmdb/tv_119051_external_ids.json",
+    "analytics/raw/tmdb/tv_119051_credits.json",
+    "analytics/raw/tmdb/tv_119051_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_111110_details.json",
+    "analytics/raw/tmdb/tv_111110_external_ids.json",
+    "analytics/raw/tmdb/tv_111110_credits.json",
+    "analytics/raw/tmdb/tv_111110_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_84958_details.json",
+    "analytics/raw/tmdb/tv_84958_external_ids.json",
+    "analytics/raw/tmdb/tv_84958_credits.json",
+    "analytics/raw/tmdb/tv_84958_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_85271_details.json",
+    "analytics/raw/tmdb/tv_85271_external_ids.json",
+    "analytics/raw/tmdb/tv_85271_credits.json",
+    "analytics/raw/tmdb/tv_85271_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_92749_details.json",
+    "analytics/raw/tmdb/tv_92749_external_ids.json",
+    "analytics/raw/tmdb/tv_92749_credits.json",
+    "analytics/raw/tmdb/tv_92749_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_88329_details.json",
+    "analytics/raw/tmdb/tv_88329_external_ids.json",
+    "analytics/raw/tmdb/tv_88329_credits.json",
+    "analytics/raw/tmdb/tv_88329_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_90802_details.json",
+    "analytics/raw/tmdb/tv_90802_external_ids.json",
+    "analytics/raw/tmdb/tv_90802_credits.json",
+    "analytics/raw/tmdb/tv_90802_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_97546_details.json",
+    "analytics/raw/tmdb/tv_97546_external_ids.json",
+    "analytics/raw/tmdb/tv_97546_credits.json",
+    "analytics/raw/tmdb/tv_97546_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_270476_details.json",
+    "analytics/raw/tmdb/tv_270476_external_ids.json",
+    "analytics/raw/tmdb/tv_270476_credits.json",
+    "analytics/raw/tmdb/tv_270476_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_107113_details.json",
+    "analytics/raw/tmdb/tv_107113_external_ids.json",
+    "analytics/raw/tmdb/tv_107113_credits.json",
+    "analytics/raw/tmdb/tv_107113_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_111803_details.json",
+    "analytics/raw/tmdb/tv_111803_external_ids.json",
+    "analytics/raw/tmdb/tv_111803_credits.json",
+    "analytics/raw/tmdb/tv_111803_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_117488_details.json",
+    "analytics/raw/tmdb/tv_117488_external_ids.json",
+    "analytics/raw/tmdb/tv_117488_credits.json",
+    "analytics/raw/tmdb/tv_117488_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_95480_details.json",
+    "analytics/raw/tmdb/tv_95480_external_ids.json",
+    "analytics/raw/tmdb/tv_95480_credits.json",
+    "analytics/raw/tmdb/tv_95480_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_108978_details.json",
+    "analytics/raw/tmdb/tv_108978_external_ids.json",
+    "analytics/raw/tmdb/tv_108978_credits.json",
+    "analytics/raw/tmdb/tv_108978_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_84773_details.json",
+    "analytics/raw/tmdb/tv_84773_external_ids.json",
+    "analytics/raw/tmdb/tv_84773_credits.json",
+    "analytics/raw/tmdb/tv_84773_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_93740_details.json",
+    "analytics/raw/tmdb/tv_93740_external_ids.json",
+    "analytics/raw/tmdb/tv_93740_credits.json",
+    "analytics/raw/tmdb/tv_93740_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_124364_details.json",
+    "analytics/raw/tmdb/tv_124364_external_ids.json",
+    "analytics/raw/tmdb/tv_124364_credits.json",
+    "analytics/raw/tmdb/tv_124364_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_92830_details.json",
+    "analytics/raw/tmdb/tv_92830_external_ids.json",
+    "analytics/raw/tmdb/tv_92830_credits.json",
+    "analytics/raw/tmdb/tv_92830_aggregate_credits.json",
+    "analytics/raw/tmdb/tv_95557_details.json",
+    "analytics/raw/tmdb/tv_95557_external_ids.json",
+    "analytics/raw/tmdb/tv_95557_credits.json",
+    "analytics/raw/tmdb/tv_95557_aggregate_credits.json"
   ],
-  "raw_files_reused": [],
   "script_name": "fetch_tmdb_sample.py",
-  "target_config_path": "analytics/config/series_refresh_targets.json",
-  "targets_loaded": 2,
-  "targets_processed": 2,
-  "targets_selected": 2,
+  "target_config_path": "analytics/config/content_ingestion_targets.json",
+  "targets_loaded": 150,
+  "targets_processed": 50,
+  "targets_selected": 50,
   "targets_skipped": 0,
   "warnings": [
-    "House of the Dragon: Missing or empty episode_run_time; runtime is approximate/null.",
-    "The Bear: Missing or empty episode_run_time; runtime is approximate/null."
+    "Shōgun: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Fallout: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The Penguin: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Silo: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The Diplomat: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The Night Agent: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Wednesday: Missing or empty episode_run_time; runtime is approximate/null.",
+    "One Piece: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Loki: Missing or empty episode_run_time; runtime is approximate/null.",
+    "WandaVision: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Moon Knight: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Hawkeye: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The Sandman: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Ted Lasso: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Widow's Bay: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Only Murders in the Building: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The White Lotus: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Yellowjackets: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Slow Horses: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Slow Horses: No creator/director names found.",
+    "Reacher: Missing or empty episode_run_time; runtime is approximate/null.",
+    "The Lord of the Rings: The Rings of Power: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Foundation: Missing or empty episode_run_time; runtime is approximate/null.",
+    "From: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Obi-Wan Kenobi: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Obi-Wan Kenobi: No creator/director names found.",
+    "Invincible: Missing or empty episode_run_time; runtime is approximate/null.",
+    "Invincible: No creator/director names found."
   ]
 }
