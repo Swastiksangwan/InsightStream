@@ -1323,10 +1323,10 @@ main {
 
 .credits-section {
   display: grid;
-  gap: 28px;
+  gap: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.09);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 30px 0 34px;
+  padding: 28px 0 32px;
 }
 
 .credits-section__header {
@@ -1352,12 +1352,12 @@ main {
 .credits-subsection {
   min-width: 0;
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .credits-subsection--creative {
   border-top: 1px solid rgba(255, 255, 255, 0.07);
-  padding-top: 22px;
+  padding-top: 20px;
 }
 
 .credits-subsection__header h3 {
@@ -1370,21 +1370,51 @@ main {
 .credits-rail {
   min-width: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-start;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding: 2px 2px 14px;
+  scroll-padding-inline: 2px;
+  scroll-snap-type: x proximity;
+  scrollbar-color: rgba(244, 184, 96, 0.42) rgba(255, 255, 255, 0.05);
+  scrollbar-width: thin;
+}
+
+.credits-rail::-webkit-scrollbar {
+  height: 7px;
+}
+
+.credits-rail::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.credits-rail::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(244, 184, 96, 0.38);
+}
+
+.credits-rail--crew {
   gap: 14px;
 }
 
-.credits-rail--compact {
-  gap: 16px;
-}
-
 .credits-rail__item {
-  flex: 0 0 140px;
+  flex: 0 0 132px;
+  scroll-snap-align: start;
 }
 
 .credits-rail__item--compact {
-  flex-basis: 136px;
+  flex-basis: 124px;
+}
+
+.credits-empty-state {
+  max-width: 420px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 .person-credit-card {
@@ -1393,13 +1423,13 @@ main {
   display: grid;
   align-content: start;
   justify-items: center;
-  gap: 9px;
+  gap: 8px;
   text-align: center;
 }
 
 .person-credit-card__avatar {
-  width: 112px;
-  height: 112px;
+  width: 98px;
+  height: 98px;
   display: grid;
   overflow: hidden;
   place-items: center;
@@ -1414,8 +1444,8 @@ main {
 }
 
 .person-credit-card--compact .person-credit-card__avatar {
-  width: 92px;
-  height: 92px;
+  width: 88px;
+  height: 88px;
 }
 
 .person-credit-card__avatar img {
@@ -1436,30 +1466,30 @@ main {
 }
 
 .person-credit-card h3 {
-  max-width: 136px;
+  max-width: 124px;
   margin: 4px 0 0;
   overflow-wrap: anywhere;
   color: var(--text);
-  font-size: 0.98rem;
+  font-size: 0.92rem;
   line-height: 1.28;
 }
 
 .person-credit-card--compact h3 {
-  max-width: 132px;
-  font-size: 0.91rem;
+  max-width: 118px;
+  font-size: 0.88rem;
 }
 
 .person-credit-card p {
-  max-width: 136px;
+  max-width: 124px;
   margin: 0;
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.77rem;
   line-height: 1.35;
 }
 
 .person-credit-card--compact p {
-  max-width: 132px;
-  font-size: 0.76rem;
+  max-width: 118px;
+  font-size: 0.74rem;
 }
 
 .person-credit-card--link {
@@ -2412,12 +2442,12 @@ main {
   }
 
   .credits-rail__item {
-    flex: 0 0 138px;
+    flex: 0 0 128px;
     scroll-snap-align: start;
   }
 
   .credits-rail__item--compact {
-    flex-basis: 122px;
+    flex-basis: 116px;
   }
 
   .person-credit-card__avatar {

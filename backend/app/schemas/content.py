@@ -99,6 +99,7 @@ class CrewCredit(BaseModel):
     known_for_department: Optional[str] = None
     job: Optional[str] = None
     department: Optional[str] = None
+    role_type: Optional[str] = None
     display_order: Optional[int] = None
 
 

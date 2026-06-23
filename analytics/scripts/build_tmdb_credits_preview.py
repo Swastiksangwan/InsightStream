@@ -32,7 +32,34 @@ TITLE_PREVIEW_PATH = PROCESSED_DIR / "sample_mapping_preview.json"
 CREDITS_PREVIEW_PATH = PROCESSED_DIR / "credits_preview.json"
 SOURCE_PROVIDER = "tmdb"
 PROFILE_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w185"
-CAST_LIMIT = 5
+CAST_LIMIT = 10
+KEY_CREW_LIMIT = 14
+MOVIE_KEY_CREW_JOBS = {
+    "Director",
+    "Writer",
+    "Screenplay",
+    "Story",
+    "Producer",
+    "Executive Producer",
+}
+SERIES_KEY_CREW_JOBS = {
+    "Creator",
+    "Director",
+    "Writer",
+    "Screenplay",
+    "Story",
+    "Producer",
+    "Executive Producer",
+}
+CREW_JOB_ORDER = {
+    "Creator": 1,
+    "Director": 2,
+    "Writer": 3,
+    "Screenplay": 4,
+    "Story": 5,
+    "Executive Producer": 6,
+    "Producer": 7,
+}
 
 
 class CreditsPreviewError(RuntimeError):
@@ -112,6 +139,20 @@ def as_source_person_id(value: Any) -> Optional[str]:
     if value is None:
         return None
     return str(value)
+
+
+def clean_text(value: Any) -> Optional[str]:
+    if isinstance(value, str) and value.strip():
+        return value.strip()
+    return None
+
+
+def role_type_for_job(job: Optional[str]) -> str:
+    if job == "Director":
+        return "director"
+    if job == "Creator":
+        return "creator"
+    return "crew"
 
 
 def map_cast_member(cast_member: dict[str, Any], warnings: list[str]) -> dict[str, Any]:
@@ -231,6 +272,7 @@ def map_aggregate_cast_member(
 def map_director(crew_member: dict[str, Any], warnings: list[str]) -> dict[str, Any]:
     source_person_id = as_source_person_id(crew_member.get("id"))
     name = crew_member.get("name")
+    department = crew_member.get("department")
 
     if not source_person_id:
         warnings.append(f"Missing source person ID for director {name or '<unknown>'}.")
@@ -243,11 +285,44 @@ def map_director(crew_member: dict[str, Any], warnings: list[str]) -> dict[str, 
         "source_credit_id": crew_member.get("credit_id"),
         "name": name,
         "job": crew_member.get("job"),
-        "department": crew_member.get("department"),
-        "known_for_department": crew_member.get("known_for_department"),
+        "department": department,
+        "known_for_department": crew_member.get("known_for_department") or department,
         "profile_path": crew_member.get("profile_path"),
         "profile_url": profile_url(crew_member.get("profile_path")),
         "role_type": "director",
+    }
+
+
+def map_key_crew_member(
+    crew_member: dict[str, Any],
+    warnings: list[str],
+    job_override: Optional[str] = None,
+    source_credit_id_override: Optional[str] = None,
+) -> dict[str, Any]:
+    source_person_id = as_source_person_id(crew_member.get("id"))
+    name = crew_member.get("name")
+    job = job_override or clean_text(crew_member.get("job"))
+    department = crew_member.get("department")
+
+    if not source_person_id:
+        warnings.append(f"Missing source person ID for crew member {name or '<unknown>'}.")
+    if not name:
+        warnings.append("Missing crew member name.")
+    if not job:
+        warnings.append(f"Missing job for crew member {name or '<unknown>'}.")
+
+    return {
+        "source_name": SOURCE_PROVIDER,
+        "source_person_id": source_person_id,
+        "source_credit_id": source_credit_id_override or crew_member.get("credit_id"),
+        "name": name,
+        "job": job,
+        "department": department,
+        "known_for_department": crew_member.get("known_for_department") or department,
+        "profile_path": crew_member.get("profile_path"),
+        "profile_url": profile_url(crew_member.get("profile_path")),
+        "display_order": crew_member.get("order"),
+        "role_type": role_type_for_job(job),
     }
 
 
@@ -279,6 +354,38 @@ def map_creator(
         "profile_url": profile_url(profile_path),
         "role_type": "creator",
     }
+
+
+def crew_sort_key(record: dict[str, Any]) -> tuple[int, int, int, str]:
+    job = record.get("job")
+    display_order = record.get("display_order")
+    return (
+        CREW_JOB_ORDER.get(job, 99),
+        1 if display_order is None else 0,
+        display_order if isinstance(display_order, int) else 9999,
+        record.get("name") or "",
+    )
+
+
+def dedupe_credits(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    deduped: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str, str]] = set()
+
+    for record in records:
+        source_person_id = record.get("source_person_id")
+        name = record.get("name")
+        key = (
+            source_person_id or f"name:{name or ''}",
+            record.get("role_type") or "",
+            record.get("job") or "",
+            record.get("department") or "",
+        )
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(record)
+
+    return deduped
 
 
 def people_index_from_credits(credits: dict[str, Any]) -> dict[Any, dict[str, Any]]:
@@ -387,6 +494,66 @@ def extract_directors(credits: dict[str, Any], warnings: list[str]) -> list[dict
     return directors
 
 
+def extract_key_crew(
+    credits: dict[str, Any],
+    warnings: list[str],
+    content_type: str,
+) -> list[dict[str, Any]]:
+    crew = credits.get("crew")
+    if not isinstance(crew, list):
+        warnings.append("Missing or invalid crew array in credits file.")
+        return []
+
+    key_jobs = MOVIE_KEY_CREW_JOBS if content_type == "movie" else SERIES_KEY_CREW_JOBS
+    key_crew = [
+        map_key_crew_member(crew_member, warnings)
+        for crew_member in crew
+        if (
+            isinstance(crew_member, dict)
+            and clean_text(crew_member.get("job")) in key_jobs
+        )
+    ]
+
+    return dedupe_credits(sorted(key_crew, key=crew_sort_key))
+
+
+def extract_aggregate_key_crew(
+    aggregate_credits: dict[str, Any],
+    warnings: list[str],
+) -> list[dict[str, Any]]:
+    crew = aggregate_credits.get("crew")
+    if not isinstance(crew, list):
+        warnings.append("Missing or invalid crew array in aggregate credits file.")
+        return []
+
+    key_crew: list[dict[str, Any]] = []
+    for crew_member in crew:
+        if not isinstance(crew_member, dict):
+            continue
+
+        jobs = crew_member.get("jobs")
+        if not isinstance(jobs, list):
+            continue
+
+        for job_record in jobs:
+            if not isinstance(job_record, dict):
+                continue
+
+            job = clean_text(job_record.get("job"))
+            if job not in SERIES_KEY_CREW_JOBS:
+                continue
+
+            mapped = map_key_crew_member(
+                crew_member,
+                warnings,
+                job_override=job,
+                source_credit_id_override=job_record.get("credit_id"),
+            )
+            key_crew.append(mapped)
+
+    return dedupe_credits(sorted(key_crew, key=crew_sort_key))
+
+
 def extract_creators(
     details: dict[str, Any],
     credits: dict[str, Any],
@@ -417,6 +584,43 @@ def extract_creators(
         warnings.append("Missing creator for series.")
 
     return []
+
+
+def build_movie_crew(
+    credits: dict[str, Any],
+    directors: list[dict[str, Any]],
+    warnings: list[str],
+) -> list[dict[str, Any]]:
+    key_crew = extract_key_crew(credits, warnings, "movie")
+    return dedupe_credits(sorted([*directors, *key_crew], key=crew_sort_key))[
+        :KEY_CREW_LIMIT
+    ]
+
+
+def build_series_crew(
+    credits: dict[str, Any],
+    aggregate_credits: Optional[dict[str, Any]],
+    creators: list[dict[str, Any]],
+    tmdb_id: int,
+    warnings: list[str],
+) -> list[dict[str, Any]]:
+    regular_crew = extract_key_crew(credits, warnings, "series")
+    aggregate_crew: list[dict[str, Any]] = []
+
+    if aggregate_credits is None:
+        warnings.append(
+            f"TV aggregate credits file missing for tmdb_id={tmdb_id}; key crew uses regular TV credits only."
+        )
+    else:
+        aggregate_crew = extract_aggregate_key_crew(aggregate_credits, warnings)
+
+    crew = dedupe_credits(
+        sorted([*creators, *aggregate_crew, *regular_crew], key=crew_sort_key)
+    )[:KEY_CREW_LIMIT]
+    if not crew:
+        warnings.append(f"Missing key crew for series tmdb_id={tmdb_id}.")
+
+    return crew
 
 
 def validate_item(
@@ -476,17 +680,20 @@ def build_item(preview_item: dict[str, Any]) -> dict[str, Any]:
         cast = extract_cast(credits, warnings)
     directors: list[dict[str, Any]] = []
     creators: list[dict[str, Any]] = []
+    crew: list[dict[str, Any]] = []
 
     if media_type == "movie":
         directors = extract_directors(credits, warnings)
+        crew = build_movie_crew(credits, directors, warnings)
     elif media_type == "tv":
         creators = extract_creators(details, credits, preview_item, warnings)
+        crew = build_series_crew(credits, aggregate_credits, creators, tmdb_id, warnings)
 
     credits_payload = {
         "cast": cast,
         "directors": directors,
         "creators": creators,
-        "crew": [],
+        "crew": crew,
     }
 
     return {
@@ -499,7 +706,7 @@ def build_item(preview_item: dict[str, Any]) -> dict[str, Any]:
             "cast": len(cast),
             "directors": len(directors),
             "creators": len(creators),
-            "crew": 0,
+            "crew": len(crew),
         },
         "warnings": warnings,
     }
@@ -543,6 +750,7 @@ def build_summary(items: list[dict[str, Any]]) -> dict[str, Any]:
         "total_cast_people": sum(item["counts"]["cast"] for item in items),
         "total_directors": sum(item["counts"]["directors"] for item in items),
         "total_creators": sum(item["counts"]["creators"] for item in items),
+        "total_crew": sum(item["counts"]["crew"] for item in items),
         "titles_with_missing_cast": titles_with_missing_cast,
         "titles_with_missing_director_or_creator": titles_with_missing_director_or_creator,
         "total_warnings": sum(len(item.get("warnings", [])) for item in items),
@@ -588,6 +796,7 @@ def print_summary(preview: dict[str, Any]) -> None:
     print(f"Total cast records: {summary['total_cast_people']}")
     print(f"Total directors: {summary['total_directors']}")
     print(f"Total creators: {summary['total_creators']}")
+    print(f"Total key crew records: {summary['total_crew']}")
     print(f"Total warnings: {summary['total_warnings']}")
     if summary["titles_with_warnings"]:
         print("Titles with warnings:")

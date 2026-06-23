@@ -14,6 +14,7 @@ export type CreditCrewMember = {
   known_for_department?: string | null;
   job?: string | null;
   department?: string | null;
+  role_type?: "director" | "creator" | "crew" | string | null;
   display_order?: number | null;
 };
 

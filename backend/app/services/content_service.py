@@ -647,6 +647,7 @@ def build_crew_credit(row):
         "known_for_department": row["known_for_department"],
         "job": row["job"],
         "department": row["department"],
+        "role_type": row["role_type"],
         "display_order": row["display_order"],
     }
 
@@ -678,15 +679,22 @@ def get_content_credits_service(content_id: int, db: Session):
         JOIN people p ON p.id = cp.person_id
         WHERE cp.content_id = :content_id
         ORDER BY
-            CASE cp.role_type
-                WHEN 'cast' THEN 1
-                WHEN 'director' THEN 2
-                WHEN 'creator' THEN 3
-                WHEN 'crew' THEN 4
-                ELSE 5
+            CASE WHEN cp.role_type = 'cast' THEN 1 ELSE 2 END,
+            CASE
+                WHEN cp.role_type = 'cast' AND cp.display_order IS NULL THEN 1
+                ELSE 0
             END,
-            CASE WHEN cp.display_order IS NULL THEN 1 ELSE 0 END,
             cp.display_order ASC,
+            CASE COALESCE(cp.job, '')
+                WHEN 'Creator' THEN 1
+                WHEN 'Director' THEN 2
+                WHEN 'Writer' THEN 3
+                WHEN 'Screenplay' THEN 4
+                WHEN 'Story' THEN 5
+                WHEN 'Executive Producer' THEN 6
+                WHEN 'Producer' THEN 7
+                ELSE 8
+            END,
             cp.department ASC NULLS LAST,
             cp.job ASC NULLS LAST,
             p.name ASC;
@@ -701,17 +709,34 @@ def get_content_credits_service(content_id: int, db: Session):
         "creators": [],
         "crew": [],
     }
+    unified_crew_keys = set()
+
+    def append_unified_crew(row):
+        key = (
+            row["person_id"],
+            row["job"] or row["role_type"] or "",
+            row["department"] or "",
+        )
+        if key in unified_crew_keys:
+            return
+        unified_crew_keys.add(key)
+        grouped_credits["crew"].append(build_crew_credit(row))
 
     for row in rows:
         role_type = row["role_type"]
         if role_type == "cast":
-            grouped_credits["cast"].append(build_cast_credit(row))
+            if len(grouped_credits["cast"]) < 10:
+                grouped_credits["cast"].append(build_cast_credit(row))
         elif role_type == "director":
-            grouped_credits["directors"].append(build_crew_credit(row))
+            credit = build_crew_credit(row)
+            grouped_credits["directors"].append(credit)
+            append_unified_crew(row)
         elif role_type == "creator":
-            grouped_credits["creators"].append(build_crew_credit(row))
+            credit = build_crew_credit(row)
+            grouped_credits["creators"].append(credit)
+            append_unified_crew(row)
         elif role_type == "crew":
-            grouped_credits["crew"].append(build_crew_credit(row))
+            append_unified_crew(row)
 
     return grouped_credits
 

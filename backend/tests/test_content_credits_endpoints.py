@@ -55,8 +55,10 @@ def test_get_content_credits_groups_imported_movie_credits_if_present(
         return
 
     assert data["cast"]
+    assert len(data["cast"]) <= 10
     assert data["directors"]
     assert data["creators"] == []
+    assert data["crew"]
 
     first_cast = data["cast"][0]
     assert {
@@ -74,10 +76,16 @@ def test_get_content_credits_groups_imported_movie_credits_if_present(
 
     director_names = {director["name"] for director in data["directors"]}
     assert "Christopher Nolan" in director_names
+    crew_names = {crew_member["name"] for crew_member in data["crew"]}
+    assert "Christopher Nolan" in crew_names
+    assert {"person_id", "name", "job", "department", "role_type"} <= set(
+        data["crew"][0].keys()
+    )
 
     for private_field in ("source_name", "source_person_id", "source_credit_id"):
         assert private_field not in first_cast
         assert private_field not in data["directors"][0]
+        assert private_field not in data["crew"][0]
 
 
 def test_get_content_credits_groups_imported_series_credits_if_present(
@@ -110,11 +118,20 @@ def test_get_content_credits_groups_imported_series_credits_if_present(
         return
 
     assert data["cast"]
-    assert data["directors"] == []
+    assert len(data["cast"]) <= 10
+    assert isinstance(data["directors"], list)
+    assert isinstance(data["creators"], list)
     assert data["creators"]
+    assert data["crew"]
+    assert isinstance(data["crew"], list)
 
     creator_names = {creator["name"] for creator in data["creators"]}
     assert "Jon Favreau" in creator_names
+    crew_names = {crew_member["name"] for crew_member in data["crew"]}
+    assert "Jon Favreau" in crew_names
+    assert {"person_id", "name", "job", "department", "role_type"} <= set(
+        data["crew"][0].keys()
+    )
 
 
 def test_get_content_credits_for_missing_content_returns_404(client):

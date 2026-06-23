@@ -286,6 +286,7 @@ This script:
 - reads the current `sample_mapping_preview.json`;
 - reads raw credits files;
 - prefers TV aggregate credits for series cast;
+- builds top cast and key crew roles such as creators, directors, writers, and producers;
 - creates `credits_preview.json`;
 - does not write to PostgreSQL;
 - only processes titles currently present in `sample_mapping_preview.json`.
@@ -304,7 +305,7 @@ The importer writes:
 - `person_external_ids`
 - `content_people`
 
-This enables cast, creators, directors, and person links.
+This enables top cast, unified crew display, creators/directors compatibility fields, and person links. Crew is imported from local processed previews and is not fetched by the frontend.
 
 The third command checks idempotency.
 
