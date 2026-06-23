@@ -34,6 +34,21 @@ def expected_recent_titles(db_session, limit, content_type=None):
     return [row["title"] for row in rows]
 
 
+def expected_discover_recent_titles(db_session, limit):
+    rows = db_session.execute(
+        text(
+            """
+            SELECT title
+            FROM content
+            ORDER BY COALESCE(latest_activity_date, release_date) DESC, title ASC
+            LIMIT :limit;
+            """
+        ),
+        {"limit": limit},
+    ).mappings().all()
+    return [row["title"] for row in rows]
+
+
 def recent_content_count(db_session, content_type=None):
     params = {}
     content_type_filter = ""
@@ -61,6 +76,22 @@ def optional_content_id_by_title(db_session, title):
         {"title": title},
     ).mappings().first()
     return row["id"] if row else None
+
+
+def content_ids_for_genre(db_session, genre_name):
+    rows = db_session.execute(
+        text(
+            """
+            SELECT c.id
+            FROM content c
+            JOIN content_genres cg ON cg.content_id = c.id
+            JOIN genres g ON g.id = cg.genre_id
+            WHERE g.name ILIKE :genre_name;
+            """
+        ),
+        {"genre_name": genre_name},
+    ).mappings().all()
+    return {row["id"] for row in rows}
 
 
 def has_region_aware_availability(db_session, content_id):
@@ -249,13 +280,17 @@ def test_recent_movie_filter_still_sorts_by_movie_release_date(client, db_sessio
 
 
 def test_discover_recent_uses_latest_activity_date(client, db_session):
-    response = client.get("/content/discover?sort_by=recent&limit=3")
+    limit = 3
+    response = client.get(f"/content/discover?sort_by=recent&limit={limit}")
     data = response.json()
+    titles = [item["title"] for item in data["items"]]
 
     assert response.status_code == 200
-    assert [item["title"] for item in data["items"]] == expected_recent_titles(
+    assert data["limit"] == limit
+    assert len(data["items"]) <= limit
+    assert titles == expected_discover_recent_titles(
         db_session,
-        limit=3,
+        limit=limit,
     )
 
 
@@ -277,22 +312,39 @@ def test_get_top_rated_content(client):
     assert len(titles_from_items(data) & expected_high_score_titles) >= 3
 
 
-def test_get_content_by_animation_genre(client):
+def test_get_content_by_animation_genre(client, db_session):
     response = client.get("/content/by-genre/Animation")
     data = response.json()
+    animation_ids = content_ids_for_genre(db_session, "Animation")
 
     assert response.status_code == 200
     assert data["total"] >= 1
-    assert "Spider-Man: Across the Spider-Verse" in titles_from_items(data)
+    assert data["items"]
+    assert len(data["items"]) == min(data["total"], data["limit"])
+    assert all(item["id"] in animation_ids for item in data["items"])
+
+    spider_verse_id = optional_content_id_by_title(
+        db_session,
+        "Spider-Man: Across the Spider-Verse",
+    )
+    if spider_verse_id is not None:
+        assert spider_verse_id in animation_ids
 
 
-def test_get_content_by_mystery_genre(client):
+def test_get_content_by_mystery_genre(client, db_session):
     response = client.get("/content/by-genre/Mystery")
     data = response.json()
+    mystery_ids = content_ids_for_genre(db_session, "Mystery")
 
     assert response.status_code == 200
     assert data["total"] >= 1
-    assert "Dark" in titles_from_items(data)
+    assert data["items"]
+    assert len(data["items"]) == min(data["total"], data["limit"])
+    assert all(item["id"] in mystery_ids for item in data["items"])
+
+    dark_id = optional_content_id_by_title(db_session, "Dark")
+    if dark_id is not None:
+        assert dark_id in mystery_ids
 
 
 def test_get_content_by_netflix_streaming_platform(client):
