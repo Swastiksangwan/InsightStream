@@ -401,6 +401,15 @@ def is_non_future_date_string(value: Any) -> bool:
     return parsed <= date.today()
 
 
+def parse_date_string(value: Any) -> date | None:
+    if not is_date_string(value):
+        return None
+    try:
+        return datetime.strptime(value, "%Y-%m-%d").date()
+    except ValueError:
+        return None
+
+
 def latest_tv_activity_date(details: dict[str, Any]) -> str | None:
     last_episode = details.get("last_episode_to_air")
     if (
@@ -445,9 +454,84 @@ def nested_air_date(details: dict[str, Any], field_name: str) -> str | None:
     return None
 
 
-def build_series_metadata(details: dict[str, Any]) -> dict[str, Any]:
-    series_status = details.get("status")
+def build_season_summary(
+    details: dict[str, Any],
+    notes: list[str],
+) -> dict[str, Any]:
+    seasons = details.get("seasons")
+    if not isinstance(seasons, list):
+        notes.append("Missing or invalid seasons array in TV details.")
+        return {
+            "released_seasons_count": None,
+            "announced_seasons_count": None,
+            "next_season_number": None,
+            "next_season_air_date": None,
+            "next_season_year": None,
+            "has_announced_season": None,
+            "season_summary_note": None,
+        }
+
+    regular_seasons = [
+        season
+        for season in seasons
+        if isinstance(season, dict)
+        and isinstance(season.get("season_number"), int)
+        and season.get("season_number") > 0
+    ]
+    today = date.today()
+    released: list[dict[str, Any]] = []
+    announced: list[dict[str, Any]] = []
+
+    for season in regular_seasons:
+        air_date = parse_date_string(season.get("air_date"))
+        if air_date and air_date <= today:
+            released.append(season)
+        else:
+            announced.append(season)
+
+    next_season = None
+    if announced:
+        next_season = sorted(
+            announced,
+            key=lambda season: (
+                parse_date_string(season.get("air_date")) or date.max,
+                season.get("season_number") or 9999,
+            ),
+        )[0]
+
+    next_air_date = (
+        next_season.get("air_date")
+        if next_season and is_date_string(next_season.get("air_date"))
+        else None
+    )
+    next_year = year_from_date(next_air_date)
+    next_number = next_season.get("season_number") if next_season else None
+    summary_note = None
+
+    if isinstance(next_number, int):
+        if next_year:
+            summary_note = f"Season {next_number} expected in {next_year}"
+        else:
+            summary_note = f"Season {next_number} announced"
+
     return {
+        "released_seasons_count": len(released),
+        "announced_seasons_count": len(announced),
+        "next_season_number": next_number,
+        "next_season_air_date": next_air_date,
+        "next_season_year": next_year,
+        "has_announced_season": bool(announced),
+        "season_summary_note": summary_note,
+    }
+
+
+def build_series_metadata(
+    details: dict[str, Any],
+    notes: list[str],
+) -> dict[str, Any]:
+    series_status = details.get("status")
+    season_summary = build_season_summary(details, notes)
+    metadata = {
         "number_of_seasons": details.get("number_of_seasons"),
         "number_of_episodes": details.get("number_of_episodes"),
         "series_status": series_status,
@@ -464,6 +548,8 @@ def build_series_metadata(details: dict[str, Any]) -> dict[str, Any]:
         "series_type": details.get("type"),
         "source_name": "tmdb",
     }
+    metadata.update(season_summary)
+    return metadata
 
 
 def choose_image_size(
@@ -869,7 +955,7 @@ def map_tmdb_tv_preview(
             "year": year_from_date(release_date),
             "runtime": runtime,
             "director_or_creator_names": director_or_creator_names,
-            "series_metadata": build_series_metadata(details),
+            "series_metadata": build_series_metadata(details, notes),
         }
     )
 

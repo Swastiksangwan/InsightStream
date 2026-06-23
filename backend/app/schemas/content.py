@@ -70,6 +70,13 @@ class SeriesMetadata(BaseModel):
     last_episode_air_date: Optional[date] = None
     next_episode_air_date: Optional[date] = None
     series_type: Optional[str] = None
+    released_seasons_count: Optional[int] = None
+    announced_seasons_count: Optional[int] = None
+    next_season_number: Optional[int] = None
+    next_season_air_date: Optional[date] = None
+    next_season_year: Optional[int] = None
+    has_announced_season: Optional[bool] = None
+    season_summary_note: Optional[str] = None
 
 
 class Genre(BaseModel):

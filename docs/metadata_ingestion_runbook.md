@@ -280,7 +280,8 @@ Series lifecycle metadata notes:
 
 - Series-level lifecycle metadata is stored in `content_series_metadata`.
 - It is refreshed from TMDb TV details through `fetch_tmdb_sample.py` and `import_content_metadata_from_preview.py`.
-- It supports seasons, episodes, normalized lifecycle status, first/last aired dates, last episode date, and next episode date.
+- It supports seasons, episodes, normalized lifecycle status, first/last aired dates, last episode date, next episode date, and a season summary for released versus announced/upcoming seasons.
+- It does not infer future seasons in the frontend; it displays stored provider-derived season summary fields.
 - It does not create episode-level or season-level pages.
 - For targeted refreshes, run `python3 analytics/scripts/fetch_tmdb_sample.py --source-id TMDB_SERIES_ID --refresh`, then dry-run/apply the content metadata importer.
 

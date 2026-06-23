@@ -60,6 +60,22 @@ function titleCaseStatus(status?: string | null) {
     .join(" ");
 }
 
+function heroSeasonLabel(seriesMetadata?: SeriesMetadata | null) {
+  const releasedCount = seriesMetadata?.released_seasons_count;
+  const totalCount = seriesMetadata?.number_of_seasons;
+  const shouldUseReleasedCount =
+    seriesMetadata?.has_announced_season && typeof releasedCount === "number";
+  const count = shouldUseReleasedCount ? releasedCount : totalCount;
+
+  if (!count) {
+    return null;
+  }
+
+  return `${count} ${shouldUseReleasedCount ? "released " : ""}season${
+    count === 1 ? "" : "s"
+  }`;
+}
+
 export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps) {
   const [showBackdrop, setShowBackdrop] = useState(Boolean(content.backdrop));
   const [showPoster, setShowPoster] = useState(Boolean(content.poster));
@@ -72,6 +88,8 @@ export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps
       ? titleCaseStatus(seriesMetadata?.series_status_normalized) ||
         seriesMetadata?.series_status
       : null;
+  const seasonLabel =
+    content.type === "series" ? heroSeasonLabel(seriesMetadata) : null;
   const metadata = [
     { label: formatType(content.type), title: "Content type" },
     content.year ? { label: String(content.year), title: "Release year" } : null,
@@ -88,11 +106,9 @@ export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps
     seriesStatusLabel
       ? { label: seriesStatusLabel, title: "Series lifecycle status" }
       : null,
-    content.type === "series" && seriesMetadata?.number_of_seasons
+    seasonLabel
       ? {
-          label: `${seriesMetadata.number_of_seasons} season${
-            seriesMetadata.number_of_seasons === 1 ? "" : "s"
-          }`,
+          label: seasonLabel,
           title: "Season count",
         }
       : null,

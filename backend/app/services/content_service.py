@@ -187,7 +187,14 @@ def get_series_metadata(db: Session, content_id: int):
             last_air_date,
             last_episode_air_date,
             next_episode_air_date,
-            series_type
+            series_type,
+            released_seasons_count,
+            announced_seasons_count,
+            next_season_number,
+            next_season_air_date,
+            next_season_year,
+            has_announced_season,
+            season_summary_note
         FROM content_series_metadata
         WHERE content_id = :content_id;
     """)

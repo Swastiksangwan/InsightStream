@@ -187,7 +187,13 @@ def first_series_with_lifecycle_metadata(db_session):
     return db_session.execute(
         text(
             """
-            SELECT c.id, c.title, csm.number_of_seasons, csm.series_status_normalized
+            SELECT
+                c.id,
+                c.title,
+                csm.number_of_seasons,
+                csm.series_status_normalized,
+                csm.released_seasons_count,
+                csm.has_announced_season
             FROM content c
             JOIN content_series_metadata csm ON csm.content_id = c.id
             WHERE c.content_type = 'series'
@@ -405,6 +411,21 @@ def test_content_details_include_series_metadata_when_imported(client, db_sessio
     assert (
         data["series_metadata"]["series_status_normalized"]
         == row["series_status_normalized"]
+    )
+    assert "released_seasons_count" in data["series_metadata"]
+    assert "announced_seasons_count" in data["series_metadata"]
+    assert "next_season_number" in data["series_metadata"]
+    assert "next_season_air_date" in data["series_metadata"]
+    assert "next_season_year" in data["series_metadata"]
+    assert "has_announced_season" in data["series_metadata"]
+    assert "season_summary_note" in data["series_metadata"]
+    assert (
+        data["series_metadata"]["released_seasons_count"]
+        == row["released_seasons_count"]
+    )
+    assert (
+        data["series_metadata"]["has_announced_season"]
+        == row["has_announced_season"]
     )
 
 

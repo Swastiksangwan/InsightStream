@@ -33,6 +33,28 @@ function formatDate(dateValue?: string | null) {
   }).format(parsed);
 }
 
+function seasonText(count: number) {
+  return `${count} season${count === 1 ? "" : "s"}`;
+}
+
+function nextSeasonValue(seriesMetadata: SeriesMetadata) {
+  const seasonNumber = seriesMetadata.next_season_number;
+  if (!seasonNumber) {
+    return seriesMetadata.season_summary_note || null;
+  }
+
+  const airDate = formatDate(seriesMetadata.next_season_air_date);
+  if (airDate) {
+    return `Season ${seasonNumber} · ${airDate}`;
+  }
+
+  if (seriesMetadata.next_season_year) {
+    return `Season ${seasonNumber} · ${seriesMetadata.next_season_year}`;
+  }
+
+  return `Season ${seasonNumber}`;
+}
+
 export function SeriesInfoPanel({ seriesMetadata }: SeriesInfoPanelProps) {
   if (!seriesMetadata) {
     return null;
@@ -46,11 +68,33 @@ export function SeriesInfoPanel({ seriesMetadata }: SeriesInfoPanelProps) {
     formatDate(seriesMetadata.last_air_date);
   const nextEpisode = formatDate(seriesMetadata.next_episode_air_date);
   const firstAired = formatDate(seriesMetadata.first_air_date);
+  const hasAnnouncedSeason = Boolean(seriesMetadata.has_announced_season);
+  const releasedSeasonCount = seriesMetadata.released_seasons_count;
+  const nextSeason = hasAnnouncedSeason ? nextSeasonValue(seriesMetadata) : null;
+  const showReleasedSeasons =
+    hasAnnouncedSeason && typeof releasedSeasonCount === "number";
+  const showTotalSeasons =
+    !showReleasedSeasons && typeof seriesMetadata.number_of_seasons === "number";
 
   const rows = [
     status ? { label: "Status", value: status } : null,
-    seriesMetadata.number_of_seasons
-      ? { label: "Seasons", value: String(seriesMetadata.number_of_seasons) }
+    showReleasedSeasons
+      ? { label: "Released seasons", value: seasonText(releasedSeasonCount) }
+      : null,
+    nextSeason
+      ? {
+          label:
+            seriesMetadata.next_season_air_date || seriesMetadata.next_season_year
+              ? "Next season"
+              : "Announced season",
+          value: nextSeason,
+        }
+      : null,
+    showTotalSeasons
+      ? {
+          label: "Seasons",
+          value: seasonText(seriesMetadata.number_of_seasons || 0),
+        }
       : null,
     seriesMetadata.number_of_episodes
       ? { label: "Episodes", value: String(seriesMetadata.number_of_episodes) }

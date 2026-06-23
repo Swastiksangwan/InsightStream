@@ -124,8 +124,24 @@ SERIES_METADATA_FIELDS = (
     "last_episode_air_date",
     "next_episode_air_date",
     "series_type",
+    "released_seasons_count",
+    "announced_seasons_count",
+    "next_season_number",
+    "next_season_air_date",
+    "next_season_year",
+    "has_announced_season",
+    "season_summary_note",
     "source_name",
 )
+SEASON_SUMMARY_FIELDS = {
+    "released_seasons_count",
+    "announced_seasons_count",
+    "next_season_number",
+    "next_season_air_date",
+    "next_season_year",
+    "has_announced_season",
+    "season_summary_note",
+}
 
 
 @dataclass(frozen=True)
@@ -155,6 +171,7 @@ class ImportStats:
     series_metadata_inserted: int = 0
     series_metadata_updated: int = 0
     series_metadata_unchanged: int = 0
+    season_summary_updates: int = 0
     latest_activity_date_updates: int = 0
     conflicts_preserved: int = 0
     skipped_fields: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
@@ -386,6 +403,19 @@ def series_metadata_from_item(
         "last_episode_air_date": clean_date(raw_metadata.get("last_episode_air_date")),
         "next_episode_air_date": clean_date(raw_metadata.get("next_episode_air_date")),
         "series_type": clean_text(raw_metadata.get("series_type")),
+        "released_seasons_count": clean_int(
+            raw_metadata.get("released_seasons_count")
+        ),
+        "announced_seasons_count": clean_int(
+            raw_metadata.get("announced_seasons_count")
+        ),
+        "next_season_number": clean_int(raw_metadata.get("next_season_number")),
+        "next_season_air_date": clean_date(raw_metadata.get("next_season_air_date")),
+        "next_season_year": clean_int(raw_metadata.get("next_season_year")),
+        "has_announced_season": clean_bool(
+            raw_metadata.get("has_announced_season")
+        ),
+        "season_summary_note": clean_text(raw_metadata.get("season_summary_note")),
         "source_name": clean_text(raw_metadata.get("source_name")) or "tmdb",
     }
 
@@ -859,6 +889,13 @@ def fetch_series_metadata(connection, content_id: int):
                 last_episode_air_date,
                 next_episode_air_date,
                 series_type,
+                released_seasons_count,
+                announced_seasons_count,
+                next_season_number,
+                next_season_air_date,
+                next_season_year,
+                has_announced_season,
+                season_summary_note,
                 source_name
             FROM content_series_metadata
             WHERE content_id = :content_id;
@@ -889,6 +926,13 @@ def insert_series_metadata(
                 last_episode_air_date,
                 next_episode_air_date,
                 series_type,
+                released_seasons_count,
+                announced_seasons_count,
+                next_season_number,
+                next_season_air_date,
+                next_season_year,
+                has_announced_season,
+                season_summary_note,
                 source_name,
                 last_refreshed_at
             )
@@ -904,6 +948,13 @@ def insert_series_metadata(
                 :last_episode_air_date,
                 :next_episode_air_date,
                 :series_type,
+                :released_seasons_count,
+                :announced_seasons_count,
+                :next_season_number,
+                :next_season_air_date,
+                :next_season_year,
+                :has_announced_season,
+                :season_summary_note,
                 :source_name,
                 CURRENT_TIMESTAMP
             )
@@ -975,6 +1026,8 @@ def ensure_series_metadata(
         if apply:
             update_series_metadata(connection, content_id, updates)
         stats.series_metadata_updated += 1
+        if SEASON_SUMMARY_FIELDS.intersection(updates):
+            stats.season_summary_updates += 1
         return
 
     stats.series_metadata_unchanged += 1
@@ -1111,6 +1164,7 @@ def print_summary(stats: ImportStats) -> None:
     print(f"- Series metadata rows inserted: {stats.series_metadata_inserted}")
     print(f"- Series metadata rows updated: {stats.series_metadata_updated}")
     print(f"- Series metadata rows unchanged: {stats.series_metadata_unchanged}")
+    print(f"- Season summary rows updated: {stats.season_summary_updates}")
     print(f"- Latest activity date updates: {stats.latest_activity_date_updates}")
     print(f"- Conflicts preserved: {stats.conflicts_preserved}")
 

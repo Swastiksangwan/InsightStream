@@ -146,6 +146,13 @@ CREATE TABLE IF NOT EXISTS content_series_metadata (
     last_episode_air_date DATE,
     next_episode_air_date DATE,
     series_type TEXT,
+    released_seasons_count INTEGER,
+    announced_seasons_count INTEGER,
+    next_season_number INTEGER,
+    next_season_air_date DATE,
+    next_season_year INTEGER,
+    has_announced_season BOOLEAN DEFAULT FALSE,
+    season_summary_note TEXT,
     source_name TEXT DEFAULT 'tmdb',
     last_refreshed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

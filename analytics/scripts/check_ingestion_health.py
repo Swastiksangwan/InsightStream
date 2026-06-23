@@ -413,6 +413,12 @@ def read_database_snapshot(
     connection: Any,
     table_columns: dict[str, set[str]],
 ) -> dict[str, Any]:
+    def series_column_expr(column_name: str) -> str:
+        columns = table_columns.get("content_series_metadata", set())
+        if column_name in columns:
+            return column_name
+        return f"NULL AS {column_name}"
+
     content_rows = fetch_rows(
         connection,
         """
@@ -486,19 +492,26 @@ def read_database_snapshot(
     if table_columns.get("content_series_metadata"):
         series_metadata_rows = fetch_rows(
             connection,
-            """
+            f"""
             SELECT
                 content_id,
-                number_of_seasons,
-                number_of_episodes,
-                series_status,
-                series_status_normalized,
-                in_production,
-                first_air_date,
-                last_air_date,
-                last_episode_air_date,
-                next_episode_air_date,
-                series_type
+                {series_column_expr("number_of_seasons")},
+                {series_column_expr("number_of_episodes")},
+                {series_column_expr("series_status")},
+                {series_column_expr("series_status_normalized")},
+                {series_column_expr("in_production")},
+                {series_column_expr("first_air_date")},
+                {series_column_expr("last_air_date")},
+                {series_column_expr("last_episode_air_date")},
+                {series_column_expr("next_episode_air_date")},
+                {series_column_expr("series_type")},
+                {series_column_expr("released_seasons_count")},
+                {series_column_expr("announced_seasons_count")},
+                {series_column_expr("next_season_number")},
+                {series_column_expr("next_season_air_date")},
+                {series_column_expr("next_season_year")},
+                {series_column_expr("has_announced_season")},
+                {series_column_expr("season_summary_note")}
             FROM content_series_metadata;
             """,
         )
@@ -665,6 +678,9 @@ def check_metadata_completeness(
         "missing_series_metadata",
         "missing_series_number_of_seasons",
         "missing_series_status_normalized",
+        "missing_released_seasons_count",
+        "missing_has_announced_season",
+        "season_count_exceeds_released_without_next_season",
     }
 
     for target in matched_targets:
@@ -705,6 +721,25 @@ def check_metadata_completeness(
                         "missing_series_status_normalized",
                         series_metadata is not None
                         and is_blank(series_metadata.get("series_status_normalized")),
+                    ),
+                    (
+                        "missing_released_seasons_count",
+                        series_metadata is not None
+                        and series_metadata.get("released_seasons_count") is None,
+                    ),
+                    (
+                        "missing_has_announced_season",
+                        series_metadata is not None
+                        and series_metadata.get("has_announced_season") is None,
+                    ),
+                    (
+                        "season_count_exceeds_released_without_next_season",
+                        series_metadata is not None
+                        and series_metadata.get("number_of_seasons") is not None
+                        and series_metadata.get("released_seasons_count") is not None
+                        and series_metadata["number_of_seasons"]
+                        > series_metadata["released_seasons_count"]
+                        and series_metadata.get("next_season_number") is None,
                     ),
                 ]
             )
@@ -785,10 +820,21 @@ def series_lifecycle_summary(snapshot: dict[str, Any]) -> dict[str, Any]:
     content_rows = snapshot["content_rows"]
     series_rows = [row for row in content_rows if row.get("content_type") == "series"]
     metadata_by_content = snapshot["series_metadata_by_content"]
+    series_metadata_rows = [
+        metadata_by_content[row["id"]]
+        for row in series_rows
+        if row["id"] in metadata_by_content
+    ]
     status_counts = Counter(
         (metadata_by_content.get(row["id"]) or {}).get("series_status_normalized")
         or "missing"
         for row in series_rows
+    )
+    season_summary_count = sum(
+        1
+        for row in series_metadata_rows
+        if row.get("released_seasons_count") is not None
+        and row.get("has_announced_season") is not None
     )
 
     return {
@@ -805,6 +851,11 @@ def series_lifecycle_summary(snapshot: dict[str, Any]) -> dict[str, Any]:
         "upcoming_series_count": status_counts.get("upcoming", 0),
         "unknown_status_count": status_counts.get("unknown", 0),
         "missing_status_count": status_counts.get("missing", 0),
+        "series_with_season_summary": season_summary_count,
+        "series_with_announced_or_upcoming_seasons": sum(
+            1 for row in series_metadata_rows if row.get("has_announced_season") is True
+        ),
+        "series_with_unknown_season_summary": len(series_rows) - season_summary_count,
     }
 
 
@@ -960,6 +1011,13 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
         f"{series.get('cancelled_series_count', 0)} cancelled, "
         f"{series.get('upcoming_series_count', 0)} upcoming, "
         f"{series.get('unknown_status_count', 0)} unknown"
+    )
+    print(
+        "Season summary: "
+        f"{series.get('series_with_season_summary', 0)}/"
+        f"{series.get('total_series', 0)} with summary, "
+        f"{series.get('series_with_announced_or_upcoming_seasons', 0)} with announced/upcoming seasons, "
+        f"{series.get('series_with_unknown_season_summary', 0)} unknown"
     )
     print(f"Warnings: {len(report.get('warnings') or [])}")
     print(f"Failures: {len(report.get('failures') or [])}")

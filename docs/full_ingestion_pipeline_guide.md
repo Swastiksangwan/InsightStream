@@ -548,7 +548,9 @@ Series lifecycle metadata comes from TMDb TV details payloads already fetched as
 analytics/raw/tmdb/tv_{id}_details.json
 ```
 
-The metadata is series-level only. It records season count, episode count, provider status, normalized app status, first/last aired dates, last episode air date, next episode air date, and series type. It does not create episode pages or season pages.
+The metadata is series-level only. It records season count, episode count, provider status, normalized app status, first/last aired dates, last episode air date, next episode air date, series type, and a season summary that distinguishes released seasons from announced/upcoming seasons. It does not create episode pages or season pages.
+
+The season summary is provider-derived and stored locally. The frontend should not infer future seasons from total season count alone; it displays stored fields such as `released_seasons_count`, `next_season_number`, `next_season_air_date`, and `season_summary_note`.
 
 For a targeted ongoing-series refresh:
 
@@ -560,7 +562,7 @@ python3 analytics/scripts/import_content_metadata_from_preview.py --apply
 python3 analytics/scripts/import_content_metadata_from_preview.py
 ```
 
-The targeted fetch rebuilds `sample_mapping_preview.json` for the selected title. The importer safely refreshes dynamic series lifecycle fields in `content_series_metadata` and updates `content.latest_activity_date` from the latest valid aired date. It does not use future `next_episode_air_date` values for recency.
+The targeted fetch rebuilds `sample_mapping_preview.json` for the selected title. The importer safely refreshes dynamic series lifecycle and season summary fields in `content_series_metadata` and updates `content.latest_activity_date` from the latest valid aired date. It does not use future `next_episode_air_date` or `next_season_air_date` values for recency.
 
 For a full backfill, regenerate a full content preview before importing so every series target is present in `sample_mapping_preview.json`.
 

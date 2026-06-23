@@ -41,6 +41,13 @@ def test_content_series_metadata_has_expected_columns(db_session):
         "last_episode_air_date",
         "next_episode_air_date",
         "series_type",
+        "released_seasons_count",
+        "announced_seasons_count",
+        "next_season_number",
+        "next_season_air_date",
+        "next_season_year",
+        "has_announced_season",
+        "season_summary_note",
         "source_name",
         "last_refreshed_at",
     } <= columns
@@ -62,3 +69,5 @@ def test_content_series_metadata_indexes_exist(db_session):
     assert "idx_content_series_metadata_status_normalized" in indexes
     assert "idx_content_series_metadata_last_air_date" in indexes
     assert "idx_content_series_metadata_next_episode_air_date" in indexes
+    assert "idx_content_series_metadata_has_announced_season" in indexes
+    assert "idx_content_series_metadata_next_season_air_date" in indexes

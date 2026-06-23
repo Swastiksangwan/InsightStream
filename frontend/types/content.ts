@@ -26,6 +26,13 @@ export type SeriesMetadata = {
   last_episode_air_date?: string | null;
   next_episode_air_date?: string | null;
   series_type?: string | null;
+  released_seasons_count?: number | null;
+  announced_seasons_count?: number | null;
+  next_season_number?: number | null;
+  next_season_air_date?: string | null;
+  next_season_year?: number | null;
+  has_announced_season?: boolean | null;
+  season_summary_note?: string | null;
 };
 
 export type PaginatedContentResponse = {

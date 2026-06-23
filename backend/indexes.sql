@@ -186,6 +186,13 @@ ON content_series_metadata (last_air_date);
 CREATE INDEX IF NOT EXISTS idx_content_series_metadata_next_episode_air_date
 ON content_series_metadata (next_episode_air_date);
 
+-- Speeds up season summary and upcoming season reporting.
+CREATE INDEX IF NOT EXISTS idx_content_series_metadata_has_announced_season
+ON content_series_metadata (has_announced_season);
+
+CREATE INDEX IF NOT EXISTS idx_content_series_metadata_next_season_air_date
+ON content_series_metadata (next_season_air_date);
+
 
 -- ------------------------------------------------------------
 -- Ratings indexes
