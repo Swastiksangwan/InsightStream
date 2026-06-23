@@ -1,0 +1,25 @@
+{
+  "description": "Read-only generated refresh targets for existing InsightStream series. Do not add new catalog titles from this file.",
+  "generated_at": "2026-06-23T06:42:38.085993+00:00",
+  "generated_by": "analytics/scripts/plan_series_refresh.py",
+  "targets": [
+    {
+      "title": "House of the Dragon",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "94997",
+      "priority": "series_refresh",
+      "ingestion_status": "refresh_due",
+      "notes": "Selected for series refresh: next_episode_air_date within next 14 days."
+    },
+    {
+      "title": "The Bear",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "136315",
+      "priority": "series_refresh",
+      "ingestion_status": "refresh_due",
+      "notes": "Selected for series refresh: next_episode_air_date within next 14 days."
+    }
+  ]
+}

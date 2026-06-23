@@ -563,6 +563,50 @@ The targeted fetch rebuilds `sample_mapping_preview.json` for the selected title
 
 For a full backfill, regenerate a full content preview before importing so every series target is present in `sample_mapping_preview.json`.
 
+## Series Refresh Workflow
+
+Use the series refresh planner for existing series that may have changed since the last metadata refresh. This does not add new titles. It only creates a temporary target file for series already in the catalog with TMDb external IDs.
+
+Plan due series:
+
+```bash
+python3 analytics/scripts/plan_series_refresh.py
+```
+
+The planner writes:
+
+```text
+analytics/config/series_refresh_targets.json
+analytics/processed/tmdb/run_reports/series_refresh_plan_report.json
+```
+
+Then use the generated target file with the normal content fetch/import flow:
+
+```bash
+python3 analytics/scripts/fetch_tmdb_sample.py \
+  --targets analytics/config/series_refresh_targets.json \
+  --refresh
+
+python3 analytics/scripts/import_content_metadata_from_preview.py
+python3 analytics/scripts/import_content_metadata_from_preview.py --apply
+python3 analytics/scripts/import_content_metadata_from_preview.py
+```
+
+Useful planner modes:
+
+```bash
+# Select all existing series, regardless of freshness.
+python3 analytics/scripts/plan_series_refresh.py --all
+
+# Plan only ongoing series.
+python3 analytics/scripts/plan_series_refresh.py --status ongoing
+
+# Include ended/cancelled series in freshness checks.
+python3 analytics/scripts/plan_series_refresh.py --include-ended
+```
+
+By default, ended and cancelled series are skipped unless their `last_refreshed_at` is missing. Ongoing, upcoming, and unknown-status series are selected when their refresh timestamp is stale, they have a near-future next episode date, or recent activity suggests the provider details should be refreshed.
+
 ## Full Batch Command Sequence
 
 Use this compact sequence after a candidate batch has passed validation and has been merged into `content_ingestion_targets.json`.
