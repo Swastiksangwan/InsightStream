@@ -19,6 +19,17 @@ CONTENT_SELECT_FIELDS = """
 RECENT_SORT_EXPRESSION = "COALESCE(c.latest_activity_date, c.release_date)"
 DEFAULT_AVAILABILITY_REGION = "IN"
 FALLBACK_AVAILABILITY_REGION = "US"
+AVAILABILITY_TYPE_ALIASES = {
+    "stream": "streaming",
+    "streaming": "streaming",
+    "rent": "rent",
+    "rental": "rent",
+    "buy": "buy",
+    "purchase": "buy",
+    "ads": "ads",
+    "ad": "ads",
+    "free": "free",
+}
 
 
 def build_content_object(content_row):
@@ -35,6 +46,71 @@ def build_content_object(content_row):
         "language": content_row["language"],
         "age_rating": content_row["age_rating"]
     }
+
+
+def normalize_region_code(region_code: str = None) -> str:
+    if not region_code or not region_code.strip():
+        return DEFAULT_AVAILABILITY_REGION
+    return region_code.strip().upper()
+
+
+def normalize_availability_type(availability_type: str = None) -> str:
+    if not availability_type or not availability_type.strip():
+        return None
+
+    normalized = availability_type.strip().lower()
+    if normalized in {"any", "all"}:
+        return None
+
+    return AVAILABILITY_TYPE_ALIASES.get(normalized, normalized)
+
+
+def availability_filter_condition(
+    include_platform: bool = True,
+    include_availability_type: bool = False,
+) -> str:
+    platform_filter = "AND p_av.name ILIKE :platform" if include_platform else ""
+    legacy_platform_filter = "AND p_legacy.name ILIKE :platform" if include_platform else ""
+    availability_filter = (
+        "AND ca.availability_type = :availability_type"
+        if include_availability_type
+        else ""
+    )
+    legacy_availability_filter = (
+        "AND cp.availability_type = :availability_type"
+        if include_availability_type
+        else ""
+    )
+
+    return f"""
+        (
+            EXISTS (
+                SELECT 1
+                FROM content_availability ca
+                JOIN platforms p_av ON p_av.id = ca.platform_id
+                WHERE ca.content_id = c.id
+                  AND ca.region_code = :availability_region
+                  {platform_filter}
+                  {availability_filter}
+            )
+            OR (
+                NOT EXISTS (
+                    SELECT 1
+                    FROM content_availability ca_existing
+                    WHERE ca_existing.content_id = c.id
+                      AND ca_existing.region_code = :availability_region
+                )
+                AND EXISTS (
+                    SELECT 1
+                    FROM content_platforms cp
+                    JOIN platforms p_legacy ON p_legacy.id = cp.platform_id
+                    WHERE cp.content_id = c.id
+                      {legacy_platform_filter}
+                      {legacy_availability_filter}
+                )
+            )
+        )
+    """
 
 
 def get_region_aware_platforms(
@@ -465,29 +541,37 @@ def get_content_by_platform_service(
     platform_name: str,
     content_type: str = None,
     availability_type: str = None,
+    region: str = DEFAULT_AVAILABILITY_REGION,
     limit: int = 10,
     offset: int = 0
 ):
     base_from_query = """
         FROM content c
-        JOIN content_platforms cp ON cp.content_id = c.id
-        JOIN platforms p ON p.id = cp.platform_id
-        WHERE p.name ILIKE :platform_name
+        WHERE
     """
+    normalized_availability_type = normalize_availability_type(availability_type)
 
     params = {
-        "platform_name": platform_name,
+        "platform": platform_name,
+        "availability_region": normalize_region_code(region),
         "limit": limit,
         "offset": offset
     }
+    conditions = [
+        availability_filter_condition(
+            include_platform=True,
+            include_availability_type=normalized_availability_type is not None,
+        )
+    ]
+
+    if normalized_availability_type:
+        params["availability_type"] = normalized_availability_type
 
     if content_type:
-        base_from_query += " AND c.content_type = :content_type"
+        conditions.append("c.content_type = :content_type")
         params["content_type"] = content_type
 
-    if availability_type:
-        base_from_query += " AND cp.availability_type = :availability_type"
-        params["availability_type"] = availability_type
+    base_from_query += " AND ".join(conditions)
 
     data_query = text(f"""
         SELECT DISTINCT
@@ -526,6 +610,7 @@ def get_discover_content_service(
     platform: str = None,
     availability_type: str = None,
     sort_by: str = "recent",
+    region: str = DEFAULT_AVAILABILITY_REGION,
     limit: int = 10,
     offset: int = 0
 ):
@@ -539,6 +624,7 @@ def get_discover_content_service(
         "limit": limit,
         "offset": offset
     }
+    normalized_availability_type = normalize_availability_type(availability_type)
 
     if genre:
         base_from_query += """
@@ -549,23 +635,27 @@ def get_discover_content_service(
         params["genre"] = genre
 
     if platform:
-        base_from_query += """
-            JOIN content_platforms cp ON cp.content_id = c.id
-            JOIN platforms p ON p.id = cp.platform_id
-        """
-        conditions.append("p.name ILIKE :platform")
+        conditions.append(
+            availability_filter_condition(
+                include_platform=True,
+                include_availability_type=normalized_availability_type is not None,
+            )
+        )
         params["platform"] = platform
+        params["availability_region"] = normalize_region_code(region)
 
-        if availability_type:
-            conditions.append("cp.availability_type = :availability_type")
-            params["availability_type"] = availability_type
+        if normalized_availability_type:
+            params["availability_type"] = normalized_availability_type
 
-    elif availability_type:
-        base_from_query += """
-            JOIN content_platforms cp ON cp.content_id = c.id
-        """
-        conditions.append("cp.availability_type = :availability_type")
-        params["availability_type"] = availability_type
+    elif normalized_availability_type:
+        conditions.append(
+            availability_filter_condition(
+                include_platform=False,
+                include_availability_type=True,
+            )
+        )
+        params["availability_region"] = normalize_region_code(region)
+        params["availability_type"] = normalized_availability_type
 
     if content_type:
         conditions.append("c.content_type = :content_type")

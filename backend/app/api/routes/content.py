@@ -127,9 +127,13 @@ def discover_content(
         default=None,
         description="Filter by platform name, for example: Netflix, Prime Video."
     ),
-    availability_type: Optional[Literal["streaming", "rent", "buy"]] = Query(
+    availability_type: Optional[str] = Query(
         default=None,
-        description="Filter by availability type. Allowed values: streaming, rent, buy."
+        description="Filter by availability type, for example: streaming, rent, buy, ads, free."
+    ),
+    region: str = Query(
+        default="IN",
+        description="Availability region code. Defaults to IN."
     ),
     sort_by: Literal["recent", "top_rated"] = Query(
         default="recent",
@@ -155,6 +159,7 @@ def discover_content(
         platform,
         availability_type,
         sort_by,
+        region,
         limit,
         offset
     )
@@ -190,9 +195,13 @@ def get_content_by_platform(
         default=None,
         description="Filter platform results by type. Allowed values: movie, series."
     ),
-    availability_type: Optional[Literal["streaming", "rent", "buy"]] = Query(
+    availability_type: Optional[str] = Query(
         default=None,
-        description="Filter by availability type. Allowed values: streaming, rent, buy."
+        description="Filter by availability type, for example: streaming, rent, buy, ads, free."
+    ),
+    region: str = Query(
+        default="IN",
+        description="Availability region code. Defaults to IN."
     ),
     limit: int = Query(
         default=10,
@@ -212,6 +221,7 @@ def get_content_by_platform(
         platform_name,
         content_type,
         availability_type,
+        region,
         limit,
         offset
     )

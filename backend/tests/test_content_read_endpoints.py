@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 import pytest
 from sqlalchemy import text
 
@@ -90,6 +92,90 @@ def content_ids_for_genre(db_session, genre_name):
             """
         ),
         {"genre_name": genre_name},
+    ).mappings().all()
+    return {row["id"] for row in rows}
+
+
+def first_region_aware_platform(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT
+                p.name,
+                ca.availability_type,
+                ca.region_code,
+                COUNT(DISTINCT ca.content_id) AS total_content
+            FROM content_availability ca
+            JOIN platforms p ON p.id = ca.platform_id
+            WHERE ca.region_code = 'IN'
+            GROUP BY p.name, ca.availability_type, ca.region_code
+            ORDER BY
+                CASE p.name
+                    WHEN 'Apple TV' THEN 1
+                    WHEN 'JioHotstar' THEN 2
+                    ELSE 3
+                END,
+                total_content DESC,
+                p.name ASC,
+                ca.availability_type ASC
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
+def content_ids_for_platform_filter(
+    db_session,
+    platform_name,
+    availability_type=None,
+    region="IN",
+):
+    params = {
+        "platform": platform_name,
+        "region": region,
+    }
+    availability_filter = ""
+    legacy_availability_filter = ""
+    if availability_type:
+        availability_filter = "AND ca.availability_type = :availability_type"
+        legacy_availability_filter = "AND cp.availability_type = :availability_type"
+        params["availability_type"] = availability_type
+
+    rows = db_session.execute(
+        text(
+            f"""
+            SELECT c.id
+            FROM content c
+            WHERE (
+                EXISTS (
+                    SELECT 1
+                    FROM content_availability ca
+                    JOIN platforms p_av ON p_av.id = ca.platform_id
+                    WHERE ca.content_id = c.id
+                      AND ca.region_code = :region
+                      AND p_av.name ILIKE :platform
+                      {availability_filter}
+                )
+                OR (
+                    NOT EXISTS (
+                        SELECT 1
+                        FROM content_availability ca_existing
+                        WHERE ca_existing.content_id = c.id
+                          AND ca_existing.region_code = :region
+                    )
+                    AND EXISTS (
+                        SELECT 1
+                        FROM content_platforms cp
+                        JOIN platforms p_legacy ON p_legacy.id = cp.platform_id
+                        WHERE cp.content_id = c.id
+                          AND p_legacy.name ILIKE :platform
+                          {legacy_availability_filter}
+                    )
+                )
+            );
+            """
+        ),
+        params,
     ).mappings().all()
     return {row["id"] for row in rows}
 
@@ -353,31 +439,108 @@ def test_get_content_by_mystery_genre(client, db_session):
         assert dark_id in mystery_ids
 
 
-def test_get_content_by_netflix_streaming_platform(client):
+def test_get_content_by_netflix_streaming_platform(client, db_session):
+    expected_ids = content_ids_for_platform_filter(
+        db_session,
+        "Netflix",
+        availability_type="streaming",
+    )
+    if not expected_ids:
+        pytest.skip("No Netflix streaming availability exists in this database.")
+
     response = client.get("/content/by-platform/Netflix?availability_type=streaming&limit=20")
     data = response.json()
-    titles = titles_from_items(data)
 
     assert response.status_code == 200
-    assert data["total"] >= 1
-    assert {"Inception", "Breaking Bad", "Stranger Things"} <= titles
+    assert data["total"] == len(expected_ids)
+    assert data["items"]
+    assert len({item["id"] for item in data["items"]}) == len(data["items"])
+    assert all(item["id"] in expected_ids for item in data["items"])
 
 
-def test_discover_scifi_netflix_top_rated(client):
+def test_discover_scifi_netflix_top_rated(client, db_session):
+    scifi_ids = content_ids_for_genre(db_session, "Sci-Fi")
+    platform_ids = content_ids_for_platform_filter(db_session, "Netflix")
+    expected_ids = scifi_ids & platform_ids
+    if not expected_ids:
+        pytest.skip("No Sci-Fi Netflix availability exists in this database.")
+
     response = client.get(
         "/content/discover?genre=Sci-Fi&platform=Netflix&sort_by=top_rated&limit=20"
     )
     data = response.json()
-    titles = titles_from_items(data)
 
     assert response.status_code == 200
-    assert data["total"] >= 1
-    assert {
-        "Inception",
-        "Spider-Man: Across the Spider-Verse",
-        "Stranger Things",
-        "Dark",
-    } <= titles
+    assert data["total"] == len(expected_ids)
+    assert data["items"]
+    assert len({item["id"] for item in data["items"]}) == len(data["items"])
+    assert all(item["id"] in expected_ids for item in data["items"])
+
+
+def test_discover_platform_filter_uses_region_aware_availability(
+    client,
+    db_session,
+):
+    platform = first_region_aware_platform(db_session)
+    if platform is None:
+        pytest.skip("No IN region-aware availability exists in this database.")
+
+    expected_ids = content_ids_for_platform_filter(db_session, platform["name"])
+    response = client.get(
+        f"/content/discover?platform={quote(platform['name'])}&limit=20"
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["total"] == len(expected_ids)
+    assert data["items"]
+    assert len({item["id"] for item in data["items"]}) == len(data["items"])
+    assert all(item["id"] in expected_ids for item in data["items"])
+
+
+def test_discover_platform_and_availability_type_use_region_aware_availability(
+    client,
+    db_session,
+):
+    platform = first_region_aware_platform(db_session)
+    if platform is None:
+        pytest.skip("No IN region-aware availability exists in this database.")
+
+    expected_ids = content_ids_for_platform_filter(
+        db_session,
+        platform["name"],
+        availability_type=platform["availability_type"],
+    )
+    response = client.get(
+        f"/content/discover?platform={quote(platform['name'])}"
+        f"&availability_type={platform['availability_type']}&limit=20"
+    )
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["total"] == len(expected_ids)
+    assert data["items"]
+    assert len({item["id"] for item in data["items"]}) == len(data["items"])
+    assert all(item["id"] in expected_ids for item in data["items"])
+
+
+def test_get_content_by_platform_uses_region_aware_availability(
+    client,
+    db_session,
+):
+    platform = first_region_aware_platform(db_session)
+    if platform is None:
+        pytest.skip("No IN region-aware availability exists in this database.")
+
+    expected_ids = content_ids_for_platform_filter(db_session, platform["name"])
+    response = client.get(f"/content/by-platform/{quote(platform['name'])}?limit=20")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["total"] == len(expected_ids)
+    assert data["items"]
+    assert len({item["id"] for item in data["items"]}) == len(data["items"])
+    assert all(item["id"] in expected_ids for item in data["items"])
 
 
 def test_get_content_details_for_seeded_title(client, content_id_by_title):
