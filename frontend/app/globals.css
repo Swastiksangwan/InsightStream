@@ -2171,7 +2171,7 @@ main {
   gap: 8px;
 }
 
-.availability-list span {
+.availability-link {
   min-height: 30px;
   display: inline-flex;
   align-items: center;
@@ -2181,7 +2181,25 @@ main {
   color: #ffdca8;
   font-size: 0.82rem;
   font-weight: 800;
+  text-decoration: none;
   background: rgba(244, 184, 96, 0.07);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.availability-link:hover {
+  border-color: rgba(244, 184, 96, 0.45);
+  color: #ffe8bf;
+  background: rgba(244, 184, 96, 0.13);
+  transform: translateY(-1px);
+}
+
+.availability-link:focus-visible {
+  outline: 2px solid rgba(244, 184, 96, 0.85);
+  outline-offset: 3px;
 }
 
 .rating-card {

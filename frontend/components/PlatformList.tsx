@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { PlatformAvailability } from "@/types/content";
 
 type PlatformListProps = {
@@ -16,6 +17,34 @@ const regionLabels: Record<string, string> = {
   IN: "India",
   US: "US",
 };
+
+function normalizeDiscoverAvailabilityType(availabilityType?: string | null) {
+  const normalized = availabilityType?.trim().toLowerCase();
+
+  if (normalized === "stream") {
+    return "streaming";
+  }
+
+  if (normalized === "streaming" || normalized === "rent" || normalized === "buy") {
+    return normalized;
+  }
+
+  return null;
+}
+
+function buildDiscoverHref(platform: PlatformAvailability) {
+  const params = [`platform=${encodeURIComponent(platform.name)}`];
+
+  const availabilityType = normalizeDiscoverAvailabilityType(
+    platform.availability_type,
+  );
+
+  if (availabilityType) {
+    params.push(`availability_type=${encodeURIComponent(availabilityType)}`);
+  }
+
+  return `/discover?${params.join("&")}`;
+}
 
 function groupPlatforms(platforms: PlatformAvailability[]) {
   return platforms.reduce<Record<string, PlatformAvailability[]>>((groups, platform) => {
@@ -77,11 +106,13 @@ export function PlatformList({ platforms }: PlatformListProps) {
             <h3>{availabilityLabels[type] || type}</h3>
             <div className="availability-list">
               {items.map((platform) => (
-                <span
+                <Link
+                  className="availability-link"
+                  href={buildDiscoverHref(platform)}
                   key={`${platform.name}-${platform.availability_type}-${platform.region_code || "legacy"}`}
                 >
                   {platform.name}
-                </span>
+                </Link>
               ))}
             </div>
           </div>
