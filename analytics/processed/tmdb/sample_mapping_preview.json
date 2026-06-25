@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-23T18:20:43.629256+00:00",
+  "generated_at": "2026-06-25T06:45:51.005497+00:00",
   "inspection_only": true,
   "items": [
     {
@@ -25,6 +25,23 @@
       "poster_path": "/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.78,
+          "rating_count_label": "40,045 votes",
+          "rating_url": null,
+          "raw_score": 8.478,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.478,
+            "vote_count": 40045
+          },
+          "vote_count": 40045
+        }
+      ],
       "release_date": "2014-11-05",
       "runtime": 169,
       "series_metadata": null,
@@ -69,6 +86,23 @@
       "poster_path": "/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/xlaY2zyzMfkhk0HSC5VUwzoZPU1.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.72,
+          "rating_count_label": "39,382 votes",
+          "rating_url": null,
+          "raw_score": 8.372,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.372,
+            "vote_count": 39382
+          },
+          "vote_count": 39382
+        }
+      ],
       "release_date": "2010-07-15",
       "runtime": 148,
       "series_metadata": null,
@@ -113,6 +147,23 @@
       "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.31,
+          "rating_count_label": "35,924 votes",
+          "rating_url": null,
+          "raw_score": 8.531,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.531,
+            "vote_count": 35924
+          },
+          "vote_count": 35924
+        }
+      ],
       "release_date": "2008-07-16",
       "runtime": 152,
       "series_metadata": null,
@@ -157,6 +208,23 @@
       "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.94,
+          "rating_count_label": "20,746 votes",
+          "rating_url": null,
+          "raw_score": 8.494,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.494,
+            "vote_count": 20746
+          },
+          "vote_count": 20746
+        }
+      ],
       "release_date": "2019-05-30",
       "runtime": 133,
       "series_metadata": null,
@@ -200,6 +268,23 @@
       "poster_path": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.0,
+          "rating_count_label": "8,041 votes",
+          "rating_url": null,
+          "raw_score": 8.1,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.1,
+            "vote_count": 8041
+          },
+          "vote_count": 8041
+        }
+      ],
       "release_date": "2024-02-27",
       "runtime": 167,
       "series_metadata": null,
@@ -244,6 +329,23 @@
       "poster_path": "/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/iuFNMS8U5cb6xfzi51Dbkovj7vM.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 69.0,
+          "rating_count_label": "11,156 votes",
+          "rating_url": null,
+          "raw_score": 6.9,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 6.9,
+            "vote_count": 11156
+          },
+          "vote_count": 11156
+        }
+      ],
       "release_date": "2023-07-19",
       "runtime": 114,
       "series_metadata": null,
@@ -291,6 +393,23 @@
       "poster_path": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.37,
+          "rating_count_label": "8,678 votes",
+          "rating_url": null,
+          "raw_score": 8.337,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.337,
+            "vote_count": 8678
+          },
+          "vote_count": 8678
+        }
+      ],
       "release_date": "2023-05-31",
       "runtime": 140,
       "series_metadata": null,
@@ -335,6 +454,23 @@
       "poster_path": "/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/lAXONuqg41NwUMuzMiFvicDET9Y.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 67.31,
+          "rating_count_label": "6,463 votes",
+          "rating_url": null,
+          "raw_score": 6.731,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 6.731,
+            "vote_count": 6463
+          },
+          "vote_count": 6463
+        }
+      ],
       "release_date": "2021-11-04",
       "runtime": 118,
       "series_metadata": null,
@@ -380,6 +516,23 @@
       "poster_path": "/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 89.0,
+          "rating_count_label": "17,944 votes",
+          "rating_url": null,
+          "raw_score": 8.9,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.9,
+            "vote_count": 17944
+          },
+          "vote_count": 17944
+        }
+      ],
       "release_date": "2008-01-20",
       "runtime": null,
       "series_metadata": {
@@ -444,6 +597,23 @@
       "poster_path": "/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.09,
+          "rating_count_label": "10,989 votes",
+          "rating_url": null,
+          "raw_score": 8.409,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.409,
+            "vote_count": 10989
+          },
+          "vote_count": 10989
+        }
+      ],
       "release_date": "2019-11-12",
       "runtime": null,
       "series_metadata": {
@@ -505,6 +675,23 @@
       "poster_path": "/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/dmo6TYuuJgaYinXBPjrgG9mB5od.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.27,
+          "rating_count_label": "7,063 votes",
+          "rating_url": null,
+          "raw_score": 8.427,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.427,
+            "vote_count": 7063
+          },
+          "vote_count": 7063
+        }
+      ],
       "release_date": "2023-01-15",
       "runtime": null,
       "series_metadata": {
@@ -570,6 +757,23 @@
       "poster_path": "/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 86.0,
+          "rating_count_label": "21,311 votes",
+          "rating_url": null,
+          "raw_score": 8.6,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.6,
+            "vote_count": 21311
+          },
+          "vote_count": 21311
+        }
+      ],
       "release_date": "2016-07-15",
       "runtime": null,
       "series_metadata": {
@@ -634,6 +838,23 @@
       "poster_path": "/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/in1R2dDc421JxsoRWaIIAqVI2KE.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.51,
+          "rating_count_label": "12,945 votes",
+          "rating_url": null,
+          "raw_score": 8.451,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.451,
+            "vote_count": 12945
+          },
+          "vote_count": 12945
+        }
+      ],
       "release_date": "2019-07-25",
       "runtime": null,
       "series_metadata": {
@@ -701,6 +922,23 @@
       "poster_path": "/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1DLjjvSWMYo17B7wuz6YikB96hH.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.25,
+          "rating_count_label": "7,599 votes",
+          "rating_url": null,
+          "raw_score": 8.425,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.425,
+            "vote_count": 7599
+          },
+          "vote_count": 7599
+        }
+      ],
       "release_date": "2017-12-01",
       "runtime": null,
       "series_metadata": {
@@ -761,6 +999,23 @@
       "poster_path": "/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
       "priority": "seed",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.11,
+          "rating_count_label": "6,718 votes",
+          "rating_url": null,
+          "raw_score": 7.911,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.911,
+            "vote_count": 6718
+          },
+          "vote_count": 6718
+        }
+      ],
       "release_date": "2019-12-20",
       "runtime": null,
       "series_metadata": {
@@ -819,10 +1074,27 @@
       "media_type": "movie",
       "original_language": "en",
       "overview": "The story of J. Robert Oppenheimer's role in the development of the atomic bomb during World War II.",
-      "popularity": 23.0112,
+      "popularity": 24.0133,
       "poster_path": "/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg",
       "priority": "pipeline_test",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.26,
+          "rating_count_label": "11,883 votes",
+          "rating_url": null,
+          "raw_score": 8.026,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.026,
+            "vote_count": 11883
+          },
+          "vote_count": 11883
+        }
+      ],
       "release_date": "2023-07-19",
       "runtime": 181,
       "series_metadata": null,
@@ -840,8 +1112,8 @@
         "Robert Downey Jr.",
         "Florence Pugh"
       ],
-      "vote_average": 8.0,
-      "vote_count": 11863,
+      "vote_average": 8.026,
+      "vote_count": 11883,
       "year": 2023
     },
     {
@@ -867,6 +1139,23 @@
       "poster_path": "/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
       "priority": "batch_test_1",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.48,
+          "rating_count_label": "28,031 votes",
+          "rating_url": null,
+          "raw_score": 8.248,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.248,
+            "vote_count": 28031
+          },
+          "vote_count": 28031
+        }
+      ],
       "release_date": "1999-03-31",
       "runtime": 136,
       "series_metadata": null,
@@ -910,6 +1199,23 @@
       "poster_path": "/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/jSziioSwPVrOy9Yow3XhWIBDjq1.jpg",
       "priority": "batch_test_1",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.0,
+          "rating_count_label": "32,172 votes",
+          "rating_url": null,
+          "raw_score": 8.4,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.4,
+            "vote_count": 32172
+          },
+          "vote_count": 32172
+        }
+      ],
       "release_date": "1999-10-15",
       "runtime": 139,
       "series_metadata": null,
@@ -953,6 +1259,23 @@
       "poster_path": "/n0YuM4f5lvGAP6MAW2kBIzugXnc.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/n0YuM4f5lvGAP6MAW2kBIzugXnc.jpg",
       "priority": "batch_test_1",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.59,
+          "rating_count_label": "11,046 votes",
+          "rating_url": null,
+          "raw_score": 8.159,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.159,
+            "vote_count": 11046
+          },
+          "vote_count": 11046
+        }
+      ],
       "release_date": "2022-05-21",
       "runtime": 131,
       "series_metadata": null,
@@ -1000,6 +1323,23 @@
       "poster_path": "/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7V0Ebks0GgpKvQ7QbLAIdX5dos4.jpg",
       "priority": "batch_test_1",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.35,
+          "rating_count_label": "6,226 votes",
+          "rating_url": null,
+          "raw_score": 8.335,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.335,
+            "vote_count": 6226
+          },
+          "vote_count": 6226
+        }
+      ],
       "release_date": "2022-08-21",
       "runtime": null,
       "series_metadata": {
@@ -1063,6 +1403,23 @@
       "poster_path": "/hlLXt2tOPT6RRnjiUmoxyG1LTFi.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/hlLXt2tOPT6RRnjiUmoxyG1LTFi.jpg",
       "priority": "batch_test_1",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 87.14,
+          "rating_count_label": "7,937 votes",
+          "rating_url": null,
+          "raw_score": 8.714,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.714,
+            "vote_count": 7937
+          },
+          "vote_count": 7937
+        }
+      ],
       "release_date": "2019-05-06",
       "runtime": null,
       "series_metadata": {
@@ -1125,6 +1482,23 @@
       "poster_path": "/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 87.23,
+          "rating_count_label": "30,586 votes",
+          "rating_url": null,
+          "raw_score": 8.723,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.723,
+            "vote_count": 30586
+          },
+          "vote_count": 30586
+        }
+      ],
       "release_date": "1994-09-23",
       "runtime": 142,
       "series_metadata": null,
@@ -1168,6 +1542,23 @@
       "poster_path": "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 87.0,
+          "rating_count_label": "23,053 votes",
+          "rating_url": null,
+          "raw_score": 8.7,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.7,
+            "vote_count": 23053
+          },
+          "vote_count": 23053
+        }
+      ],
       "release_date": "1972-03-14",
       "runtime": 175,
       "series_metadata": null,
@@ -1212,6 +1603,23 @@
       "poster_path": "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.83,
+          "rating_count_label": "30,304 votes",
+          "rating_url": null,
+          "raw_score": 8.483,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.483,
+            "vote_count": 30304
+          },
+          "vote_count": 30304
+        }
+      ],
       "release_date": "1994-09-10",
       "runtime": 154,
       "series_metadata": null,
@@ -1256,6 +1664,23 @@
       "poster_path": "/Cw4hIUIAmSYfK9QfaUW5igp9La.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/Cw4hIUIAmSYfK9QfaUW5igp9La.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.65,
+          "rating_count_label": "29,851 votes",
+          "rating_url": null,
+          "raw_score": 8.465,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.465,
+            "vote_count": 29851
+          },
+          "vote_count": 29851
+        }
+      ],
       "release_date": "1994-06-23",
       "runtime": 142,
       "series_metadata": null,
@@ -1299,6 +1724,23 @@
       "poster_path": "/9OkCLM73MIU2CrKZbqiT8Ln1wY2.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/9OkCLM73MIU2CrKZbqiT8Ln1wY2.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.54,
+          "rating_count_label": "14,426 votes",
+          "rating_url": null,
+          "raw_score": 8.454,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.454,
+            "vote_count": 14426
+          },
+          "vote_count": 14426
+        }
+      ],
       "release_date": "1990-09-12",
       "runtime": 145,
       "series_metadata": null,
@@ -1343,6 +1785,23 @@
       "poster_path": "/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.36,
+          "rating_count_label": "27,683 votes",
+          "rating_url": null,
+          "raw_score": 8.436,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.436,
+            "vote_count": 27683
+          },
+          "vote_count": 27683
+        }
+      ],
       "release_date": "2001-12-18",
       "runtime": 179,
       "series_metadata": null,
@@ -1387,6 +1846,23 @@
       "poster_path": "/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.0,
+          "rating_count_label": "26,662 votes",
+          "rating_url": null,
+          "raw_score": 8.5,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.5,
+            "vote_count": 26662
+          },
+          "vote_count": 26662
+        }
+      ],
       "release_date": "2003-12-17",
       "runtime": 201,
       "series_metadata": null,
@@ -1431,6 +1907,23 @@
       "poster_path": "/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.27,
+          "rating_count_label": "20,970 votes",
+          "rating_url": null,
+          "raw_score": 8.227,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.227,
+            "vote_count": 20970
+          },
+          "vote_count": 20970
+        }
+      ],
       "release_date": "2000-05-04",
       "runtime": 155,
       "series_metadata": null,
@@ -1475,6 +1968,23 @@
       "poster_path": "/hA2ple9q4qnwxp3hKVNhroipsir.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/hA2ple9q4qnwxp3hKVNhroipsir.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.34,
+          "rating_count_label": "24,140 votes",
+          "rating_url": null,
+          "raw_score": 7.634,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.634,
+            "vote_count": 24140
+          },
+          "vote_count": 24140
+        }
+      ],
       "release_date": "2015-05-13",
       "runtime": 121,
       "series_metadata": null,
@@ -1519,6 +2029,23 @@
       "poster_path": "/7fn624j5lj3xTme2SgiLCeuedmO.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7fn624j5lj3xTme2SgiLCeuedmO.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.75,
+          "rating_count_label": "16,685 votes",
+          "rating_url": null,
+          "raw_score": 8.375,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.375,
+            "vote_count": 16685
+          },
+          "vote_count": 16685
+        }
+      ],
       "release_date": "2014-10-10",
       "runtime": 107,
       "series_metadata": null,
@@ -1564,6 +2091,23 @@
       "poster_path": "/u68AjlvlutfEIcpmbYpKcdi09ut.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/u68AjlvlutfEIcpmbYpKcdi09ut.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.19,
+          "rating_count_label": "8,028 votes",
+          "rating_url": null,
+          "raw_score": 7.719,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.719,
+            "vote_count": 8028
+          },
+          "vote_count": 8028
+        }
+      ],
       "release_date": "2022-03-24",
       "runtime": 140,
       "series_metadata": null,
@@ -1606,6 +2150,23 @@
       "poster_path": "/n0ybibhJtQ5icDqTp8eRytcIHJx.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/n0ybibhJtQ5icDqTp8eRytcIHJx.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 74.0,
+          "rating_count_label": "13,196 votes",
+          "rating_url": null,
+          "raw_score": 7.4,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.4,
+            "vote_count": 13196
+          },
+          "vote_count": 13196
+        }
+      ],
       "release_date": "2010-10-01",
       "runtime": 121,
       "series_metadata": null,
@@ -1650,6 +2211,23 @@
       "poster_path": "/63N9uy8nd9j7Eog2axPQ8lbr3Wj.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/63N9uy8nd9j7Eog2axPQ8lbr3Wj.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.36,
+          "rating_count_label": "15,037 votes",
+          "rating_url": null,
+          "raw_score": 7.936,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.936,
+            "vote_count": 15037
+          },
+          "vote_count": 15037
+        }
+      ],
       "release_date": "1982-06-25",
       "runtime": 118,
       "series_metadata": null,
@@ -1693,6 +2271,23 @@
       "poster_path": "/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 75.95,
+          "rating_count_label": "15,208 votes",
+          "rating_url": null,
+          "raw_score": 7.595,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.595,
+            "vote_count": 15208
+          },
+          "vote_count": 15208
+        }
+      ],
       "release_date": "2017-10-04",
       "runtime": 164,
       "series_metadata": null,
@@ -1737,6 +2332,23 @@
       "poster_path": "/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/x2FJsf1ElAgr63Y3PNPtJrcmpoe.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.27,
+          "rating_count_label": "19,421 votes",
+          "rating_url": null,
+          "raw_score": 7.627,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.627,
+            "vote_count": 19421
+          },
+          "vote_count": 19421
+        }
+      ],
       "release_date": "2016-11-10",
       "runtime": 116,
       "series_metadata": null,
@@ -1784,6 +2396,23 @@
       "poster_path": "/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.63,
+          "rating_count_label": "27,051 votes",
+          "rating_url": null,
+          "raw_score": 8.463,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.463,
+            "vote_count": 27051
+          },
+          "vote_count": 27051
+        }
+      ],
       "release_date": "2011-04-17",
       "runtime": null,
       "series_metadata": {
@@ -1849,6 +2478,23 @@
       "poster_path": "/zjg4jpK1Wp2kiRvtt5ND0kznako.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/zjg4jpK1Wp2kiRvtt5ND0kznako.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 87.06,
+          "rating_count_label": "6,552 votes",
+          "rating_url": null,
+          "raw_score": 8.706,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.706,
+            "vote_count": 6552
+          },
+          "vote_count": 6552
+        }
+      ],
       "release_date": "2015-02-08",
       "runtime": null,
       "series_metadata": {
@@ -1913,6 +2559,23 @@
       "poster_path": "/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.07,
+          "rating_count_label": "6,452 votes",
+          "rating_url": null,
+          "raw_score": 8.507,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.507,
+            "vote_count": 6452
+          },
+          "vote_count": 6452
+        }
+      ],
       "release_date": "2010-07-25",
       "runtime": 90,
       "series_metadata": {
@@ -1973,6 +2636,23 @@
       "poster_path": "/7DJKHzAi83BmQrWLrYYOqcoKfhR.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7DJKHzAi83BmQrWLrYYOqcoKfhR.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.88,
+          "rating_count_label": "5,236 votes",
+          "rating_url": null,
+          "raw_score": 8.588,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.588,
+            "vote_count": 5236
+          },
+          "vote_count": 5236
+        }
+      ],
       "release_date": "2005-03-24",
       "runtime": null,
       "series_metadata": {
@@ -2037,6 +2717,23 @@
       "poster_path": "/dC7jkj2g1aU8sxKqM6D4g44xA6w.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/dC7jkj2g1aU8sxKqM6D4g44xA6w.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.92,
+          "rating_count_label": "4,164 votes",
+          "rating_url": null,
+          "raw_score": 8.292,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.292,
+            "vote_count": 4164
+          },
+          "vote_count": 4164
+        }
+      ],
       "release_date": "2014-01-12",
       "runtime": null,
       "series_metadata": {
@@ -2102,6 +2799,23 @@
       "poster_path": "/ALlSU9du9iRiKIIoY1sREGNqQ5.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/ALlSU9du9iRiKIIoY1sREGNqQ5.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.22,
+          "rating_count_label": "6,191 votes",
+          "rating_url": null,
+          "raw_score": 8.022,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.022,
+            "vote_count": 6191
+          },
+          "vote_count": 6191
+        }
+      ],
       "release_date": "2016-10-02",
       "runtime": null,
       "series_metadata": {
@@ -2166,6 +2880,23 @@
       "poster_path": "/z0XiwdrCQ9yVIr4O0pxzaAYRxdW.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/z0XiwdrCQ9yVIr4O0pxzaAYRxdW.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.93,
+          "rating_count_label": "1,652 votes",
+          "rating_url": null,
+          "raw_score": 8.293,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.293,
+            "vote_count": 1652
+          },
+          "vote_count": 1652
+        }
+      ],
       "release_date": "2018-06-03",
       "runtime": null,
       "series_metadata": {
@@ -2230,6 +2961,23 @@
       "poster_path": "/rTc7ZXdroqjkKivFPvCPX0Ru7uw.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/rTc7ZXdroqjkKivFPvCPX0Ru7uw.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 87.0,
+          "rating_count_label": "3,494 votes",
+          "rating_url": null,
+          "raw_score": 8.7,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.7,
+            "vote_count": 3494
+          },
+          "vote_count": 3494
+        }
+      ],
       "release_date": "1999-01-10",
       "runtime": null,
       "series_metadata": {
@@ -2293,6 +3041,23 @@
       "poster_path": "/pGzV187ogXzgJrvPRy2YPi29ofH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/pGzV187ogXzgJrvPRy2YPi29ofH.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.9,
+          "rating_count_label": "4,205 votes",
+          "rating_url": null,
+          "raw_score": 8.59,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.59,
+            "vote_count": 4205
+          },
+          "vote_count": 4205
+        }
+      ],
       "release_date": "2001-09-09",
       "runtime": null,
       "series_metadata": {
@@ -2359,6 +3124,23 @@
       "poster_path": "/rTmal9fDbwh5F0waol2hq35U4ah.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/rTmal9fDbwh5F0waol2hq35U4ah.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.75,
+          "rating_count_label": "3,310 votes",
+          "rating_url": null,
+          "raw_score": 8.075,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.075,
+            "vote_count": 3310
+          },
+          "vote_count": 3310
+        }
+      ],
       "release_date": "2015-08-28",
       "runtime": null,
       "series_metadata": {
@@ -2424,6 +3206,23 @@
       "poster_path": "/seN6rRfN0I6n8iDXjlSMk1QjNcq.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/seN6rRfN0I6n8iDXjlSMk1QjNcq.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.87,
+          "rating_count_label": "6,239 votes",
+          "rating_url": null,
+          "raw_score": 8.287,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.287,
+            "vote_count": 6239
+          },
+          "vote_count": 6239
+        }
+      ],
       "release_date": "2011-12-04",
       "runtime": null,
       "series_metadata": {
@@ -2483,6 +3282,23 @@
       "poster_path": "/pPHpeI2X1qEd1CS1SeyrdhZ4qnT.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/pPHpeI2X1qEd1CS1SeyrdhZ4qnT.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.99,
+          "rating_count_label": "2,692 votes",
+          "rating_url": null,
+          "raw_score": 8.399,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.399,
+            "vote_count": 2692
+          },
+          "vote_count": 2692
+        }
+      ],
       "release_date": "2022-02-17",
       "runtime": null,
       "series_metadata": {
@@ -2548,6 +3364,23 @@
       "poster_path": "/khZqmwHQicTYoS7Flreb9EddFZC.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/khZqmwHQicTYoS7Flreb9EddFZC.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.0,
+          "rating_count_label": "2,044 votes",
+          "rating_url": null,
+          "raw_score": 8.3,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.3,
+            "vote_count": 2044
+          },
+          "vote_count": 2044
+        }
+      ],
       "release_date": "2022-09-21",
       "runtime": null,
       "series_metadata": {
@@ -2610,6 +3443,23 @@
       "poster_path": "/abf8tHznhSvl9BAElD2cQeRr7do.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/abf8tHznhSvl9BAElD2cQeRr7do.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 87.52,
+          "rating_count_label": "5,944 votes",
+          "rating_url": null,
+          "raw_score": 8.752,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.752,
+            "vote_count": 5944
+          },
+          "vote_count": 5944
+        }
+      ],
       "release_date": "2021-11-06",
       "runtime": null,
       "series_metadata": {
@@ -2671,23 +3521,40 @@
       "poster_path": "/4fVddnbhcmzRZE14NJY03GKS6Fn.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/4fVddnbhcmzRZE14NJY03GKS6Fn.jpg",
       "priority": "batch_test_2",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.51,
+          "rating_count_label": "1,736 votes",
+          "rating_url": null,
+          "raw_score": 8.151,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.151,
+            "vote_count": 1736
+          },
+          "vote_count": 1736
+        }
+      ],
       "release_date": "2022-06-23",
       "runtime": null,
       "series_metadata": {
-        "announced_seasons_count": 1,
+        "announced_seasons_count": 0,
         "first_air_date": "2022-06-23",
-        "has_announced_season": true,
+        "has_announced_season": false,
         "in_production": true,
         "last_air_date": "2025-06-25",
         "last_episode_air_date": "2025-06-25",
         "next_episode_air_date": "2026-06-25",
-        "next_season_air_date": "2026-06-25",
-        "next_season_number": 5,
-        "next_season_year": 2026,
+        "next_season_air_date": null,
+        "next_season_number": null,
+        "next_season_year": null,
         "number_of_episodes": 46,
         "number_of_seasons": 5,
-        "released_seasons_count": 4,
-        "season_summary_note": "Season 5 expected in 2026",
+        "released_seasons_count": 5,
+        "season_summary_note": null,
         "series_status": "Returning Series",
         "series_status_normalized": "ongoing",
         "series_type": "Scripted",
@@ -2734,6 +3601,23 @@
       "poster_path": "/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.45,
+          "rating_count_label": "18,056 votes",
+          "rating_url": null,
+          "raw_score": 8.345,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.345,
+            "vote_count": 18056
+          },
+          "vote_count": 18056
+        }
+      ],
       "release_date": "1991-02-14",
       "runtime": 119,
       "series_metadata": null,
@@ -2777,6 +3661,23 @@
       "poster_path": "/fjTU1Bgh3KJu4aatZil3sofR2zC.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/fjTU1Bgh3KJu4aatZil3sofR2zC.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.69,
+          "rating_count_label": "17,922 votes",
+          "rating_url": null,
+          "raw_score": 7.969,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.969,
+            "vote_count": 17922
+          },
+          "vote_count": 17922
+        }
+      ],
       "release_date": "1993-06-11",
       "runtime": 127,
       "series_metadata": null,
@@ -2820,6 +3721,23 @@
       "poster_path": "/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.02,
+          "rating_count_label": "27,241 votes",
+          "rating_url": null,
+          "raw_score": 7.902,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.902,
+            "vote_count": 27241
+          },
+          "vote_count": 27241
+        }
+      ],
       "release_date": "1997-12-18",
       "runtime": 194,
       "series_metadata": null,
@@ -2864,6 +3782,23 @@
       "poster_path": "/Ag2B2KHKQPukjH7WutmgnnSNurZ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/Ag2B2KHKQPukjH7WutmgnnSNurZ.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.08,
+          "rating_count_label": "17,652 votes",
+          "rating_url": null,
+          "raw_score": 8.208,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.208,
+            "vote_count": 17652
+          },
+          "vote_count": 17652
+        }
+      ],
       "release_date": "2006-10-19",
       "runtime": 130,
       "series_metadata": null,
@@ -2908,6 +3843,23 @@
       "poster_path": "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.35,
+          "rating_count_label": "18,427 votes",
+          "rating_url": null,
+          "raw_score": 8.535,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.535,
+            "vote_count": 18427
+          },
+          "vote_count": 18427
+        }
+      ],
       "release_date": "2001-07-20",
       "runtime": 125,
       "series_metadata": null,
@@ -2952,6 +3904,23 @@
       "poster_path": "/nT97ifVT2J1yMQmeq20Qblg61T.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/nT97ifVT2J1yMQmeq20Qblg61T.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.6,
+          "rating_count_label": "16,256 votes",
+          "rating_url": null,
+          "raw_score": 8.16,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.16,
+            "vote_count": 16256
+          },
+          "vote_count": 16256
+        }
+      ],
       "release_date": "2006-10-04",
       "runtime": 151,
       "series_metadata": null,
@@ -2996,6 +3965,23 @@
       "poster_path": "/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/pThyQovXQrw2m0s9x82twj48Jq4.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 78.41,
+          "rating_count_label": "14,079 votes",
+          "rating_url": null,
+          "raw_score": 7.841,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.841,
+            "vote_count": 14079
+          },
+          "vote_count": 14079
+        }
+      ],
       "release_date": "2019-11-27",
       "runtime": 131,
       "series_metadata": null,
@@ -3040,6 +4026,23 @@
       "poster_path": "/mE24wUCfjK8AoBBjaMjho7Rczr7.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/mE24wUCfjK8AoBBjaMjho7Rczr7.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.24,
+          "rating_count_label": "18,949 votes",
+          "rating_url": null,
+          "raw_score": 7.624,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.624,
+            "vote_count": 18949
+          },
+          "vote_count": 18949
+        }
+      ],
       "release_date": "2017-02-24",
       "runtime": 104,
       "series_metadata": null,
@@ -3085,6 +4088,23 @@
       "poster_path": "/4lbclFySvugI51fwsyxBTOm4DqK.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/4lbclFySvugI51fwsyxBTOm4DqK.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 86.0,
+          "rating_count_label": "2,702 votes",
+          "rating_url": null,
+          "raw_score": 8.6,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.6,
+            "vote_count": 2702
+          },
+          "vote_count": 2702
+        }
+      ],
       "release_date": "2002-06-02",
       "runtime": null,
       "series_metadata": {
@@ -3149,6 +4169,23 @@
       "poster_path": "/a3VW6khsyUVKrG0GBCWFG3NzWPX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/a3VW6khsyUVKrG0GBCWFG3NzWPX.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.91,
+          "rating_count_label": "3,272 votes",
+          "rating_url": null,
+          "raw_score": 8.291,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.291,
+            "vote_count": 3272
+          },
+          "vote_count": 3272
+        }
+      ],
       "release_date": "2014-04-15",
       "runtime": null,
       "series_metadata": {
@@ -3213,6 +4250,23 @@
       "poster_path": "/zU0htwkhNvBQdVSIKB9s6hgVeFK.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/zU0htwkhNvBQdVSIKB9s6hgVeFK.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.35,
+          "rating_count_label": "5,524 votes",
+          "rating_url": null,
+          "raw_score": 8.435,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.435,
+            "vote_count": 5524
+          },
+          "vote_count": 5524
+        }
+      ],
       "release_date": "2020-10-23",
       "runtime": null,
       "series_metadata": {
@@ -3273,6 +4327,23 @@
       "poster_path": "/1M876KPjulVwppEpldhdc8V4o68.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1M876KPjulVwppEpldhdc8V4o68.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.85,
+          "rating_count_label": "2,348 votes",
+          "rating_url": null,
+          "raw_score": 8.185,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.185,
+            "vote_count": 2348
+          },
+          "vote_count": 2348
+        }
+      ],
       "release_date": "2016-11-04",
       "runtime": null,
       "series_metadata": {
@@ -3337,6 +4408,23 @@
       "poster_path": "/fbKE87mojpIETWepSbD5Qt741fp.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/fbKE87mojpIETWepSbD5Qt741fp.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.24,
+          "rating_count_label": "2,974 votes",
+          "rating_url": null,
+          "raw_score": 8.124,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.124,
+            "vote_count": 2974
+          },
+          "vote_count": 2974
+        }
+      ],
       "release_date": "2017-10-13",
       "runtime": null,
       "series_metadata": {
@@ -3402,6 +4490,23 @@
       "poster_path": "/5vQlVWkIMPhZ88OWchJsgwGEK9.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/5vQlVWkIMPhZ88OWchJsgwGEK9.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.66,
+          "rating_count_label": "2,827 votes",
+          "rating_url": null,
+          "raw_score": 8.066,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.066,
+            "vote_count": 2827
+          },
+          "vote_count": 2827
+        }
+      ],
       "release_date": "2015-12-14",
       "runtime": null,
       "series_metadata": {
@@ -3466,6 +4571,23 @@
       "poster_path": "/vUUqzWa2LnHIVqkaKVlVGkVcZIW.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/vUUqzWa2LnHIVqkaKVlVGkVcZIW.jpg",
       "priority": "batch_test_3",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.27,
+          "rating_count_label": "11,145 votes",
+          "rating_url": null,
+          "raw_score": 8.527,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.527,
+            "vote_count": 11145
+          },
+          "vote_count": 11145
+        }
+      ],
       "release_date": "2013-09-12",
       "runtime": null,
       "series_metadata": {
@@ -3528,6 +4650,23 @@
       "poster_path": "/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.7,
+          "rating_count_label": "17,529 votes",
+          "rating_url": null,
+          "raw_score": 8.57,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.57,
+            "vote_count": 17529
+          },
+          "vote_count": 17529
+        }
+      ],
       "release_date": "1993-12-15",
       "runtime": 195,
       "series_metadata": null,
@@ -3572,6 +4711,23 @@
       "poster_path": "/uqx37cS8cpHg8U35f9U5IBlrCV3.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/uqx37cS8cpHg8U35f9U5IBlrCV3.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.27,
+          "rating_count_label": "17,321 votes",
+          "rating_url": null,
+          "raw_score": 8.227,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.227,
+            "vote_count": 17321
+          },
+          "vote_count": 17321
+        }
+      ],
       "release_date": "1998-07-24",
       "runtime": 169,
       "series_metadata": null,
@@ -3616,6 +4772,23 @@
       "poster_path": "/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.0,
+          "rating_count_label": "23,194 votes",
+          "rating_url": null,
+          "raw_score": 8.4,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.4,
+            "vote_count": 23194
+          },
+          "vote_count": 23194
+        }
+      ],
       "release_date": "1995-09-22",
       "runtime": 127,
       "series_metadata": null,
@@ -3659,6 +4832,23 @@
       "poster_path": "/fKTPH2WvH8nHTXeBYBVhawtRqtR.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/fKTPH2WvH8nHTXeBYBVhawtRqtR.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.75,
+          "rating_count_label": "16,312 votes",
+          "rating_url": null,
+          "raw_score": 8.175,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.175,
+            "vote_count": 16312
+          },
+          "vote_count": 16312
+        }
+      ],
       "release_date": "2000-10-11",
       "runtime": 113,
       "series_metadata": null,
@@ -3704,6 +4894,23 @@
       "poster_path": "/6d5XOczc226jECq0LIX0siKtgHR.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/6d5XOczc226jECq0LIX0siKtgHR.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.5,
+          "rating_count_label": "13,373 votes",
+          "rating_url": null,
+          "raw_score": 7.95,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.95,
+            "vote_count": 13373
+          },
+          "vote_count": 13373
+        }
+      ],
       "release_date": "2007-11-09",
       "runtime": 122,
       "series_metadata": null,
@@ -3746,6 +4953,23 @@
       "poster_path": "/fa0RDkAlCec0STeMNAhPaF89q6U.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/fa0RDkAlCec0STeMNAhPaF89q6U.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.76,
+          "rating_count_label": "7,482 votes",
+          "rating_url": null,
+          "raw_score": 8.076,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.076,
+            "vote_count": 7482
+          },
+          "vote_count": 7482
+        }
+      ],
       "release_date": "2007-12-26",
       "runtime": 158,
       "series_metadata": null,
@@ -3789,6 +5013,23 @@
       "poster_path": "/eWdyYQreja6JGCzqHWXpWHDrrPo.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/eWdyYQreja6JGCzqHWXpWHDrrPo.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.28,
+          "rating_count_label": "16,144 votes",
+          "rating_url": null,
+          "raw_score": 8.028,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.028,
+            "vote_count": 16144
+          },
+          "vote_count": 16144
+        }
+      ],
       "release_date": "2014-02-26",
       "runtime": 100,
       "series_metadata": null,
@@ -3833,6 +5074,23 @@
       "poster_path": "/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 78.98,
+          "rating_count_label": "18,155 votes",
+          "rating_url": null,
+          "raw_score": 7.898,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.898,
+            "vote_count": 18155
+          },
+          "vote_count": 18155
+        }
+      ],
       "release_date": "2016-12-01",
       "runtime": 129,
       "series_metadata": null,
@@ -3877,6 +5135,23 @@
       "poster_path": "/kW9LmvYHAaS9iA0tHmZVq8hQYoq.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/kW9LmvYHAaS9iA0tHmZVq8hQYoq.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.0,
+          "rating_count_label": "25,995 votes",
+          "rating_url": null,
+          "raw_score": 8.0,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.0,
+            "vote_count": 25995
+          },
+          "vote_count": 25995
+        }
+      ],
       "release_date": "2013-12-25",
       "runtime": 180,
       "series_metadata": null,
@@ -3920,6 +5195,23 @@
       "poster_path": "/7oWY8VDWW7thTzWh3OKYRkWUlD5.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7oWY8VDWW7thTzWh3OKYRkWUlD5.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.92,
+          "rating_count_label": "28,110 votes",
+          "rating_url": null,
+          "raw_score": 8.192,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.192,
+            "vote_count": 28110
+          },
+          "vote_count": 28110
+        }
+      ],
       "release_date": "2012-12-25",
       "runtime": 165,
       "series_metadata": null,
@@ -3963,6 +5255,23 @@
       "poster_path": "/vuza0WqY239yBXOadKlGwJsZJFE.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/vuza0WqY239yBXOadKlGwJsZJFE.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.54,
+          "rating_count_label": "20,307 votes",
+          "rating_url": null,
+          "raw_score": 8.154,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.154,
+            "vote_count": 20307
+          },
+          "vote_count": 20307
+        }
+      ],
       "release_date": "1998-06-04",
       "runtime": 103,
       "series_metadata": null,
@@ -4007,6 +5316,23 @@
       "poster_path": "/5MwkWH9tYHv3mV9OdYTMR5qreIz.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/5MwkWH9tYHv3mV9OdYTMR5qreIz.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.91,
+          "rating_count_label": "16,390 votes",
+          "rating_url": null,
+          "raw_score": 8.091,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.091,
+            "vote_count": 16390
+          },
+          "vote_count": 16390
+        }
+      ],
       "release_date": "2004-03-19",
       "runtime": 108,
       "series_metadata": null,
@@ -4051,6 +5377,23 @@
       "poster_path": "/eCOtqtfvn7mxGl6nfmq4b1exJRc.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/eCOtqtfvn7mxGl6nfmq4b1exJRc.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 78.39,
+          "rating_count_label": "15,343 votes",
+          "rating_url": null,
+          "raw_score": 7.839,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.839,
+            "vote_count": 15343
+          },
+          "vote_count": 15343
+        }
+      ],
       "release_date": "2013-12-18",
       "runtime": 126,
       "series_metadata": null,
@@ -4094,6 +5437,23 @@
       "poster_path": "/dmJW8IAKHKxFNiUnoDR7JfsK7Rp.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/dmJW8IAKHKxFNiUnoDR7JfsK7Rp.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.0,
+          "rating_count_label": "14,296 votes",
+          "rating_url": null,
+          "raw_score": 7.6,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.6,
+            "vote_count": 14296
+          },
+          "vote_count": 14296
+        }
+      ],
       "release_date": "2015-01-21",
       "runtime": 108,
       "series_metadata": null,
@@ -4138,6 +5498,23 @@
       "poster_path": "/3ndAx3weG6KDkJIRMCi5vXX6Dyb.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/3ndAx3weG6KDkJIRMCi5vXX6Dyb.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.0,
+          "rating_count_label": "21,293 votes",
+          "rating_url": null,
+          "raw_score": 7.7,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.7,
+            "vote_count": 21293
+          },
+          "vote_count": 21293
+        }
+      ],
       "release_date": "2015-09-30",
       "runtime": 141,
       "series_metadata": null,
@@ -4184,6 +5561,23 @@
       "poster_path": "/2H1TmgdfNtsKlU9jKdeNyYL5y8T.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/2H1TmgdfNtsKlU9jKdeNyYL5y8T.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.09,
+          "rating_count_label": "23,515 votes",
+          "rating_url": null,
+          "raw_score": 7.909,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.909,
+            "vote_count": 23515
+          },
+          "vote_count": 23515
+        }
+      ],
       "release_date": "2015-06-17",
       "runtime": 95,
       "series_metadata": null,
@@ -4229,6 +5623,23 @@
       "poster_path": "/6Ryitt95xrO8KXuqRGm1fUuNwqF.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/6Ryitt95xrO8KXuqRGm1fUuNwqF.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.98,
+          "rating_count_label": "21,035 votes",
+          "rating_url": null,
+          "raw_score": 8.198,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.198,
+            "vote_count": 21035
+          },
+          "vote_count": 21035
+        }
+      ],
       "release_date": "2017-10-27",
       "runtime": 105,
       "series_metadata": null,
@@ -4273,6 +5684,23 @@
       "poster_path": "/q719jXXEzOoYaps6babgKnONONX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.81,
+          "rating_count_label": "12,635 votes",
+          "rating_url": null,
+          "raw_score": 8.481,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.481,
+            "vote_count": 12635
+          },
+          "vote_count": 12635
+        }
+      ],
       "release_date": "2016-08-26",
       "runtime": 106,
       "series_metadata": null,
@@ -4316,6 +5744,23 @@
       "poster_path": "/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.29,
+          "rating_count_label": "8,219 votes",
+          "rating_url": null,
+          "raw_score": 8.429,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.429,
+            "vote_count": 8219
+          },
+          "vote_count": 8219
+        }
+      ],
       "release_date": "2002-08-30",
       "runtime": 129,
       "series_metadata": null,
@@ -4360,6 +5805,23 @@
       "poster_path": "/z7xXihu5wHuSMWymq5VAulPVuvg.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/z7xXihu5wHuSMWymq5VAulPVuvg.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.65,
+          "rating_count_label": "11,497 votes",
+          "rating_url": null,
+          "raw_score": 7.765,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.765,
+            "vote_count": 11497
+          },
+          "vote_count": 11497
+        }
+      ],
       "release_date": "2006-10-11",
       "runtime": 118,
       "series_metadata": null,
@@ -4408,6 +5870,23 @@
       "poster_path": "/og6S0aTZU6YUJAbqxeKjCa3kY1E.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/og6S0aTZU6YUJAbqxeKjCa3kY1E.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.0,
+          "rating_count_label": "5,093 votes",
+          "rating_url": null,
+          "raw_score": 8.0,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.0,
+            "vote_count": 5093
+          },
+          "vote_count": 5093
+        }
+      ],
       "release_date": "2004-09-22",
       "runtime": null,
       "series_metadata": {
@@ -4471,6 +5950,23 @@
       "poster_path": "/q8dWfc4JwQuv3HayIZeO84jAXED.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/q8dWfc4JwQuv3HayIZeO84jAXED.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.0,
+          "rating_count_label": "5,580 votes",
+          "rating_url": null,
+          "raw_score": 8.2,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.2,
+            "vote_count": 5580
+          },
+          "vote_count": 5580
+        }
+      ],
       "release_date": "2006-10-01",
       "runtime": 60,
       "series_metadata": {
@@ -4535,6 +6031,23 @@
       "poster_path": "/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.67,
+          "rating_count_label": "5,379 votes",
+          "rating_url": null,
+          "raw_score": 8.267,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.267,
+            "vote_count": 5379
+          },
+          "vote_count": 5379
+        }
+      ],
       "release_date": "2015-06-24",
       "runtime": null,
       "series_metadata": {
@@ -4598,6 +6111,23 @@
       "poster_path": "/rcBx0p8h51LHceyhquYMxbspJQu.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/rcBx0p8h51LHceyhquYMxbspJQu.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.75,
+          "rating_count_label": "3,592 votes",
+          "rating_url": null,
+          "raw_score": 8.375,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.375,
+            "vote_count": 3592
+          },
+          "vote_count": 3592
+        }
+      ],
       "release_date": "1993-09-10",
       "runtime": null,
       "series_metadata": {
@@ -4661,6 +6191,23 @@
       "poster_path": "/lA9CNSdo50iQPZ8A2fyVpMvJZAf.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/lA9CNSdo50iQPZ8A2fyVpMvJZAf.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.0,
+          "rating_count_label": "2,591 votes",
+          "rating_url": null,
+          "raw_score": 8.3,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.3,
+            "vote_count": 2591
+          },
+          "vote_count": 2591
+        }
+      ],
       "release_date": "1990-04-08",
       "runtime": null,
       "series_metadata": {
@@ -4721,6 +6268,23 @@
       "poster_path": "/9RQhVb3r3mCMqYVhLoCu4EvuipP.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/9RQhVb3r3mCMqYVhLoCu4EvuipP.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 87.64,
+          "rating_count_label": "4,887 votes",
+          "rating_url": null,
+          "raw_score": 8.764,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.764,
+            "vote_count": 4887
+          },
+          "vote_count": 4887
+        }
+      ],
       "release_date": "2005-02-21",
       "runtime": 24,
       "series_metadata": {
@@ -4785,6 +6349,23 @@
       "poster_path": "/xDiXDfZwC6XYC6fxHI1jl3A3Ill.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/xDiXDfZwC6XYC6fxHI1jl3A3Ill.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.0,
+          "rating_count_label": "1,952 votes",
+          "rating_url": null,
+          "raw_score": 8.5,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.5,
+            "vote_count": 1952
+          },
+          "vote_count": 1952
+        }
+      ],
       "release_date": "1998-04-03",
       "runtime": 25,
       "series_metadata": {
@@ -4847,6 +6428,23 @@
       "poster_path": "/tCZFfYTIwrR7n94J6G14Y4hAFU6.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/tCZFfYTIwrR7n94J6G14Y4hAFU6.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 86.26,
+          "rating_count_label": "4,946 votes",
+          "rating_url": null,
+          "raw_score": 8.626,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.626,
+            "vote_count": 4946
+          },
+          "vote_count": 4946
+        }
+      ],
       "release_date": "2006-10-04",
       "runtime": 22,
       "series_metadata": {
@@ -4911,6 +6509,23 @@
       "poster_path": "/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 87.0,
+          "rating_count_label": "7,466 votes",
+          "rating_url": null,
+          "raw_score": 8.7,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.7,
+            "vote_count": 7466
+          },
+          "vote_count": 7466
+        }
+      ],
       "release_date": "2013-04-07",
       "runtime": null,
       "series_metadata": {
@@ -4975,6 +6590,23 @@
       "poster_path": "/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.31,
+          "rating_count_label": "19,489 votes",
+          "rating_url": null,
+          "raw_score": 8.231,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.231,
+            "vote_count": 19489
+          },
+          "vote_count": 19489
+        }
+      ],
       "release_date": "2017-05-02",
       "runtime": null,
       "series_metadata": {
@@ -5040,6 +6672,23 @@
       "poster_path": "/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1QdXdRYfktUSONkl1oD5gc6Be0s.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 78.56,
+          "rating_count_label": "17,473 votes",
+          "rating_url": null,
+          "raw_score": 7.856,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.856,
+            "vote_count": 17473
+          },
+          "vote_count": 17473
+        }
+      ],
       "release_date": "2021-09-17",
       "runtime": null,
       "series_metadata": {
@@ -5104,6 +6753,23 @@
       "poster_path": "/nWPZb800NCGiDPNGsKCfY0w44Z2.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/nWPZb800NCGiDPNGsKCfY0w44Z2.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.03,
+          "rating_count_label": "2,725 votes",
+          "rating_url": null,
+          "raw_score": 8.103,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.103,
+            "vote_count": 2725
+          },
+          "vote_count": 2725
+        }
+      ],
       "release_date": "2018-10-12",
       "runtime": null,
       "series_metadata": {
@@ -5166,6 +6832,23 @@
       "poster_path": "/bNcNxUtZ520d5de5s78onoiSiwQ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/bNcNxUtZ520d5de5s78onoiSiwQ.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 86.28,
+          "rating_count_label": "1,249 votes",
+          "rating_url": null,
+          "raw_score": 8.628,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.628,
+            "vote_count": 1249
+          },
+          "vote_count": 1249
+        }
+      ],
       "release_date": "2006-03-05",
       "runtime": null,
       "series_metadata": {
@@ -5225,6 +6908,23 @@
       "poster_path": "/wRSnArnQBmeUYb5GWDU595bGsBr.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/wRSnArnQBmeUYb5GWDU595bGsBr.jpg",
       "priority": "batch_test_4",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 85.12,
+          "rating_count_label": "453 votes",
+          "rating_url": null,
+          "raw_score": 8.512,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.512,
+            "vote_count": 453
+          },
+          "vote_count": 453
+        }
+      ],
       "release_date": "2019-04-05",
       "runtime": null,
       "series_metadata": {
@@ -5285,6 +6985,23 @@
       "poster_path": "/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/ulzhLuWrPK07P1YkdWQLZnQh1JL.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.37,
+          "rating_count_label": "27,891 votes",
+          "rating_url": null,
+          "raw_score": 8.237,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.237,
+            "vote_count": 27891
+          },
+          "vote_count": 27891
+        }
+      ],
       "release_date": "2019-04-24",
       "runtime": 181,
       "series_metadata": null,
@@ -5330,6 +7047,23 @@
       "poster_path": "/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.37,
+          "rating_count_label": "32,144 votes",
+          "rating_url": null,
+          "raw_score": 8.237,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.237,
+            "vote_count": 32144
+          },
+          "vote_count": 32144
+        }
+      ],
       "release_date": "2018-04-25",
       "runtime": 149,
       "series_metadata": null,
@@ -5374,6 +7108,23 @@
       "poster_path": "/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.32,
+          "rating_count_label": "8,394 votes",
+          "rating_url": null,
+          "raw_score": 7.932,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.932,
+            "vote_count": 8394
+          },
+          "vote_count": 8394
+        }
+      ],
       "release_date": "2023-05-03",
       "runtime": 150,
       "series_metadata": null,
@@ -5418,6 +7169,23 @@
       "poster_path": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 75.74,
+          "rating_count_label": "8,792 votes",
+          "rating_url": null,
+          "raw_score": 7.574,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.574,
+            "vote_count": 8792
+          },
+          "vote_count": 8792
+        }
+      ],
       "release_date": "2024-07-24",
       "runtime": 128,
       "series_metadata": null,
@@ -5462,6 +7230,23 @@
       "poster_path": "/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.09,
+          "rating_count_label": "7,983 votes",
+          "rating_url": null,
+          "raw_score": 7.709,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.709,
+            "vote_count": 7983
+          },
+          "vote_count": 7983
+        }
+      ],
       "release_date": "2023-03-21",
       "runtime": 170,
       "series_metadata": null,
@@ -5506,6 +7291,23 @@
       "poster_path": "/NNxYkU70HPurnNCSiCjYAmacwm.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/NNxYkU70HPurnNCSiCjYAmacwm.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 75.04,
+          "rating_count_label": "5,153 votes",
+          "rating_url": null,
+          "raw_score": 7.504,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.504,
+            "vote_count": 5153
+          },
+          "vote_count": 5153
+        }
+      ],
       "release_date": "2023-07-08",
       "runtime": 164,
       "series_metadata": null,
@@ -5549,6 +7351,23 @@
       "poster_path": "/gDzOcq0pfeCeqMBwKIJlSmQpjkZ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/gDzOcq0pfeCeqMBwKIJlSmQpjkZ.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.79,
+          "rating_count_label": "14,986 votes",
+          "rating_url": null,
+          "raw_score": 7.779,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.779,
+            "vote_count": 14986
+          },
+          "vote_count": 14986
+        }
+      ],
       "release_date": "2021-09-15",
       "runtime": 155,
       "series_metadata": null,
@@ -5593,6 +7412,23 @@
       "poster_path": "/74xTEgt7R36Fpooo50r9T25onhq.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.62,
+          "rating_count_label": "12,027 votes",
+          "rating_url": null,
+          "raw_score": 7.662,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.662,
+            "vote_count": 12027
+          },
+          "vote_count": 12027
+        }
+      ],
       "release_date": "2022-03-01",
       "runtime": 177,
       "series_metadata": null,
@@ -5637,6 +7473,23 @@
       "poster_path": "/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.23,
+          "rating_count_label": "27,808 votes",
+          "rating_url": null,
+          "raw_score": 8.123,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.123,
+            "vote_count": 27808
+          },
+          "vote_count": 27808
+        }
+      ],
       "release_date": "2019-10-01",
       "runtime": 122,
       "series_metadata": null,
@@ -5681,6 +7534,23 @@
       "poster_path": "/lqoMzCcZYEFK729d6qzt349fB4o.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/lqoMzCcZYEFK729d6qzt349fB4o.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 71.32,
+          "rating_count_label": "6,083 votes",
+          "rating_url": null,
+          "raw_score": 7.132,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.132,
+            "vote_count": 6083
+          },
+          "vote_count": 6083
+        }
+      ],
       "release_date": "2024-09-07",
       "runtime": 141,
       "series_metadata": null,
@@ -5725,6 +7595,23 @@
       "poster_path": "/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.4,
+          "rating_count_label": "5,524 votes",
+          "rating_url": null,
+          "raw_score": 7.64,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.64,
+            "vote_count": 5524
+          },
+          "vote_count": 5524
+        }
+      ],
       "release_date": "2023-12-07",
       "runtime": 141,
       "series_metadata": null,
@@ -5769,6 +7656,23 @@
       "poster_path": "/1ho0d4LNZw3Y0voeKmSvPSgJOJ2.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1ho0d4LNZw3Y0voeKmSvPSgJOJ2.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 75.16,
+          "rating_count_label": "3,328 votes",
+          "rating_url": null,
+          "raw_score": 7.516,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.516,
+            "vote_count": 3328
+          },
+          "vote_count": 3328
+        }
+      ],
       "release_date": "2023-08-23",
       "runtime": 151,
       "series_metadata": null,
@@ -5812,6 +7716,23 @@
       "poster_path": "/k3waqVXSnvCZWfJYNtdamTgTtTA.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/k3waqVXSnvCZWfJYNtdamTgTtTA.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.0,
+          "rating_count_label": "2,339 votes",
+          "rating_url": null,
+          "raw_score": 7.7,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.7,
+            "vote_count": 2339
+          },
+          "vote_count": 2339
+        }
+      ],
       "release_date": "2023-06-02",
       "runtime": 106,
       "series_metadata": null,
@@ -5856,6 +7777,23 @@
       "poster_path": "/2E2WTX0TJEflAged6kzErwqX1kt.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/2E2WTX0TJEflAged6kzErwqX1kt.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 75.72,
+          "rating_count_label": "3,205 votes",
+          "rating_url": null,
+          "raw_score": 7.572,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.572,
+            "vote_count": 3205
+          },
+          "vote_count": 3205
+        }
+      ],
       "release_date": "2023-11-03",
       "runtime": 125,
       "series_metadata": null,
@@ -5900,6 +7838,23 @@
       "poster_path": "/hUu9zyZmDd8VZegKi1iK1Vk0RYS.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/hUu9zyZmDd8VZegKi1iK1Vk0RYS.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 70.11,
+          "rating_count_label": "2,635 votes",
+          "rating_url": null,
+          "raw_score": 7.011,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.011,
+            "vote_count": 2635
+          },
+          "vote_count": 2635
+        }
+      ],
       "release_date": "2023-12-15",
       "runtime": 105,
       "series_metadata": null,
@@ -5943,6 +7898,23 @@
       "poster_path": "/2e853FDVSIso600RqAMunPxiZjq.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/2e853FDVSIso600RqAMunPxiZjq.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.72,
+          "rating_count_label": "3,508 votes",
+          "rating_url": null,
+          "raw_score": 7.972,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.972,
+            "vote_count": 3508
+          },
+          "vote_count": 3508
+        }
+      ],
       "release_date": "2023-12-15",
       "runtime": 143,
       "series_metadata": null,
@@ -5987,6 +7959,23 @@
       "poster_path": "/u0XUBNQWlOvrh0Gd97ARGpIkL0.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/u0XUBNQWlOvrh0Gd97ARGpIkL0.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.0,
+          "rating_count_label": "1,610 votes",
+          "rating_url": null,
+          "raw_score": 7.7,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.7,
+            "vote_count": 1610
+          },
+          "vote_count": 1610
+        }
+      ],
       "release_date": "2022-03-24",
       "runtime": 187,
       "series_metadata": null,
@@ -6031,6 +8020,23 @@
       "poster_path": "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 79.34,
+          "rating_count_label": "22,092 votes",
+          "rating_url": null,
+          "raw_score": 7.934,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.934,
+            "vote_count": 22092
+          },
+          "vote_count": 22092
+        }
+      ],
       "release_date": "2021-12-15",
       "runtime": 148,
       "series_metadata": null,
@@ -6076,6 +8082,23 @@
       "poster_path": "/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 75.45,
+          "rating_count_label": "6,726 votes",
+          "rating_url": null,
+          "raw_score": 7.545,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.545,
+            "vote_count": 6726
+          },
+          "vote_count": 6726
+        }
+      ],
       "release_date": "2024-06-11",
       "runtime": 97,
       "series_metadata": null,
@@ -6123,6 +8146,23 @@
       "poster_path": "/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.05,
+          "rating_count_label": "10,820 votes",
+          "rating_url": null,
+          "raw_score": 7.605,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.605,
+            "vote_count": 10820
+          },
+          "vote_count": 10820
+        }
+      ],
       "release_date": "2023-04-05",
       "runtime": 93,
       "series_metadata": null,
@@ -6169,6 +8209,23 @@
       "poster_path": "/kuf6dutpsT0vSVehic3EZIqkOBt.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/kuf6dutpsT0vSVehic3EZIqkOBt.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.08,
+          "rating_count_label": "8,902 votes",
+          "rating_url": null,
+          "raw_score": 8.208,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.208,
+            "vote_count": 8902
+          },
+          "vote_count": 8902
+        }
+      ],
       "release_date": "2022-12-07",
       "runtime": 103,
       "series_metadata": null,
@@ -6214,6 +8271,23 @@
       "poster_path": "/eG9lz41mJqsI4J6ubMtVqD26q2J.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/eG9lz41mJqsI4J6ubMtVqD26q2J.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.16,
+          "rating_count_label": "6,177 votes",
+          "rating_url": null,
+          "raw_score": 8.316,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.316,
+            "vote_count": 6177
+          },
+          "vote_count": 6177
+        }
+      ],
       "release_date": "2024-09-12",
       "runtime": 102,
       "series_metadata": null,
@@ -6257,6 +8331,23 @@
       "poster_path": "/VHSzNBTwxV8vh7wylo7O9CLdac.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/VHSzNBTwxV8vh7wylo7O9CLdac.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.45,
+          "rating_count_label": "2,526 votes",
+          "rating_url": null,
+          "raw_score": 7.645,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.645,
+            "vote_count": 2526
+          },
+          "vote_count": 2526
+        }
+      ],
       "release_date": "2023-10-27",
       "runtime": 133,
       "series_metadata": null,
@@ -6299,6 +8390,23 @@
       "poster_path": "/evKz85EKouVbIr51zy5fOtpNRPg.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/evKz85EKouVbIr51zy5fOtpNRPg.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.7,
+          "rating_count_label": "1,854 votes",
+          "rating_url": null,
+          "raw_score": 7.67,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.67,
+            "vote_count": 1854
+          },
+          "vote_count": 1854
+        }
+      ],
       "release_date": "2022-10-21",
       "runtime": 101,
       "series_metadata": null,
@@ -6343,6 +8451,23 @@
       "poster_path": "/dB6Krk806zeqd0YNp2ngQ9zXteH.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/dB6Krk806zeqd0YNp2ngQ9zXteH.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 73.98,
+          "rating_count_label": "4,154 votes",
+          "rating_url": null,
+          "raw_score": 7.398,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.398,
+            "vote_count": 4154
+          },
+          "vote_count": 4154
+        }
+      ],
       "release_date": "2023-10-18",
       "runtime": 206,
       "series_metadata": null,
@@ -6389,6 +8514,23 @@
       "poster_path": "/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.15,
+          "rating_count_label": "1,764 votes",
+          "rating_url": null,
+          "raw_score": 8.415,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.415,
+            "vote_count": 1764
+          },
+          "vote_count": 1764
+        }
+      ],
       "release_date": "2024-02-27",
       "runtime": null,
       "series_metadata": {
@@ -6455,6 +8597,23 @@
       "poster_path": "/c15BtJxCXMrISLVmysdsnZUPQft.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/c15BtJxCXMrISLVmysdsnZUPQft.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.26,
+          "rating_count_label": "2,872 votes",
+          "rating_url": null,
+          "raw_score": 8.126,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.126,
+            "vote_count": 2872
+          },
+          "vote_count": 2872
+        }
+      ],
       "release_date": "2024-04-10",
       "runtime": null,
       "series_metadata": {
@@ -6519,6 +8678,23 @@
       "poster_path": "/vOWcqC4oDQws1doDWLO7d3dh5qc.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/vOWcqC4oDQws1doDWLO7d3dh5qc.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.57,
+          "rating_count_label": "1,352 votes",
+          "rating_url": null,
+          "raw_score": 8.357,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.357,
+            "vote_count": 1352
+          },
+          "vote_count": 1352
+        }
+      ],
       "release_date": "2024-09-19",
       "runtime": null,
       "series_metadata": {
@@ -6583,6 +8759,23 @@
       "poster_path": "/fDMTqUcEh6qJwWZP1SHTfoaqsCy.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/fDMTqUcEh6qJwWZP1SHTfoaqsCy.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.6,
+          "rating_count_label": "2,104 votes",
+          "rating_url": null,
+          "raw_score": 8.16,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.16,
+            "vote_count": 2104
+          },
+          "vote_count": 2104
+        }
+      ],
       "release_date": "2023-05-04",
       "runtime": null,
       "series_metadata": {
@@ -6647,6 +8840,23 @@
       "poster_path": "/cOKXV0FalCYixNmZYCfHXgyQ0VX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/cOKXV0FalCYixNmZYCfHXgyQ0VX.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 75.69,
+          "rating_count_label": "441 votes",
+          "rating_url": null,
+          "raw_score": 7.569,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.569,
+            "vote_count": 441
+          },
+          "vote_count": 441
+        }
+      ],
       "release_date": "2023-04-20",
       "runtime": null,
       "series_metadata": {
@@ -6712,6 +8922,23 @@
       "poster_path": "/4c5yUNcaff4W4aPrkXE6zr7papX.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/4c5yUNcaff4W4aPrkXE6zr7papX.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.08,
+          "rating_count_label": "1,173 votes",
+          "rating_url": null,
+          "raw_score": 7.708,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.708,
+            "vote_count": 1173
+          },
+          "vote_count": 1173
+        }
+      ],
       "release_date": "2023-03-23",
       "runtime": null,
       "series_metadata": {
@@ -6778,6 +9005,23 @@
       "poster_path": "/36xXlhEpQqVVPuiZhfoQuaY4OlA.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/36xXlhEpQqVVPuiZhfoQuaY4OlA.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.45,
+          "rating_count_label": "10,577 votes",
+          "rating_url": null,
+          "raw_score": 8.345,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.345,
+            "vote_count": 10577
+          },
+          "vote_count": 10577
+        }
+      ],
       "release_date": "2022-11-23",
       "runtime": null,
       "series_metadata": {
@@ -6843,6 +9087,23 @@
       "poster_path": "/blWCPEqDGLBuLB9u89CxP9ORQP4.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/blWCPEqDGLBuLB9u89CxP9ORQP4.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.28,
+          "rating_count_label": "1,803 votes",
+          "rating_url": null,
+          "raw_score": 8.128,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.128,
+            "vote_count": 1803
+          },
+          "vote_count": 1803
+        }
+      ],
       "release_date": "2023-08-31",
       "runtime": null,
       "series_metadata": {
@@ -6907,6 +9168,23 @@
       "poster_path": "/kEl2t3OhXc3Zb9FBh1AuYzRTgZp.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/kEl2t3OhXc3Zb9FBh1AuYzRTgZp.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.71,
+          "rating_count_label": "12,424 votes",
+          "rating_url": null,
+          "raw_score": 8.171,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.171,
+            "vote_count": 12424
+          },
+          "vote_count": 12424
+        }
+      ],
       "release_date": "2021-06-09",
       "runtime": null,
       "series_metadata": {
@@ -6972,6 +9250,23 @@
       "poster_path": "/frobUz2X5Pc8OiVZU8Oo5K3NKMM.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/frobUz2X5Pc8OiVZU8Oo5K3NKMM.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 81.89,
+          "rating_count_label": "12,700 votes",
+          "rating_url": null,
+          "raw_score": 8.189,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.189,
+            "vote_count": 12700
+          },
+          "vote_count": 12700
+        }
+      ],
       "release_date": "2021-01-15",
       "runtime": null,
       "series_metadata": {
@@ -7037,6 +9332,23 @@
       "poster_path": "/x6FsYvt33846IQnDSFxla9j0RX8.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/x6FsYvt33846IQnDSFxla9j0RX8.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.45,
+          "rating_count_label": "3,517 votes",
+          "rating_url": null,
+          "raw_score": 7.645,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.645,
+            "vote_count": 3517
+          },
+          "vote_count": 3517
+        }
+      ],
       "release_date": "2022-03-30",
       "runtime": null,
       "series_metadata": {
@@ -7102,6 +9414,23 @@
       "poster_path": "/ct5pNE5dDHryHLDnxyZPYcqO1sz.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/ct5pNE5dDHryHLDnxyZPYcqO1sz.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.89,
+          "rating_count_label": "3,718 votes",
+          "rating_url": null,
+          "raw_score": 7.789,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.789,
+            "vote_count": 3718
+          },
+          "vote_count": 3718
+        }
+      ],
       "release_date": "2021-11-24",
       "runtime": null,
       "series_metadata": {
@@ -7169,6 +9498,23 @@
       "poster_path": "/q54qEgagGOYCq5D1903eBVMNkbo.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/q54qEgagGOYCq5D1903eBVMNkbo.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 78.73,
+          "rating_count_label": "2,621 votes",
+          "rating_url": null,
+          "raw_score": 7.873,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.873,
+            "vote_count": 2621
+          },
+          "vote_count": 2621
+        }
+      ],
       "release_date": "2022-08-05",
       "runtime": null,
       "series_metadata": {
@@ -7234,6 +9580,23 @@
       "poster_path": "/5fhZdwP1DVJ0FyVH6vrFdHwpXIn.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/5fhZdwP1DVJ0FyVH6vrFdHwpXIn.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 83.43,
+          "rating_count_label": "2,390 votes",
+          "rating_url": null,
+          "raw_score": 8.343,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.343,
+            "vote_count": 2390
+          },
+          "vote_count": 2390
+        }
+      ],
       "release_date": "2020-08-14",
       "runtime": null,
       "series_metadata": {
@@ -7299,6 +9662,23 @@
       "poster_path": "/vKq8XEJKxQTHd2Bm5zZMFPUrke7.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/vKq8XEJKxQTHd2Bm5zZMFPUrke7.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 82.1,
+          "rating_count_label": "205 votes",
+          "rating_url": null,
+          "raw_score": 8.21,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.21,
+            "vote_count": 205
+          },
+          "vote_count": 205
+        }
+      ],
       "release_date": "2026-04-28",
       "runtime": null,
       "series_metadata": {
@@ -7365,6 +9745,23 @@
       "poster_path": "/1yjFVQZuW8aofZ5Cgol8iImsVFp.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/1yjFVQZuW8aofZ5Cgol8iImsVFp.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.48,
+          "rating_count_label": "2,199 votes",
+          "rating_url": null,
+          "raw_score": 8.448,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.448,
+            "vote_count": 2199
+          },
+          "vote_count": 2199
+        }
+      ],
       "release_date": "2021-08-31",
       "runtime": null,
       "series_metadata": {
@@ -7429,6 +9826,23 @@
       "poster_path": "/gbSaK9v1CbcYH1ISgbM7XObD2dW.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/gbSaK9v1CbcYH1ISgbM7XObD2dW.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 76.0,
+          "rating_count_label": "1,432 votes",
+          "rating_url": null,
+          "raw_score": 7.6,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.6,
+            "vote_count": 1432
+          },
+          "vote_count": 1432
+        }
+      ],
       "release_date": "2021-07-11",
       "runtime": null,
       "series_metadata": {
@@ -7494,6 +9908,23 @@
       "poster_path": "/xRnGrn7Z7SC0KIBodocoU1QgDZF.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/xRnGrn7Z7SC0KIBodocoU1QgDZF.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 74.46,
+          "rating_count_label": "971 votes",
+          "rating_url": null,
+          "raw_score": 7.446,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.446,
+            "vote_count": 971
+          },
+          "vote_count": 971
+        }
+      ],
       "release_date": "2021-11-14",
       "runtime": null,
       "series_metadata": {
@@ -7558,6 +9989,23 @@
       "poster_path": "/5RuZZIouptatjV96BdPmKmRsnGg.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/5RuZZIouptatjV96BdPmKmRsnGg.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.06,
+          "rating_count_label": "863 votes",
+          "rating_url": null,
+          "raw_score": 8.006,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.006,
+            "vote_count": 863
+          },
+          "vote_count": 863
+        }
+      ],
       "release_date": "2022-04-01",
       "runtime": null,
       "series_metadata": {
@@ -7623,6 +10071,23 @@
       "poster_path": "/31GlRQMiDunO8cl3NxTz34U64rf.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/31GlRQMiDunO8cl3NxTz34U64rf.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 80.78,
+          "rating_count_label": "2,884 votes",
+          "rating_url": null,
+          "raw_score": 8.078,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.078,
+            "vote_count": 2884
+          },
+          "vote_count": 2884
+        }
+      ],
       "release_date": "2022-02-03",
       "runtime": null,
       "series_metadata": {
@@ -7689,6 +10154,23 @@
       "poster_path": "/kf5Hz70tjNAHg4swGDzOr9BfoZ1.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/kf5Hz70tjNAHg4swGDzOr9BfoZ1.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 72.38,
+          "rating_count_label": "3,735 votes",
+          "rating_url": null,
+          "raw_score": 7.238,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.238,
+            "vote_count": 3735
+          },
+          "vote_count": 3735
+        }
+      ],
       "release_date": "2022-09-01",
       "runtime": null,
       "series_metadata": {
@@ -7754,6 +10236,23 @@
       "poster_path": "/tg9I5pOY4M9CKj8U0cxVBTsm5eh.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/tg9I5pOY4M9CKj8U0cxVBTsm5eh.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 77.18,
+          "rating_count_label": "1,717 votes",
+          "rating_url": null,
+          "raw_score": 7.718,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.718,
+            "vote_count": 1717
+          },
+          "vote_count": 1717
+        }
+      ],
       "release_date": "2021-09-23",
       "runtime": null,
       "series_metadata": {
@@ -7819,6 +10318,23 @@
       "poster_path": "/pRtJagIxpfODzzb0T0NAvZSzErC.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/pRtJagIxpfODzzb0T0NAvZSzErC.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 84.9,
+          "rating_count_label": "3,731 votes",
+          "rating_url": null,
+          "raw_score": 8.49,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.49,
+            "vote_count": 3731
+          },
+          "vote_count": 3731
+        }
+      ],
       "release_date": "2022-02-20",
       "runtime": null,
       "series_metadata": {
@@ -7882,6 +10398,23 @@
       "poster_path": "/4Lok3HBSfbQxibQZBygoVCwKKrZ.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/4Lok3HBSfbQxibQZBygoVCwKKrZ.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 70.11,
+          "rating_count_label": "2,241 votes",
+          "rating_url": null,
+          "raw_score": 7.011,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 7.011,
+            "vote_count": 2241
+          },
+          "vote_count": 2241
+        }
+      ],
       "release_date": "2022-05-26",
       "runtime": null,
       "series_metadata": {
@@ -7945,6 +10478,23 @@
       "poster_path": "/4tblBrslcKSifMVZ3TmtT2ukMor.jpg",
       "poster_url": "https://image.tmdb.org/t/p/w500/4tblBrslcKSifMVZ3TmtT2ukMor.jpg",
       "priority": "batch_test_5",
+      "ratings": [
+        {
+          "display_name": "TMDb",
+          "normalized_score": 86.34,
+          "rating_count_label": "5,875 votes",
+          "rating_url": null,
+          "raw_score": 8.634,
+          "raw_score_scale": 10,
+          "source_category": "audience",
+          "source_name": "tmdb",
+          "source_payload": {
+            "vote_average": 8.634,
+            "vote_count": 5875
+          },
+          "vote_count": 5875
+        }
+      ],
       "release_date": "2021-03-25",
       "runtime": null,
       "series_metadata": {

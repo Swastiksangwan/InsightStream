@@ -7,7 +7,7 @@
     "source_id": null,
     "title": null
   },
-  "generated_at": "2026-06-23T18:20:43.633403+00:00",
+  "generated_at": "2026-06-25T06:45:51.013857+00:00",
   "per_target": [
     {
       "content_type": "movie",
@@ -3881,6 +3881,7 @@
       ]
     }
   ],
+  "ratings_preview_count": 150,
   "raw_files_fetched": [],
   "raw_files_reused": [
     "analytics/raw/tmdb/configuration.json",

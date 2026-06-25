@@ -75,13 +75,23 @@ export type PlatformAvailability = {
   display_priority?: number | null;
 };
 
-export type Rating = {
-  platform: string;
-  original_score: number;
-  original_scale: number;
-  normalized_score: number;
-  rating_count?: number | null;
-  reviewer_group?: "critic" | "audience" | "general" | string | null;
+export type RatingSourceItem = {
+  source_name: string;
+  display_name: string;
+  source_category: "audience" | "critic" | "theatrical" | "internal" | string;
+  raw_score?: number | null;
+  raw_score_scale?: number | null;
+  normalized_score?: number | null;
+  vote_count?: number | null;
+  rating_count_label?: string | null;
+  rating_url?: string | null;
+  fetched_at?: string | null;
+};
+
+export type RatingsResponse = {
+  unified_score?: number | null;
+  source_count: number;
+  sources: RatingSourceItem[];
 };
 
 export type Summary = {
@@ -98,7 +108,7 @@ export type ContentDetailsResponse = {
   content: Content;
   genres: string[];
   platforms: PlatformAvailability[];
-  ratings: Rating[];
+  ratings: RatingsResponse;
   series_metadata?: SeriesMetadata | null;
   summary?: Summary | null;
 };

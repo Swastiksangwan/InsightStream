@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-24T06:57:11.331258+00:00",
+  "generated_at": "2026-06-25T06:47:43.486938+00:00",
   "script_name": "check_ingestion_health.py",
   "target_config_path": "analytics/config/content_ingestion_targets.json",
   "filters_used": {
-    "priority": "batch_test_5",
-    "strict": false,
+    "priority": null,
+    "strict": true,
     "fail_on_warning": false
   },
   "config_summary": {
     "total_targets": 150,
     "valid_targets": 150,
     "invalid_targets": 0,
-    "selected_targets": 50,
+    "selected_targets": 150,
     "priority_counts": {
       "batch_test_1": 5,
       "batch_test_2": 30,
@@ -83,18 +83,23 @@
       "status": "passed",
       "row_count": 0,
       "rows": []
+    },
+    "content_ratings": {
+      "status": "passed",
+      "row_count": 0,
+      "rows": []
     }
   },
   "target_db_coverage": {
-    "selected_targets": 50,
-    "matched_targets": 50,
+    "selected_targets": 150,
+    "matched_targets": 150,
     "missing_targets": 0,
     "content_type_mismatches": [],
     "extra_db_tmdb_external_ids": [],
     "missing_target_details": []
   },
   "metadata_completeness": {
-    "checked_content_count": 50,
+    "checked_content_count": 150,
     "content_with_warnings_or_failures": 0,
     "items": []
   },
@@ -122,6 +127,18 @@
     "series_with_season_summary": 70,
     "series_with_announced_or_upcoming_seasons": 11,
     "series_with_unknown_season_summary": 0
+  },
+  "ratings_summary": {
+    "rating_sources_count": 1,
+    "tmdb_source_count": 1,
+    "total_content_ratings": 150,
+    "invalid_normalized_scores": 0,
+    "invalid_raw_score_scales": 0,
+    "negative_vote_counts": 0,
+    "provider_backed_content": 150,
+    "provider_backed_content_with_ratings": 150,
+    "rating_coverage_percentage": 100.0,
+    "provider_backed_content_missing_ratings": 0
   },
   "warnings": [],
   "failures": [],

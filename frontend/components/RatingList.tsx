@@ -1,18 +1,23 @@
-import type { Rating } from "@/types/content";
+import type { RatingSourceItem, RatingsResponse } from "@/types/content";
 
 type RatingListProps = {
-  ratings: Rating[];
+  ratings: RatingsResponse;
 };
 
-function formatReviewerGroup(group?: string | null) {
-  if (!group) {
-    return "General";
+function formatSourceCategory(category?: string | null) {
+  if (!category) {
+    return "Rating";
   }
 
-  return group.charAt(0).toUpperCase() + group.slice(1);
+  return category.charAt(0).toUpperCase() + category.slice(1);
 }
 
-function formatRatingCount(count?: number | null) {
+function formatVoteCount(source: RatingSourceItem) {
+  if (source.rating_count_label) {
+    return source.rating_count_label;
+  }
+
+  const count = source.vote_count;
   if (!count) {
     return null;
   }
@@ -22,15 +27,36 @@ function formatRatingCount(count?: number | null) {
   }).format(count);
 }
 
+function formatScore(value?: number | null) {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  return Number.isInteger(value) ? String(value) : value.toFixed(1);
+}
+
+function formatRawRating(source: RatingSourceItem) {
+  const rawScore = formatScore(source.raw_score);
+  const rawScale = formatScore(source.raw_score_scale);
+
+  if (!rawScore || !rawScale) {
+    return null;
+  }
+
+  return `${rawScore}/${rawScale}`;
+}
+
 export function RatingList({ ratings }: RatingListProps) {
-  if (ratings.length === 0) {
+  const sources = ratings?.sources ?? [];
+
+  if (sources.length === 0) {
     return (
       <section className="detail-panel">
         <div className="detail-panel__header">
           <span className="section-label">Cross-platform signal</span>
           <h2>Ratings</h2>
         </div>
-        <p className="detail-empty">No ratings are available yet.</p>
+        <p className="detail-empty">Not enough rating data yet.</p>
       </section>
     );
   }
@@ -43,24 +69,40 @@ export function RatingList({ ratings }: RatingListProps) {
       </div>
 
       <div className="rating-list">
-        {ratings.map((rating) => {
-          const ratingCount = formatRatingCount(rating.rating_count);
+        <article className="rating-card rating-card--insight">
+          <div>
+            <h3>InsightStream Score</h3>
+            <span>{ratings.source_count} source{ratings.source_count === 1 ? "" : "s"}</span>
+          </div>
+
+          <strong>{ratings.unified_score ?? "--"}</strong>
+
+          <p>Weighted from available trusted rating sources.</p>
+        </article>
+
+        {sources.map((source) => {
+          const voteCount = formatVoteCount(source);
+          const rawRating = formatRawRating(source);
 
           return (
             <article
-              className={`rating-card rating-card--${rating.reviewer_group || "general"}`}
-              key={`${rating.platform}-${rating.reviewer_group}-${rating.normalized_score}`}
+              className={`rating-card rating-card--${source.source_category || "general"}`}
+              key={`${source.source_name}-${source.normalized_score}`}
             >
               <div>
-                <h3>{rating.platform}</h3>
-                <span>{formatReviewerGroup(rating.reviewer_group)}</span>
+                <h3>{source.display_name}</h3>
+                <span>{formatSourceCategory(source.source_category)}</span>
               </div>
 
-              <strong>{Math.round(rating.normalized_score)}</strong>
+              <strong>
+                {source.normalized_score === null || source.normalized_score === undefined
+                  ? "--"
+                  : Math.round(source.normalized_score)}
+              </strong>
 
               <p>
-                {rating.original_score}/{rating.original_scale}
-                {ratingCount ? ` • ${ratingCount} ratings` : ""}
+                {rawRating ?? "Rating scale unavailable"}
+                {voteCount ? ` · ${voteCount}` : ""}
               </p>
             </article>
           );

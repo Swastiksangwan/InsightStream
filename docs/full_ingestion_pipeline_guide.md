@@ -6,7 +6,7 @@ This document explains how to add content to InsightStream using the current met
 
 It covers both one-title ingestion and batch ingestion. It explains the role of config files, raw provider files, processed previews, import scripts, run reports, database verification, backend tests, and frontend checks.
 
-This is an operational guide. It is not a product plan and it does not introduce ratings, reviews, social features, or frontend TMDb calls.
+This is an operational guide. It is not a product plan and it does not introduce reviews, social features, recommendations, or frontend TMDb calls. Ratings v1 is limited to importing TMDb rating signals from the processed metadata preview.
 
 ## Current Catalog Context
 
@@ -275,7 +275,26 @@ This importer writes or updates:
 
 It preserves existing curated non-empty fields unless the import policy explicitly allows safe update.
 
-### Step 6: Build credits preview
+### Step 6: Import TMDb ratings
+
+```bash
+python3 analytics/scripts/import_content_ratings_from_preview.py
+python3 analytics/scripts/import_content_ratings_from_preview.py --apply
+python3 analytics/scripts/import_content_ratings_from_preview.py
+```
+
+The ratings importer reads TMDb rating rows from `sample_mapping_preview.json` and writes to the provider-neutral ratings tables only when `--apply` is passed.
+
+It writes or updates:
+
+- `rating_sources`
+- `content_ratings`
+
+Ratings v1 imports TMDb only. It does not import IMDb, Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, summaries, or recommendations.
+
+The third command checks idempotency.
+
+### Step 7: Build credits preview
 
 ```bash
 python3 analytics/scripts/build_tmdb_credits_preview.py
@@ -291,7 +310,7 @@ This script:
 - does not write to PostgreSQL;
 - only processes titles currently present in `sample_mapping_preview.json`.
 
-### Step 7: Import people and credits
+### Step 8: Import people and credits
 
 ```bash
 python3 analytics/scripts/import_people_credits_from_preview.py
@@ -309,7 +328,7 @@ This enables top cast, unified crew display, creators/directors compatibility fi
 
 The third command checks idempotency.
 
-### Step 8: Fetch person details
+### Step 9: Fetch person details
 
 ```bash
 python3 analytics/scripts/fetch_tmdb_person_details.py
@@ -342,7 +361,7 @@ python3 analytics/scripts/fetch_tmdb_person_details.py --name "Christopher Nolan
 
 Important: this script reads DB people, not content targets. It does not support `--priority`.
 
-### Step 9: Import person details
+### Step 10: Import person details
 
 ```bash
 python3 analytics/scripts/import_person_details_from_preview.py
@@ -358,7 +377,7 @@ This importer writes safe missing fields to `people`:
 
 It preserves existing non-empty local values. The third command checks idempotency.
 
-### Step 10: Fetch availability and certification
+### Step 11: Fetch availability and certification
 
 ```bash
 python3 analytics/scripts/fetch_tmdb_availability_certification.py --priority batch_test_3
@@ -380,7 +399,7 @@ Common raw files:
 - `tv_{id}_watch_providers.json`
 - `tv_{id}_content_ratings.json`
 
-### Step 11: Import availability and certification
+### Step 12: Import availability and certification
 
 ```bash
 python3 analytics/scripts/import_availability_certification_from_preview.py
@@ -398,7 +417,7 @@ It safely updates compact `content.age_rating` only when appropriate. The region
 
 The third command checks idempotency.
 
-### Step 12: Verification
+### Step 13: Verification
 
 Backend tests:
 
@@ -431,7 +450,7 @@ Manual frontend checks:
 - Discovery/search/filtering still works;
 - Recent sorting still works.
 
-### Step 13: SQL Verification
+### Step 14: SQL Verification
 
 Content count:
 
@@ -625,6 +644,10 @@ python3 analytics/scripts/import_content_metadata_from_preview.py
 python3 analytics/scripts/import_content_metadata_from_preview.py --apply
 python3 analytics/scripts/import_content_metadata_from_preview.py
 
+python3 analytics/scripts/import_content_ratings_from_preview.py
+python3 analytics/scripts/import_content_ratings_from_preview.py --apply
+python3 analytics/scripts/import_content_ratings_from_preview.py
+
 python3 analytics/scripts/build_tmdb_credits_preview.py
 
 python3 analytics/scripts/import_people_credits_from_preview.py
@@ -681,6 +704,7 @@ Debugging one title with `--source-id` does not replace the normal candidate -> 
 | `merge_ingestion_candidates.py` | Merge validated candidates into target config. | `--candidates`, `--targets`, `--priority`, `--apply` |
 | `fetch_tmdb_sample.py` | Fetch or reuse content metadata raw files and build content preview. | `--targets`, `--priority`, `--source-id`, `--title`, `--limit`, `--refresh` |
 | `import_content_metadata_from_preview.py` | Dry-run/apply normalized content metadata import. | `--preview`, `--apply` |
+| `import_content_ratings_from_preview.py` | Dry-run/apply TMDb ratings import from the content preview. | `--preview`, `--apply` |
 | `build_tmdb_credits_preview.py` | Build credits preview from current content preview and raw files. | No major CLI options. |
 | `import_people_credits_from_preview.py` | Dry-run/apply people and credits import. | `--apply` |
 | `fetch_tmdb_person_details.py` | Fetch or reuse person details for local TMDb people. | `--missing-only`, `--all`, `--source-person-id`, `--person-id`, `--name`, `--limit`, `--refresh` |

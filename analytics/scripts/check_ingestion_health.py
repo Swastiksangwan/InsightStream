@@ -375,6 +375,12 @@ def duplicate_query_definitions(table_columns: dict[str, set[str]]) -> dict[str,
             GROUP BY content_id, country_code, rating_system, source_name
             HAVING COUNT(*) > 1;
         """,
+        "content_ratings": """
+            SELECT content_id, rating_source_id, COUNT(*) AS duplicate_count
+            FROM content_ratings
+            GROUP BY content_id, rating_source_id
+            HAVING COUNT(*) > 1;
+        """,
     }
 
 
@@ -488,6 +494,17 @@ def read_database_snapshot(
             """,
         )
     }
+    rating_counts = {
+        row["content_id"]: row["total"]
+        for row in fetch_rows(
+            connection,
+            """
+            SELECT content_id, COUNT(*) AS total
+            FROM content_ratings
+            GROUP BY content_id;
+            """,
+        )
+    }
     series_metadata_rows: list[dict[str, Any]] = []
     if table_columns.get("content_series_metadata"):
         series_metadata_rows = fetch_rows(
@@ -523,6 +540,7 @@ def read_database_snapshot(
         "content_people_counts": content_people_counts,
         "availability_counts": availability_counts,
         "certification_counts": certification_counts,
+        "rating_counts": rating_counts,
         "series_metadata_by_content": {
             row["content_id"]: row for row in series_metadata_rows
         },
@@ -706,6 +724,7 @@ def check_metadata_completeness(
                 snapshot["certification_counts"].get(content_id, 0) == 0
                 and is_blank(content.get("age_rating")),
             ),
+            ("missing_ratings", snapshot["rating_counts"].get(content_id, 0) == 0),
         ]
         series_metadata = snapshot["series_metadata_by_content"].get(content_id)
         if content.get("content_type") == "series":
@@ -859,6 +878,83 @@ def series_lifecycle_summary(snapshot: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def ratings_summary(connection: Any) -> tuple[dict[str, Any], list[str], list[str]]:
+    warnings: list[str] = []
+    failures: list[str] = []
+    source_row = fetch_rows(
+        connection,
+        """
+        SELECT
+            COUNT(*) AS rating_sources_count,
+            COUNT(*) FILTER (WHERE source_name = 'tmdb') AS tmdb_source_count
+        FROM rating_sources;
+        """,
+    )[0]
+    ratings_row = fetch_rows(
+        connection,
+        """
+        SELECT
+            COUNT(*) AS total_content_ratings,
+            COUNT(*) FILTER (
+                WHERE normalized_score IS NOT NULL
+                  AND (normalized_score < 0 OR normalized_score > 100)
+            ) AS invalid_normalized_scores,
+            COUNT(*) FILTER (
+                WHERE raw_score_scale IS NOT NULL
+                  AND raw_score_scale <= 0
+            ) AS invalid_raw_score_scales,
+            COUNT(*) FILTER (
+                WHERE vote_count IS NOT NULL
+                  AND vote_count < 0
+            ) AS negative_vote_counts
+        FROM content_ratings;
+        """,
+    )[0]
+    coverage_row = fetch_rows(
+        connection,
+        """
+        SELECT
+            COUNT(DISTINCT c.id) AS provider_backed_content,
+            COUNT(DISTINCT cr.content_id) AS provider_backed_content_with_ratings
+        FROM content c
+        JOIN external_ids ei
+          ON ei.content_id = c.id
+         AND ei.source_name = 'tmdb'
+        LEFT JOIN content_ratings cr ON cr.content_id = c.id;
+        """,
+    )[0]
+
+    provider_backed_content = coverage_row["provider_backed_content"] or 0
+    provider_backed_with_ratings = (
+        coverage_row["provider_backed_content_with_ratings"] or 0
+    )
+    coverage_percentage = (
+        round(provider_backed_with_ratings / provider_backed_content * 100, 2)
+        if provider_backed_content
+        else 0
+    )
+
+    if source_row["tmdb_source_count"] == 0:
+        warnings.append("Ratings: TMDb rating source is missing.")
+    if ratings_row["invalid_normalized_scores"]:
+        failures.append("Ratings: invalid normalized_score values found.")
+    if ratings_row["invalid_raw_score_scales"]:
+        failures.append("Ratings: invalid raw_score_scale values found.")
+    if ratings_row["negative_vote_counts"]:
+        failures.append("Ratings: negative vote_count values found.")
+
+    return {
+        **source_row,
+        **ratings_row,
+        "provider_backed_content": provider_backed_content,
+        "provider_backed_content_with_ratings": provider_backed_with_ratings,
+        "rating_coverage_percentage": coverage_percentage,
+        "provider_backed_content_missing_ratings": (
+            provider_backed_content - provider_backed_with_ratings
+        ),
+    }, warnings, failures
+
+
 def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     generated_at = datetime.now(timezone.utc).isoformat()
     targets_path = resolve_path(args.targets)
@@ -878,6 +974,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     metadata_completeness: dict[str, Any] = {}
     person_summary: dict[str, Any] = {}
     series_summary: dict[str, Any] = {}
+    rating_summary: dict[str, Any] = {}
 
     try:
         raw_targets, _ = load_targets(targets_path)
@@ -908,6 +1005,8 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                         "content_availability",
                         "content_certifications",
                         "content_series_metadata",
+                        "rating_sources",
+                        "content_ratings",
                     ]
                 }
                 missing_required_tables = [
@@ -943,6 +1042,20 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
 
                 person_summary = person_detail_summary(connection)
                 series_summary = series_lifecycle_summary(snapshot)
+                rating_summary, rating_warnings, rating_failures = ratings_summary(
+                    connection
+                )
+                if args.strict and rating_summary.get("tmdb_source_count", 0) == 0:
+                    rating_failures.append(
+                        "Ratings: strict mode requires the TMDb rating source."
+                    )
+                    rating_warnings = [
+                        warning
+                        for warning in rating_warnings
+                        if "TMDb rating source is missing" not in warning
+                    ]
+                warnings.extend(rating_warnings)
+                failures.extend(rating_failures)
         except SQLAlchemyError as exc:
             failures.append(f"Database health check failed: {exc}")
 
@@ -959,6 +1072,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "metadata_completeness": metadata_completeness,
         "person_detail_summary": person_summary,
         "series_lifecycle_summary": series_summary,
+        "ratings_summary": rating_summary,
         "warnings": warnings,
         "failures": failures,
         "status": status,
@@ -976,6 +1090,7 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
     metadata = report.get("metadata_completeness") or {}
     person = report.get("person_detail_summary") or {}
     series = report.get("series_lifecycle_summary") or {}
+    ratings = report.get("ratings_summary") or {}
     duplicate_checks = report.get("duplicate_checks") or {}
     duplicate_failures = [
         name for name, result in duplicate_checks.items() if result.get("status") != "passed"
@@ -1018,6 +1133,12 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
         f"{series.get('total_series', 0)} with summary, "
         f"{series.get('series_with_announced_or_upcoming_seasons', 0)} with announced/upcoming seasons, "
         f"{series.get('series_with_unknown_season_summary', 0)} unknown"
+    )
+    print(
+        "Ratings: "
+        f"{ratings.get('total_content_ratings', 0)} rows, "
+        f"TMDb source {'present' if ratings.get('tmdb_source_count', 0) else 'missing'}, "
+        f"{ratings.get('rating_coverage_percentage', 0)}% provider-backed coverage"
     )
     print(f"Warnings: {len(report.get('warnings') or [])}")
     print(f"Failures: {len(report.get('failures') or [])}")

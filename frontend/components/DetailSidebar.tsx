@@ -4,7 +4,7 @@ import { SeriesInfoPanel } from "@/components/SeriesInfoPanel";
 import { WatchActionButtons } from "@/components/WatchActionButtons";
 import type {
   PlatformAvailability,
-  Rating,
+  RatingsResponse,
   SeriesMetadata,
   WatchStatus,
 } from "@/types/content";
@@ -14,7 +14,7 @@ type DetailSidebarProps = {
   initialStatus: WatchStatus;
   initialMessage?: string;
   platforms: PlatformAvailability[];
-  ratings: Rating[];
+  ratings: RatingsResponse;
   seriesMetadata?: SeriesMetadata | null;
 };
 

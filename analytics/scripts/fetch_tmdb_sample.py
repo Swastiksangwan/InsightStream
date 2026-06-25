@@ -552,6 +552,61 @@ def build_series_metadata(
     return metadata
 
 
+def format_rating_count_label(vote_count: int | None) -> str | None:
+    if vote_count is None:
+        return None
+    return f"{vote_count:,} votes"
+
+
+def build_tmdb_rating_preview(
+    details: dict[str, Any],
+    notes: list[str],
+) -> list[dict[str, Any]]:
+    vote_average = details.get("vote_average")
+    vote_count = details.get("vote_count")
+
+    if vote_average is None:
+        notes.append("Missing vote_average; TMDb rating skipped.")
+        return []
+
+    if not isinstance(vote_average, (int, float)):
+        notes.append("Invalid vote_average; TMDb rating skipped.")
+        return []
+
+    if vote_average < 0 or vote_average > 10:
+        notes.append(
+            "vote_average outside expected 0-10 range; normalized score was clamped."
+        )
+
+    cleaned_vote_count = None
+    if vote_count is None:
+        notes.append("Missing vote_count; TMDb rating vote_count preserved as null.")
+    elif isinstance(vote_count, int) and vote_count >= 0:
+        cleaned_vote_count = vote_count
+    else:
+        notes.append("Invalid vote_count; TMDb rating vote_count preserved as null.")
+
+    normalized_score = max(0, min(100, float(vote_average) * 10))
+
+    return [
+        {
+            "source_name": "tmdb",
+            "display_name": "TMDb",
+            "source_category": "audience",
+            "raw_score": float(vote_average),
+            "raw_score_scale": 10,
+            "normalized_score": round(normalized_score, 2),
+            "vote_count": cleaned_vote_count,
+            "rating_count_label": format_rating_count_label(cleaned_vote_count),
+            "rating_url": None,
+            "source_payload": {
+                "vote_average": vote_average,
+                "vote_count": vote_count,
+            },
+        }
+    ]
+
+
 def choose_image_size(
     available_sizes: list[str],
     preferred_size: str,
@@ -684,6 +739,7 @@ def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[st
         "genres": [],
         "vote_average": None,
         "vote_count": None,
+        "ratings": [],
         "popularity": None,
         "imdb_id": None,
         "top_cast_names": [],
@@ -866,6 +922,7 @@ def map_common_preview_fields(
         "genres": genre_names,
         "vote_average": details.get("vote_average"),
         "vote_count": details.get("vote_count"),
+        "ratings": build_tmdb_rating_preview(details, notes),
         "popularity": details.get("popularity"),
         "imdb_id": external_ids.get("imdb_id"),
         "top_cast_names": top_cast_names(credits),
@@ -1054,6 +1111,7 @@ def print_preview_totals(
     total_with_poster = sum(1 for item in items if item.get("poster_url"))
     total_with_backdrop = sum(1 for item in items if item.get("backdrop_url"))
     total_with_imdb = sum(1 for item in items if item.get("imdb_id"))
+    total_with_tmdb_rating = sum(1 for item in items if item.get("ratings"))
     total_with_notes = sum(1 for item in items if item.get("mapping_notes"))
 
     print("\nPreview totals:")
@@ -1064,6 +1122,7 @@ def print_preview_totals(
     print(f"- Total with poster_url: {total_with_poster}")
     print(f"- Total with backdrop_url: {total_with_backdrop}")
     print(f"- Total with imdb_id: {total_with_imdb}")
+    print(f"- Total with TMDb rating preview: {total_with_tmdb_rating}")
     print(f"- Total with warnings/mapping_notes: {total_with_notes}")
 
 
@@ -1254,6 +1313,7 @@ def main(argv: list[str] | None = None) -> int:
         "targets_selected": len(selected_samples),
         "targets_processed": targets_processed,
         "targets_skipped": total_skipped,
+        "ratings_preview_count": sum(1 for item in mapped_items if item.get("ratings")),
         "raw_files_fetched": raw_files_fetched,
         "raw_files_reused": raw_files_reused,
         "warnings": run_warnings,

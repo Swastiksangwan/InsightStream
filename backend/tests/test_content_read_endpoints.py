@@ -194,6 +194,48 @@ def has_region_aware_availability(db_session, content_id):
     return row["total"] > 0
 
 
+def first_content_with_imported_rating(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT
+                c.id,
+                c.title,
+                rs.source_name,
+                rs.display_name,
+                cr.raw_score,
+                cr.raw_score_scale,
+                cr.normalized_score,
+                cr.vote_count
+            FROM content_ratings cr
+            JOIN content c ON c.id = cr.content_id
+            JOIN rating_sources rs ON rs.id = cr.rating_source_id
+            WHERE rs.is_active = TRUE
+            ORDER BY c.id ASC, rs.source_name ASC
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
+def first_content_without_imported_rating(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT c.id, c.title
+            FROM content c
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM content_ratings cr
+                WHERE cr.content_id = c.id
+            )
+            ORDER BY c.id ASC
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
 def first_in_certification_conflict(db_session):
     return db_session.execute(
         text(
@@ -553,9 +595,46 @@ def test_get_content_details_for_seeded_title(client, content_id_by_title):
     assert data["content"]["title"] == "Interstellar"
     assert data["genres"]
     assert data["platforms"]
-    assert data["ratings"]
+    assert data["ratings"]["source_count"] == len(data["ratings"]["sources"])
+    assert "unified_score" in data["ratings"]
     assert data["summary"] is not None
     assert data["series_metadata"] is None
+
+
+def test_content_details_include_imported_ratings_when_available(client, db_session):
+    row = first_content_with_imported_rating(db_session)
+    if row is None:
+        pytest.skip("No imported content ratings exist in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["content"]["title"] == row["title"]
+    assert data["ratings"]["source_count"] >= 1
+    assert data["ratings"]["sources"]
+
+    source = data["ratings"]["sources"][0]
+    assert source["source_name"] == row["source_name"]
+    assert source["display_name"] == row["display_name"]
+    assert source["normalized_score"] is not None
+    assert data["ratings"]["unified_score"] is not None
+
+
+def test_content_details_return_empty_ratings_shape_when_missing(client, db_session):
+    row = first_content_without_imported_rating(db_session)
+    if row is None:
+        pytest.skip("All content has imported ratings in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["ratings"] == {
+        "unified_score": None,
+        "source_count": 0,
+        "sources": [],
+    }
 
 
 def test_content_details_include_series_metadata_when_imported(client, db_session):

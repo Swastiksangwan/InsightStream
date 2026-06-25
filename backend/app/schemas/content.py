@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List, Optional
-from datetime import date 
+from datetime import date, datetime
 
 # Content
 class Content(BaseModel):
@@ -39,13 +39,23 @@ class Platform(BaseModel):
 
 
 # Rating
-class Rating(BaseModel):
-    platform: str
-    original_score: float
-    original_scale: float
-    normalized_score: float
-    rating_count: Optional[int]
-    reviewer_group: Optional[str]
+class RatingSourceItem(BaseModel):
+    source_name: str
+    display_name: str
+    source_category: str
+    raw_score: Optional[float] = None
+    raw_score_scale: Optional[float] = None
+    normalized_score: Optional[float] = None
+    vote_count: Optional[int] = None
+    rating_count_label: Optional[str] = None
+    rating_url: Optional[str] = None
+    fetched_at: Optional[datetime] = None
+
+
+class RatingsResponse(BaseModel):
+    unified_score: Optional[int] = None
+    source_count: int
+    sources: List[RatingSourceItem]
 
 
 # Summary
@@ -123,6 +133,6 @@ class ContentDetailsResponse(BaseModel):
     content: Content
     genres: List[str]
     platforms: List[Platform]
-    ratings: List[Rating]
+    ratings: RatingsResponse
     series_metadata: Optional[SeriesMetadata] = None
     summary: Optional[Summary] = None

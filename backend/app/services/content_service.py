@@ -838,6 +838,89 @@ def get_content_credits_service(content_id: int, db: Session):
     return grouped_credits
 
 
+def numeric_or_none(value):
+    if value is None:
+        return None
+    return float(value)
+
+
+def get_empty_ratings_response():
+    return {
+        "unified_score": None,
+        "source_count": 0,
+        "sources": [],
+    }
+
+
+def get_detail_ratings(db: Session, content_id: int):
+    ratings_query = text("""
+        SELECT
+            rs.source_name,
+            rs.display_name,
+            rs.source_category,
+            rs.weight,
+            cr.raw_score,
+            cr.raw_score_scale,
+            cr.normalized_score,
+            cr.vote_count,
+            cr.rating_count_label,
+            cr.rating_url,
+            cr.fetched_at
+        FROM content_ratings cr
+        JOIN rating_sources rs ON rs.id = cr.rating_source_id
+        WHERE cr.content_id = :content_id
+          AND rs.is_active = TRUE
+        ORDER BY
+            CASE rs.source_category
+                WHEN 'audience' THEN 1
+                WHEN 'critic' THEN 2
+                WHEN 'theatrical' THEN 3
+                WHEN 'internal' THEN 4
+                ELSE 5
+            END,
+            rs.display_name ASC;
+    """)
+    ratings_rows = db.execute(ratings_query, {"content_id": content_id}).mappings().all()
+
+    if not ratings_rows:
+        return get_empty_ratings_response()
+
+    sources = []
+    weighted_total = 0.0
+    weight_total = 0.0
+
+    for row in ratings_rows:
+        normalized_score = numeric_or_none(row["normalized_score"])
+        weight = numeric_or_none(row["weight"]) or 0
+
+        if normalized_score is not None and weight > 0:
+            weighted_total += normalized_score * weight
+            weight_total += weight
+
+        sources.append(
+            {
+                "source_name": row["source_name"],
+                "display_name": row["display_name"],
+                "source_category": row["source_category"],
+                "raw_score": numeric_or_none(row["raw_score"]),
+                "raw_score_scale": numeric_or_none(row["raw_score_scale"]),
+                "normalized_score": normalized_score,
+                "vote_count": row["vote_count"],
+                "rating_count_label": row["rating_count_label"],
+                "rating_url": row["rating_url"],
+                "fetched_at": row["fetched_at"],
+            }
+        )
+
+    unified_score = round(weighted_total / weight_total) if weight_total else None
+
+    return {
+        "unified_score": unified_score,
+        "source_count": len(sources),
+        "sources": sources,
+    }
+
+
 def get_content_details_service(content_id: int, db: Session):
     content_query = text(f"""
         SELECT
@@ -877,29 +960,7 @@ def get_content_details_service(content_id: int, db: Session):
 
     platforms = get_detail_platforms(db, content_id)
 
-    ratings_query = text("""
-        SELECT
-            p.name AS platform,
-            r.original_score,
-            r.original_scale,
-            r.normalized_score,
-            r.rating_count,
-            r.reviewer_group
-        FROM ratings r
-        JOIN platforms p ON r.platform_id = p.id
-        WHERE r.content_id = :content_id
-        ORDER BY
-            CASE r.reviewer_group
-                WHEN 'critic' THEN 1
-                WHEN 'audience' THEN 2
-                WHEN 'general' THEN 3
-                ELSE 4
-            END,
-            p.name;
-    """)
-    ratings_result = db.execute(ratings_query, {"content_id": content_id})
-    ratings_rows = ratings_result.mappings().all()
-    ratings = [dict(row) for row in ratings_rows]
+    ratings = get_detail_ratings(db, content_id)
 
     summary_query = text("""
         SELECT

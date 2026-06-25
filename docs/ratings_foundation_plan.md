@@ -26,6 +26,19 @@ Out of scope for this phase:
 
 Ratings should be useful decision support, not a cluttered scoreboard.
 
+## Implementation Status
+
+Ratings Foundation v1 implements TMDb ratings only. The implementation path is:
+
+- `rating_sources`
+- `content_ratings`
+- TMDb `vote_average` / `vote_count` in `sample_mapping_preview.json`
+- `analytics/scripts/import_content_ratings_from_preview.py`
+- content detail API ratings object
+- frontend Ratings card with InsightStream Score and source breakdown
+
+IMDb, Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, AI verdicts, and recommendations remain future phases.
+
 ## 2. Rating Source Strategy
 
 Not all rating sources are equivalent. InsightStream should separate sources by category and source quality instead of flattening every score into the same meaning.

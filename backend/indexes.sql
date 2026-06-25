@@ -198,6 +198,22 @@ ON content_series_metadata (next_season_air_date);
 -- Ratings indexes
 -- ------------------------------------------------------------
 
+-- Speeds up fetching provider-neutral ratings for content details.
+CREATE INDEX IF NOT EXISTS idx_content_ratings_content_id
+ON content_ratings (content_id);
+
+-- Speeds up joining content ratings to rating sources.
+CREATE INDEX IF NOT EXISTS idx_content_ratings_rating_source_id
+ON content_ratings (rating_source_id);
+
+-- Speeds up source-specific rating reporting and future sorting.
+CREATE INDEX IF NOT EXISTS idx_content_ratings_source_normalized_score
+ON content_ratings (rating_source_id, normalized_score);
+
+-- Speeds up rating source lookup by provider-neutral source key.
+CREATE INDEX IF NOT EXISTS idx_rating_sources_source_name
+ON rating_sources (source_name);
+
 -- Speeds up fetching ratings for content details.
 CREATE INDEX IF NOT EXISTS idx_ratings_content_id
 ON ratings (content_id);
