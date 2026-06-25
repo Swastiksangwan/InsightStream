@@ -23,6 +23,12 @@ This is not a replacement for:
 
 The v1 goal is decision support using structured data already stored in InsightStream.
 
+## Implementation Status
+
+Insight Summary v1 is implemented as a deterministic backend summary builder. It computes the `insight_summary` response dynamically from existing local content detail data, including metadata, ratings, availability, credits, and series lifecycle fields.
+
+No summary table is used in v1. Reviews, LLM-generated summaries, critic analysis, user opinions, recommendations, and external live calls remain out of scope.
+
 ## 2. Product Positioning
 
 The Insight Summary should be:
@@ -506,20 +512,19 @@ Possible future phases:
 
 These are not part of v1.
 
-## 15. Recommended Next Implementation Task
+## 15. Recommended Follow-Up Task
 
-Recommended next task:
+Recommended follow-up task:
 
 ```text
-Implement deterministic Insight Summary v1
+Review and tune deterministic Insight Summary rules
 ```
 
 Suggested scope:
 
-- add backend summary builder
-- add `insight_summary` field to the content detail API
-- generate summary dynamically from existing metadata
-- update frontend Insight Summary card
-- add backend tests
+- manually review generated summaries across movies and series
+- tune genre phrasing and best-for chip rules where needed
+- verify sparse titles remain neutral and minimal
+- keep the implementation deterministic and local-data-only
 - run frontend build
-- do not add a database schema change in v1
+- do not add a database schema change unless summaries become curated or generated

@@ -701,6 +701,10 @@ def test_get_content_details_for_seeded_title(client, content_id_by_title):
     assert data["platforms"]
     assert data["ratings"]["source_count"] == len(data["ratings"]["sources"])
     assert "unified_score" in data["ratings"]
+    assert data["insight_summary"]["confidence"] in {"low", "medium", "high"}
+    assert isinstance(data["insight_summary"]["best_for"], list)
+    assert isinstance(data["insight_summary"]["key_signals"], list)
+    assert isinstance(data["insight_summary"]["generated_from"], list)
     assert data["summary"] is not None
     assert data["series_metadata"] is None
 

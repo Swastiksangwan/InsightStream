@@ -124,7 +124,7 @@ export default async function ContentDetailPage({ params }: ContentDetailPagePro
 
           <div className="detail-main-column detail-main-column--supporting">
             <CreditsSection credits={credits} />
-            <SummaryPanel summary={details.summary} />
+            <SummaryPanel summary={details.insight_summary} />
           </div>
         </section>
       </main>

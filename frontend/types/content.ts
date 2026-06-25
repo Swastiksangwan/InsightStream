@@ -104,12 +104,28 @@ export type Summary = {
   verdict?: string | null;
 };
 
+export type InsightSummarySignal = {
+  label: string;
+  value: string;
+};
+
+export type InsightSummary = {
+  headline?: string | null;
+  summary?: string | null;
+  best_for: string[];
+  key_signals: InsightSummarySignal[];
+  watch_note?: string | null;
+  generated_from: string[];
+  confidence: "low" | "medium" | "high" | string;
+};
+
 export type ContentDetailsResponse = {
   content: Content;
   genres: string[];
   platforms: PlatformAvailability[];
   ratings: RatingsResponse;
   series_metadata?: SeriesMetadata | null;
+  insight_summary: InsightSummary;
   summary?: Summary | null;
 };
 

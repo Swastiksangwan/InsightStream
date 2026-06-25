@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
+from app.services.insight_summary_service import build_insight_summary
+
 
 CONTENT_SELECT_FIELDS = """
     c.id,
@@ -969,6 +971,7 @@ def get_content_details_service(content_id: int, db: Session):
     platforms = get_detail_platforms(db, content_id)
 
     ratings = get_detail_ratings(db, content_id)
+    credits = get_content_credits_service(content_id, db)
 
     summary_query = text("""
         SELECT
@@ -997,11 +1000,23 @@ def get_content_details_service(content_id: int, db: Session):
             "verdict": summary_row["verdict"],
         }
 
+    insight_summary = build_insight_summary(
+        {
+            "content": content,
+            "genres": genres,
+            "platforms": platforms,
+            "ratings": ratings,
+            "series_metadata": series_metadata,
+            "credits": credits,
+        }
+    )
+
     return {
         "content": content,
         "genres": genres,
         "platforms": platforms,
         "ratings": ratings,
         "series_metadata": series_metadata,
+        "insight_summary": insight_summary,
         "summary": summary
     }

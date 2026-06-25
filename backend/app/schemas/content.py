@@ -69,6 +69,21 @@ class Summary(BaseModel):
     verdict: Optional[str]
 
 
+class InsightSummarySignal(BaseModel):
+    label: str
+    value: str
+
+
+class InsightSummary(BaseModel):
+    headline: Optional[str] = None
+    summary: Optional[str] = None
+    best_for: List[str]
+    key_signals: List[InsightSummarySignal]
+    watch_note: Optional[str] = None
+    generated_from: List[str]
+    confidence: str
+
+
 class SeriesMetadata(BaseModel):
     number_of_seasons: Optional[int] = None
     number_of_episodes: Optional[int] = None
@@ -135,4 +150,5 @@ class ContentDetailsResponse(BaseModel):
     platforms: List[Platform]
     ratings: RatingsResponse
     series_metadata: Optional[SeriesMetadata] = None
+    insight_summary: InsightSummary
     summary: Optional[Summary] = None
