@@ -37,6 +37,11 @@ Ratings Foundation v1 implements TMDb ratings only. The implementation path is:
 - content detail API ratings object
 - frontend Ratings card with InsightStream Score and source breakdown
 
+Ratings v1 displays available source ratings even when vote counts are low,
+but the unified InsightStream Score only includes sources with at least 50 votes.
+Low-vote or unknown-vote sources remain visible as source ratings without
+contributing to the unified score.
+
 IMDb, Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, AI verdicts, and recommendations remain future phases.
 
 ## 2. Rating Source Strategy
@@ -170,7 +175,8 @@ For v1, keep confidence simple:
 
 - store `vote_count`
 - display `vote_count` where available
-- optionally require a minimum vote threshold before including a source in the unified score later
+- require at least 50 votes before including a source in the unified score
+- continue displaying low-vote source ratings even when they do not contribute to the unified score
 
 Example:
 

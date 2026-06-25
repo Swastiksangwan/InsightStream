@@ -46,6 +46,18 @@ function formatRawRating(source: RatingSourceItem) {
   return `${rawScore}/${rawScale}`;
 }
 
+function getInsightCopy(ratings: RatingsResponse) {
+  if (ratings.unified_score === null || ratings.unified_score === undefined) {
+    return "Source ratings available, but not enough votes for an InsightStream Score yet.";
+  }
+
+  if (ratings.source_count === 1) {
+    return "Based on the available TMDb audience rating.";
+  }
+
+  return "Weighted from available trusted rating sources.";
+}
+
 export function RatingList({ ratings }: RatingListProps) {
   const sources = ratings?.sources ?? [];
 
@@ -77,7 +89,7 @@ export function RatingList({ ratings }: RatingListProps) {
 
           <strong>{ratings.unified_score ?? "--"}</strong>
 
-          <p>Weighted from available trusted rating sources.</p>
+          <p>{getInsightCopy(ratings)}</p>
         </article>
 
         {sources.map((source) => {

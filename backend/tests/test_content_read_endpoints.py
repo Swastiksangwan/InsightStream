@@ -3,10 +3,54 @@ from urllib.parse import quote
 import pytest
 from sqlalchemy import text
 
+from app.services.content_service import (
+    MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
+    get_detail_ratings,
+)
+
 
 MIN_SEED_TOTAL = 15
 MIN_SEED_MOVIE_TOTAL = 8
 MIN_SEED_SERIES_TOTAL = 7
+
+
+class FakeRatingsResult:
+    def __init__(self, rows):
+        self.rows = rows
+
+    def mappings(self):
+        return self
+
+    def all(self):
+        return self.rows
+
+
+class FakeRatingsDb:
+    def __init__(self, rows):
+        self.rows = rows
+
+    def execute(self, _query, _params):
+        return FakeRatingsResult(self.rows)
+
+
+def fake_rating_row(
+    normalized_score=84,
+    vote_count=MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
+):
+    raw_score = normalized_score / 10 if normalized_score is not None else None
+    return {
+        "source_name": "tmdb",
+        "display_name": "TMDb",
+        "source_category": "audience",
+        "weight": 1,
+        "raw_score": raw_score,
+        "raw_score_scale": 10,
+        "normalized_score": normalized_score,
+        "vote_count": vote_count,
+        "rating_count_label": None,
+        "rating_url": None,
+        "fetched_at": None,
+    }
 
 
 def titles_from_items(response_json):
@@ -585,6 +629,66 @@ def test_get_content_by_platform_uses_region_aware_availability(
     assert all(item["id"] in expected_ids for item in data["items"])
 
 
+def test_detail_ratings_high_vote_source_returns_unified_score():
+    ratings = get_detail_ratings(
+        FakeRatingsDb([
+            fake_rating_row(
+                normalized_score=86,
+                vote_count=MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
+            )
+        ]),
+        content_id=1,
+    )
+
+    assert ratings["unified_score"] == 86
+    assert ratings["source_count"] == 1
+    assert ratings["sources"][0]["source_name"] == "tmdb"
+    assert (
+        ratings["sources"][0]["vote_count"]
+        == MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE
+    )
+
+
+def test_detail_ratings_low_vote_source_keeps_source_without_unified_score():
+    ratings = get_detail_ratings(
+        FakeRatingsDb([
+            fake_rating_row(
+                normalized_score=91,
+                vote_count=MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE - 1,
+            )
+        ]),
+        content_id=1,
+    )
+
+    assert ratings["unified_score"] is None
+    assert ratings["source_count"] == 1
+    assert ratings["sources"][0]["normalized_score"] == 91
+    assert (
+        ratings["sources"][0]["vote_count"]
+        == MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE - 1
+    )
+
+
+def test_detail_ratings_null_vote_count_source_keeps_source_without_unified_score():
+    ratings = get_detail_ratings(
+        FakeRatingsDb([fake_rating_row(normalized_score=78, vote_count=None)]),
+        content_id=1,
+    )
+
+    assert ratings["unified_score"] is None
+    assert ratings["source_count"] == 1
+    assert ratings["sources"][0]["normalized_score"] == 78
+    assert ratings["sources"][0]["vote_count"] is None
+
+
+def test_detail_ratings_empty_rows_return_stable_empty_shape():
+    assert get_detail_ratings(FakeRatingsDb([]), content_id=1) == {
+        "unified_score": None,
+        "source_count": 0,
+        "sources": [],
+    }
+
+
 def test_get_content_details_for_seeded_title(client, content_id_by_title):
     content_id = content_id_by_title("Interstellar")
 
@@ -618,7 +722,13 @@ def test_content_details_include_imported_ratings_when_available(client, db_sess
     assert source["source_name"] == row["source_name"]
     assert source["display_name"] == row["display_name"]
     assert source["normalized_score"] is not None
-    assert data["ratings"]["unified_score"] is not None
+    if (
+        row["vote_count"] is not None
+        and row["vote_count"] >= MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE
+    ):
+        assert data["ratings"]["unified_score"] is not None
+    else:
+        assert data["ratings"]["unified_score"] is None
 
 
 def test_content_details_return_empty_ratings_shape_when_missing(client, db_session):

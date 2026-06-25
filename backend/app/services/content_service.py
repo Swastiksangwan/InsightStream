@@ -844,6 +844,9 @@ def numeric_or_none(value):
     return float(value)
 
 
+MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE = 50
+
+
 def get_empty_ratings_response():
     return {
         "unified_score": None,
@@ -892,8 +895,13 @@ def get_detail_ratings(db: Session, content_id: int):
     for row in ratings_rows:
         normalized_score = numeric_or_none(row["normalized_score"])
         weight = numeric_or_none(row["weight"]) or 0
+        vote_count = row["vote_count"]
+        has_unified_score_confidence = (
+            vote_count is not None
+            and vote_count >= MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE
+        )
 
-        if normalized_score is not None and weight > 0:
+        if normalized_score is not None and weight > 0 and has_unified_score_confidence:
             weighted_total += normalized_score * weight
             weight_total += weight
 
@@ -905,7 +913,7 @@ def get_detail_ratings(db: Session, content_id: int):
                 "raw_score": numeric_or_none(row["raw_score"]),
                 "raw_score_scale": numeric_or_none(row["raw_score_scale"]),
                 "normalized_score": normalized_score,
-                "vote_count": row["vote_count"],
+                "vote_count": vote_count,
                 "rating_count_label": row["rating_count_label"],
                 "rating_url": row["rating_url"],
                 "fetched_at": row["fetched_at"],
