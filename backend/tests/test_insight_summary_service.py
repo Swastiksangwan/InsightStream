@@ -115,6 +115,13 @@ def assert_no_unsupported_marketing(summary):
         assert phrase not in text
 
 
+def assert_clean_chips(summary):
+    for chip in summary["best_for"]:
+        assert " And " not in chip
+        assert ", and" not in chip
+        assert len(chip) <= 36
+
+
 def test_movie_with_rich_metadata_gets_non_empty_insight_summary():
     summary = build_insight_summary(
         {
@@ -130,8 +137,15 @@ def test_movie_with_rich_metadata_gets_non_empty_insight_summary():
     assert summary["headline"]
     assert summary["summary"]
     assert 2 <= len(summary["best_for"]) <= 4
-    assert {"Rating", "Availability", "Runtime", "Director"} <= labels(summary)
+    assert {
+        "Audience signal",
+        "Access",
+        "Runtime commitment",
+        "Creative signal",
+    } <= labels(summary)
+    assert "long-watch session" in summary["watch_note"]
     assert summary["confidence"] == "high"
+    assert_clean_chips(summary)
     assert_no_unsupported_marketing(summary)
 
 
@@ -158,12 +172,16 @@ def test_ongoing_series_gets_series_aware_signals():
     assert summary["headline"]
     assert "ongoing" in combined_text(summary)
     assert {
-        "Series status",
-        "Released seasons",
-        "Next episode",
-        "Creator",
+        "Audience signal",
+        "Access",
+        "Viewing commitment",
+        "Series timing",
+        "Creative signal",
     } <= labels(summary)
-    assert "Ongoing series viewers" in summary["best_for"]
+    assert "Ongoing release followers" in summary["best_for"]
+    assert "Start now" in summary["watch_note"]
+    assert "wait if you prefer completed seasons" in summary["watch_note"]
+    assert_clean_chips(summary)
     assert_no_unsupported_marketing(summary)
 
 
@@ -185,9 +203,10 @@ def test_ended_series_avoids_upcoming_signals_when_missing():
     )
 
     assert "completed" in combined_text(summary)
-    assert "Next season" not in labels(summary)
-    assert "Next episode" not in labels(summary)
+    assert "Completion status" in labels(summary)
+    assert "Series timing" not in labels(summary)
     assert "upcoming" not in combined_text(summary)
+    assert "no weekly release wait" in summary["watch_note"]
 
 
 def test_no_rating_content_does_not_claim_rating_strength():
@@ -202,10 +221,10 @@ def test_no_rating_content_does_not_claim_rating_strength():
         }
     )
 
-    assert "Rating" not in labels(summary)
+    assert "Audience signal" not in labels(summary)
     text = combined_text(summary)
     assert "high-rated" not in text
-    assert "well-rated" not in text
+    assert "strong audience" not in text
     assert "mixed-to-positive" not in text
 
 
@@ -221,8 +240,29 @@ def test_no_availability_content_does_not_claim_availability():
         }
     )
 
-    assert "Availability" not in labels(summary)
+    assert "Access" not in labels(summary)
     assert "availability" not in combined_text(summary)
+
+
+def test_rent_buy_movie_mentions_rent_buy_watch_guidance():
+    summary = build_insight_summary(
+        {
+            "content": base_content(runtime=110),
+            "genres": ["Drama"],
+            "platforms": availability("rent"),
+            "ratings": ratings(76),
+            "series_metadata": None,
+            "credits": credits(director="Example Director"),
+        }
+    )
+
+    assert "Access" in labels(summary)
+    assert any(
+        signal["label"] == "Access" and "Rent/buy" in signal["value"]
+        for signal in summary["key_signals"]
+    )
+    assert summary["watch_note"]
+    assert "renting or buying" in summary["watch_note"]
 
 
 def test_no_crew_content_does_not_claim_director_or_creator():
@@ -237,8 +277,7 @@ def test_no_crew_content_does_not_claim_director_or_creator():
         }
     )
 
-    assert "Director" not in labels(summary)
-    assert "Creator" not in labels(summary)
+    assert "Creative signal" not in labels(summary)
     assert "fans" not in combined_text(summary)
 
 

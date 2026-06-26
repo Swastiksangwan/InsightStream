@@ -27,6 +27,8 @@ The v1 goal is decision support using structured data already stored in InsightS
 
 Insight Summary v1 is implemented as a deterministic backend summary builder. It computes the `insight_summary` response dynamically from existing local content detail data, including metadata, ratings, availability, credits, and series lifecycle fields.
 
+Insight Summary v1.1 improves the wording from metadata recap to decision support. It favors decision-oriented headlines, interpreted key signals such as `Audience signal`, `Access`, and `Viewing commitment`, compact best-for chips, and one-sentence watch notes that help users decide whether to stream now, rent/buy, catch up before a new season, follow an active release, or wait for completion.
+
 No summary table is used in v1. Reviews, LLM-generated summaries, critic analysis, user opinions, recommendations, and external live calls remain out of scope.
 
 ## 2. Product Positioning

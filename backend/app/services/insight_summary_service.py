@@ -43,7 +43,14 @@ def unique_preserve_order(values):
 def title_case_phrase(value):
     if not has_text(value):
         return value
-    return " ".join(word.capitalize() for word in value.split())
+    return " ".join(word[:1].upper() + word[1:] for word in value.split())
+
+
+def lower_first(value):
+    if not has_text(value):
+        return value
+    stripped = value.strip()
+    return stripped[:1].lower() + stripped[1:]
 
 
 def article_for(phrase):
@@ -87,27 +94,52 @@ def format_status(status):
     return status_map.get(status.strip().lower(), status.strip().lower())
 
 
+def normalized_genre_tokens(genres):
+    tokens = []
+    for genre in unique_preserve_order(genres or []):
+        normalized = genre.lower().replace("&", "and").strip()
+        if normalized in {"sci-fi and fantasy", "science fiction and fantasy"}:
+            tokens.extend(["sci-fi", "fantasy"])
+        elif normalized in {"science fiction", "sci fi"}:
+            tokens.append("sci-fi")
+        elif normalized == "history":
+            tokens.append("history")
+        else:
+            tokens.append(normalized)
+    return unique_preserve_order(tokens)
+
+
 def readable_genre_label(genres):
-    selected = unique_preserve_order(genres or [])[:3]
-    if not selected:
+    tokens = normalized_genre_tokens(genres)
+    if not tokens:
         return None
 
-    normalized = {genre.lower() for genre in selected}
+    normalized = set(tokens)
 
     if {"drama", "history"} <= normalized:
         return "historical drama"
     if "animation" in normalized and ("action" in normalized or "adventure" in normalized):
         return "animated action-adventure"
+    if {"fantasy", "drama"} <= normalized:
+        return "fantasy-drama"
     if {"crime", "drama"} <= normalized:
         return "crime drama"
+    if {"mystery", "sci-fi"} <= normalized:
+        return "mystery sci-fi"
+    if {"horror", "mystery"} <= normalized:
+        return "mystery-horror"
+    if {"comedy", "drama"} <= normalized:
+        return "drama-comedy"
+    if {"action", "adventure", "drama"} <= normalized:
+        return "action-adventure drama"
+    if {"action", "adventure"} <= normalized:
+        return "action-adventure"
 
-    lowered = [genre.lower() for genre in selected]
-    if len(lowered) == 1:
-        return lowered[0]
-    if len(lowered) == 2:
-        return "-".join(lowered)
+    selected = tokens[:2]
+    if len(selected) == 1:
+        return selected[0]
 
-    return f"{', '.join(lowered[:-1])}, and {lowered[-1]}"
+    return " ".join(selected)
 
 
 def first_credit_name(credits, bucket_name, job_name=None):
@@ -138,12 +170,22 @@ def has_credit_data(credits):
     )
 
 
+def format_vote_count(vote_count):
+    if vote_count is None:
+        return None
+    try:
+        return f"{int(vote_count):,}"
+    except (TypeError, ValueError):
+        return None
+
+
 def rating_context(ratings):
     score = (ratings or {}).get("unified_score")
     if score is None:
         return {
             "score": None,
-            "descriptor": None,
+            "strength": None,
+            "headline_phrase": None,
             "signal": None,
             "summary_phrase": None,
         }
@@ -152,26 +194,66 @@ def rating_context(ratings):
     source_count = (ratings or {}).get("source_count") or len(sources)
     if source_count == 1 and sources:
         source = sources[0]
-        category = source.get("source_category") or "rating"
-        source_text = f"{source.get('display_name', 'source')} {category} rating"
+        source_name = source.get("display_name", "source")
+        vote_text = format_vote_count(source.get("vote_count"))
     else:
-        source_text = f"{source_count} rating sources"
+        source_name = f"{source_count} rating sources"
+        vote_text = None
 
     if score >= 80:
-        descriptor = "high-rated"
+        strength = "Strong"
+        headline_phrase = "strong audience score"
     elif score >= 70:
-        descriptor = "well-rated"
+        strength = "Positive"
+        headline_phrase = "positive audience signal"
     elif score >= 60:
-        descriptor = "mixed-to-positive"
+        strength = "Mixed-to-positive"
+        headline_phrase = "mixed-to-positive audience signal"
     else:
-        descriptor = "moderate rating signal"
+        strength = "Moderate"
+        headline_phrase = "moderate rating signal"
+
+    if vote_text and source_count == 1:
+        signal = f"{strength} — {score}/100 from {vote_text} {source_name} votes"
+    else:
+        signal = f"{strength} — {score}/100 from {source_name}"
 
     return {
         "score": score,
-        "descriptor": descriptor,
-        "signal": f"{score}/100 InsightStream Score from {source_text}",
-        "summary_phrase": f"{score}/100 InsightStream Score from {source_text}",
+        "strength": strength,
+        "headline_phrase": headline_phrase,
+        "signal": signal,
+        "summary_phrase": lower_first(headline_phrase),
     }
+
+
+def region_label(region_code):
+    return {
+        "IN": "India",
+        "US": "US",
+    }.get(region_code, region_code)
+
+
+def platform_names_for_types(platforms, availability_types):
+    names = []
+    normalized_types = set(availability_types)
+    for platform in platforms:
+        availability_type = str(platform.get("availability_type") or "").lower()
+        if availability_type not in normalized_types:
+            continue
+        if has_text(platform.get("name")):
+            names.append(platform["name"].strip())
+    return unique_preserve_order(names)
+
+
+def format_platform_names(names):
+    if not names:
+        return None
+    if len(names) == 1:
+        return names[0]
+    if len(names) == 2:
+        return f"{names[0]}, {names[1]}"
+    return f"{names[0]}, {names[1]} + more"
 
 
 def availability_context(platforms):
@@ -190,28 +272,47 @@ def availability_context(platforms):
         ),
         None,
     )
-    region_label = {
-        "IN": "India",
-        "US": "US",
-    }.get(region_code, region_code)
+    region = region_label(region_code)
+    suffix = f" in {region}" if region else ""
 
-    suffix = f" in {region_label}" if region_label else ""
     if "streaming" in types:
+        kind = "streaming"
+        names = platform_names_for_types(platforms, {"streaming"})
+        platform_text = format_platform_names(names)
         value = f"Streaming{suffix}"
-        summary_phrase = f"streaming availability{suffix}"
+        if platform_text:
+            value += f" on {platform_text}"
+        summary_phrase = f"{platform_text or 'streaming'} availability{suffix}"
     elif "rent" in types or "buy" in types:
+        kind = "rent_buy"
+        names = platform_names_for_types(platforms, {"rent", "buy"})
+        platform_text = format_platform_names(names)
         value = f"Rent/buy{suffix}"
+        if platform_text:
+            value += f" on {platform_text}"
         summary_phrase = f"rent/buy availability{suffix}"
     elif "free" in types or "ads" in types:
+        kind = "free_ads"
+        names = platform_names_for_types(platforms, {"free", "ads"})
+        platform_text = format_platform_names(names)
         value = f"Free/ad-supported{suffix}"
+        if platform_text:
+            value += f" on {platform_text}"
         summary_phrase = f"free or ad-supported availability{suffix}"
     else:
+        kind = "listed"
+        names = []
+        platform_text = None
         value = f"Availability listed{suffix}"
         summary_phrase = f"availability data{suffix}"
 
     return {
+        "kind": kind,
         "value": value,
         "summary_phrase": summary_phrase,
+        "platform_names": names,
+        "platform_text": platform_text,
+        "region": region,
     }
 
 
@@ -242,35 +343,85 @@ def compute_confidence(
 
 def build_movie_summary(content, genre_label, director, rating, availability):
     year = content.get("year")
+    runtime = content.get("runtime")
     subject = genre_label or "movie"
-    director_clause = f" from {director}" if director else ""
+    rating_phrase = rating["headline_phrase"]
+    has_rent_buy_access = availability and availability["kind"] == "rent_buy"
 
-    descriptor = rating["descriptor"]
-    if descriptor == "moderate rating signal":
-        headline = f"{sentence_case(subject)} with a moderate rating signal{director_clause}."
-    elif descriptor:
-        headline = f"{sentence_case(descriptor)} {subject}{director_clause}."
+    if runtime and runtime > 150 and rating_phrase:
+        headline = f"Long-form {subject} with {rating_phrase}."
+    elif has_rent_buy_access and rating_phrase:
+        headline = f"Rent/buy movie with {rating_phrase}."
+    elif rating_phrase and director:
+        headline = f"{sentence_case(subject)} with {rating_phrase} and a clear creative signal."
+    elif rating_phrase:
+        headline = f"{sentence_case(subject)} with {rating_phrase}."
+    elif runtime and runtime > 150:
+        headline = f"Long-form {subject} with local decision signals."
     else:
-        headline = f"{sentence_case(subject)}{director_clause}."
+        headline = f"{sentence_case(subject)} with local decision signals."
 
-    base_parts = []
+    identity_parts = []
+    if runtime and runtime > 150:
+        identity_parts.append("long")
     if year:
-        base_parts.append(str(year))
-    base_parts.append(subject)
-    base = f"{article_for(' '.join(base_parts))} {' '.join(base_parts)}{director_clause}"
+        identity_parts.append(str(year))
+    identity_parts.append(subject)
+    identity = " ".join(identity_parts)
+    base = f"{article_for(identity)} {identity}"
+    if director:
+        base += f" directed by {director}"
 
     support = []
     if rating["summary_phrase"]:
-        support.append(rating["summary_phrase"])
+        support.append(f"a {rating['summary_phrase']}")
     if availability:
         support.append(availability["summary_phrase"])
 
     summary = base
     if support:
-        summary += f", supported by {' and '.join(support)}"
+        summary += f" with {' and '.join(support)}"
     summary += "."
 
+    if runtime and runtime > 150:
+        summary += " It is better suited for a focused long-watch session than a quick casual watch."
+    elif has_rent_buy_access:
+        summary += " It is most useful if renting or buying fits your watch plan."
+
     return headline, summary
+
+
+def format_next_season(series_metadata):
+    next_season_number = (series_metadata or {}).get("next_season_number")
+    if not next_season_number:
+        return None
+
+    next_season = f"Season {next_season_number}"
+    next_season_date = format_date((series_metadata or {}).get("next_season_air_date"))
+    next_season_year = (series_metadata or {}).get("next_season_year")
+    if next_season_date:
+        return f"{next_season} dated {next_season_date}"
+    if next_season_year:
+        return f"{next_season} expected in {next_season_year}"
+    return f"{next_season} announced"
+
+
+def format_season_commitment(series_metadata):
+    if not series_metadata:
+        return None
+
+    released_seasons = series_metadata.get("released_seasons_count")
+    parts = []
+    if released_seasons is not None:
+        parts.append(
+            f"{released_seasons} released season{'s' if released_seasons != 1 else ''}"
+        )
+
+    next_season = format_next_season(series_metadata)
+    if next_season:
+        parts.append(next_season)
+
+    return ", ".join(parts) if parts else None
 
 
 def build_series_summary(
@@ -283,26 +434,38 @@ def build_series_summary(
 ):
     status_label = format_status((series_metadata or {}).get("series_status_normalized"))
     released_seasons = (series_metadata or {}).get("released_seasons_count")
-    subject_parts = []
-    if status_label:
-        subject_parts.append(status_label)
-    if genre_label:
-        subject_parts.append(genre_label)
-    subject_parts.append("series")
-    subject = " ".join(subject_parts)
-    creator_clause = f" from {creator}" if creator else ""
+    subject = f"{genre_label or 'series'} series"
+    rating_phrase = rating["headline_phrase"]
+    next_episode_date = format_date((series_metadata or {}).get("next_episode_air_date"))
+    next_season = format_next_season(series_metadata)
 
-    descriptor = rating["descriptor"]
-    if descriptor == "moderate rating signal":
-        headline = f"{sentence_case(subject)} with a moderate rating signal{creator_clause}."
-    elif descriptor:
-        headline = f"{sentence_case(descriptor)} {subject}{creator_clause}."
+    if status_label == "ongoing" and next_episode_date:
+        headline = f"Active {subject} with an upcoming episode date."
+    elif status_label == "ongoing" and rating_phrase:
+        headline = f"{sentence_case(rating_phrase)} for an ongoing {subject}."
+    elif status_label == "completed" and rating_phrase:
+        headline = f"Completed {subject} with {rating_phrase}."
+    elif status_label == "completed":
+        headline = f"Completed {subject} suited for binge viewing."
+    elif status_label == "upcoming":
+        headline = f"Upcoming {subject} with local decision signals."
+    elif rating_phrase:
+        headline = f"{sentence_case(subject)} with {rating_phrase}."
     else:
-        headline = f"{sentence_case(subject)}{creator_clause}."
+        headline = f"{sentence_case(subject)} with local decision signals."
 
-    base = f"{article_for(subject)} {subject}"
+    identity_parts = []
+    if status_label:
+        identity_parts.append(status_label)
+    identity_parts.append(subject)
+    identity = " ".join(identity_parts)
+    base = f"{article_for(identity)} {identity}"
     if released_seasons:
         base += f" with {released_seasons} released season{'s' if released_seasons != 1 else ''}"
+    if next_episode_date:
+        base += f" and a next episode dated {next_episode_date}"
+    elif next_season:
+        base += f" and {next_season}"
     if creator:
         base += f" from {creator}"
 
@@ -314,52 +477,105 @@ def build_series_summary(
 
     summary = base
     if support:
-        summary += f", supported by {' and '.join(support)}"
-    summary += "."
+        summary += f". Its {' and '.join(support)}"
+        if status_label == "completed":
+            summary += " make it better suited for a finished binge than an active weekly-release series"
+        elif status_label == "ongoing":
+            summary += " make it useful for viewers who want an active series rather than a completed binge"
+        else:
+            summary += " add local decision context"
+    else:
+        summary += "."
+
+    if not summary.endswith("."):
+        summary += "."
 
     return headline, summary
 
 
-def build_best_for(content_type, genre_label, director, creator, runtime, series_status):
+def best_genre_chip(content_type, genre_label, runtime=None, status_label=None):
+    if not genre_label:
+        return None
+
+    if content_type == "movie":
+        if runtime and runtime > 150:
+            return f"Long-form {genre_label}"
+        return title_case_phrase(genre_label)
+
+    if status_label == "ongoing":
+        return f"Serialized {genre_label}"
+    if status_label == "completed":
+        return f"{title_case_phrase(genre_label)} binge"
+
+    return title_case_phrase(genre_label)
+
+
+def access_chip(availability):
+    if not availability:
+        return None
+    names = availability.get("platform_names") or []
+    if availability["kind"] == "streaming" and names:
+        return f"{names[0]} viewers"
+    if availability["kind"] == "rent_buy":
+        return "Rent/buy viewers"
+    if availability["kind"] == "free_ads":
+        return "Free/ad-supported viewers"
+    return None
+
+
+def build_best_for(content_type, genre_label, runtime, series_status, rating, availability):
     best_for = []
-    if genre_label:
-        best_for.append(f"{title_case_phrase(genre_label)} viewers")
+    status_label = format_status(series_status)
+
+    genre_chip = best_genre_chip(content_type, genre_label, runtime, status_label)
+    if genre_chip:
+        best_for.append(genre_chip)
 
     if content_type == "series":
-        status_label = format_status(series_status)
         if status_label == "ongoing":
-            best_for.append("Ongoing series viewers")
+            best_for.append("Ongoing release followers")
         elif status_label == "completed":
-            best_for.append("Completed series viewers")
+            best_for.append("Completed-series binge")
         elif status_label == "upcoming":
             best_for.append("Upcoming series trackers")
-        if creator:
-            best_for.append(f"{creator} fans")
-    else:
-        if director:
-            best_for.append(f"{director} fans")
-        if runtime and runtime > 150:
-            best_for.append("Long-form films")
+
+    access = access_chip(availability)
+    if access:
+        best_for.append(access)
+
+    if rating["score"] is not None and rating["score"] >= 80:
+        best_for.append("High-rating audience signal")
 
     return unique_preserve_order(best_for)[:4]
 
 
-def build_watch_note(content_type, genre_label, runtime, series_metadata):
-    if content_type == "movie" and runtime and runtime > 150:
-        subject = genre_label or "movie"
-        return f"Best suited for viewers comfortable with a long {subject}."
+def build_watch_note(content_type, runtime, series_metadata, availability, confidence):
+    if content_type == "movie":
+        if runtime and runtime > 150:
+            return "Better for a focused long-watch session than a quick casual watch."
+        if availability and availability["kind"] == "rent_buy":
+            return "Useful if you are comfortable renting or buying; no streaming option is currently stored for India."
+        if confidence == "low":
+            return "Decision support is limited because ratings, availability, or credits are incomplete."
+        return None
 
     if content_type == "series" and series_metadata:
         status_label = format_status(series_metadata.get("series_status_normalized"))
-        if series_metadata.get("next_episode_air_date"):
-            return "Useful for viewers following an active series with a stored next episode date."
+        if status_label == "ongoing" and series_metadata.get("next_episode_air_date"):
+            return "Start now if you want to follow an active release; wait if you prefer completed seasons."
         if (
-            series_metadata.get("has_announced_season")
+            status_label == "ongoing"
+            and series_metadata.get("has_announced_season")
             and series_metadata.get("next_season_number")
         ):
-            return "Useful for viewers who want to know both released and announced season information."
+            return "Good for catching up before the next season; wait if you only watch completed shows."
+        if status_label == "ongoing":
+            return "Start now if you want an active series; wait if you prefer completed shows."
         if status_label == "completed":
-            return "Useful for viewers who prefer completed series."
+            return "Better suited for viewers who prefer a completed story with no weekly release wait."
+
+    if confidence == "low":
+        return "Decision support is limited because ratings, availability, or credits are incomplete."
 
     return None
 
@@ -427,65 +643,58 @@ def build_insight_summary(content_detail: dict) -> dict:
         add_generated_from(generated_from, "metadata")
 
     if rating["signal"]:
-        add_signal(key_signals, "Rating", rating["signal"])
+        add_signal(key_signals, "Audience signal", rating["signal"])
         add_generated_from(generated_from, "ratings")
 
     if availability:
-        add_signal(key_signals, "Availability", availability["value"])
+        add_signal(key_signals, "Access", availability["value"])
         add_generated_from(generated_from, "availability")
-
-    if content.get("age_rating"):
-        add_signal(key_signals, "Age rating", content["age_rating"])
-        add_generated_from(generated_from, "certification")
 
     if content_type == "movie":
         if runtime and runtime > 150:
-            add_signal(key_signals, "Runtime", "Long movie")
-        add_signal(key_signals, "Director", director)
+            add_signal(key_signals, "Runtime commitment", "Long movie")
+        if director:
+            add_signal(key_signals, "Creative signal", f"Directed by {director}")
     else:
         if series_metadata:
             add_generated_from(generated_from, "series_metadata")
         status_label = format_status(
             (series_metadata or {}).get("series_status_normalized")
         )
-        add_signal(
-            key_signals,
-            "Series status",
-            title_case_phrase(status_label) if status_label else None,
-        )
-        released_seasons = (series_metadata or {}).get("released_seasons_count")
-        if released_seasons is not None:
-            add_signal(key_signals, "Released seasons", str(released_seasons))
-        next_season_number = (series_metadata or {}).get("next_season_number")
-        if next_season_number:
-            next_season_value = f"Season {next_season_number}"
-            next_season_date = format_date(
-                (series_metadata or {}).get("next_season_air_date")
+        season_commitment = format_season_commitment(series_metadata)
+        if status_label == "completed":
+            add_signal(
+                key_signals,
+                "Completion status",
+                f"Completed — {season_commitment}" if season_commitment else "Completed",
             )
-            next_season_year = (series_metadata or {}).get("next_season_year")
-            if next_season_date:
-                next_season_value += f" · {next_season_date}"
-            elif next_season_year:
-                next_season_value += f" · {next_season_year}"
-            add_signal(key_signals, "Next season", next_season_value)
+        elif season_commitment:
+            add_signal(key_signals, "Viewing commitment", season_commitment)
+
         next_episode_date = format_date(
             (series_metadata or {}).get("next_episode_air_date")
         )
-        add_signal(key_signals, "Next episode", next_episode_date)
-        add_signal(key_signals, "Creator", creator)
+        next_season = format_next_season(series_metadata)
+        if status_label == "ongoing" and next_episode_date:
+            add_signal(
+                key_signals,
+                "Series timing",
+                f"Ongoing, next episode {next_episode_date}",
+            )
+        elif status_label == "ongoing" and next_season:
+            add_signal(key_signals, "Series timing", f"Ongoing, {next_season}")
+        elif status_label and status_label != "completed":
+            add_signal(key_signals, "Series timing", title_case_phrase(status_label))
+        if creator:
+            add_signal(key_signals, "Creative signal", f"Created by {creator}")
+
+    if content.get("age_rating"):
+        add_signal(key_signals, "Age fit", content["age_rating"])
+        add_generated_from(generated_from, "certification")
 
     if has_credits:
         add_generated_from(generated_from, "credits")
 
-    best_for = build_best_for(
-        content_type,
-        genre_label,
-        director,
-        creator,
-        runtime,
-        (series_metadata or {}).get("series_status_normalized"),
-    )
-    watch_note = build_watch_note(content_type, genre_label, runtime, series_metadata)
     confidence = compute_confidence(
         has_overview,
         has_genres,
@@ -493,12 +702,27 @@ def build_insight_summary(content_detail: dict) -> dict:
         has_availability,
         has_credits,
     )
+    best_for = build_best_for(
+        content_type,
+        genre_label,
+        runtime,
+        (series_metadata or {}).get("series_status_normalized"),
+        rating,
+        availability,
+    )
+    watch_note = build_watch_note(
+        content_type,
+        runtime,
+        series_metadata,
+        availability,
+        confidence,
+    )
 
     return {
         "headline": headline,
         "summary": summary,
         "best_for": best_for,
-        "key_signals": key_signals,
+        "key_signals": key_signals[:6],
         "watch_note": watch_note,
         "generated_from": generated_from,
         "confidence": confidence,
