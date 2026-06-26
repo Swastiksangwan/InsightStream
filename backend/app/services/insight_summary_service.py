@@ -40,6 +40,31 @@ def unique_preserve_order(values):
     return unique_values
 
 
+def clean_summary_platform_name(value):
+    if not has_text(value):
+        return None
+
+    name = " ".join(value.strip().split())
+    lower_name = name.lower()
+
+    if "amazon prime video" in lower_name:
+        return "Amazon Prime Video"
+
+    if lower_name.startswith("apple tv") and "channel" in lower_name:
+        return "Apple TV"
+
+    if lower_name.endswith(" with ads"):
+        return name[: -len(" with ads")].strip()
+
+    return name
+
+
+def clean_summary_platform_names(names):
+    return unique_preserve_order(
+        name for name in (clean_summary_platform_name(value) for value in names) if name
+    )
+
+
 def title_case_phrase(value):
     if not has_text(value):
         return value
@@ -243,7 +268,7 @@ def platform_names_for_types(platforms, availability_types):
             continue
         if has_text(platform.get("name")):
             names.append(platform["name"].strip())
-    return unique_preserve_order(names)
+    return clean_summary_platform_names(names)
 
 
 def format_platform_names(names):

@@ -6,7 +6,7 @@ This script:
 - reads the ingestion target config
 - connects to PostgreSQL using DATABASE_URL
 - checks config validity, duplicate rows, target coverage, metadata completeness,
-  and person-detail summary metrics
+  ratings coverage, and person-detail summary metrics
 - writes analytics/processed/tmdb/run_reports/ingestion_health_report.json
 - does not modify PostgreSQL or project source files
 """
@@ -92,6 +92,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--fail-on-warning",
         action="store_true",
         help="Exit non-zero when warnings exist.",
+    )
+    parser.add_argument(
+        "--expect-imdb",
+        action="store_true",
+        help=(
+            "Treat missing IMDb rating source or missing IMDb rating coverage "
+            "for catalog IMDb IDs as failures."
+        ),
     )
     return parser.parse_args(argv)
 
@@ -878,7 +886,10 @@ def series_lifecycle_summary(snapshot: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def ratings_summary(connection: Any) -> tuple[dict[str, Any], list[str], list[str]]:
+def ratings_summary(
+    connection: Any,
+    expect_imdb: bool = False,
+) -> tuple[dict[str, Any], list[str], list[str]]:
     warnings: list[str] = []
     failures: list[str] = []
     source_row = fetch_rows(
@@ -886,7 +897,8 @@ def ratings_summary(connection: Any) -> tuple[dict[str, Any], list[str], list[st
         """
         SELECT
             COUNT(*) AS rating_sources_count,
-            COUNT(*) FILTER (WHERE source_name = 'tmdb') AS tmdb_source_count
+            COUNT(*) FILTER (WHERE source_name = 'tmdb') AS tmdb_source_count,
+            COUNT(*) FILTER (WHERE source_name = 'imdb') AS imdb_source_count
         FROM rating_sources;
         """,
     )[0]
@@ -895,19 +907,22 @@ def ratings_summary(connection: Any) -> tuple[dict[str, Any], list[str], list[st
         """
         SELECT
             COUNT(*) AS total_content_ratings,
+            COUNT(*) FILTER (WHERE rs.source_name = 'tmdb') AS tmdb_rating_count,
+            COUNT(*) FILTER (WHERE rs.source_name = 'imdb') AS imdb_rating_count,
             COUNT(*) FILTER (
-                WHERE normalized_score IS NOT NULL
-                  AND (normalized_score < 0 OR normalized_score > 100)
+                WHERE cr.normalized_score IS NOT NULL
+                  AND (cr.normalized_score < 0 OR cr.normalized_score > 100)
             ) AS invalid_normalized_scores,
             COUNT(*) FILTER (
-                WHERE raw_score_scale IS NOT NULL
-                  AND raw_score_scale <= 0
+                WHERE cr.raw_score_scale IS NOT NULL
+                  AND cr.raw_score_scale <= 0
             ) AS invalid_raw_score_scales,
             COUNT(*) FILTER (
-                WHERE vote_count IS NOT NULL
-                  AND vote_count < 0
+                WHERE cr.vote_count IS NOT NULL
+                  AND cr.vote_count < 0
             ) AS negative_vote_counts
-        FROM content_ratings;
+        FROM content_ratings cr
+        LEFT JOIN rating_sources rs ON rs.id = cr.rating_source_id;
         """,
     )[0]
     coverage_row = fetch_rows(
@@ -923,6 +938,42 @@ def ratings_summary(connection: Any) -> tuple[dict[str, Any], list[str], list[st
         LEFT JOIN content_ratings cr ON cr.content_id = c.id;
         """,
     )[0]
+    imdb_coverage_row = fetch_rows(
+        connection,
+        """
+        SELECT
+            COUNT(DISTINCT c.id) AS content_with_imdb_external_id,
+            COUNT(DISTINCT cr.content_id) AS content_with_imdb_rating
+        FROM content c
+        JOIN external_ids ei
+          ON ei.content_id = c.id
+         AND ei.source_name = 'imdb'
+        LEFT JOIN rating_sources rs ON rs.source_name = 'imdb'
+        LEFT JOIN content_ratings cr
+          ON cr.content_id = c.id
+         AND cr.rating_source_id = rs.id;
+        """,
+    )[0]
+    missing_imdb_rows = fetch_rows(
+        connection,
+        """
+        SELECT
+            c.id AS content_id,
+            c.title,
+            c.content_type,
+            ei.external_id AS imdb_id
+        FROM content c
+        JOIN external_ids ei
+          ON ei.content_id = c.id
+         AND ei.source_name = 'imdb'
+        LEFT JOIN rating_sources rs ON rs.source_name = 'imdb'
+        LEFT JOIN content_ratings cr
+          ON cr.content_id = c.id
+         AND cr.rating_source_id = rs.id
+        WHERE cr.id IS NULL
+        ORDER BY c.title ASC;
+        """,
+    )
 
     provider_backed_content = coverage_row["provider_backed_content"] or 0
     provider_backed_with_ratings = (
@@ -936,6 +987,25 @@ def ratings_summary(connection: Any) -> tuple[dict[str, Any], list[str], list[st
 
     if source_row["tmdb_source_count"] == 0:
         warnings.append("Ratings: TMDb rating source is missing.")
+    if (
+        imdb_coverage_row["content_with_imdb_external_id"]
+        and source_row["imdb_source_count"] == 0
+    ):
+        message = "Ratings: IMDb rating source is missing for catalog IMDb external IDs."
+        if expect_imdb:
+            failures.append(message)
+        else:
+            warnings.append(message)
+    if missing_imdb_rows:
+        message = (
+            "Ratings: "
+            f"{len(missing_imdb_rows)} content item(s) have IMDb external IDs "
+            "but no IMDb rating row."
+        )
+        if expect_imdb:
+            failures.append(message)
+        else:
+            warnings.append(message)
     if ratings_row["invalid_normalized_scores"]:
         failures.append("Ratings: invalid normalized_score values found.")
     if ratings_row["invalid_raw_score_scales"]:
@@ -952,6 +1022,14 @@ def ratings_summary(connection: Any) -> tuple[dict[str, Any], list[str], list[st
         "provider_backed_content_missing_ratings": (
             provider_backed_content - provider_backed_with_ratings
         ),
+        "content_with_imdb_external_id": (
+            imdb_coverage_row["content_with_imdb_external_id"] or 0
+        ),
+        "content_with_imdb_rating": (
+            imdb_coverage_row["content_with_imdb_rating"] or 0
+        ),
+        "content_with_imdb_external_id_missing_rating": len(missing_imdb_rows),
+        "missing_imdb_rating_details": missing_imdb_rows[:50],
     }, warnings, failures
 
 
@@ -963,6 +1041,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "priority": args.priority,
         "strict": args.strict,
         "fail_on_warning": args.fail_on_warning,
+        "expect_imdb": args.expect_imdb,
     }
     warnings: list[str] = []
     failures: list[str] = []
@@ -1043,7 +1122,8 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                 person_summary = person_detail_summary(connection)
                 series_summary = series_lifecycle_summary(snapshot)
                 rating_summary, rating_warnings, rating_failures = ratings_summary(
-                    connection
+                    connection,
+                    expect_imdb=args.expect_imdb,
                 )
                 if args.strict and rating_summary.get("tmdb_source_count", 0) == 0:
                     rating_failures.append(
@@ -1139,6 +1219,13 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
         f"{ratings.get('total_content_ratings', 0)} rows, "
         f"TMDb source {'present' if ratings.get('tmdb_source_count', 0) else 'missing'}, "
         f"{ratings.get('rating_coverage_percentage', 0)}% provider-backed coverage"
+    )
+    print(
+        "IMDb ratings: "
+        f"source {'present' if ratings.get('imdb_source_count', 0) else 'missing'}, "
+        f"{ratings.get('imdb_rating_count', 0)} rows, "
+        f"{ratings.get('content_with_imdb_rating', 0)}/"
+        f"{ratings.get('content_with_imdb_external_id', 0)} IMDb-linked content covered"
     )
     print(f"Warnings: {len(report.get('warnings') or [])}")
     print(f"Failures: {len(report.get('failures') or [])}")

@@ -28,21 +28,28 @@ Ratings should be useful decision support, not a cluttered scoreboard.
 
 ## Implementation Status
 
-Ratings Foundation v1 implements TMDb ratings only. The implementation path is:
+Ratings Foundation v1 implements TMDb ratings. Ratings v2 adds IMDb ratings
+through IMDb's official non-commercial `title.ratings.tsv` dataset.
+
+The implemented path is:
 
 - `rating_sources`
 - `content_ratings`
 - TMDb `vote_average` / `vote_count` in `sample_mapping_preview.json`
 - `analytics/scripts/import_content_ratings_from_preview.py`
+- `analytics/scripts/import_imdb_ratings.py`
 - content detail API ratings object
 - frontend Ratings card with InsightStream Score and source breakdown
 
-Ratings v1 displays available source ratings even when vote counts are low,
+Ratings display available source ratings even when vote counts are low,
 but the unified InsightStream Score only includes sources with at least 50 votes.
 Low-vote or unknown-vote sources remain visible as source ratings without
 contributing to the unified score.
 
-IMDb, Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, AI verdicts, and recommendations remain future phases.
+IMDb integration uses a local dataset file and matches only through stored IMDb
+external IDs. It does not scrape IMDb pages.
+
+Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, AI verdicts, and recommendations remain future phases.
 
 ## 2. Rating Source Strategy
 
@@ -66,7 +73,7 @@ Theatrical audience reaction:
 
 Phase 1 should implement TMDb ratings first because `vote_average` and `vote_count` are already available in TMDb content metadata fetched by the ingestion pipeline.
 
-Phase 2 can add IMDb ratings because IMDb IDs are already obtained through TMDb external IDs, but only through an approved and legal dataset or source workflow.
+Phase 2 adds IMDb ratings because IMDb IDs are already obtained through TMDb external IDs. The prototype path uses IMDb's official non-commercial dataset file.
 
 Rotten Tomatoes, Letterboxd, Metacritic, and CinemaScore should be planned in the schema, but not implemented until source access, legality, terms, and maintenance are clear.
 
@@ -76,8 +83,8 @@ Do not scrape rating websites.
 
 | Phase | Source | Why | Implementation Status |
 | --- | --- | --- | --- |
-| Phase 1 | TMDb | Already available in fetched metadata and safest first implementation. | Planned next |
-| Phase 2 | IMDb | Strong user recognition and matchable through existing IMDb external IDs. | Requires approved dataset/source workflow |
+| Phase 1 | TMDb | Already available in fetched metadata and safest first implementation. | Implemented |
+| Phase 2 | IMDb | Strong user recognition and matchable through existing IMDb external IDs. | Implemented through official non-commercial dataset import |
 | Phase 3 | Rotten Tomatoes / Metacritic | Useful critic and audience signals. | Wait for legal/source access |
 | Phase 4 | Letterboxd | Strong film-pop-culture signal, mostly film-focused. | Wait for approved API/source access |
 | Phase 5 | CinemaScore | Useful movie-only theatrical opening reaction with limited coverage. | Optional later signal |
@@ -197,8 +204,8 @@ Rules:
 - ignore missing sources
 - include only active rating sources
 - use `rating_sources.weight`
-- start with TMDb only
-- when IMDb is added, use TMDb + IMDb weighted average
+- TMDb and IMDb audience sources can contribute when they have enough vote confidence
+- use TMDb + IMDb weighted average when both are present
 - do not include CinemaScore until a clear letter-grade mapping is approved
 - do not include critic and audience sources blindly without category awareness
 
@@ -231,7 +238,11 @@ Implementation options:
 
 IMDb IDs are already present through `external_ids`.
 
-IMDb ratings should be added only through an approved and legal dataset or source. Do not scrape IMDb pages.
+IMDb ratings are imported from a local copy of IMDb's official non-commercial
+`title.ratings.tsv` dataset. The importer matches `tconst` values only against
+stored `external_ids.external_id` rows where `source_name = 'imdb'`.
+
+Do not commit the dataset file and do not scrape IMDb pages.
 
 ### Future Sources
 
@@ -351,7 +362,7 @@ Avoid brittle catalog-count tests.
 4. Add ratings to content detail API.
 5. Update frontend Ratings card.
 6. Add health checks and tests.
-7. Later add IMDb ratings through an approved dataset/source.
+7. Add IMDb ratings through the official non-commercial dataset importer.
 8. Later evaluate Rotten Tomatoes, Letterboxd, Metacritic, and CinemaScore.
 
 ## 14. Risks and Decisions
@@ -361,7 +372,7 @@ Open decisions:
 - exact unified score formula
 - whether to separate audience score and critic score later
 - legal/source access for non-TMDb sources
-- whether IMDb ratings are acceptable for the project's intended use
+- whether IMDb dataset refresh should be manual or scheduled during prototype use
 - whether rating history snapshots are needed
 - whether low vote counts should suppress source display or only suppress unified score inclusion
 
@@ -370,17 +381,14 @@ Open decisions:
 Recommended next implementation task:
 
 ```text
-Add ratings schema and import TMDb ratings
+Harden ratings refresh and source health checks
 ```
 
 Suggested scope:
 
-- create `rating_sources` and `content_ratings` tables
-- create a manual SQL patch
-- seed TMDb as an active audience rating source
-- include TMDb `vote_average` and `vote_count` in the content metadata preview
-- import TMDb rating rows into `content_ratings`
-- expose ratings in the content detail API
-- show TMDb rating in the frontend Ratings card
+- keep TMDb ratings refreshed through the metadata preview importer
+- refresh IMDb ratings from the local official dataset when a new dataset is downloaded
+- monitor missing IMDb coverage in the ingestion health check
+- keep non-TMDb/non-IMDb sources out until source/legal access is clear
 
-This keeps the first Ratings Foundation implementation small, source-aware, and aligned with the existing ingestion pipeline.
+This keeps Ratings Foundation source-aware, local-dataset driven, and aligned with the ingestion pipeline.

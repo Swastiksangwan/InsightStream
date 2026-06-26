@@ -265,6 +265,50 @@ def test_rent_buy_movie_mentions_rent_buy_watch_guidance():
     assert "renting or buying" in summary["watch_note"]
 
 
+def test_summary_access_text_avoids_duplicate_platform_variants():
+    summary = build_insight_summary(
+        {
+            "content": base_content(runtime=110),
+            "genres": ["Action", "Adventure"],
+            "platforms": [
+                {
+                    "name": "Amazon Prime Video",
+                    "availability_type": "streaming",
+                    "region_code": "IN",
+                },
+                {
+                    "name": "Amazon Prime Video with Ads",
+                    "availability_type": "streaming",
+                    "region_code": "IN",
+                },
+                {
+                    "name": "Apple TV Amazon Channel",
+                    "availability_type": "streaming",
+                    "region_code": "IN",
+                },
+                {
+                    "name": "Netflix",
+                    "availability_type": "streaming",
+                    "region_code": "IN",
+                },
+            ],
+            "ratings": ratings(82),
+            "series_metadata": None,
+            "credits": credits(director="Example Director"),
+        }
+    )
+
+    access_value = next(
+        signal["value"]
+        for signal in summary["key_signals"]
+        if signal["label"] == "Access"
+    )
+
+    assert access_value == "Streaming in India on Amazon Prime Video, Apple TV + more"
+    assert "Amazon Prime Video with Ads" not in combined_text(summary)
+    assert "Apple TV Amazon Channel" not in combined_text(summary)
+
+
 def test_no_crew_content_does_not_claim_director_or_creator():
     summary = build_insight_summary(
         {

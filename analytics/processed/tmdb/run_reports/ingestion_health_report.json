@@ -1,11 +1,12 @@
 {
-  "generated_at": "2026-06-25T07:17:11.888619+00:00",
+  "generated_at": "2026-06-26T08:44:23.735152+00:00",
   "script_name": "check_ingestion_health.py",
   "target_config_path": "analytics/config/content_ingestion_targets.json",
   "filters_used": {
     "priority": null,
     "strict": false,
-    "fail_on_warning": false
+    "fail_on_warning": false,
+    "expect_imdb": true
   },
   "config_summary": {
     "total_targets": 150,
@@ -129,16 +130,23 @@
     "series_with_unknown_season_summary": 0
   },
   "ratings_summary": {
-    "rating_sources_count": 1,
+    "rating_sources_count": 2,
     "tmdb_source_count": 1,
-    "total_content_ratings": 150,
+    "imdb_source_count": 1,
+    "total_content_ratings": 300,
+    "tmdb_rating_count": 150,
+    "imdb_rating_count": 150,
     "invalid_normalized_scores": 0,
     "invalid_raw_score_scales": 0,
     "negative_vote_counts": 0,
     "provider_backed_content": 150,
     "provider_backed_content_with_ratings": 150,
     "rating_coverage_percentage": 100.0,
-    "provider_backed_content_missing_ratings": 0
+    "provider_backed_content_missing_ratings": 0,
+    "content_with_imdb_external_id": 150,
+    "content_with_imdb_rating": 150,
+    "content_with_imdb_external_id_missing_rating": 0,
+    "missing_imdb_rating_details": []
   },
   "warnings": [],
   "failures": [],

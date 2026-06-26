@@ -36,13 +36,16 @@ class FakeRatingsDb:
 def fake_rating_row(
     normalized_score=84,
     vote_count=MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
+    source_name="tmdb",
+    display_name="TMDb",
+    weight=1,
 ):
     raw_score = normalized_score / 10 if normalized_score is not None else None
     return {
-        "source_name": "tmdb",
-        "display_name": "TMDb",
+        "source_name": source_name,
+        "display_name": display_name,
         "source_category": "audience",
-        "weight": 1,
+        "weight": weight,
         "raw_score": raw_score,
         "raw_score_scale": 10,
         "normalized_score": normalized_score,
@@ -679,6 +682,90 @@ def test_detail_ratings_null_vote_count_source_keeps_source_without_unified_scor
     assert ratings["source_count"] == 1
     assert ratings["sources"][0]["normalized_score"] == 78
     assert ratings["sources"][0]["vote_count"] is None
+
+
+def test_detail_ratings_combines_tmdb_and_imdb_sources():
+    ratings = get_detail_ratings(
+        FakeRatingsDb(
+            [
+                fake_rating_row(
+                    normalized_score=83,
+                    vote_count=6000,
+                    source_name="tmdb",
+                    display_name="TMDb",
+                ),
+                fake_rating_row(
+                    normalized_score=87,
+                    vote_count=250000,
+                    source_name="imdb",
+                    display_name="IMDb",
+                ),
+            ]
+        ),
+        content_id=1,
+    )
+
+    assert ratings["unified_score"] == 85
+    assert ratings["source_count"] == 2
+    assert {source["source_name"] for source in ratings["sources"]} == {
+        "tmdb",
+        "imdb",
+    }
+
+
+def test_detail_ratings_rounds_unified_score_normally():
+    ratings = get_detail_ratings(
+        FakeRatingsDb(
+            [
+                fake_rating_row(
+                    normalized_score=85,
+                    vote_count=6000,
+                    source_name="tmdb",
+                    display_name="TMDb",
+                ),
+                fake_rating_row(
+                    normalized_score=82,
+                    vote_count=250000,
+                    source_name="imdb",
+                    display_name="IMDb",
+                ),
+            ]
+        ),
+        content_id=1,
+    )
+
+    assert ratings["unified_score"] == 84
+
+
+def test_detail_ratings_low_vote_imdb_does_not_override_confident_tmdb_score():
+    ratings = get_detail_ratings(
+        FakeRatingsDb(
+            [
+                fake_rating_row(
+                    normalized_score=80,
+                    vote_count=2000,
+                    source_name="tmdb",
+                    display_name="TMDb",
+                ),
+                fake_rating_row(
+                    normalized_score=100,
+                    vote_count=MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE - 1,
+                    source_name="imdb",
+                    display_name="IMDb",
+                ),
+            ]
+        ),
+        content_id=1,
+    )
+
+    assert ratings["unified_score"] == 80
+    assert ratings["source_count"] == 2
+    assert any(
+        source["source_name"] == "imdb"
+        and source["normalized_score"] == 100
+        and source["vote_count"] == MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE - 1
+        for source in ratings["sources"]
+    )
 
 
 def test_detail_ratings_empty_rows_return_stable_empty_shape():

@@ -146,3 +146,30 @@ def test_tmdb_rating_source_is_seeded(db_session):
     assert float(row["raw_score_scale_default"]) == 10
     assert float(row["weight"]) == 1
     assert row["is_active"] is True
+
+
+def test_imdb_rating_source_is_seeded(db_session):
+    row = db_session.execute(
+        text(
+            """
+            SELECT
+                source_name,
+                display_name,
+                source_category,
+                raw_score_scale_default,
+                weight,
+                is_active,
+                source_url
+            FROM rating_sources
+            WHERE source_name = 'imdb';
+            """
+        )
+    ).mappings().first()
+
+    assert row is not None
+    assert row["display_name"] == "IMDb"
+    assert row["source_category"] == "audience"
+    assert float(row["raw_score_scale_default"]) == 10
+    assert float(row["weight"]) == 1
+    assert row["is_active"] is True
+    assert row["source_url"] == "https://developer.imdb.com/non-commercial-datasets/"

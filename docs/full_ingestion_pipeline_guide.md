@@ -6,7 +6,7 @@ This document explains how to add content to InsightStream using the current met
 
 It covers both one-title ingestion and batch ingestion. It explains the role of config files, raw provider files, processed previews, import scripts, run reports, database verification, backend tests, and frontend checks.
 
-This is an operational guide. It is not a product plan and it does not introduce reviews, social features, recommendations, or frontend TMDb calls. Ratings v1 is limited to importing TMDb rating signals from the processed metadata preview.
+This is an operational guide. It is not a product plan and it does not introduce reviews, social features, recommendations, or frontend TMDb calls. Ratings import currently supports TMDb rating signals from the processed metadata preview and IMDb rating signals from a local official non-commercial dataset file.
 
 ## Current Catalog Context
 
@@ -290,9 +290,31 @@ It writes or updates:
 - `rating_sources`
 - `content_ratings`
 
-Ratings v1 imports TMDb only. It does not import IMDb, Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, summaries, or recommendations.
-
 The third command checks idempotency.
+
+### Step 6b: Import IMDb ratings from local dataset
+
+Run this only when a local IMDb dataset file is available.
+
+```bash
+python3 analytics/scripts/import_imdb_ratings.py \
+  --ratings-file analytics/datasets/imdb/title.ratings.tsv
+python3 analytics/scripts/import_imdb_ratings.py \
+  --ratings-file analytics/datasets/imdb/title.ratings.tsv \
+  --apply
+python3 analytics/scripts/import_imdb_ratings.py \
+  --ratings-file analytics/datasets/imdb/title.ratings.tsv
+```
+
+The IMDb importer reads the official non-commercial `title.ratings.tsv` dataset and matches only through stored IMDb IDs in `external_ids`. It does not scrape IMDb pages and does not import ratings for titles outside the local catalog.
+
+The local dataset directory is ignored by git:
+
+```text
+analytics/datasets/imdb/
+```
+
+Ratings imports do not include Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, summaries, or recommendations.
 
 ### Step 7: Build credits preview
 
@@ -549,7 +571,13 @@ Strict mode:
 python3 analytics/scripts/check_ingestion_health.py --strict
 ```
 
-This script does not write to PostgreSQL. It checks target config shape, target-to-database coverage, duplicate rows, metadata completeness, people summary metrics, and availability/certification coverage.
+IMDb coverage expectation:
+
+```bash
+python3 analytics/scripts/check_ingestion_health.py --expect-imdb
+```
+
+This script does not write to PostgreSQL. It checks target config shape, target-to-database coverage, duplicate rows, metadata completeness, people summary metrics, availability/certification coverage, and ratings coverage including IMDb IDs without imported IMDb ratings.
 
 It writes:
 
@@ -648,6 +676,10 @@ python3 analytics/scripts/import_content_ratings_from_preview.py
 python3 analytics/scripts/import_content_ratings_from_preview.py --apply
 python3 analytics/scripts/import_content_ratings_from_preview.py
 
+python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv
+python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv --apply
+python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv
+
 python3 analytics/scripts/build_tmdb_credits_preview.py
 
 python3 analytics/scripts/import_people_credits_from_preview.py
@@ -705,13 +737,14 @@ Debugging one title with `--source-id` does not replace the normal candidate -> 
 | `fetch_tmdb_sample.py` | Fetch or reuse content metadata raw files and build content preview. | `--targets`, `--priority`, `--source-id`, `--title`, `--limit`, `--refresh` |
 | `import_content_metadata_from_preview.py` | Dry-run/apply normalized content metadata import. | `--preview`, `--apply` |
 | `import_content_ratings_from_preview.py` | Dry-run/apply TMDb ratings import from the content preview. | `--preview`, `--apply` |
+| `import_imdb_ratings.py` | Dry-run/apply IMDb ratings import from a local official `title.ratings.tsv` dataset. | `--ratings-file`, `--apply` |
 | `build_tmdb_credits_preview.py` | Build credits preview from current content preview and raw files. | No major CLI options. |
 | `import_people_credits_from_preview.py` | Dry-run/apply people and credits import. | `--apply` |
 | `fetch_tmdb_person_details.py` | Fetch or reuse person details for local TMDb people. | `--missing-only`, `--all`, `--source-person-id`, `--person-id`, `--name`, `--limit`, `--refresh` |
 | `import_person_details_from_preview.py` | Dry-run/apply missing person detail fields. | `--apply` |
 | `fetch_tmdb_availability_certification.py` | Fetch or reuse availability/certification raw files and build preview. | `--targets`, `--priority`, `--source-id`, `--title`, `--all`, `--limit`, `--refresh` |
 | `import_availability_certification_from_preview.py` | Dry-run/apply region-aware availability/certification import. | `--preview`, `--apply` |
-| `check_ingestion_health.py` | Read-only target config, DB coverage, duplicate, metadata completeness, and people summary check. | `--targets`, `--priority`, `--output`, `--strict`, `--fail-on-warning` |
+| `check_ingestion_health.py` | Read-only target config, DB coverage, duplicate, metadata completeness, ratings coverage, and people summary check. | `--targets`, `--priority`, `--output`, `--strict`, `--fail-on-warning`, `--expect-imdb` |
 
 This table is based on the current scripts. Do not assume an option exists unless it is listed here or shown by the script's `--help`.
 

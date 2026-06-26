@@ -1,3 +1,5 @@
+from decimal import Decimal, ROUND_HALF_UP
+
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 
@@ -849,6 +851,10 @@ def numeric_or_none(value):
 MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE = 50
 
 
+def round_unified_score(value):
+    return int(Decimal(str(value)).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+
+
 def get_empty_ratings_response():
     return {
         "unified_score": None,
@@ -922,7 +928,7 @@ def get_detail_ratings(db: Session, content_id: int):
             }
         )
 
-    unified_score = round(weighted_total / weight_total) if weight_total else None
+    unified_score = round_unified_score(weighted_total / weight_total) if weight_total else None
 
     return {
         "unified_score": unified_score,
