@@ -95,15 +95,17 @@ export function RatingList({ ratings }: RatingListProps) {
         {sources.map((source) => {
           const voteCount = formatVoteCount(source);
           const rawRating = formatRawRating(source);
-
-          return (
-            <article
-              className={`rating-card rating-card--${source.source_category || "general"}`}
-              key={`${source.source_name}-${source.normalized_score}`}
-            >
+          const cardClassName = `rating-card rating-card--${source.source_category || "general"}${
+            source.rating_url ? " rating-card--link" : ""
+          }`;
+          const cardContent = (
+            <>
               <div>
                 <h3>{source.display_name}</h3>
-                <span>{formatSourceCategory(source.source_category)}</span>
+                <span>
+                  {formatSourceCategory(source.source_category)}
+                  {source.rating_url ? " · Source page" : ""}
+                </span>
               </div>
 
               <strong>
@@ -116,6 +118,30 @@ export function RatingList({ ratings }: RatingListProps) {
                 {rawRating ?? "Rating scale unavailable"}
                 {voteCount ? ` · ${voteCount}` : ""}
               </p>
+            </>
+          );
+
+          if (source.rating_url) {
+            return (
+              <a
+                aria-label={`Open ${source.display_name} rating page`}
+                className={cardClassName}
+                href={source.rating_url}
+                key={`${source.source_name}-${source.normalized_score}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {cardContent}
+              </a>
+            );
+          }
+
+          return (
+            <article
+              className={cardClassName}
+              key={`${source.source_name}-${source.normalized_score}`}
+            >
+              {cardContent}
             </article>
           );
         })}

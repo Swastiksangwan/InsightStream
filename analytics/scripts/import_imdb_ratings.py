@@ -71,6 +71,7 @@ class ImdbRatingRecord:
     normalized_score: float
     vote_count: int
     rating_count_label: str
+    rating_url: str
     source_payload: dict[str, Any]
     fetched_at: datetime
 
@@ -195,6 +196,10 @@ def format_vote_count(vote_count: int | None) -> str | None:
     return f"{vote_count:,} votes"
 
 
+def imdb_title_url(tconst: str) -> str:
+    return f"https://www.imdb.com/title/{tconst}/"
+
+
 def open_ratings_file(path: Path):
     if not path.exists():
         raise ImdbRatingsImportError(f"Missing IMDb ratings file: {relative_path(path)}")
@@ -234,6 +239,7 @@ def imdb_rating_from_row(
         normalized_score=round(normalized_score, 2),
         vote_count=vote_count,
         rating_count_label=format_vote_count(vote_count) or "",
+        rating_url=imdb_title_url(tconst),
         source_payload={
             "tconst": tconst,
             "averageRating": raw_score,
@@ -421,7 +427,7 @@ def rating_update_plan(existing: dict[str, Any], rating: ImdbRatingRecord) -> di
         "normalized_score": rating.normalized_score,
         "vote_count": rating.vote_count,
         "rating_count_label": rating.rating_count_label,
-        "rating_url": None,
+        "rating_url": rating.rating_url,
     }
 
     for field_name, preview_value in comparable_fields.items():
@@ -466,7 +472,7 @@ def insert_content_rating(
                 :normalized_score,
                 :vote_count,
                 :rating_count_label,
-                NULL,
+                :rating_url,
                 CAST(:source_payload AS JSONB),
                 :fetched_at
             )
@@ -481,6 +487,7 @@ def insert_content_rating(
             "normalized_score": rating.normalized_score,
             "vote_count": rating.vote_count,
             "rating_count_label": rating.rating_count_label,
+            "rating_url": rating.rating_url,
             "source_payload": json_param(rating.source_payload),
             "fetched_at": rating.fetched_at,
         },

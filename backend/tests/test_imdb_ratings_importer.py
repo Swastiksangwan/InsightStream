@@ -38,6 +38,7 @@ def test_imdb_importer_normalizes_rating_row():
     assert record.normalized_score == 83
     assert record.vote_count == 6226
     assert record.rating_count_label == "6,226 votes"
+    assert record.rating_url == "https://www.imdb.com/title/tt15398776/"
     assert record.source_payload == {
         "tconst": "tt15398776",
         "averageRating": 8.3,
@@ -128,6 +129,7 @@ def test_imdb_importer_detects_rating_updates():
         normalized_score=87,
         vote_count=2100000,
         rating_count_label="2,100,000 votes",
+        rating_url="https://www.imdb.com/title/tt0133093/",
         source_payload={
             "tconst": "tt0133093",
             "averageRating": 8.7,
@@ -157,3 +159,41 @@ def test_imdb_importer_detects_rating_updates():
     assert updates["normalized_score"] == 87
     assert updates["vote_count"] == 2100000
     assert updates["source_payload"] == rating.source_payload
+
+
+def test_imdb_importer_updates_existing_rating_missing_url():
+    importer = load_imdb_importer_module()
+    rating = importer.ImdbRatingRecord(
+        tconst="tt0133093",
+        raw_score=8.7,
+        raw_score_scale=10,
+        normalized_score=87,
+        vote_count=2100000,
+        rating_count_label="2,100,000 votes",
+        rating_url="https://www.imdb.com/title/tt0133093/",
+        source_payload={
+            "tconst": "tt0133093",
+            "averageRating": 8.7,
+            "numVotes": 2100000,
+        },
+        fetched_at=datetime(2026, 6, 25),
+    )
+
+    updates = importer.rating_update_plan(
+        {
+            "raw_score": 8.7,
+            "raw_score_scale": 10,
+            "normalized_score": 87,
+            "vote_count": 2100000,
+            "rating_count_label": "2,100,000 votes",
+            "rating_url": None,
+            "source_payload": {
+                "tconst": "tt0133093",
+                "averageRating": 8.7,
+                "numVotes": 2100000,
+            },
+        },
+        rating,
+    )
+
+    assert updates["rating_url"] == "https://www.imdb.com/title/tt0133093/"

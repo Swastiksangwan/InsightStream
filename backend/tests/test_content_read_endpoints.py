@@ -39,6 +39,7 @@ def fake_rating_row(
     source_name="tmdb",
     display_name="TMDb",
     weight=1,
+    rating_url=None,
 ):
     raw_score = normalized_score / 10 if normalized_score is not None else None
     return {
@@ -51,7 +52,7 @@ def fake_rating_row(
         "normalized_score": normalized_score,
         "vote_count": vote_count,
         "rating_count_label": None,
-        "rating_url": None,
+        "rating_url": rating_url,
         "fetched_at": None,
     }
 
@@ -735,6 +736,26 @@ def test_detail_ratings_rounds_unified_score_normally():
     )
 
     assert ratings["unified_score"] == 84
+
+
+def test_detail_ratings_returns_rating_url_when_available():
+    ratings = get_detail_ratings(
+        FakeRatingsDb(
+            [
+                fake_rating_row(
+                    normalized_score=87,
+                    vote_count=250000,
+                    source_name="imdb",
+                    display_name="IMDb",
+                    rating_url="https://www.imdb.com/title/tt0133093/",
+                )
+            ]
+        ),
+        content_id=1,
+    )
+
+    assert ratings["sources"][0]["source_name"] == "imdb"
+    assert ratings["sources"][0]["rating_url"] == "https://www.imdb.com/title/tt0133093/"
 
 
 def test_detail_ratings_low_vote_imdb_does_not_override_confident_tmdb_score():

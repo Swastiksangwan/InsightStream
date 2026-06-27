@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-26T08:44:23.735152+00:00",
+  "generated_at": "2026-06-27T16:22:39.584746+00:00",
   "script_name": "check_ingestion_health.py",
   "target_config_path": "analytics/config/content_ingestion_targets.json",
   "filters_used": {
