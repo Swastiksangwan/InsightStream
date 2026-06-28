@@ -13,14 +13,18 @@ def test_ratings_card_uses_scoring_source_language():
 
     assert "scoring source" in source
     assert "Source ratings available" in source
-    assert "Calculated from rating sources with vote confidence." in source
+    assert "vote-backed average" in source
+    assert "Based on one vote-backed source." in source
+    assert "not enough vote-backed data for a score yet" in source
 
 
 def test_letterboxd_card_uses_snapshot_language_without_fake_vote_count():
     source = rating_list_source()
 
-    assert "Film-community snapshot" in source
-    assert "Dataset snapshot; may not reflect the latest live score." in source
+    assert "Film-community signal" in source
+    assert "Snapshot source" in source
+    assert "Open source page" in source
+    assert "Snapshot rating; live score may differ." in source
     assert "isLetterboxd" in source
 
 

@@ -220,10 +220,10 @@ def rating_context(ratings):
 
     if score >= 80:
         strength = "Strong"
-        headline_phrase = "strong audience score"
+        headline_phrase = "strong audience backing"
     elif score >= 70:
         strength = "Positive"
-        headline_phrase = "positive audience signal"
+        headline_phrase = "positive audience backing"
     elif score >= 60:
         strength = "Mixed-to-positive"
         headline_phrase = "mixed-to-positive audience signal"
@@ -231,7 +231,7 @@ def rating_context(ratings):
         strength = "Moderate"
         headline_phrase = "moderate rating signal"
 
-    signal = f"{strength} — {score}/100 from {source_name}"
+    signal = f"{strength} · {score}/100 from {source_name}"
 
     return {
         "score": score,
@@ -357,7 +357,6 @@ def compute_confidence(
 
 
 def build_movie_summary(content, genre_label, director, rating, availability):
-    year = content.get("year")
     runtime = content.get("runtime")
     subject = genre_label or "movie"
     rating_phrase = rating["headline_phrase"]
@@ -376,32 +375,22 @@ def build_movie_summary(content, genre_label, director, rating, availability):
     else:
         headline = f"{sentence_case(subject)} with local decision signals."
 
-    identity_parts = []
-    if runtime and runtime > 150:
-        identity_parts.append("long")
-    if year:
-        identity_parts.append(str(year))
-    identity_parts.append(subject)
-    identity = " ".join(identity_parts)
-    base = f"{article_for(identity)} {identity}"
-    if director:
-        base += f" directed by {director}"
-
+    identity_parts = ["long-form" if runtime and runtime > 150 else None, subject]
+    identity = " ".join(part for part in identity_parts if part)
+    summary = f"{article_for(identity)} {identity}"
     support = []
     if rating["summary_phrase"]:
-        support.append(f"a {rating['summary_phrase']}")
+        support.append(rating["summary_phrase"])
     if availability:
         support.append(availability["summary_phrase"])
-
-    summary = base
     if support:
         summary += f" with {' and '.join(support)}"
     summary += "."
 
     if runtime and runtime > 150:
-        summary += " It is better suited for a focused long-watch session than a quick casual watch."
+        summary += " Better for a planned watch session than a quick casual pick."
     elif has_rent_buy_access:
-        summary += " It is most useful if renting or buying fits your watch plan."
+        summary += " A better fit when you are comfortable renting or buying."
 
     return headline, summary
 
@@ -457,7 +446,7 @@ def build_series_summary(
     if status_label == "ongoing" and next_episode_date:
         headline = f"Active {subject} with an upcoming episode date."
     elif status_label == "ongoing" and rating_phrase:
-        headline = f"{sentence_case(rating_phrase)} for an ongoing {subject}."
+        headline = f"Ongoing {subject} with {rating_phrase}."
     elif status_label == "completed" and rating_phrase:
         headline = f"Completed {subject} with {rating_phrase}."
     elif status_label == "completed":
@@ -481,8 +470,6 @@ def build_series_summary(
         base += f" and a next episode dated {next_episode_date}"
     elif next_season:
         base += f" and {next_season}"
-    if creator:
-        base += f" from {creator}"
 
     support = []
     if rating["summary_phrase"]:
@@ -492,13 +479,14 @@ def build_series_summary(
 
     summary = base
     if support:
-        summary += f". Its {' and '.join(support)}"
+        connector = " and " if " with " in summary else " with "
+        summary += f"{connector}{' and '.join(support)}"
         if status_label == "completed":
-            summary += " make it better suited for a finished binge than an active weekly-release series"
+            summary += ". Good fit for a finished binge with no weekly-release wait"
         elif status_label == "ongoing":
-            summary += " make it useful for viewers who want an active series rather than a completed binge"
+            summary += ". Best for viewers who want to follow an active series; wait if you prefer completed shows"
         else:
-            summary += " add local decision context"
+            summary += ". Useful local context before deciding where it fits"
     else:
         summary += "."
 
@@ -559,7 +547,7 @@ def build_best_for(content_type, genre_label, runtime, series_status, rating, av
         best_for.append(access)
 
     if rating["score"] is not None and rating["score"] >= 80:
-        best_for.append("High-rating audience signal")
+        best_for.append("Strong audience score")
 
     return unique_preserve_order(best_for)[:4]
 
@@ -567,9 +555,9 @@ def build_best_for(content_type, genre_label, runtime, series_status, rating, av
 def build_watch_note(content_type, runtime, series_metadata, availability, confidence):
     if content_type == "movie":
         if runtime and runtime > 150:
-            return "Better for a focused long-watch session than a quick casual watch."
+            return "Better for a focused watch session than a quick casual pick."
         if availability and availability["kind"] == "rent_buy":
-            return "Useful if you are comfortable renting or buying; no streaming option is currently stored for India."
+            return "A better fit when you are comfortable renting or buying; no streaming option is currently stored for India."
         if confidence == "low":
             return "Decision support is limited because ratings, availability, or credits are incomplete."
         return None
@@ -577,7 +565,7 @@ def build_watch_note(content_type, runtime, series_metadata, availability, confi
     if content_type == "series" and series_metadata:
         status_label = format_status(series_metadata.get("series_status_normalized"))
         if status_label == "ongoing" and series_metadata.get("next_episode_air_date"):
-            return "Start now if you want to follow an active release; wait if you prefer completed seasons."
+            return "Best for viewers who want to follow an active release; wait if you prefer completed seasons."
         if (
             status_label == "ongoing"
             and series_metadata.get("has_announced_season")
@@ -585,9 +573,9 @@ def build_watch_note(content_type, runtime, series_metadata, availability, confi
         ):
             return "Good for catching up before the next season; wait if you only watch completed shows."
         if status_label == "ongoing":
-            return "Start now if you want an active series; wait if you prefer completed shows."
+            return "Best for viewers who want to follow an active series; wait if you prefer completed shows."
         if status_label == "completed":
-            return "Better suited for viewers who prefer a completed story with no weekly release wait."
+            return "Good fit for a finished binge with no weekly-release wait."
 
     if confidence == "low":
         return "Decision support is limited because ratings, availability, or credits are incomplete."
@@ -658,7 +646,7 @@ def build_insight_summary(content_detail: dict) -> dict:
         add_generated_from(generated_from, "metadata")
 
     if rating["signal"]:
-        add_signal(key_signals, "Audience signal", rating["signal"])
+        add_signal(key_signals, "Audience", rating["signal"])
         add_generated_from(generated_from, "ratings")
 
     if availability:
@@ -667,9 +655,9 @@ def build_insight_summary(content_detail: dict) -> dict:
 
     if content_type == "movie":
         if runtime and runtime > 150:
-            add_signal(key_signals, "Runtime commitment", "Long movie")
+            add_signal(key_signals, "Runtime", "Long movie")
         if director:
-            add_signal(key_signals, "Creative signal", f"Directed by {director}")
+            add_signal(key_signals, "Creative lead", f"Directed by {director}")
     else:
         if series_metadata:
             add_generated_from(generated_from, "series_metadata")
@@ -680,11 +668,11 @@ def build_insight_summary(content_detail: dict) -> dict:
         if status_label == "completed":
             add_signal(
                 key_signals,
-                "Completion status",
+                "Series status",
                 f"Completed — {season_commitment}" if season_commitment else "Completed",
             )
         elif season_commitment:
-            add_signal(key_signals, "Viewing commitment", season_commitment)
+            add_signal(key_signals, "Watch fit", season_commitment)
 
         next_episode_date = format_date(
             (series_metadata or {}).get("next_episode_air_date")
@@ -693,18 +681,18 @@ def build_insight_summary(content_detail: dict) -> dict:
         if status_label == "ongoing" and next_episode_date:
             add_signal(
                 key_signals,
-                "Series timing",
+                "Series status",
                 f"Ongoing, next episode {next_episode_date}",
             )
         elif status_label == "ongoing" and next_season:
-            add_signal(key_signals, "Series timing", f"Ongoing, {next_season}")
+            add_signal(key_signals, "Series status", f"Ongoing, {next_season}")
         elif status_label and status_label != "completed":
-            add_signal(key_signals, "Series timing", title_case_phrase(status_label))
+            add_signal(key_signals, "Series status", title_case_phrase(status_label))
         if creator:
-            add_signal(key_signals, "Creative signal", f"Created by {creator}")
+            add_signal(key_signals, "Creative lead", f"Created by {creator}")
 
     if content.get("age_rating"):
-        add_signal(key_signals, "Age fit", content["age_rating"])
+        add_signal(key_signals, "Age rating", content["age_rating"])
         add_generated_from(generated_from, "certification")
 
     if has_credits:
@@ -737,7 +725,7 @@ def build_insight_summary(content_detail: dict) -> dict:
         "headline": headline,
         "summary": summary,
         "best_for": best_for,
-        "key_signals": key_signals[:6],
+        "key_signals": key_signals[:5],
         "watch_note": watch_note,
         "generated_from": generated_from,
         "confidence": confidence,

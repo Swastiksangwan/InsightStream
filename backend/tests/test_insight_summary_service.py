@@ -140,12 +140,12 @@ def test_movie_with_rich_metadata_gets_non_empty_insight_summary():
     assert summary["summary"]
     assert 2 <= len(summary["best_for"]) <= 4
     assert {
-        "Audience signal",
+        "Audience",
         "Access",
-        "Runtime commitment",
-        "Creative signal",
+        "Runtime",
+        "Creative lead",
     } <= labels(summary)
-    assert "long-watch session" in summary["watch_note"]
+    assert "focused watch session" in summary["watch_note"]
     assert summary["confidence"] == "high"
     assert_clean_chips(summary)
     assert_no_unsupported_marketing(summary)
@@ -174,14 +174,14 @@ def test_ongoing_series_gets_series_aware_signals():
     assert summary["headline"]
     assert "ongoing" in combined_text(summary)
     assert {
-        "Audience signal",
+        "Audience",
         "Access",
-        "Viewing commitment",
-        "Series timing",
-        "Creative signal",
+        "Watch fit",
+        "Series status",
+        "Creative lead",
     } <= labels(summary)
     assert "Ongoing release followers" in summary["best_for"]
-    assert "Start now" in summary["watch_note"]
+    assert "Best for viewers" in summary["watch_note"]
     assert "wait if you prefer completed seasons" in summary["watch_note"]
     assert_clean_chips(summary)
     assert_no_unsupported_marketing(summary)
@@ -205,10 +205,15 @@ def test_ended_series_avoids_upcoming_signals_when_missing():
     )
 
     assert "completed" in combined_text(summary)
-    assert "Completion status" in labels(summary)
-    assert "Series timing" not in labels(summary)
+    assert "Series status" in labels(summary)
     assert "upcoming" not in combined_text(summary)
-    assert "no weekly release wait" in summary["watch_note"]
+    assert "next episode" not in combined_text(summary)
+    assert "next season" not in combined_text(summary)
+    assert summary["watch_note"]
+    assert any(
+        phrase in summary["watch_note"].lower()
+        for phrase in ("finished binge", "completed", "binge")
+    )
 
 
 def test_no_rating_content_does_not_claim_rating_strength():
@@ -223,7 +228,7 @@ def test_no_rating_content_does_not_claim_rating_strength():
         }
     )
 
-    assert "Audience signal" not in labels(summary)
+    assert "Audience" not in labels(summary)
     text = combined_text(summary)
     assert "high-rated" not in text
     assert "strong audience" not in text
@@ -353,7 +358,7 @@ def test_summary_rating_signal_uses_scoring_source_count_not_displayed_sources()
     audience_signal = next(
         signal["value"]
         for signal in summary["key_signals"]
-        if signal["label"] == "Audience signal"
+        if signal["label"] == "Audience"
     )
 
     assert "2 scoring sources" in audience_signal
@@ -373,7 +378,7 @@ def test_no_crew_content_does_not_claim_director_or_creator():
         }
     )
 
-    assert "Creative signal" not in labels(summary)
+    assert "Creative lead" not in labels(summary)
     assert "fans" not in combined_text(summary)
 
 

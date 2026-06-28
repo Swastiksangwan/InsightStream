@@ -651,6 +651,7 @@ def test_detail_ratings_high_vote_source_returns_unified_score():
     assert ratings["source_count"] == 1
     assert ratings["scoring_source_count"] == 1
     assert ratings["sources"][0]["source_name"] == "tmdb"
+    assert ratings["sources"][0]["included_in_unified_score"] is True
     assert (
         ratings["sources"][0]["vote_count"]
         == MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE
@@ -672,6 +673,7 @@ def test_detail_ratings_low_vote_source_keeps_source_without_unified_score():
     assert ratings["source_count"] == 1
     assert ratings["scoring_source_count"] == 0
     assert ratings["sources"][0]["normalized_score"] == 91
+    assert ratings["sources"][0]["included_in_unified_score"] is False
     assert (
         ratings["sources"][0]["vote_count"]
         == MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE - 1
@@ -689,6 +691,7 @@ def test_detail_ratings_null_vote_count_source_keeps_source_without_unified_scor
     assert ratings["scoring_source_count"] == 0
     assert ratings["sources"][0]["normalized_score"] == 78
     assert ratings["sources"][0]["vote_count"] is None
+    assert ratings["sources"][0]["included_in_unified_score"] is False
 
 
 def test_detail_ratings_combines_tmdb_and_imdb_sources():
@@ -806,6 +809,7 @@ def test_detail_ratings_includes_letterboxd_without_changing_unified_score():
     assert letterboxd["raw_score_scale"] == 5
     assert letterboxd["vote_count"] is None
     assert letterboxd["rating_url"] == "https://letterboxd.com/film/example/"
+    assert letterboxd["included_in_unified_score"] is False
 
 
 def test_detail_ratings_low_vote_imdb_does_not_override_confident_tmdb_score():

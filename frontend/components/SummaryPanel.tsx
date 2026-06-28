@@ -62,7 +62,7 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
 
       {keySignals.length > 0 ? (
         <div className="insight-summary__group">
-          <h3>Key signals</h3>
+          <h3>Decision signals</h3>
           <ul className="insight-summary__signals">
             {keySignals.map((signal) => (
               <li key={`${signal.label}-${signal.value}`}>
@@ -76,7 +76,7 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
 
       {summary.watch_note ? (
         <div className="insight-summary__group">
-          <h3>Watch note</h3>
+          <h3>Consider first</h3>
           <p className="insight-summary__note">{summary.watch_note}</p>
         </div>
       ) : null}

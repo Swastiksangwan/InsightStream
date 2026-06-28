@@ -52,10 +52,34 @@ function isLetterboxdSource(source: RatingSourceItem) {
 
 function formatSourceLabel(source: RatingSourceItem) {
   const baseLabel = isLetterboxdSource(source)
-    ? "Film-community snapshot"
+    ? "Film-community signal · Snapshot source"
     : formatSourceCategory(source.source_category);
 
-  return `${baseLabel}${source.rating_url ? " · Source page" : ""}`;
+  return `${baseLabel}${source.rating_url ? " · Open source page" : ""}`;
+}
+
+function getScoringSources(ratings: RatingsResponse) {
+  const explicitSources = (ratings.sources ?? []).filter(
+    (source) => source.included_in_unified_score,
+  );
+
+  if (explicitSources.length > 0) {
+    return explicitSources;
+  }
+
+  const fallbackCount =
+    ratings.scoring_source_count ??
+    (ratings.unified_score === null || ratings.unified_score === undefined
+      ? 0
+      : ratings.source_count);
+
+  if (fallbackCount <= 0) {
+    return [];
+  }
+
+  return (ratings.sources ?? [])
+    .filter((source) => !isLetterboxdSource(source) && (source.vote_count ?? 0) >= 50)
+    .slice(0, fallbackCount);
 }
 
 function getScoringSourceCount(ratings: RatingsResponse) {
@@ -63,9 +87,7 @@ function getScoringSourceCount(ratings: RatingsResponse) {
     return ratings.scoring_source_count;
   }
 
-  return ratings.unified_score === null || ratings.unified_score === undefined
-    ? 0
-    : ratings.source_count;
+  return getScoringSources(ratings).length;
 }
 
 function getInsightSourceLabel(ratings: RatingsResponse) {
@@ -82,16 +104,23 @@ function getInsightSourceLabel(ratings: RatingsResponse) {
 
 function getInsightCopy(ratings: RatingsResponse) {
   const scoringSourceCount = getScoringSourceCount(ratings);
+  const scoringSourceNames = getScoringSources(ratings)
+    .map((source) => source.display_name)
+    .filter(Boolean);
 
   if (ratings.unified_score === null || ratings.unified_score === undefined) {
-    return "Not enough vote-backed data for an InsightStream Score yet.";
+    return "Source ratings available, but not enough vote-backed data for a score yet.";
   }
 
   if (scoringSourceCount === 1) {
-    return "Based on the available confident rating source.";
+    return "Based on one vote-backed source.";
   }
 
-  return "Calculated from rating sources with vote confidence.";
+  if (scoringSourceNames.length >= 2) {
+    return `${scoringSourceNames.slice(0, 2).join(" + ")} vote-backed average.`;
+  }
+
+  return "Vote-backed rating average.";
 }
 
 export function RatingList({ ratings }: RatingListProps) {
@@ -152,7 +181,7 @@ export function RatingList({ ratings }: RatingListProps) {
 
               <p>
                 {isLetterboxd
-                  ? "Dataset snapshot; may not reflect the latest live score."
+                  ? "Snapshot rating; live score may differ."
                   : `${rawRating ?? "Rating scale unavailable"}${voteCount ? ` · ${voteCount}` : ""}`}
               </p>
             </>

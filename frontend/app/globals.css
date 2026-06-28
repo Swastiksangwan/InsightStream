@@ -2149,13 +2149,13 @@ main {
 .insight-summary__body {
   margin: 10px 0 0;
   color: var(--muted);
-  line-height: 1.65;
+  line-height: 1.55;
 }
 
 .insight-summary__group {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  margin-top: 18px;
-  padding-top: 16px;
+  margin-top: 16px;
+  padding-top: 14px;
 }
 
 .insight-summary__group h3 {
@@ -2185,7 +2185,7 @@ main {
 
 .insight-summary__signals {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2196,6 +2196,9 @@ main {
   grid-template-columns: minmax(110px, 0.32fr) 1fr;
   gap: 12px;
   align-items: baseline;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .insight-summary__signals span {
