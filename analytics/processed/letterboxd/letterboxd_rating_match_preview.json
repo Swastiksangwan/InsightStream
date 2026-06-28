@@ -1,0 +1,2187 @@
+{
+  "generated_at": "2026-06-28T07:42:23.547217+00:00",
+  "dataset_file": "analytics/datasets/letterboxd/full_dump.jsonl",
+  "local_movie_count": 80,
+  "matched_count": 79,
+  "high_confidence_count": 75,
+  "good_confidence_count": 0,
+  "ambiguous_count": 4,
+  "unmatched_count": 1,
+  "min_confidence": 0.85,
+  "items": [
+    {
+      "content_id": 188,
+      "local_title": "Aftersun",
+      "local_year": 2022,
+      "local_directors": [
+        "Charlotte Wells"
+      ],
+      "external_ids": {
+        "imdb": "tt19770238",
+        "tmdb": "965150"
+      },
+      "match_status": "ambiguous",
+      "confidence_score": 0.7,
+      "letterboxd": {
+        "title": "Aftersun",
+        "year": 2022,
+        "directors": [
+          "Charlotte Wells"
+        ],
+        "url": "https://letterboxd.com/film/aftersun/",
+        "raw_score": 4.22,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.4,
+        "vote_count": null
+      },
+      "warnings": [
+        "Multiple Letterboxd candidates found for the same title/year; manual review required."
+      ]
+    },
+    {
+      "content_id": 176,
+      "local_title": "Anatomy of a Fall",
+      "local_year": 2023,
+      "local_directors": [
+        "Justine Triet"
+      ],
+      "external_ids": {
+        "imdb": "tt17009710",
+        "tmdb": "915935"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Anatomy of a Fall",
+        "year": 2023,
+        "directors": [
+          "Justine Triet"
+        ],
+        "url": "https://letterboxd.com/film/anatomy-of-a-fall/",
+        "raw_score": 4.13,
+        "raw_score_scale": 5.0,
+        "normalized_score": 82.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 100,
+      "local_title": "Arrival",
+      "local_year": 2016,
+      "local_directors": [
+        "Denis Villeneuve"
+      ],
+      "external_ids": {
+        "imdb": "tt2543164",
+        "tmdb": "329865"
+      },
+      "match_status": "ambiguous",
+      "confidence_score": 0.7,
+      "letterboxd": {
+        "title": "Arrival",
+        "year": 2016,
+        "directors": [
+          "Denis Villeneuve"
+        ],
+        "url": "https://letterboxd.com/film/arrival-2016/",
+        "raw_score": 4.13,
+        "raw_score_scale": 5.0,
+        "normalized_score": 82.6,
+        "vote_count": null
+      },
+      "warnings": [
+        "Multiple Letterboxd candidates found for the same title/year; manual review required."
+      ]
+    },
+    {
+      "content_id": 165,
+      "local_title": "Avengers: Endgame",
+      "local_year": 2019,
+      "local_directors": [
+        "Anthony Russo",
+        "Joe Russo"
+      ],
+      "external_ids": {
+        "imdb": "tt4154796",
+        "tmdb": "299534"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Avengers: Endgame",
+        "year": 2019,
+        "directors": [
+          "Joe Russo",
+          "Anthony Russo"
+        ],
+        "url": "https://letterboxd.com/film/avengers-endgame/",
+        "raw_score": 3.92,
+        "raw_score_scale": 5.0,
+        "normalized_score": 78.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 166,
+      "local_title": "Avengers: Infinity War",
+      "local_year": 2018,
+      "local_directors": [
+        "Anthony Russo",
+        "Joe Russo"
+      ],
+      "external_ids": {
+        "imdb": "tt4154756",
+        "tmdb": "299536"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Avengers: Infinity War",
+        "year": 2018,
+        "directors": [
+          "Anthony Russo",
+          "Joe Russo"
+        ],
+        "url": "https://letterboxd.com/film/avengers-infinity-war/",
+        "raw_score": 4.0,
+        "raw_score_scale": 5.0,
+        "normalized_score": 80.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 12,
+      "local_title": "Barbie",
+      "local_year": 2023,
+      "local_directors": [
+        "Greta Gerwig"
+      ],
+      "external_ids": {
+        "imdb": "tt1517268",
+        "tmdb": "346698"
+      },
+      "match_status": "ambiguous",
+      "confidence_score": 0.7,
+      "letterboxd": {
+        "title": "Barbie",
+        "year": 2023,
+        "directors": [
+          "Greta Gerwig"
+        ],
+        "url": "https://letterboxd.com/film/barbie/",
+        "raw_score": 3.76,
+        "raw_score_scale": 5.0,
+        "normalized_score": 75.2,
+        "vote_count": null
+      },
+      "warnings": [
+        "Multiple Letterboxd candidates found for the same title/year; manual review required."
+      ]
+    },
+    {
+      "content_id": 98,
+      "local_title": "Blade Runner",
+      "local_year": 1982,
+      "local_directors": [
+        "Ridley Scott"
+      ],
+      "external_ids": {
+        "imdb": "tt0083658",
+        "tmdb": "78"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Blade Runner",
+        "year": 1982,
+        "directors": [
+          "Ridley Scott"
+        ],
+        "url": "https://letterboxd.com/film/blade-runner/",
+        "raw_score": 4.1,
+        "raw_score_scale": 5.0,
+        "normalized_score": 82.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 99,
+      "local_title": "Blade Runner 2049",
+      "local_year": 2017,
+      "local_directors": [
+        "Denis Villeneuve"
+      ],
+      "external_ids": {
+        "imdb": "tt1856101",
+        "tmdb": "335984"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Blade Runner 2049",
+        "year": 2017,
+        "directors": [
+          "Denis Villeneuve"
+        ],
+        "url": "https://letterboxd.com/film/blade-runner-2049/",
+        "raw_score": 4.11,
+        "raw_score_scale": 5.0,
+        "normalized_score": 82.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 149,
+      "local_title": "City of God",
+      "local_year": 2002,
+      "local_directors": [
+        "Fernando Meirelles"
+      ],
+      "external_ids": {
+        "imdb": "tt0317248",
+        "tmdb": "598"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "City of God",
+        "year": 2002,
+        "directors": [
+          "Fernando Meirelles"
+        ],
+        "url": "https://letterboxd.com/film/city-of-god/",
+        "raw_score": 4.55,
+        "raw_score_scale": 5.0,
+        "normalized_score": 91.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 147,
+      "local_title": "Coco",
+      "local_year": 2017,
+      "local_directors": [
+        "Lee Unkrich"
+      ],
+      "external_ids": {
+        "imdb": "tt2380307",
+        "tmdb": "354912"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Coco",
+        "year": 2017,
+        "directors": [
+          "Lee Unkrich"
+        ],
+        "url": "https://letterboxd.com/film/coco-2017/",
+        "raw_score": 4.12,
+        "raw_score_scale": 5.0,
+        "normalized_score": 82.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 168,
+      "local_title": "Deadpool & Wolverine",
+      "local_year": 2024,
+      "local_directors": [
+        "Shawn Levy"
+      ],
+      "external_ids": {
+        "imdb": "tt6263850",
+        "tmdb": "533535"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Deadpool & Wolverine",
+        "year": 2024,
+        "directors": [
+          "Shawn Levy"
+        ],
+        "url": "https://letterboxd.com/film/deadpool-wolverine/",
+        "raw_score": 3.47,
+        "raw_score_scale": 5.0,
+        "normalized_score": 69.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 140,
+      "local_title": "Django Unchained",
+      "local_year": 2012,
+      "local_directors": [
+        "Quentin Tarantino"
+      ],
+      "external_ids": {
+        "imdb": "tt1853728",
+        "tmdb": "68718"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Django Unchained",
+        "year": 2012,
+        "directors": [
+          "Quentin Tarantino"
+        ],
+        "url": "https://letterboxd.com/film/django-unchained/",
+        "raw_score": 4.31,
+        "raw_score_scale": 5.0,
+        "normalized_score": 86.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 171,
+      "local_title": "Dune",
+      "local_year": 2021,
+      "local_directors": [
+        "Denis Villeneuve"
+      ],
+      "external_ids": {
+        "imdb": "tt1160419",
+        "tmdb": "438631"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Dune",
+        "year": 2021,
+        "directors": [
+          "Denis Villeneuve"
+        ],
+        "url": "https://letterboxd.com/film/dune-2021/",
+        "raw_score": 3.88,
+        "raw_score_scale": 5.0,
+        "normalized_score": 77.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 11,
+      "local_title": "Dune: Part Two",
+      "local_year": 2024,
+      "local_directors": [
+        "Denis Villeneuve"
+      ],
+      "external_ids": {
+        "imdb": "tt15239678",
+        "tmdb": "693134"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Dune: Part Two",
+        "year": 2024,
+        "directors": [
+          "Denis Villeneuve"
+        ],
+        "url": "https://letterboxd.com/film/dune-part-two/",
+        "raw_score": 4.39,
+        "raw_score_scale": 5.0,
+        "normalized_score": 87.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 142,
+      "local_title": "Eternal Sunshine of the Spotless Mind",
+      "local_year": 2004,
+      "local_directors": [
+        "Michel Gondry"
+      ],
+      "external_ids": {
+        "imdb": "tt0338013",
+        "tmdb": "38"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Eternal Sunshine of the Spotless Mind",
+        "year": 2004,
+        "directors": [
+          "Michel Gondry"
+        ],
+        "url": "https://letterboxd.com/film/eternal-sunshine-of-the-spotless-mind/",
+        "raw_score": 4.24,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 96,
+      "local_title": "Everything Everywhere All at Once",
+      "local_year": 2022,
+      "local_directors": [
+        "Daniel Kwan",
+        "Daniel Scheinert"
+      ],
+      "external_ids": {
+        "imdb": "tt6710474",
+        "tmdb": "545611"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Everything Everywhere All at Once",
+        "year": 2022,
+        "directors": [
+          "Daniel Scheinert",
+          "Daniel Kwan"
+        ],
+        "url": "https://letterboxd.com/film/everything-everywhere-all-at-once/",
+        "raw_score": 4.27,
+        "raw_score_scale": 5.0,
+        "normalized_score": 85.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 144,
+      "local_title": "Ex Machina",
+      "local_year": 2015,
+      "local_directors": [
+        "Alex Garland"
+      ],
+      "external_ids": {
+        "imdb": "tt0470752",
+        "tmdb": "264660"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Ex Machina",
+        "year": 2015,
+        "directors": [
+          "Alex Garland"
+        ],
+        "url": "https://letterboxd.com/film/ex-machina-2015/",
+        "raw_score": 3.97,
+        "raw_score_scale": 5.0,
+        "normalized_score": 79.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 82,
+      "local_title": "Fight Club",
+      "local_year": 1999,
+      "local_directors": [
+        "David Fincher"
+      ],
+      "external_ids": {
+        "imdb": "tt0137523",
+        "tmdb": "550"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Fight Club",
+        "year": 1999,
+        "directors": [
+          "David Fincher"
+        ],
+        "url": "https://letterboxd.com/film/fight-club/",
+        "raw_score": 4.27,
+        "raw_score_scale": 5.0,
+        "normalized_score": 85.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 89,
+      "local_title": "Forrest Gump",
+      "local_year": 1994,
+      "local_directors": [
+        "Robert Zemeckis"
+      ],
+      "external_ids": {
+        "imdb": "tt0109830",
+        "tmdb": "13"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Forrest Gump",
+        "year": 1994,
+        "directors": [
+          "Robert Zemeckis"
+        ],
+        "url": "https://letterboxd.com/film/forrest-gump/",
+        "raw_score": 4.15,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 123,
+      "local_title": "Get Out",
+      "local_year": 2017,
+      "local_directors": [
+        "Jordan Peele"
+      ],
+      "external_ids": {
+        "imdb": "tt5052448",
+        "tmdb": "419430"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Get Out",
+        "year": 2017,
+        "directors": [
+          "Jordan Peele"
+        ],
+        "url": "https://letterboxd.com/film/get-out-2017/",
+        "raw_score": 4.15,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 93,
+      "local_title": "Gladiator",
+      "local_year": 2000,
+      "local_directors": [
+        "Ridley Scott"
+      ],
+      "external_ids": {
+        "imdb": "tt0172495",
+        "tmdb": "98"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Gladiator",
+        "year": 2000,
+        "directors": [
+          "Ridley Scott"
+        ],
+        "url": "https://letterboxd.com/film/gladiator-2000/",
+        "raw_score": 4.15,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 178,
+      "local_title": "Godzilla Minus One",
+      "local_year": 2023,
+      "local_directors": [
+        "Takashi Yamazaki"
+      ],
+      "external_ids": {
+        "imdb": "tt23289160",
+        "tmdb": "940721"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Godzilla Minus One",
+        "year": 2023,
+        "directors": [
+          "Takashi Yamazaki"
+        ],
+        "url": "https://letterboxd.com/film/godzilla-minus-one/",
+        "raw_score": 4.07,
+        "raw_score_scale": 5.0,
+        "normalized_score": 81.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 90,
+      "local_title": "GoodFellas",
+      "local_year": 1990,
+      "local_directors": [
+        "Martin Scorsese"
+      ],
+      "external_ids": {
+        "imdb": "tt0099685",
+        "tmdb": "769"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "GoodFellas",
+        "year": 1990,
+        "directors": [
+          "Martin Scorsese"
+        ],
+        "url": "https://letterboxd.com/film/goodfellas/",
+        "raw_score": 4.47,
+        "raw_score_scale": 5.0,
+        "normalized_score": 89.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 167,
+      "local_title": "Guardians of the Galaxy Vol. 3",
+      "local_year": 2023,
+      "local_directors": [
+        "James Gunn"
+      ],
+      "external_ids": {
+        "imdb": "tt6791350",
+        "tmdb": "447365"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Guardians of the Galaxy Vol. 3",
+        "year": 2023,
+        "directors": [
+          "James Gunn"
+        ],
+        "url": "https://letterboxd.com/film/guardians-of-the-galaxy-vol-3/",
+        "raw_score": 3.96,
+        "raw_score_scale": 5.0,
+        "normalized_score": 79.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 143,
+      "local_title": "Her",
+      "local_year": 2013,
+      "local_directors": [
+        "Spike Jonze"
+      ],
+      "external_ids": {
+        "imdb": "tt1798709",
+        "tmdb": "152601"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Her",
+        "year": 2013,
+        "directors": [
+          "Spike Jonze"
+        ],
+        "url": "https://letterboxd.com/film/her/",
+        "raw_score": 3.99,
+        "raw_score_scale": 5.0,
+        "normalized_score": 79.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 6,
+      "local_title": "Inception",
+      "local_year": 2010,
+      "local_directors": [
+        "Christopher Nolan"
+      ],
+      "external_ids": {
+        "imdb": "tt1375666",
+        "tmdb": "27205"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Inception",
+        "year": 2010,
+        "directors": [
+          "Christopher Nolan"
+        ],
+        "url": "https://letterboxd.com/film/inception/",
+        "raw_score": 4.21,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 146,
+      "local_title": "Inside Out",
+      "local_year": 2015,
+      "local_directors": [
+        "Pete Docter"
+      ],
+      "external_ids": {
+        "imdb": "tt2096673",
+        "tmdb": "150540"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Inside Out",
+        "year": 2015,
+        "directors": [
+          "Pete Docter"
+        ],
+        "url": "https://letterboxd.com/film/inside-out-2015/",
+        "raw_score": 3.84,
+        "raw_score_scale": 5.0,
+        "normalized_score": 76.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 183,
+      "local_title": "Inside Out 2",
+      "local_year": 2024,
+      "local_directors": [
+        "Kelsey Mann"
+      ],
+      "external_ids": {
+        "imdb": "tt22022452",
+        "tmdb": "1022789"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Inside Out 2",
+        "year": 2024,
+        "directors": [
+          "Kelsey Mann"
+        ],
+        "url": "https://letterboxd.com/film/inside-out-2-2024/",
+        "raw_score": 3.58,
+        "raw_score_scale": 5.0,
+        "normalized_score": 71.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 1,
+      "local_title": "Interstellar",
+      "local_year": 2014,
+      "local_directors": [
+        "Christopher Nolan"
+      ],
+      "external_ids": {
+        "imdb": "tt0816692",
+        "tmdb": "157336"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Interstellar",
+        "year": 2014,
+        "directors": [
+          "Christopher Nolan"
+        ],
+        "url": "https://letterboxd.com/film/interstellar/",
+        "raw_score": 4.42,
+        "raw_score_scale": 5.0,
+        "normalized_score": 88.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 169,
+      "local_title": "John Wick: Chapter 4",
+      "local_year": 2023,
+      "local_directors": [
+        "Chad Stahelski"
+      ],
+      "external_ids": {
+        "imdb": "tt10366206",
+        "tmdb": "603692"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "John Wick: Chapter 4",
+        "year": 2023,
+        "directors": [
+          "Chad Stahelski"
+        ],
+        "url": "https://letterboxd.com/film/john-wick-chapter-4/",
+        "raw_score": 3.91,
+        "raw_score_scale": 5.0,
+        "normalized_score": 78.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 173,
+      "local_title": "Joker",
+      "local_year": 2019,
+      "local_directors": [
+        "Todd Phillips"
+      ],
+      "external_ids": {
+        "imdb": "tt7286456",
+        "tmdb": "475557"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Joker",
+        "year": 2019,
+        "directors": [
+          "Todd Phillips"
+        ],
+        "url": "https://letterboxd.com/film/joker-2019/",
+        "raw_score": 3.84,
+        "raw_score_scale": 5.0,
+        "normalized_score": 76.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 117,
+      "local_title": "Jurassic Park",
+      "local_year": 1993,
+      "local_directors": [
+        "Steven Spielberg"
+      ],
+      "external_ids": {
+        "imdb": "tt0107290",
+        "tmdb": "329"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Jurassic Park",
+        "year": 1993,
+        "directors": [
+          "Steven Spielberg"
+        ],
+        "url": "https://letterboxd.com/film/jurassic-park/",
+        "raw_score": 4.12,
+        "raw_score_scale": 5.0,
+        "normalized_score": 82.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 189,
+      "local_title": "Killers of the Flower Moon",
+      "local_year": 2023,
+      "local_directors": [
+        "Martin Scorsese"
+      ],
+      "external_ids": {
+        "imdb": "tt5537002",
+        "tmdb": "466420"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Killers of the Flower Moon",
+        "year": 2023,
+        "directors": [
+          "Martin Scorsese"
+        ],
+        "url": "https://letterboxd.com/film/killers-of-the-flower-moon/",
+        "raw_score": 4.04,
+        "raw_score_scale": 5.0,
+        "normalized_score": 80.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 122,
+      "local_title": "Knives Out",
+      "local_year": 2019,
+      "local_directors": [
+        "Rian Johnson"
+      ],
+      "external_ids": {
+        "imdb": "tt8946378",
+        "tmdb": "546554"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Knives Out",
+        "year": 2019,
+        "directors": [
+          "Rian Johnson"
+        ],
+        "url": "https://letterboxd.com/film/knives-out-2019/",
+        "raw_score": 3.96,
+        "raw_score_scale": 5.0,
+        "normalized_score": 79.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 138,
+      "local_title": "La La Land",
+      "local_year": 2016,
+      "local_directors": [
+        "Damien Chazelle"
+      ],
+      "external_ids": {
+        "imdb": "tt3783958",
+        "tmdb": "313369"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "La La Land",
+        "year": 2016,
+        "directors": [
+          "Damien Chazelle"
+        ],
+        "url": "https://letterboxd.com/film/la-la-land/",
+        "raw_score": 4.12,
+        "raw_score_scale": 5.0,
+        "normalized_score": 82.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 94,
+      "local_title": "Mad Max: Fury Road",
+      "local_year": 2015,
+      "local_directors": [
+        "George Miller"
+      ],
+      "external_ids": {
+        "imdb": "tt1392190",
+        "tmdb": "76341"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Mad Max: Fury Road",
+        "year": 2015,
+        "directors": [
+          "George Miller"
+        ],
+        "url": "https://letterboxd.com/film/mad-max-fury-road/",
+        "raw_score": 4.18,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 134,
+      "local_title": "Memento",
+      "local_year": 2000,
+      "local_directors": [
+        "Christopher Nolan"
+      ],
+      "external_ids": {
+        "imdb": "tt0209144",
+        "tmdb": "77"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Memento",
+        "year": 2000,
+        "directors": [
+          "Christopher Nolan"
+        ],
+        "url": "https://letterboxd.com/film/memento/",
+        "raw_score": 4.18,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 170,
+      "local_title": "Mission: Impossible - Dead Reckoning Part One",
+      "local_year": 2023,
+      "local_directors": [
+        "Christopher McQuarrie"
+      ],
+      "external_ids": {
+        "imdb": "tt9603212",
+        "tmdb": "575264"
+      },
+      "match_status": "unmatched",
+      "confidence_score": 0,
+      "letterboxd": null,
+      "warnings": [
+        "No Letterboxd candidate found for normalized title/year."
+      ]
+    },
+    {
+      "content_id": 135,
+      "local_title": "No Country for Old Men",
+      "local_year": 2007,
+      "local_directors": [
+        "Ethan Coen",
+        "Joel Coen"
+      ],
+      "external_ids": {
+        "imdb": "tt0477348",
+        "tmdb": "6977"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "No Country for Old Men",
+        "year": 2007,
+        "directors": [
+          "Ethan Coen",
+          "Joel Coen"
+        ],
+        "url": "https://letterboxd.com/film/no-country-for-old-men/",
+        "raw_score": 4.32,
+        "raw_score_scale": 5.0,
+        "normalized_score": 86.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 80,
+      "local_title": "Oppenheimer",
+      "local_year": 2023,
+      "local_directors": [
+        "Christopher Nolan"
+      ],
+      "external_ids": {
+        "imdb": "tt15398776",
+        "tmdb": "872585"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Oppenheimer",
+        "year": 2023,
+        "directors": [
+          "Christopher Nolan"
+        ],
+        "url": "https://letterboxd.com/film/oppenheimer-2023/",
+        "raw_score": 4.18,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 150,
+      "local_title": "Pan's Labyrinth",
+      "local_year": 2006,
+      "local_directors": [
+        "Guillermo del Toro"
+      ],
+      "external_ids": {
+        "imdb": "tt0457430",
+        "tmdb": "1417"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Pan's Labyrinth",
+        "year": 2006,
+        "directors": [
+          "Guillermo del Toro"
+        ],
+        "url": "https://letterboxd.com/film/pans-labyrinth/",
+        "raw_score": 4.16,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 10,
+      "local_title": "Parasite",
+      "local_year": 2019,
+      "local_directors": [
+        "Bong Joon Ho"
+      ],
+      "external_ids": {
+        "imdb": "tt6751668",
+        "tmdb": "496243"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Parasite",
+        "year": 2019,
+        "directors": [
+          "Bong Joon Ho"
+        ],
+        "url": "https://letterboxd.com/film/parasite-2019/",
+        "raw_score": 4.54,
+        "raw_score_scale": 5.0,
+        "normalized_score": 90.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 177,
+      "local_title": "Past Lives",
+      "local_year": 2023,
+      "local_directors": [
+        "Celine Song"
+      ],
+      "external_ids": {
+        "imdb": "tt13238346",
+        "tmdb": "666277"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Past Lives",
+        "year": 2023,
+        "directors": [
+          "Celine Song"
+        ],
+        "url": "https://letterboxd.com/film/past-lives/",
+        "raw_score": 4.17,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 175,
+      "local_title": "Poor Things",
+      "local_year": 2023,
+      "local_directors": [
+        "Yorgos Lanthimos"
+      ],
+      "external_ids": {
+        "imdb": "tt14230458",
+        "tmdb": "792307"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Poor Things",
+        "year": 2023,
+        "directors": [
+          "Yorgos Lanthimos"
+        ],
+        "url": "https://letterboxd.com/film/poor-things-2023/",
+        "raw_score": 3.97,
+        "raw_score_scale": 5.0,
+        "normalized_score": 79.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 88,
+      "local_title": "Pulp Fiction",
+      "local_year": 1994,
+      "local_directors": [
+        "Quentin Tarantino"
+      ],
+      "external_ids": {
+        "imdb": "tt0110912",
+        "tmdb": "680"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Pulp Fiction",
+        "year": 1994,
+        "directors": [
+          "Quentin Tarantino"
+        ],
+        "url": "https://letterboxd.com/film/pulp-fiction/",
+        "raw_score": 4.25,
+        "raw_score_scale": 5.0,
+        "normalized_score": 85.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 185,
+      "local_title": "Puss in Boots: The Last Wish",
+      "local_year": 2022,
+      "local_directors": [
+        "Joel Crawford"
+      ],
+      "external_ids": {
+        "imdb": "tt3915174",
+        "tmdb": "315162"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Puss in Boots: The Last Wish",
+        "year": 2022,
+        "directors": [
+          "Joel Crawford"
+        ],
+        "url": "https://letterboxd.com/film/puss-in-boots-the-last-wish/",
+        "raw_score": 4.14,
+        "raw_score_scale": 5.0,
+        "normalized_score": 82.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 181,
+      "local_title": "RRR",
+      "local_year": 2022,
+      "local_directors": [
+        "S. S. Rajamouli"
+      ],
+      "external_ids": {
+        "imdb": "tt8178634",
+        "tmdb": "579974"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "RRR",
+        "year": 2022,
+        "directors": [
+          "S. S. Rajamouli"
+        ],
+        "url": "https://letterboxd.com/film/rrr/",
+        "raw_score": 4.2,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 14,
+      "local_title": "Red Notice",
+      "local_year": 2021,
+      "local_directors": [
+        "Rawson Marshall Thurber"
+      ],
+      "external_ids": {
+        "imdb": "tt7991608",
+        "tmdb": "512195"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Red Notice",
+        "year": 2021,
+        "directors": [
+          "Rawson Marshall Thurber"
+        ],
+        "url": "https://letterboxd.com/film/red-notice/",
+        "raw_score": 2.47,
+        "raw_score_scale": 5.0,
+        "normalized_score": 49.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 132,
+      "local_title": "Saving Private Ryan",
+      "local_year": 1998,
+      "local_directors": [
+        "Steven Spielberg"
+      ],
+      "external_ids": {
+        "imdb": "tt0120815",
+        "tmdb": "857"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Saving Private Ryan",
+        "year": 1998,
+        "directors": [
+          "Steven Spielberg"
+        ],
+        "url": "https://letterboxd.com/film/saving-private-ryan/",
+        "raw_score": 4.25,
+        "raw_score_scale": 5.0,
+        "normalized_score": 85.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 131,
+      "local_title": "Schindler's List",
+      "local_year": 1993,
+      "local_directors": [
+        "Steven Spielberg"
+      ],
+      "external_ids": {
+        "imdb": "tt0108052",
+        "tmdb": "424"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Schindler's List",
+        "year": 1993,
+        "directors": [
+          "Steven Spielberg"
+        ],
+        "url": "https://letterboxd.com/film/schindlers-list/",
+        "raw_score": 4.53,
+        "raw_score_scale": 5.0,
+        "normalized_score": 90.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 133,
+      "local_title": "Se7en",
+      "local_year": 1995,
+      "local_directors": [
+        "David Fincher"
+      ],
+      "external_ids": {
+        "imdb": "tt0114369",
+        "tmdb": "807"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Se7en",
+        "year": 1995,
+        "directors": [
+          "David Fincher"
+        ],
+        "url": "https://letterboxd.com/film/se7en/",
+        "raw_score": 4.35,
+        "raw_score_scale": 5.0,
+        "normalized_score": 87.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 180,
+      "local_title": "Society of the Snow",
+      "local_year": 2023,
+      "local_directors": [
+        "J. A. Bayona"
+      ],
+      "external_ids": {
+        "imdb": "tt16277242",
+        "tmdb": "906126"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Society of the Snow",
+        "year": 2023,
+        "directors": [
+          "J.A. Bayona"
+        ],
+        "url": "https://letterboxd.com/film/society-of-the-snow/",
+        "raw_score": 4.15,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 13,
+      "local_title": "Spider-Man: Across the Spider-Verse",
+      "local_year": 2023,
+      "local_directors": [
+        "Joaquim Dos Santos",
+        "Justin K. Thompson",
+        "Kemp Powers"
+      ],
+      "external_ids": {
+        "imdb": "tt9362722",
+        "tmdb": "569094"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Spider-Man: Across the Spider-Verse",
+        "year": 2023,
+        "directors": [
+          "Justin K. Thompson",
+          "Kemp Powers"
+        ],
+        "url": "https://letterboxd.com/film/spider-man-across-the-spider-verse/",
+        "raw_score": 4.42,
+        "raw_score_scale": 5.0,
+        "normalized_score": 88.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 182,
+      "local_title": "Spider-Man: No Way Home",
+      "local_year": 2021,
+      "local_directors": [
+        "Jon Watts"
+      ],
+      "external_ids": {
+        "imdb": "tt10872600",
+        "tmdb": "634649"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Spider-Man: No Way Home",
+        "year": 2021,
+        "directors": [
+          "Jon Watts"
+        ],
+        "url": "https://letterboxd.com/film/spider-man-no-way-home/",
+        "raw_score": 3.83,
+        "raw_score_scale": 5.0,
+        "normalized_score": 76.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 120,
+      "local_title": "Spirited Away",
+      "local_year": 2001,
+      "local_directors": [
+        "Hayao Miyazaki"
+      ],
+      "external_ids": {
+        "imdb": "tt0245429",
+        "tmdb": "129"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Spirited Away",
+        "year": 2001,
+        "directors": [
+          "Hayao Miyazaki"
+        ],
+        "url": "https://letterboxd.com/film/spirited-away/",
+        "raw_score": 4.45,
+        "raw_score_scale": 5.0,
+        "normalized_score": 89.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 172,
+      "local_title": "The Batman",
+      "local_year": 2022,
+      "local_directors": [
+        "Matt Reeves"
+      ],
+      "external_ids": {
+        "imdb": "tt1877830",
+        "tmdb": "414906"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Batman",
+        "year": 2022,
+        "directors": [
+          "Matt Reeves"
+        ],
+        "url": "https://letterboxd.com/film/the-batman/",
+        "raw_score": 4.0,
+        "raw_score_scale": 5.0,
+        "normalized_score": 80.0,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 9,
+      "local_title": "The Dark Knight",
+      "local_year": 2008,
+      "local_directors": [
+        "Christopher Nolan"
+      ],
+      "external_ids": {
+        "imdb": "tt0468569",
+        "tmdb": "155"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Dark Knight",
+        "year": 2008,
+        "directors": [
+          "Christopher Nolan"
+        ],
+        "url": "https://letterboxd.com/film/the-dark-knight/",
+        "raw_score": 4.48,
+        "raw_score_scale": 5.0,
+        "normalized_score": 89.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 121,
+      "local_title": "The Departed",
+      "local_year": 2006,
+      "local_directors": [
+        "Martin Scorsese"
+      ],
+      "external_ids": {
+        "imdb": "tt0407887",
+        "tmdb": "1422"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Departed",
+        "year": 2006,
+        "directors": [
+          "Martin Scorsese"
+        ],
+        "url": "https://letterboxd.com/film/the-departed/",
+        "raw_score": 4.32,
+        "raw_score_scale": 5.0,
+        "normalized_score": 86.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 87,
+      "local_title": "The Godfather",
+      "local_year": 1972,
+      "local_directors": [
+        "Francis Ford Coppola"
+      ],
+      "external_ids": {
+        "imdb": "tt0068646",
+        "tmdb": "238"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Godfather",
+        "year": 1972,
+        "directors": [
+          "Francis Ford Coppola"
+        ],
+        "url": "https://letterboxd.com/film/the-godfather/",
+        "raw_score": 4.53,
+        "raw_score_scale": 5.0,
+        "normalized_score": 90.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 137,
+      "local_title": "The Grand Budapest Hotel",
+      "local_year": 2014,
+      "local_directors": [
+        "Wes Anderson"
+      ],
+      "external_ids": {
+        "imdb": "tt2278388",
+        "tmdb": "120467"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Grand Budapest Hotel",
+        "year": 2014,
+        "directors": [
+          "Wes Anderson"
+        ],
+        "url": "https://letterboxd.com/film/the-grand-budapest-hotel/",
+        "raw_score": 4.24,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 187,
+      "local_title": "The Holdovers",
+      "local_year": 2023,
+      "local_directors": [
+        "Alexander Payne"
+      ],
+      "external_ids": {
+        "imdb": "tt14849194",
+        "tmdb": "840430"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Holdovers",
+        "year": 2023,
+        "directors": [
+          "Alexander Payne"
+        ],
+        "url": "https://letterboxd.com/film/the-holdovers/",
+        "raw_score": 4.24,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 91,
+      "local_title": "The Lord of the Rings: The Fellowship of the Ring",
+      "local_year": 2001,
+      "local_directors": [
+        "Peter Jackson"
+      ],
+      "external_ids": {
+        "imdb": "tt0120737",
+        "tmdb": "120"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Lord of the Rings: The Fellowship of the Ring",
+        "year": 2001,
+        "directors": [
+          "Peter Jackson"
+        ],
+        "url": "https://letterboxd.com/film/the-lord-of-the-rings-the-fellowship-of-the-ring/",
+        "raw_score": 4.38,
+        "raw_score_scale": 5.0,
+        "normalized_score": 87.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 92,
+      "local_title": "The Lord of the Rings: The Return of the King",
+      "local_year": 2003,
+      "local_directors": [
+        "Peter Jackson"
+      ],
+      "external_ids": {
+        "imdb": "tt0167260",
+        "tmdb": "122"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Lord of the Rings: The Return of the King",
+        "year": 2003,
+        "directors": [
+          "Peter Jackson"
+        ],
+        "url": "https://letterboxd.com/film/the-lord-of-the-rings-the-return-of-the-king/",
+        "raw_score": 4.53,
+        "raw_score_scale": 5.0,
+        "normalized_score": 90.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 145,
+      "local_title": "The Martian",
+      "local_year": 2015,
+      "local_directors": [
+        "Ridley Scott"
+      ],
+      "external_ids": {
+        "imdb": "tt3659388",
+        "tmdb": "286217"
+      },
+      "match_status": "ambiguous",
+      "confidence_score": 0.7,
+      "letterboxd": {
+        "title": "The Martian",
+        "year": 2015,
+        "directors": [
+          "Ridley Scott"
+        ],
+        "url": "https://letterboxd.com/film/the-martian/",
+        "raw_score": 3.78,
+        "raw_score_scale": 5.0,
+        "normalized_score": 75.6,
+        "vote_count": null
+      },
+      "warnings": [
+        "Multiple Letterboxd candidates found for the same title/year; manual review required."
+      ]
+    },
+    {
+      "content_id": 81,
+      "local_title": "The Matrix",
+      "local_year": 1999,
+      "local_directors": [
+        "Lana Wachowski",
+        "Lilly Wachowski"
+      ],
+      "external_ids": {
+        "imdb": "tt0133093",
+        "tmdb": "603"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Matrix",
+        "year": 1999,
+        "directors": [
+          "Lana Wachowski",
+          "Lilly Wachowski"
+        ],
+        "url": "https://letterboxd.com/film/the-matrix/",
+        "raw_score": 4.17,
+        "raw_score_scale": 5.0,
+        "normalized_score": 83.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 119,
+      "local_title": "The Prestige",
+      "local_year": 2006,
+      "local_directors": [
+        "Christopher Nolan"
+      ],
+      "external_ids": {
+        "imdb": "tt0482571",
+        "tmdb": "1124"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Prestige",
+        "year": 2006,
+        "directors": [
+          "Christopher Nolan"
+        ],
+        "url": "https://letterboxd.com/film/the-prestige/",
+        "raw_score": 4.26,
+        "raw_score_scale": 5.0,
+        "normalized_score": 85.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 86,
+      "local_title": "The Shawshank Redemption",
+      "local_year": 1994,
+      "local_directors": [
+        "Frank Darabont"
+      ],
+      "external_ids": {
+        "imdb": "tt0111161",
+        "tmdb": "278"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Shawshank Redemption",
+        "year": 1994,
+        "directors": [
+          "Frank Darabont"
+        ],
+        "url": "https://letterboxd.com/film/the-shawshank-redemption/",
+        "raw_score": 4.57,
+        "raw_score_scale": 5.0,
+        "normalized_score": 91.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 116,
+      "local_title": "The Silence of the Lambs",
+      "local_year": 1991,
+      "local_directors": [
+        "Jonathan Demme"
+      ],
+      "external_ids": {
+        "imdb": "tt0102926",
+        "tmdb": "274"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Silence of the Lambs",
+        "year": 1991,
+        "directors": [
+          "Jonathan Demme"
+        ],
+        "url": "https://letterboxd.com/film/the-silence-of-the-lambs/",
+        "raw_score": 4.34,
+        "raw_score_scale": 5.0,
+        "normalized_score": 86.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 97,
+      "local_title": "The Social Network",
+      "local_year": 2010,
+      "local_directors": [
+        "David Fincher"
+      ],
+      "external_ids": {
+        "imdb": "tt1285016",
+        "tmdb": "37799"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Social Network",
+        "year": 2010,
+        "directors": [
+          "David Fincher"
+        ],
+        "url": "https://letterboxd.com/film/the-social-network/",
+        "raw_score": 3.93,
+        "raw_score_scale": 5.0,
+        "normalized_score": 78.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 174,
+      "local_title": "The Substance",
+      "local_year": 2024,
+      "local_directors": [
+        "Coralie Fargeat"
+      ],
+      "external_ids": {
+        "imdb": "tt17526714",
+        "tmdb": "933260"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Substance",
+        "year": 2024,
+        "directors": [
+          "Coralie Fargeat"
+        ],
+        "url": "https://letterboxd.com/film/the-substance/",
+        "raw_score": 3.78,
+        "raw_score_scale": 5.0,
+        "normalized_score": 75.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 184,
+      "local_title": "The Super Mario Bros. Movie",
+      "local_year": 2023,
+      "local_directors": [
+        "Aaron Horvath",
+        "Michael Jelenic"
+      ],
+      "external_ids": {
+        "imdb": "tt6718170",
+        "tmdb": "502356"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Super Mario Bros. Movie",
+        "year": 2023,
+        "directors": [
+          "Aaron Horvath",
+          "Michael Jelenic"
+        ],
+        "url": "https://letterboxd.com/film/the-super-mario-bros-movie/",
+        "raw_score": 3.23,
+        "raw_score_scale": 5.0,
+        "normalized_score": 64.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 141,
+      "local_title": "The Truman Show",
+      "local_year": 1998,
+      "local_directors": [
+        "Peter Weir"
+      ],
+      "external_ids": {
+        "imdb": "tt0120382",
+        "tmdb": "37165"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Truman Show",
+        "year": 1998,
+        "directors": [
+          "Peter Weir"
+        ],
+        "url": "https://letterboxd.com/film/the-truman-show/",
+        "raw_score": 4.22,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 186,
+      "local_title": "The Wild Robot",
+      "local_year": 2024,
+      "local_directors": [
+        "Chris Sanders"
+      ],
+      "external_ids": {
+        "imdb": "tt29623480",
+        "tmdb": "1184918"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Wild Robot",
+        "year": 2024,
+        "directors": [
+          "Chris Sanders"
+        ],
+        "url": "https://letterboxd.com/film/the-wild-robot/",
+        "raw_score": 4.22,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 139,
+      "local_title": "The Wolf of Wall Street",
+      "local_year": 2013,
+      "local_directors": [
+        "Martin Scorsese"
+      ],
+      "external_ids": {
+        "imdb": "tt0993846",
+        "tmdb": "106646"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Wolf of Wall Street",
+        "year": 2013,
+        "directors": [
+          "Martin Scorsese"
+        ],
+        "url": "https://letterboxd.com/film/the-wolf-of-wall-street/",
+        "raw_score": 3.99,
+        "raw_score_scale": 5.0,
+        "normalized_score": 79.8,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 179,
+      "local_title": "The Zone of Interest",
+      "local_year": 2023,
+      "local_directors": [
+        "Jonathan Glazer"
+      ],
+      "external_ids": {
+        "imdb": "tt7160372",
+        "tmdb": "467244"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "The Zone of Interest",
+        "year": 2023,
+        "directors": [
+          "Jonathan Glazer"
+        ],
+        "url": "https://letterboxd.com/film/the-zone-of-interest/",
+        "raw_score": 3.86,
+        "raw_score_scale": 5.0,
+        "normalized_score": 77.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 136,
+      "local_title": "There Will Be Blood",
+      "local_year": 2007,
+      "local_directors": [
+        "Paul Thomas Anderson"
+      ],
+      "external_ids": {
+        "imdb": "tt0469494",
+        "tmdb": "7345"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "There Will Be Blood",
+        "year": 2007,
+        "directors": [
+          "Paul Thomas Anderson"
+        ],
+        "url": "https://letterboxd.com/film/there-will-be-blood/",
+        "raw_score": 4.46,
+        "raw_score_scale": 5.0,
+        "normalized_score": 89.2,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 118,
+      "local_title": "Titanic",
+      "local_year": 1997,
+      "local_directors": [
+        "James Cameron"
+      ],
+      "external_ids": {
+        "imdb": "tt0120338",
+        "tmdb": "597"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Titanic",
+        "year": 1997,
+        "directors": [
+          "James Cameron"
+        ],
+        "url": "https://letterboxd.com/film/titanic-1997/",
+        "raw_score": 3.83,
+        "raw_score_scale": 5.0,
+        "normalized_score": 76.6,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 83,
+      "local_title": "Top Gun: Maverick",
+      "local_year": 2022,
+      "local_directors": [
+        "Joseph Kosinski"
+      ],
+      "external_ids": {
+        "imdb": "tt1745960",
+        "tmdb": "361743"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Top Gun: Maverick",
+        "year": 2022,
+        "directors": [
+          "Joseph Kosinski"
+        ],
+        "url": "https://letterboxd.com/film/top-gun-maverick/",
+        "raw_score": 3.97,
+        "raw_score_scale": 5.0,
+        "normalized_score": 79.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 95,
+      "local_title": "Whiplash",
+      "local_year": 2014,
+      "local_directors": [
+        "Damien Chazelle"
+      ],
+      "external_ids": {
+        "imdb": "tt2582802",
+        "tmdb": "244786"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Whiplash",
+        "year": 2014,
+        "directors": [
+          "Damien Chazelle"
+        ],
+        "url": "https://letterboxd.com/film/whiplash-2014/",
+        "raw_score": 4.42,
+        "raw_score_scale": 5.0,
+        "normalized_score": 88.4,
+        "vote_count": null
+      },
+      "warnings": []
+    },
+    {
+      "content_id": 148,
+      "local_title": "Your Name.",
+      "local_year": 2016,
+      "local_directors": [
+        "Makoto Shinkai"
+      ],
+      "external_ids": {
+        "imdb": "tt5311514",
+        "tmdb": "372058"
+      },
+      "match_status": "high_confidence",
+      "confidence_score": 0.95,
+      "letterboxd": {
+        "title": "Your Name.",
+        "year": 2016,
+        "directors": [
+          "Makoto Shinkai"
+        ],
+        "url": "https://letterboxd.com/film/your-name/",
+        "raw_score": 4.22,
+        "raw_score_scale": 5.0,
+        "normalized_score": 84.4,
+        "vote_count": null
+      },
+      "warnings": []
+    }
+  ]
+}

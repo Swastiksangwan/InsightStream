@@ -7,6 +7,7 @@ frontend/.env.local
 # Analytics raw provider output
 analytics/raw/tmdb/*.json
 analytics/datasets/imdb/
+analytics/datasets/letterboxd/
 
 # Python
 __pycache__/

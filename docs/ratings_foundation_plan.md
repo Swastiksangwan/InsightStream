@@ -49,6 +49,10 @@ contributing to the unified score.
 IMDb integration uses a local dataset file and matches only through stored IMDb
 external IDs. It does not scrape IMDb pages.
 
+Letterboxd is being evaluated through a local dataset preview script only.
+It is not imported into `content_ratings` yet and does not contribute to the
+InsightStream Score.
+
 Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, AI verdicts, and recommendations remain future phases.
 
 ## 2. Rating Source Strategy
@@ -86,7 +90,7 @@ Do not scrape rating websites.
 | Phase 1 | TMDb | Already available in fetched metadata and safest first implementation. | Implemented |
 | Phase 2 | IMDb | Strong user recognition and matchable through existing IMDb external IDs. | Implemented through official non-commercial dataset import |
 | Phase 3 | Rotten Tomatoes / Metacritic | Useful critic and audience signals. | Wait for legal/source access |
-| Phase 4 | Letterboxd | Strong film-pop-culture signal, mostly film-focused. | Wait for approved API/source access |
+| Phase 4 | Letterboxd | Strong film-pop-culture signal, mostly film-focused. | Preview-only local dataset matching under evaluation |
 | Phase 5 | CinemaScore | Useful movie-only theatrical opening reaction with limited coverage. | Optional later signal |
 
 ## 4. Proposed Database Model
@@ -243,6 +247,27 @@ IMDb ratings are imported from a local copy of IMDb's official non-commercial
 stored `external_ids.external_id` rows where `source_name = 'imdb'`.
 
 Do not commit the dataset file and do not scrape IMDb pages.
+
+### Letterboxd Preview Evaluation
+
+Letterboxd ratings are being evaluated through a local JSONL dataset preview
+before any database import is considered. The preview script matches local
+movie catalog rows against Letterboxd rows using normalized title, year, and
+director overlap.
+
+Matching is intentionally conservative because Letterboxd rows do not provide a
+provider ID that already exists in the local `external_ids` table. Title/year
+matching can produce false positives, especially around remakes, alternate
+release years, and duplicated film titles.
+
+Rules for this evaluation:
+
+- output a preview/report for manual review
+- do not write to `content_ratings`
+- do not use or store review text
+- do not scrape Letterboxd
+- keep Letterboxd out of the InsightStream Score until match confidence,
+  vote-count handling, and source policy are decided
 
 ### Future Sources
 

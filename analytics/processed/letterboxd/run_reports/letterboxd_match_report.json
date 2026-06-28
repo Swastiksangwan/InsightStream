@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-06-28T07:42:23.547217+00:00",
+  "script_name": "preview_letterboxd_ratings_match.py",
+  "dataset_file": "analytics/datasets/letterboxd/full_dump.jsonl",
+  "output_dir": "analytics/processed/letterboxd",
+  "dataset_rows_scanned": 847209,
+  "malformed_rows": 0,
+  "rows_with_valid_rating": 108834,
+  "rows_without_rating": 738370,
+  "local_movie_count": 80,
+  "matched_count": 79,
+  "high_confidence_count": 75,
+  "good_confidence_count": 0,
+  "ambiguous_count": 4,
+  "unmatched_count": 1,
+  "import_ready_count": 75,
+  "warnings": [
+    "Line 170383: missing title; skipped.",
+    "Line 172419: missing title; skipped.",
+    "Line 174519: missing title; skipped.",
+    "Line 210037: missing title; skipped.",
+    "Line 379292: missing title; skipped.",
+    "Aftersun: Multiple Letterboxd candidates found for the same title/year; manual review required.",
+    "Arrival: Multiple Letterboxd candidates found for the same title/year; manual review required.",
+    "Barbie: Multiple Letterboxd candidates found for the same title/year; manual review required.",
+    "Mission: Impossible - Dead Reckoning Part One: No Letterboxd candidate found for normalized title/year.",
+    "The Martian: Multiple Letterboxd candidates found for the same title/year; manual review required."
+  ]
+}
