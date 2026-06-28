@@ -649,6 +649,7 @@ def test_detail_ratings_high_vote_source_returns_unified_score():
 
     assert ratings["unified_score"] == 86
     assert ratings["source_count"] == 1
+    assert ratings["scoring_source_count"] == 1
     assert ratings["sources"][0]["source_name"] == "tmdb"
     assert (
         ratings["sources"][0]["vote_count"]
@@ -669,6 +670,7 @@ def test_detail_ratings_low_vote_source_keeps_source_without_unified_score():
 
     assert ratings["unified_score"] is None
     assert ratings["source_count"] == 1
+    assert ratings["scoring_source_count"] == 0
     assert ratings["sources"][0]["normalized_score"] == 91
     assert (
         ratings["sources"][0]["vote_count"]
@@ -684,6 +686,7 @@ def test_detail_ratings_null_vote_count_source_keeps_source_without_unified_scor
 
     assert ratings["unified_score"] is None
     assert ratings["source_count"] == 1
+    assert ratings["scoring_source_count"] == 0
     assert ratings["sources"][0]["normalized_score"] == 78
     assert ratings["sources"][0]["vote_count"] is None
 
@@ -711,6 +714,7 @@ def test_detail_ratings_combines_tmdb_and_imdb_sources():
 
     assert ratings["unified_score"] == 85
     assert ratings["source_count"] == 2
+    assert ratings["scoring_source_count"] == 2
     assert {source["source_name"] for source in ratings["sources"]} == {
         "tmdb",
         "imdb",
@@ -794,6 +798,7 @@ def test_detail_ratings_includes_letterboxd_without_changing_unified_score():
 
     assert ratings["unified_score"] == 82
     assert ratings["source_count"] == 3
+    assert ratings["scoring_source_count"] == 2
     letterboxd = next(
         source for source in ratings["sources"] if source["source_name"] == "letterboxd"
     )
@@ -826,6 +831,7 @@ def test_detail_ratings_low_vote_imdb_does_not_override_confident_tmdb_score():
 
     assert ratings["unified_score"] == 80
     assert ratings["source_count"] == 2
+    assert ratings["scoring_source_count"] == 1
     assert any(
         source["source_name"] == "imdb"
         and source["normalized_score"] == 100
@@ -838,6 +844,7 @@ def test_detail_ratings_empty_rows_return_stable_empty_shape():
     assert get_detail_ratings(FakeRatingsDb([]), content_id=1) == {
         "unified_score": None,
         "source_count": 0,
+        "scoring_source_count": 0,
         "sources": [],
     }
 
@@ -853,6 +860,7 @@ def test_get_content_details_for_seeded_title(client, content_id_by_title):
     assert data["genres"]
     assert data["platforms"]
     assert data["ratings"]["source_count"] == len(data["ratings"]["sources"])
+    assert data["ratings"]["scoring_source_count"] <= data["ratings"]["source_count"]
     assert "unified_score" in data["ratings"]
     assert data["insight_summary"]["confidence"] in {"low", "medium", "high"}
     assert isinstance(data["insight_summary"]["best_for"], list)
@@ -873,6 +881,7 @@ def test_content_details_include_imported_ratings_when_available(client, db_sess
     assert response.status_code == 200
     assert data["content"]["title"] == row["title"]
     assert data["ratings"]["source_count"] >= 1
+    assert data["ratings"]["scoring_source_count"] <= data["ratings"]["source_count"]
     assert data["ratings"]["sources"]
 
     source = data["ratings"]["sources"][0]
@@ -900,6 +909,7 @@ def test_content_details_return_empty_ratings_shape_when_missing(client, db_sess
     assert data["ratings"] == {
         "unified_score": None,
         "source_count": 0,
+        "scoring_source_count": 0,
         "sources": [],
     }
 

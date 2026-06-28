@@ -86,11 +86,13 @@ export type RatingSourceItem = {
   rating_count_label?: string | null;
   rating_url?: string | null;
   fetched_at?: string | null;
+  included_in_unified_score?: boolean;
 };
 
 export type RatingsResponse = {
   unified_score?: number | null;
   source_count: number;
+  scoring_source_count?: number;
   sources: RatingSourceItem[];
 };
 

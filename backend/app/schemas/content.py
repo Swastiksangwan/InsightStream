@@ -50,11 +50,13 @@ class RatingSourceItem(BaseModel):
     rating_count_label: Optional[str] = None
     rating_url: Optional[str] = None
     fetched_at: Optional[datetime] = None
+    included_in_unified_score: bool = False
 
 
 class RatingsResponse(BaseModel):
     unified_score: Optional[int] = None
     source_count: int
+    scoring_source_count: int = 0
     sources: List[RatingSourceItem]
 
 

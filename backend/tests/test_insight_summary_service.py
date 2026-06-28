@@ -26,6 +26,7 @@ def ratings(score=84):
     return {
         "unified_score": score,
         "source_count": 1,
+        "scoring_source_count": 1,
         "sources": [
             {
                 "source_name": "tmdb",
@@ -42,6 +43,7 @@ def no_ratings():
     return {
         "unified_score": None,
         "source_count": 0,
+        "scoring_source_count": 0,
         "sources": [],
     }
 
@@ -307,6 +309,56 @@ def test_summary_access_text_avoids_duplicate_platform_variants():
     assert access_value == "Streaming in India on Amazon Prime Video, Apple TV + more"
     assert "Amazon Prime Video with Ads" not in combined_text(summary)
     assert "Apple TV Amazon Channel" not in combined_text(summary)
+
+
+def test_summary_rating_signal_uses_scoring_source_count_not_displayed_sources():
+    summary = build_insight_summary(
+        {
+            "content": base_content(runtime=110),
+            "genres": ["Drama"],
+            "platforms": availability("streaming"),
+            "ratings": {
+                "unified_score": 79,
+                "source_count": 3,
+                "scoring_source_count": 2,
+                "sources": [
+                    {
+                        "source_name": "tmdb",
+                        "display_name": "TMDb",
+                        "source_category": "audience",
+                        "normalized_score": 78,
+                        "vote_count": 5000,
+                    },
+                    {
+                        "source_name": "imdb",
+                        "display_name": "IMDb",
+                        "source_category": "audience",
+                        "normalized_score": 80,
+                        "vote_count": 250000,
+                    },
+                    {
+                        "source_name": "letterboxd",
+                        "display_name": "Letterboxd",
+                        "source_category": "audience",
+                        "normalized_score": 96,
+                        "vote_count": None,
+                    },
+                ],
+            },
+            "series_metadata": None,
+            "credits": credits(director="Example Director"),
+        }
+    )
+
+    audience_signal = next(
+        signal["value"]
+        for signal in summary["key_signals"]
+        if signal["label"] == "Audience signal"
+    )
+
+    assert "2 scoring sources" in audience_signal
+    assert "3 rating sources" not in audience_signal
+    assert "Letterboxd" not in audience_signal
 
 
 def test_no_crew_content_does_not_claim_director_or_creator():

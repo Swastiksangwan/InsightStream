@@ -46,16 +46,52 @@ function formatRawRating(source: RatingSourceItem) {
   return `${rawScore}/${rawScale}`;
 }
 
-function getInsightCopy(ratings: RatingsResponse) {
+function isLetterboxdSource(source: RatingSourceItem) {
+  return source.source_name.toLowerCase() === "letterboxd";
+}
+
+function formatSourceLabel(source: RatingSourceItem) {
+  const baseLabel = isLetterboxdSource(source)
+    ? "Film-community snapshot"
+    : formatSourceCategory(source.source_category);
+
+  return `${baseLabel}${source.rating_url ? " · Source page" : ""}`;
+}
+
+function getScoringSourceCount(ratings: RatingsResponse) {
+  if (ratings.scoring_source_count !== undefined) {
+    return ratings.scoring_source_count;
+  }
+
+  return ratings.unified_score === null || ratings.unified_score === undefined
+    ? 0
+    : ratings.source_count;
+}
+
+function getInsightSourceLabel(ratings: RatingsResponse) {
+  const scoringSourceCount = getScoringSourceCount(ratings);
+
   if (ratings.unified_score === null || ratings.unified_score === undefined) {
-    return "Source ratings available, but not enough votes for an InsightStream Score yet.";
+    return scoringSourceCount > 0
+      ? `${scoringSourceCount} scoring source${scoringSourceCount === 1 ? "" : "s"}`
+      : "Source ratings available";
   }
 
-  if (ratings.source_count === 1) {
-    return "Based on the available TMDb audience rating.";
+  return `${scoringSourceCount} scoring source${scoringSourceCount === 1 ? "" : "s"}`;
+}
+
+function getInsightCopy(ratings: RatingsResponse) {
+  const scoringSourceCount = getScoringSourceCount(ratings);
+
+  if (ratings.unified_score === null || ratings.unified_score === undefined) {
+    return "Not enough vote-backed data for an InsightStream Score yet.";
   }
 
-  return "Calculated from rating sources with enough vote confidence.";
+  if (scoringSourceCount === 1) {
+    return "Based on the available confident rating source.";
+  }
+
+  return "Calculated from rating sources with vote confidence.";
 }
 
 export function RatingList({ ratings }: RatingListProps) {
@@ -84,7 +120,7 @@ export function RatingList({ ratings }: RatingListProps) {
         <article className="rating-card rating-card--insight">
           <div>
             <h3>InsightStream Score</h3>
-            <span>{ratings.source_count} source{ratings.source_count === 1 ? "" : "s"}</span>
+            <span>{getInsightSourceLabel(ratings)}</span>
           </div>
 
           <strong>{ratings.unified_score ?? "--"}</strong>
@@ -95,28 +131,29 @@ export function RatingList({ ratings }: RatingListProps) {
         {sources.map((source) => {
           const voteCount = formatVoteCount(source);
           const rawRating = formatRawRating(source);
+          const isLetterboxd = isLetterboxdSource(source);
           const cardClassName = `rating-card rating-card--${source.source_category || "general"}${
             source.rating_url ? " rating-card--link" : ""
-          }`;
+          }${isLetterboxd ? " rating-card--snapshot" : ""}`;
           const cardContent = (
             <>
               <div>
                 <h3>{source.display_name}</h3>
-                <span>
-                  {formatSourceCategory(source.source_category)}
-                  {source.rating_url ? " · Source page" : ""}
-                </span>
+                <span>{formatSourceLabel(source)}</span>
               </div>
 
               <strong>
-                {source.normalized_score === null || source.normalized_score === undefined
-                  ? "--"
-                  : Math.round(source.normalized_score)}
+                {isLetterboxd
+                  ? rawRating ?? "--"
+                  : source.normalized_score === null || source.normalized_score === undefined
+                    ? "--"
+                    : Math.round(source.normalized_score)}
               </strong>
 
               <p>
-                {rawRating ?? "Rating scale unavailable"}
-                {voteCount ? ` · ${voteCount}` : ""}
+                {isLetterboxd
+                  ? "Dataset snapshot; may not reflect the latest live score."
+                  : `${rawRating ?? "Rating scale unavailable"}${voteCount ? ` · ${voteCount}` : ""}`}
               </p>
             </>
           );

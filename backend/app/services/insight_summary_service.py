@@ -195,15 +195,6 @@ def has_credit_data(credits):
     )
 
 
-def format_vote_count(vote_count):
-    if vote_count is None:
-        return None
-    try:
-        return f"{int(vote_count):,}"
-    except (TypeError, ValueError):
-        return None
-
-
 def rating_context(ratings):
     score = (ratings or {}).get("unified_score")
     if score is None:
@@ -216,14 +207,16 @@ def rating_context(ratings):
         }
 
     sources = (ratings or {}).get("sources") or []
-    source_count = (ratings or {}).get("source_count") or len(sources)
-    if source_count == 1 and sources:
-        source = sources[0]
-        source_name = source.get("display_name", "source")
-        vote_text = format_vote_count(source.get("vote_count"))
-    else:
-        source_name = f"{source_count} rating sources"
-        vote_text = None
+    scoring_source_count = (ratings or {}).get("scoring_source_count")
+    if scoring_source_count is None:
+        scoring_source_count = (ratings or {}).get("source_count") or len(sources)
+    if scoring_source_count <= 0:
+        scoring_source_count = 1
+
+    source_name = (
+        f"{scoring_source_count} scoring source"
+        f"{'' if scoring_source_count == 1 else 's'}"
+    )
 
     if score >= 80:
         strength = "Strong"
@@ -238,10 +231,7 @@ def rating_context(ratings):
         strength = "Moderate"
         headline_phrase = "moderate rating signal"
 
-    if vote_text and source_count == 1:
-        signal = f"{strength} — {score}/100 from {vote_text} {source_name} votes"
-    else:
-        signal = f"{strength} — {score}/100 from {source_name}"
+    signal = f"{strength} — {score}/100 from {source_name}"
 
     return {
         "score": score,

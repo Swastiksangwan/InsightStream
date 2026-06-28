@@ -2344,6 +2344,10 @@ main {
   border-color: rgba(228, 87, 87, 0.18);
 }
 
+.rating-card--snapshot {
+  border-color: rgba(121, 199, 216, 0.18);
+}
+
 .rating-card--insight {
   border-color: rgba(244, 184, 96, 0.28);
   background: rgba(244, 184, 96, 0.07);

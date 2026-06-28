@@ -859,6 +859,7 @@ def get_empty_ratings_response():
     return {
         "unified_score": None,
         "source_count": 0,
+        "scoring_source_count": 0,
         "sources": [],
     }
 
@@ -899,6 +900,7 @@ def get_detail_ratings(db: Session, content_id: int):
     sources = []
     weighted_total = 0.0
     weight_total = 0.0
+    scoring_source_count = 0
 
     for row in ratings_rows:
         normalized_score = numeric_or_none(row["normalized_score"])
@@ -909,9 +911,16 @@ def get_detail_ratings(db: Session, content_id: int):
             and vote_count >= MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE
         )
 
-        if normalized_score is not None and weight > 0 and has_unified_score_confidence:
+        included_in_unified_score = (
+            normalized_score is not None
+            and weight > 0
+            and has_unified_score_confidence
+        )
+
+        if included_in_unified_score:
             weighted_total += normalized_score * weight
             weight_total += weight
+            scoring_source_count += 1
 
         sources.append(
             {
@@ -925,6 +934,7 @@ def get_detail_ratings(db: Session, content_id: int):
                 "rating_count_label": row["rating_count_label"],
                 "rating_url": row["rating_url"],
                 "fetched_at": row["fetched_at"],
+                "included_in_unified_score": included_in_unified_score,
             }
         )
 
@@ -933,6 +943,7 @@ def get_detail_ratings(db: Session, content_id: int):
     return {
         "unified_score": unified_score,
         "source_count": len(sources),
+        "scoring_source_count": scoring_source_count,
         "sources": sources,
     }
 
