@@ -101,6 +101,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "for catalog IMDb IDs as failures."
         ),
     )
+    parser.add_argument(
+        "--expect-letterboxd",
+        action="store_true",
+        help=(
+            "Treat missing Letterboxd rating source, missing imported rows, "
+            "or missing Letterboxd rating URLs as failures."
+        ),
+    )
     return parser.parse_args(argv)
 
 
@@ -889,6 +897,7 @@ def series_lifecycle_summary(snapshot: dict[str, Any]) -> dict[str, Any]:
 def ratings_summary(
     connection: Any,
     expect_imdb: bool = False,
+    expect_letterboxd: bool = False,
 ) -> tuple[dict[str, Any], list[str], list[str]]:
     warnings: list[str] = []
     failures: list[str] = []
@@ -898,7 +907,8 @@ def ratings_summary(
         SELECT
             COUNT(*) AS rating_sources_count,
             COUNT(*) FILTER (WHERE source_name = 'tmdb') AS tmdb_source_count,
-            COUNT(*) FILTER (WHERE source_name = 'imdb') AS imdb_source_count
+            COUNT(*) FILTER (WHERE source_name = 'imdb') AS imdb_source_count,
+            COUNT(*) FILTER (WHERE source_name = 'letterboxd') AS letterboxd_source_count
         FROM rating_sources;
         """,
     )[0]
@@ -909,6 +919,11 @@ def ratings_summary(
             COUNT(*) AS total_content_ratings,
             COUNT(*) FILTER (WHERE rs.source_name = 'tmdb') AS tmdb_rating_count,
             COUNT(*) FILTER (WHERE rs.source_name = 'imdb') AS imdb_rating_count,
+            COUNT(*) FILTER (WHERE rs.source_name = 'letterboxd') AS letterboxd_rating_count,
+            COUNT(*) FILTER (
+                WHERE rs.source_name = 'letterboxd'
+                  AND (cr.rating_url IS NULL OR TRIM(cr.rating_url) = '')
+            ) AS letterboxd_missing_rating_url_count,
             COUNT(*) FILTER (
                 WHERE cr.normalized_score IS NOT NULL
                   AND (cr.normalized_score < 0 OR cr.normalized_score > 100)
@@ -974,6 +989,20 @@ def ratings_summary(
         ORDER BY c.title ASC;
         """,
     )
+    letterboxd_coverage_row = fetch_rows(
+        connection,
+        """
+        SELECT
+            COUNT(DISTINCT c.id) AS total_movies,
+            COUNT(DISTINCT cr.content_id) AS movies_with_letterboxd_rating
+        FROM content c
+        LEFT JOIN rating_sources rs ON rs.source_name = 'letterboxd'
+        LEFT JOIN content_ratings cr
+          ON cr.content_id = c.id
+         AND cr.rating_source_id = rs.id
+        WHERE c.content_type = 'movie';
+        """,
+    )[0]
 
     provider_backed_content = coverage_row["provider_backed_content"] or 0
     provider_backed_with_ratings = (
@@ -1006,6 +1035,29 @@ def ratings_summary(
             failures.append(message)
         else:
             warnings.append(message)
+    if (
+        ratings_row["letterboxd_rating_count"]
+        and source_row["letterboxd_source_count"] == 0
+    ):
+        message = "Ratings: Letterboxd rating source is missing for imported Letterboxd rows."
+        if expect_letterboxd:
+            failures.append(message)
+        else:
+            warnings.append(message)
+    if expect_letterboxd and source_row["letterboxd_source_count"] == 0:
+        failures.append("Ratings: expected Letterboxd rating source is missing.")
+    if expect_letterboxd and ratings_row["letterboxd_rating_count"] == 0:
+        failures.append("Ratings: expected Letterboxd ratings are missing.")
+    if ratings_row["letterboxd_missing_rating_url_count"]:
+        message = (
+            "Ratings: "
+            f"{ratings_row['letterboxd_missing_rating_url_count']} Letterboxd rating row(s) "
+            "are missing rating_url."
+        )
+        if expect_letterboxd:
+            failures.append(message)
+        else:
+            warnings.append(message)
     if ratings_row["invalid_normalized_scores"]:
         failures.append("Ratings: invalid normalized_score values found.")
     if ratings_row["invalid_raw_score_scales"]:
@@ -1030,6 +1082,14 @@ def ratings_summary(
         ),
         "content_with_imdb_external_id_missing_rating": len(missing_imdb_rows),
         "missing_imdb_rating_details": missing_imdb_rows[:50],
+        "total_movies": letterboxd_coverage_row["total_movies"] or 0,
+        "movies_with_letterboxd_rating": (
+            letterboxd_coverage_row["movies_with_letterboxd_rating"] or 0
+        ),
+        "movies_missing_letterboxd_rating": (
+            (letterboxd_coverage_row["total_movies"] or 0)
+            - (letterboxd_coverage_row["movies_with_letterboxd_rating"] or 0)
+        ),
     }, warnings, failures
 
 
@@ -1042,6 +1102,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "strict": args.strict,
         "fail_on_warning": args.fail_on_warning,
         "expect_imdb": args.expect_imdb,
+        "expect_letterboxd": args.expect_letterboxd,
     }
     warnings: list[str] = []
     failures: list[str] = []
@@ -1124,6 +1185,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                 rating_summary, rating_warnings, rating_failures = ratings_summary(
                     connection,
                     expect_imdb=args.expect_imdb,
+                    expect_letterboxd=args.expect_letterboxd,
                 )
                 if args.strict and rating_summary.get("tmdb_source_count", 0) == 0:
                     rating_failures.append(
@@ -1226,6 +1288,13 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
         f"{ratings.get('imdb_rating_count', 0)} rows, "
         f"{ratings.get('content_with_imdb_rating', 0)}/"
         f"{ratings.get('content_with_imdb_external_id', 0)} IMDb-linked content covered"
+    )
+    print(
+        "Letterboxd ratings: "
+        f"source {'present' if ratings.get('letterboxd_source_count', 0) else 'missing'}, "
+        f"{ratings.get('letterboxd_rating_count', 0)} rows, "
+        f"{ratings.get('movies_with_letterboxd_rating', 0)}/"
+        f"{ratings.get('total_movies', 0)} movies covered"
     )
     print(f"Warnings: {len(report.get('warnings') or [])}")
     print(f"Failures: {len(report.get('failures') or [])}")

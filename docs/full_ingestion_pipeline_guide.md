@@ -314,7 +314,27 @@ The local dataset directory is ignored by git:
 analytics/datasets/imdb/
 ```
 
-Ratings imports do not include Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, summaries, or recommendations.
+### Step 6c: Import Letterboxd ratings from reviewed preview
+
+Run this only after the Letterboxd match preview has been reviewed.
+
+```bash
+python3 analytics/scripts/import_letterboxd_ratings_from_preview.py
+python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous --apply
+python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous
+```
+
+The Letterboxd importer reads `analytics/processed/letterboxd/letterboxd_rating_match_preview.json`, imports high-confidence rows by default, and imports ambiguous rows only when `--include-ambiguous` is passed after manual review. Unmatched rows remain skipped.
+
+Letterboxd ratings are displayed as a source rating but are not included in InsightStream Score v1 because the dataset does not provide a reliable vote count. Review text is ignored and never imported.
+
+The local dataset directory is ignored by git:
+
+```text
+analytics/datasets/letterboxd/
+```
+
+Ratings imports do not include Rotten Tomatoes, Metacritic, CinemaScore, reviews, summaries, or recommendations.
 
 ### Step 7: Build credits preview
 
@@ -577,7 +597,13 @@ IMDb coverage expectation:
 python3 analytics/scripts/check_ingestion_health.py --expect-imdb
 ```
 
-This script does not write to PostgreSQL. It checks target config shape, target-to-database coverage, duplicate rows, metadata completeness, people summary metrics, availability/certification coverage, and ratings coverage including IMDb IDs without imported IMDb ratings.
+Letterboxd coverage expectation:
+
+```bash
+python3 analytics/scripts/check_ingestion_health.py --expect-letterboxd
+```
+
+This script does not write to PostgreSQL. It checks target config shape, target-to-database coverage, duplicate rows, metadata completeness, people summary metrics, availability/certification coverage, IMDb rating gaps, and optional Letterboxd movie coverage when requested.
 
 It writes:
 
@@ -680,6 +706,10 @@ python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datase
 python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv --apply
 python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv
 
+python3 analytics/scripts/import_letterboxd_ratings_from_preview.py
+python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous --apply
+python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous
+
 python3 analytics/scripts/build_tmdb_credits_preview.py
 
 python3 analytics/scripts/import_people_credits_from_preview.py
@@ -738,13 +768,14 @@ Debugging one title with `--source-id` does not replace the normal candidate -> 
 | `import_content_metadata_from_preview.py` | Dry-run/apply normalized content metadata import. | `--preview`, `--apply` |
 | `import_content_ratings_from_preview.py` | Dry-run/apply TMDb ratings import from the content preview. | `--preview`, `--apply` |
 | `import_imdb_ratings.py` | Dry-run/apply IMDb ratings import from a local official `title.ratings.tsv` dataset. | `--ratings-file`, `--apply` |
+| `import_letterboxd_ratings_from_preview.py` | Dry-run/apply Letterboxd ratings import from the reviewed local match preview. | `--preview-file`, `--include-ambiguous`, `--apply` |
 | `build_tmdb_credits_preview.py` | Build credits preview from current content preview and raw files. | No major CLI options. |
 | `import_people_credits_from_preview.py` | Dry-run/apply people and credits import. | `--apply` |
 | `fetch_tmdb_person_details.py` | Fetch or reuse person details for local TMDb people. | `--missing-only`, `--all`, `--source-person-id`, `--person-id`, `--name`, `--limit`, `--refresh` |
 | `import_person_details_from_preview.py` | Dry-run/apply missing person detail fields. | `--apply` |
 | `fetch_tmdb_availability_certification.py` | Fetch or reuse availability/certification raw files and build preview. | `--targets`, `--priority`, `--source-id`, `--title`, `--all`, `--limit`, `--refresh` |
 | `import_availability_certification_from_preview.py` | Dry-run/apply region-aware availability/certification import. | `--preview`, `--apply` |
-| `check_ingestion_health.py` | Read-only target config, DB coverage, duplicate, metadata completeness, ratings coverage, and people summary check. | `--targets`, `--priority`, `--output`, `--strict`, `--fail-on-warning`, `--expect-imdb` |
+| `check_ingestion_health.py` | Read-only target config, DB coverage, duplicate, metadata completeness, ratings coverage, and people summary check. | `--targets`, `--priority`, `--output`, `--strict`, `--fail-on-warning`, `--expect-imdb`, `--expect-letterboxd` |
 
 This table is based on the current scripts. Do not assume an option exists unless it is listed here or shown by the script's `--help`.
 

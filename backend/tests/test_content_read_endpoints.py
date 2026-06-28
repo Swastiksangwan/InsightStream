@@ -40,15 +40,18 @@ def fake_rating_row(
     display_name="TMDb",
     weight=1,
     rating_url=None,
+    raw_score=None,
+    raw_score_scale=10,
 ):
-    raw_score = normalized_score / 10 if normalized_score is not None else None
+    if raw_score is None and normalized_score is not None:
+        raw_score = normalized_score / 10
     return {
         "source_name": source_name,
         "display_name": display_name,
         "source_category": "audience",
         "weight": weight,
         "raw_score": raw_score,
-        "raw_score_scale": 10,
+        "raw_score_scale": raw_score_scale,
         "normalized_score": normalized_score,
         "vote_count": vote_count,
         "rating_count_label": None,
@@ -756,6 +759,48 @@ def test_detail_ratings_returns_rating_url_when_available():
 
     assert ratings["sources"][0]["source_name"] == "imdb"
     assert ratings["sources"][0]["rating_url"] == "https://www.imdb.com/title/tt0133093/"
+
+
+def test_detail_ratings_includes_letterboxd_without_changing_unified_score():
+    ratings = get_detail_ratings(
+        FakeRatingsDb(
+            [
+                fake_rating_row(
+                    normalized_score=80,
+                    vote_count=2000,
+                    source_name="tmdb",
+                    display_name="TMDb",
+                ),
+                fake_rating_row(
+                    normalized_score=84,
+                    vote_count=250000,
+                    source_name="imdb",
+                    display_name="IMDb",
+                ),
+                fake_rating_row(
+                    normalized_score=100,
+                    vote_count=None,
+                    source_name="letterboxd",
+                    display_name="Letterboxd",
+                    weight=0,
+                    rating_url="https://letterboxd.com/film/example/",
+                    raw_score=5,
+                    raw_score_scale=5,
+                ),
+            ]
+        ),
+        content_id=1,
+    )
+
+    assert ratings["unified_score"] == 82
+    assert ratings["source_count"] == 3
+    letterboxd = next(
+        source for source in ratings["sources"] if source["source_name"] == "letterboxd"
+    )
+    assert letterboxd["raw_score"] == 5
+    assert letterboxd["raw_score_scale"] == 5
+    assert letterboxd["vote_count"] is None
+    assert letterboxd["rating_url"] == "https://letterboxd.com/film/example/"
 
 
 def test_detail_ratings_low_vote_imdb_does_not_override_confident_tmdb_score():

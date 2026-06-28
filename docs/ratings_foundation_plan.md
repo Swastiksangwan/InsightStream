@@ -29,7 +29,9 @@ Ratings should be useful decision support, not a cluttered scoreboard.
 ## Implementation Status
 
 Ratings Foundation v1 implements TMDb ratings. Ratings v2 adds IMDb ratings
-through IMDb's official non-commercial `title.ratings.tsv` dataset.
+through IMDb's official non-commercial `title.ratings.tsv` dataset. Letterboxd
+ratings are imported from a manually reviewed local dataset preview as a
+display-only movie signal.
 
 The implemented path is:
 
@@ -38,6 +40,7 @@ The implemented path is:
 - TMDb `vote_average` / `vote_count` in `sample_mapping_preview.json`
 - `analytics/scripts/import_content_ratings_from_preview.py`
 - `analytics/scripts/import_imdb_ratings.py`
+- `analytics/scripts/import_letterboxd_ratings_from_preview.py`
 - content detail API ratings object
 - frontend Ratings card with InsightStream Score and source breakdown
 
@@ -49,11 +52,12 @@ contributing to the unified score.
 IMDb integration uses a local dataset file and matches only through stored IMDb
 external IDs. It does not scrape IMDb pages.
 
-Letterboxd is being evaluated through a local dataset preview script only.
-It is not imported into `content_ratings` yet and does not contribute to the
-InsightStream Score.
+Letterboxd integration uses a reviewed local dataset match preview. It imports
+film-community ratings into `content_ratings` with no vote count, stores the
+Letterboxd film URL, ignores review text, and does not scrape Letterboxd. It is
+visible in the Ratings card but excluded from InsightStream Score v1.
 
-Rotten Tomatoes, Letterboxd, Metacritic, CinemaScore, reviews, AI verdicts, and recommendations remain future phases.
+Rotten Tomatoes, Metacritic, CinemaScore, reviews, AI verdicts, and recommendations remain future phases.
 
 ## 2. Rating Source Strategy
 
@@ -79,7 +83,7 @@ Phase 1 should implement TMDb ratings first because `vote_average` and `vote_cou
 
 Phase 2 adds IMDb ratings because IMDb IDs are already obtained through TMDb external IDs. The prototype path uses IMDb's official non-commercial dataset file.
 
-Rotten Tomatoes, Letterboxd, Metacritic, and CinemaScore should be planned in the schema, but not implemented until source access, legality, terms, and maintenance are clear.
+Rotten Tomatoes, Metacritic, and CinemaScore should be planned in the schema, but not implemented until source access, legality, terms, and maintenance are clear. Letterboxd remains display-only until source confidence and vote-count policy are strong enough for score inclusion.
 
 Do not scrape rating websites.
 
@@ -90,7 +94,7 @@ Do not scrape rating websites.
 | Phase 1 | TMDb | Already available in fetched metadata and safest first implementation. | Implemented |
 | Phase 2 | IMDb | Strong user recognition and matchable through existing IMDb external IDs. | Implemented through official non-commercial dataset import |
 | Phase 3 | Rotten Tomatoes / Metacritic | Useful critic and audience signals. | Wait for legal/source access |
-| Phase 4 | Letterboxd | Strong film-pop-culture signal, mostly film-focused. | Preview-only local dataset matching under evaluation |
+| Phase 4 | Letterboxd | Strong film-pop-culture signal, mostly film-focused. | Imported from manually reviewed local dataset preview as display-only source |
 | Phase 5 | CinemaScore | Useful movie-only theatrical opening reaction with limited coverage. | Optional later signal |
 
 ## 4. Proposed Database Model
@@ -248,30 +252,34 @@ stored `external_ids.external_id` rows where `source_name = 'imdb'`.
 
 Do not commit the dataset file and do not scrape IMDb pages.
 
-### Letterboxd Preview Evaluation
+### Letterboxd Local Dataset Import
 
-Letterboxd ratings are being evaluated through a local JSONL dataset preview
-before any database import is considered. The preview script matches local
-movie catalog rows against Letterboxd rows using normalized title, year, and
-director overlap.
+Letterboxd ratings use a two-step local dataset workflow. The preview script
+matches local movie catalog rows against Letterboxd rows using normalized title,
+year, and director overlap. The importer then reads only the reviewed preview
+file and writes eligible ratings to `content_ratings`.
 
 Matching is intentionally conservative because Letterboxd rows do not provide a
 provider ID that already exists in the local `external_ids` table. Title/year
 matching can produce false positives, especially around remakes, alternate
 release years, and duplicated film titles.
 
-Rules for this evaluation:
+Rules for this integration:
 
 - output a preview/report for manual review
-- do not write to `content_ratings`
+- import high-confidence preview rows by default
+- import ambiguous rows only when they have been manually reviewed and
+  `--include-ambiguous` is used
 - do not use or store review text
 - do not scrape Letterboxd
-- keep Letterboxd out of the InsightStream Score until match confidence,
-  vote-count handling, and source policy are decided
+- store `vote_count = null` because the dataset does not provide a reliable
+  vote count
+- keep Letterboxd out of the InsightStream Score v1 while still displaying it
+  as a source rating
 
 ### Future Sources
 
-Rotten Tomatoes, Letterboxd, Metacritic, and CinemaScore should only be implemented when legal/source-approved access is available.
+Rotten Tomatoes, Metacritic, and CinemaScore should only be implemented when legal/source-approved access is available.
 
 ### Refresh
 
@@ -388,7 +396,8 @@ Avoid brittle catalog-count tests.
 5. Update frontend Ratings card.
 6. Add health checks and tests.
 7. Add IMDb ratings through the official non-commercial dataset importer.
-8. Later evaluate Rotten Tomatoes, Letterboxd, Metacritic, and CinemaScore.
+8. Add Letterboxd ratings from a manually reviewed local match preview as a display-only source.
+9. Later evaluate Rotten Tomatoes, Metacritic, and CinemaScore.
 
 ## 14. Risks and Decisions
 
@@ -398,6 +407,8 @@ Open decisions:
 - whether to separate audience score and critic score later
 - legal/source access for non-TMDb sources
 - whether IMDb dataset refresh should be manual or scheduled during prototype use
+- whether Letterboxd dataset preview/import refresh should be manual or scheduled
+- whether Letterboxd should ever contribute to the unified score without vote counts
 - whether rating history snapshots are needed
 - whether low vote counts should suppress source display or only suppress unified score inclusion
 
@@ -413,7 +424,9 @@ Suggested scope:
 
 - keep TMDb ratings refreshed through the metadata preview importer
 - refresh IMDb ratings from the local official dataset when a new dataset is downloaded
+- refresh Letterboxd ratings from a reviewed match preview when a new local snapshot is evaluated
 - monitor missing IMDb coverage in the ingestion health check
-- keep non-TMDb/non-IMDb sources out until source/legal access is clear
+- monitor optional Letterboxd movie coverage in the ingestion health check
+- keep Rotten Tomatoes, Metacritic, and CinemaScore out until source/legal access is clear
 
 This keeps Ratings Foundation source-aware, local-dataset driven, and aligned with the ingestion pipeline.

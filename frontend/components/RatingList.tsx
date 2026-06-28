@@ -55,7 +55,7 @@ function getInsightCopy(ratings: RatingsResponse) {
     return "Based on the available TMDb audience rating.";
   }
 
-  return "Weighted from available trusted rating sources.";
+  return "Calculated from rating sources with enough vote confidence.";
 }
 
 export function RatingList({ ratings }: RatingListProps) {
