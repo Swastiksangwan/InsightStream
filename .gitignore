@@ -8,6 +8,11 @@ frontend/.env.local
 analytics/raw/tmdb/*.json
 analytics/datasets/imdb/
 analytics/datasets/letterboxd/
+analytics/config/tmdb_keywords_retry_targets.json
+analytics/processed/tmdb_keywords/*_retry_preview.json
+analytics/processed/tmdb_keywords/*.before_retry_merge.json
+analytics/processed/tmdb_keywords/run_reports/*_retry_report.json
+analytics/processed/tmdb_keywords/run_reports/*.before_retry_merge.json
 
 # Python
 __pycache__/

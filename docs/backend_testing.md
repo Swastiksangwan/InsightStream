@@ -36,6 +36,8 @@ Covered areas:
 - people/cast/crew schema table verification
 - person external ID unique constraint verification
 - content-person role type constraint verification
+- TMDb keyword preview helper behavior
+- TMDb keyword retry/merge helper behavior
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
 
@@ -98,6 +100,8 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_user_content_read_endpoints.py` — watched/watch-later read endpoints for the seeded user
 - `backend/tests/test_external_ids_seed.py` — read-only external ID seed verification
 - `backend/tests/test_people_schema.py` — read-only people/cast/crew schema verification
+- `backend/tests/test_tmdb_keywords_preview.py` — TMDb keyword preview helper tests without live TMDb calls
+- `backend/tests/test_tmdb_keywords_retry_merge.py` — TMDb keyword retry/merge helper tests without database writes
 
 ## 6. Important Bug Caught by Tests
 

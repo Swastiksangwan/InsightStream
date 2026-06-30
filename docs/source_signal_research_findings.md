@@ -23,7 +23,7 @@ Final direction:
 
 ```text
 Immediate:
-TMDb keywords ingestion preview
+TMDb keywords preview assessment and filtering
 
 Near-term:
 Structured source signals from metadata + ratings + availability + certification + TMDb keywords
@@ -46,13 +46,13 @@ Do not use raw review text in product UI.
 Do not use LLM summaries until approved structured facts/signals exist.
 ```
 
-Near-term implementation should focus on structured, source-safe enrichment. TMDb keywords are the best next candidate because they connect directly to existing TMDb IDs, support both movies and series, and avoid raw review text.
+Near-term implementation should focus on structured, source-safe enrichment. TMDb keyword preview is now available for assessment because keywords connect directly to existing TMDb IDs, support both movies and series, and avoid raw review text. Keyword import and Source Signals v1 remain future implementation steps.
 
 ## 3. Source Ranking
 
 | Rank | Source | Source type | Movie coverage | TV/series coverage | ID quality | Signal value | License/product risk | Recommended use | Implementation timing |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | TMDb Keywords | Structured provider tags | Good | Good | Strong via TMDb IDs | High for genre-adjacent expectations, tone hints, themes | Low to medium; follow TMDb terms | Use next | Immediate preview |
+| 1 | TMDb Keywords | Structured provider tags | Good | Good | Strong via TMDb IDs | High for genre-adjacent expectations, tone hints, themes | Low to medium; follow TMDb terms | Preview implemented; evaluate for import | Import planned after preview assessment |
 | 2 | IMDb Parents Guide commercial dataset | Structured content advisory | Good | Good | Strong via IMDb IDs | High for intensity, content caution, family suitability | Medium; license required | Future licensed source | Later, after licensing |
 | 3 | MovieLens Tag Genome classic/2021 | Tag relevance scores | Movie-only | None | Good via `links.csv` to IMDb/TMDb | Very high for taxonomy design | Non-commercial/research constraints | Research/training only | After TMDb keyword preview |
 | 4 | MovieLens Tag Genome Dataverse CC0/property graph variant | Tag/relevance graph variant | Movie-only | None | Must verify | Potentially high | Promising but provenance/schema must be verified | Research/training only until verified | Later dataset inspection |
@@ -500,12 +500,18 @@ How this should be used:
 - raw source tags should remain backend/internal unless selected for display
 - source provenance should remain available for debugging and future explainability
 
-## 13. TMDb Keywords Preview — Next Implementation Requirements
+## 13. TMDb Keywords Preview — Implemented Artifact
 
-Next script:
+Preview script:
 
 ```text
 analytics/scripts/build_tmdb_keywords_preview.py
+```
+
+Retry merge helper:
+
+```text
+analytics/scripts/merge_tmdb_keywords_retry_preview.py
 ```
 
 Input:
@@ -515,7 +521,7 @@ Input:
 - content type movie/series
 - optional target file support
 
-Behavior:
+Implemented behavior:
 
 - fetch movie keywords for movie content
 - fetch TV keywords for series content
@@ -525,6 +531,9 @@ Behavior:
 - no schema changes
 - save preview JSON
 - save run report
+- retry transient request failures
+- write failed-title retry targets when requested
+- merge successful retry rows into the main preview/report
 
 Preview output:
 
@@ -575,30 +584,42 @@ Data shape:
 }
 ```
 
-## 14. Future Implementation Sequence
+## 14. TMDb Keywords Preview Workflow
+
+The canonical operational workflow now lives in `docs/data_ingestion_pipeline.md`.
+
+Current status:
+
+- `analytics/scripts/build_tmdb_keywords_preview.py` exists and remains preview-only.
+- The preview workflow is DB-write-free and does not create frontend/API behavior.
+- The preview script supports request-level transient retries and failed-title retry target generation.
+- `analytics/scripts/merge_tmdb_keywords_retry_preview.py` merges successful retry rows into the main preview/report and can clean temporary retry/backup artifacts after a clean merge.
+- Final main artifacts are `analytics/processed/tmdb_keywords/tmdb_keywords_preview.json` and `analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_report.json`.
+- Retry targets, retry previews, retry reports, and before-merge backups are temporary and should be cleaned after a successful merge.
+- TMDb keyword database import and Source Signals v1 are still future steps.
+
+## 15. Future Implementation Sequence
 
 Recommended order:
 
-1. Create this research findings doc.
-2. Implement TMDb keywords preview.
-3. Assess keyword coverage/usefulness.
-4. Decide schema for imported keywords/source tags.
-5. Import TMDb keywords.
-6. Implement structured Source Signals v1 from:
+1. Assess keyword coverage/usefulness.
+2. Decide schema for imported keywords/source tags.
+3. Import TMDb keywords.
+4. Implement structured Source Signals v1 from:
    - metadata
    - ratings
    - availability
    - certification
    - series lifecycle
    - TMDb keywords
-7. Add Watch Profile UI.
-8. Improve Insight Summary from `source_signals`.
-9. Later inspect MovieLens/MPST for taxonomy/modeling.
-10. Later create review-text policy.
-11. Later explore TMDb review-derived signals.
-12. Later LLM-assisted summaries only from approved stored signals.
+5. Add Watch Profile UI.
+6. Improve Insight Summary from `source_signals`.
+7. Later inspect MovieLens/MPST for taxonomy/modeling.
+8. Later create review-text policy.
+9. Later explore TMDb review-derived signals.
+10. Later LLM-assisted summaries only from approved stored signals.
 
-## 15. Implementation Guardrails
+## 16. Implementation Guardrails
 
 Guardrails:
 
@@ -621,7 +642,7 @@ Product language guardrails:
 - do not imply review consensus without review-derived signals
 - do not imply critic consensus without critic sources
 
-## 16. Open Questions
+## 17. Open Questions
 
 Open questions:
 
