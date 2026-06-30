@@ -190,7 +190,10 @@ def normalize_datetime(value: Any) -> datetime | None:
         parsed = datetime.combine(value, datetime.min.time())
     elif isinstance(value, str):
         try:
-            parsed = datetime.fromisoformat(value)
+            text_value = value.strip()
+            if text_value.endswith("Z"):
+                text_value = f"{text_value[:-1]}+00:00"
+            parsed = datetime.fromisoformat(text_value)
         except ValueError:
             return None
     else:
@@ -228,6 +231,20 @@ def is_within_next_days(value: Any, today: date, days: int) -> bool:
     if parsed is None:
         return False
     return today <= parsed <= today + timedelta(days=days)
+
+
+def aired_after_last_refresh(
+    air_date_value: Any,
+    last_refreshed_value: Any,
+    today: date,
+) -> bool:
+    air_date = normalize_date(air_date_value)
+    last_refreshed_at = normalize_datetime(last_refreshed_value)
+    if air_date is None or last_refreshed_at is None:
+        return False
+    if air_date > today:
+        return False
+    return last_refreshed_at.date() < air_date
 
 
 def is_within_recent_days(value: Any, today: date, days: int) -> bool:
@@ -275,7 +292,19 @@ def evaluate_refresh_status(
             f"{status} status included and last_refreshed_at older than {refresh_window_days} days"
         )
 
-    if is_within_next_days(
+    # If TMDb previously reported a next episode date and that date has passed,
+    # refresh even if the normal freshness window has not elapsed.
+    next_episode_passed_since_refresh = (
+        status in ACTIVE_REFRESH_STATUSES
+        or (include_ended and status in INACTIVE_REFRESH_STATUSES)
+    ) and aired_after_last_refresh(
+        series.get("next_episode_air_date"),
+        last_refreshed_at,
+        today,
+    )
+    if next_episode_passed_since_refresh:
+        reasons.append("next_episode_air_date has passed since last refresh")
+    elif is_within_next_days(
         series.get("next_episode_air_date"),
         today,
         NEXT_EPISODE_WINDOW_DAYS,

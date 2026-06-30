@@ -176,6 +176,7 @@ class ImportStats:
     conflicts_preserved: int = 0
     skipped_fields: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
     field_updates: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
+    content_update_messages: List[str] = field(default_factory=list)
     warnings: List[str] = field(default_factory=list)
 
 
@@ -590,6 +591,31 @@ def insert_content(connection, record: ContentPreviewRecord) -> int:
     return row["id"]
 
 
+def is_valid_series_status_refresh(value: Any) -> bool:
+    status = clean_text(value)
+    return status is not None and status.lower() != "unknown"
+
+
+def format_update_value(value: Any) -> str:
+    if is_empty(value):
+        return "empty"
+    return repr(db_value(value))
+
+
+def add_content_update_message(
+    stats: ImportStats,
+    title: str,
+    field_name: str,
+    existing_value: Any,
+    preview_value: Any,
+) -> None:
+    action = "would update" if stats.mode == "DRY RUN" else "will update"
+    stats.content_update_messages.append(
+        f"{title}: content.{field_name} {action} from "
+        f"{format_update_value(existing_value)} to {format_update_value(preview_value)}."
+    )
+
+
 def content_update_plan(
     existing: Dict[str, Any],
     record: ContentPreviewRecord,
@@ -601,6 +627,20 @@ def content_update_plan(
     for field_name in FILL_ONLY_FIELDS:
         preview_value = record.content_values.get(field_name)
         existing_value = existing.get(field_name)
+        if field_name == "status" and record.content_type == "series":
+            if is_valid_series_status_refresh(preview_value) and not values_equal(
+                existing_value,
+                preview_value,
+            ):
+                updates[field_name] = preview_value
+                add_content_update_message(
+                    stats,
+                    title,
+                    field_name,
+                    existing_value,
+                    preview_value,
+                )
+            continue
         if is_empty(existing_value) and not is_empty(preview_value):
             updates[field_name] = preview_value
         elif (
@@ -1172,6 +1212,11 @@ def print_summary(stats: ImportStats) -> None:
         print("\nField update counts:")
         for field_name, count in sorted(stats.field_updates.items()):
             print(f"- {field_name}: {count}")
+
+    if stats.content_update_messages:
+        print("\nContent field update details:")
+        for message in stats.content_update_messages:
+            print(f"- {message}")
 
     if stats.skipped_fields:
         print("\nSkipped preview fields:")
