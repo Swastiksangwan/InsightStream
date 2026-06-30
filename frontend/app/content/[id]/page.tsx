@@ -3,6 +3,7 @@ import { DetailHero } from "@/components/DetailHero";
 import { DetailOverview } from "@/components/DetailOverview";
 import { DetailSidebar } from "@/components/DetailSidebar";
 import { ErrorState } from "@/components/ErrorState";
+import { SeriesTimingCallout } from "@/components/SeriesTimingCallout";
 import { SummaryPanel } from "@/components/SummaryPanel";
 import {
   getContentCredits,
@@ -110,6 +111,10 @@ export default async function ContentDetailPage({ params }: ContentDetailPagePro
 
         <section className="detail-content-grid" aria-label="Content detail sections">
           <div className="detail-main-column detail-main-column--overview">
+            <SeriesTimingCallout
+              contentType={details.content.type}
+              seriesMetadata={details.series_metadata}
+            />
             <DetailOverview content={details.content} genres={details.genres} />
           </div>
 

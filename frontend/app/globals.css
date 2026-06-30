@@ -1303,6 +1303,68 @@ main {
   line-height: 1.18;
 }
 
+.series-timing-callout {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+  border: 1px solid rgba(245, 177, 65, 0.26);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(245, 177, 65, 0.13), rgba(255, 255, 255, 0.035)),
+    rgba(13, 17, 23, 0.92);
+  padding: 18px 20px;
+  box-shadow: var(--panel-shadow);
+}
+
+.series-timing-callout::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--accent);
+}
+
+.series-timing-callout__label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  border: 1px solid rgba(245, 177, 65, 0.34);
+  border-radius: 999px;
+  background: rgba(245, 177, 65, 0.11);
+  padding: 0 10px;
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.series-timing-callout h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+
+.series-timing-callout__primary {
+  margin: 7px 0 0;
+  color: rgba(232, 237, 246, 0.94);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.series-timing-callout__secondary {
+  margin: 4px 0 0;
+  color: var(--subtle);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
 .detail-overview {
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
@@ -2500,9 +2562,19 @@ main {
   }
 
   .detail-overview,
+  .series-timing-callout,
   .detail-panel,
   .detail-sidebar .detail-panel {
     padding: 18px;
+  }
+
+  .series-timing-callout {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .series-timing-callout__label {
+    width: fit-content;
   }
 
   .insight-summary__signals li {
