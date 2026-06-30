@@ -30,6 +30,7 @@ Completed:
 - Clickable genre chips to filtered discovery.
 - Clickable person cards and person detail pages with biography and filmography.
 - Small TMDb attribution footer in the frontend.
+- TMDb keyword preview pipeline with retry/merge workflow for future source signals.
 
 Next planned:
 
@@ -63,6 +64,7 @@ Analytics and ingestion:
 - Local raw provider files under `analytics/raw/tmdb/` ignored by git
 - Dry-run/apply scripts for controlled local imports
 - Provider-neutral database model so TMDb can be replaced later
+- TMDb keyword preview/retry/merge workflow documented in `docs/data_ingestion_pipeline.md`
 
 ## 4. Core Features Implemented
 
@@ -166,7 +168,7 @@ The base seed restores content, genres, platforms, ratings, summaries, external 
 
 People, credits, and person biographies are imported after the base seed using analytics scripts. They are not inserted directly by `sample_data.sql`.
 
-For the current full metadata catalog rebuild, including ingested titles beyond the SQL seed, use `docs/metadata_ingestion_runbook.md`.
+For the current ingestion layer map, full metadata rebuild flow, series refresh workflow, ratings imports, and TMDb keyword preview/retry/merge workflow, use `docs/data_ingestion_pipeline.md`.
 
 ## 7. Environment Variables
 
@@ -240,7 +242,7 @@ These compare seed data with processed provider previews and generate reports. T
 
 ## 9. Full Database Reset / Restore Flow
 
-For the current 21-title metadata catalog, follow the full runbook in `docs/metadata_ingestion_runbook.md`.
+For the current metadata catalog rebuild and ingestion flow, follow `docs/data_ingestion_pipeline.md`.
 
 For a clean local reset in pgAdmin or `psql`:
 
@@ -358,16 +360,18 @@ All tests and builds should pass with the local database prepared from `schema.s
 Useful current docs:
 
 - `docs/product_direction.md`
+- `docs/README.md`
 - `docs/backend_database_setup.md`
 - `docs/backend_testing.md`
-- `docs/full_ingestion_pipeline_guide.md`
-- `docs/metadata_ingestion_runbook.md`
+- `docs/data_ingestion_pipeline.md`
 - `docs/metadata_provider_strategy.md`
 - `docs/metadata_normalization_plan.md`
 - `docs/content_recency_sorting_plan.md`
 - `docs/person_cast_crew_schema_plan.md`
 - `docs/metadata_navigation_plan.md`
-- `docs/data_ingestion_and_scoring_roadmap.md`
+- `docs/ratings_foundation_plan.md`
+- `docs/insight_summary_foundation_plan.md`
+- `docs/source_signal_research_findings.md`
 
 ## MVP Boundary
 
