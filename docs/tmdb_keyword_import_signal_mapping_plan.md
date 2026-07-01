@@ -48,7 +48,9 @@ Current status:
   - `analytics/processed/tmdb_keywords/tmdb_keywords_preview.json`
   - `analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_report.json`
 - Coverage is strong across the current catalog after retry merge.
-- The workflow is preview-only and writes no database rows.
+- The preview workflow remains DB-write-free.
+- Normalized keyword storage/import is implemented through `backend/migrations/009_add_tmdb_keyword_storage.sql` and `analytics/scripts/import_tmdb_keywords_from_preview.py`.
+- Source-signal mapping, content-detail API exposure, and frontend Watch Profile UI are still future work.
 
 Useful observed keywords include:
 
@@ -143,7 +145,7 @@ keyword_sources
 provider_keywords
 - id
 - source_id
-- provider_keyword_id
+- external_keyword_id
 - keyword_name
 - normalized_keyword_name
 - created_at
@@ -152,7 +154,7 @@ provider_keywords
 content_keywords
 - id
 - content_id
-- provider_keyword_id
+- keyword_id
 - source_id
 - confidence
 - raw_payload
@@ -168,10 +170,11 @@ content_keywords
 
 Recommended details:
 
-- `provider_keyword_id` should preserve the TMDb keyword ID.
+- `external_keyword_id` should preserve the TMDb keyword ID on `provider_keywords`.
+- `content_keywords.keyword_id` should reference the internal `provider_keywords.id` row.
 - `keyword_name` should preserve provider text.
 - `normalized_keyword_name` should support matching, mapping, and dedupe.
-- `raw_payload` should stay compact, such as provider keyword ID/name and fetch metadata.
+- `raw_payload` should stay compact, such as TMDb external keyword ID/name and fetch metadata.
 - `confidence` for TMDb keyword presence can default to `low` or `medium`.
 - `first_seen_at` and `last_seen_at` should track when the app first and most recently saw the content-keyword relationship.
 - `fetched_at` should preserve when the keyword data was fetched from TMDb.
@@ -182,15 +185,15 @@ Recommended details:
 Suggested uniqueness rules:
 
 - `keyword_sources(source_name)`
-- `provider_keywords(source_id, provider_keyword_id)`
-- `content_keywords(content_id, provider_keyword_id, source_id)`
+- `provider_keywords(source_id, external_keyword_id)`
+- `content_keywords(content_id, keyword_id, source_id)`
 
 Recommended indexes:
 
-- `provider_keywords(source_id, provider_keyword_id)`
+- `provider_keywords(source_id, external_keyword_id)`
 - `provider_keywords(normalized_keyword_name)`
 - `content_keywords(content_id)`
-- `content_keywords(provider_keyword_id)`
+- `content_keywords(keyword_id)`
 - `content_keywords(source_id)`
 - `content_keywords(content_id, source_id)`
 
@@ -224,7 +227,7 @@ Use normalized keyword tables first. Later derive `source_signals` from stored k
 
 ## 5. Import Behavior
 
-Future script:
+Implemented script:
 
 ```text
 analytics/scripts/import_tmdb_keywords_from_preview.py
@@ -236,15 +239,15 @@ Input:
 analytics/processed/tmdb_keywords/tmdb_keywords_preview.json
 ```
 
-Expected behavior:
+Current expected behavior:
 
 - dry-run by default
 - `--apply` required for database writes
 - idempotent after apply
 - keep provider keyword import separate from source-signal generation
 - upsert keyword source `tmdb`
-- upsert provider keywords by TMDb keyword ID
-- upsert content-keyword relationships by `content_id` + provider keyword + source
+- upsert provider keywords by TMDb `external_keyword_id`
+- upsert content-keyword relationships by `content_id` + internal `keyword_id` + source
 - preserve existing keywords
 - remove stale relationships only if explicitly supported later
 - report inserted, updated, and unchanged counts
@@ -270,7 +273,7 @@ Avoid in v1:
 
 Deleting missing relationships needs a careful freshness and target-scope design. A subset preview should not accidentally delete keywords from titles outside that subset.
 
-Output report should include:
+Output report includes:
 
 - source inserted/updated
 - provider keywords inserted/updated/unchanged
@@ -785,7 +788,7 @@ Manual overrides should not replace the raw provider keyword layer. They should 
 
 ## 17. Testing Strategy
 
-Future implementation should test:
+Implementation should test:
 
 - keyword import idempotency
 - duplicate prevention
@@ -818,11 +821,11 @@ Expected keyword health checks:
 
 Recommended order:
 
-1. Create this plan.
-2. Create DB schema/migration for normalized keyword storage.
-3. Implement `import_tmdb_keywords_from_preview.py`.
-4. Import keywords from final preview.
-5. Add keyword ingestion health checks.
+1. Create this plan. Done.
+2. Create DB schema/migration for normalized keyword storage. Done.
+3. Implement `import_tmdb_keywords_from_preview.py`. Done.
+4. Import keywords from final preview. Manual apply step.
+5. Add keyword ingestion health checks. Done.
 6. Build keyword filtering/mapping config.
 7. Implement Source Signals v1 builder.
 8. Expose `source_signals` in content detail API.
@@ -834,16 +837,13 @@ Recommended order:
 ## 19. Recommended Next Coding Task
 
 ```text
-Implement TMDb keyword storage schema and importer
+Build keyword filtering/mapping config
 ```
 
 Suggested scope:
 
-- migration/schema only for keyword storage
-- import script from preview
-- dry-run/apply
-- idempotency
-- health check extension
-- tests
+- curated keyword-to-signal mapping config
+- conservative confidence rules
+- backend tests for mapping validation
 - no `source_signals` yet
 - no frontend yet

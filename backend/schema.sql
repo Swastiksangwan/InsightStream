@@ -196,6 +196,48 @@ CREATE TABLE IF NOT EXISTS content_ratings (
         CHECK (vote_count IS NULL OR vote_count >= 0)
 );
 
+CREATE TABLE IF NOT EXISTS keyword_sources (
+    id SERIAL PRIMARY KEY,
+    source_name VARCHAR(50) UNIQUE NOT NULL,
+    display_name VARCHAR(100) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS provider_keywords (
+    id SERIAL PRIMARY KEY,
+    source_id INTEGER NOT NULL REFERENCES keyword_sources(id) ON DELETE CASCADE,
+    external_keyword_id VARCHAR(100) NOT NULL,
+    keyword_name TEXT NOT NULL,
+    normalized_keyword_name TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_provider_keywords_source_external_keyword
+        UNIQUE (source_id, external_keyword_id)
+);
+
+CREATE TABLE IF NOT EXISTS content_keywords (
+    id SERIAL PRIMARY KEY,
+    content_id INTEGER NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+    keyword_id INTEGER NOT NULL REFERENCES provider_keywords(id) ON DELETE CASCADE,
+    source_id INTEGER NOT NULL REFERENCES keyword_sources(id) ON DELETE CASCADE,
+    confidence VARCHAR(20) DEFAULT 'medium' CHECK (
+        confidence IN ('low', 'medium', 'high', 'unknown')
+    ),
+    raw_payload JSONB,
+    first_seen_at TIMESTAMP,
+    last_seen_at TIMESTAMP,
+    fetched_at TIMESTAMP,
+    source_preview_generated_at TIMESTAMP,
+    import_run_id VARCHAR(150),
+    import_report_path TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_content_keywords_content_keyword_source
+        UNIQUE (content_id, keyword_id, source_id)
+);
+
 INSERT INTO rating_sources (
     source_name,
     display_name,
@@ -287,6 +329,22 @@ SET
     is_active = EXCLUDED.is_active,
     source_url = EXCLUDED.source_url,
     notes = EXCLUDED.notes,
+    updated_at = CURRENT_TIMESTAMP;
+
+INSERT INTO keyword_sources (
+    source_name,
+    display_name,
+    is_active
+)
+VALUES (
+    'tmdb',
+    'TMDb',
+    TRUE
+)
+ON CONFLICT (source_name) DO UPDATE
+SET
+    display_name = EXCLUDED.display_name,
+    is_active = EXCLUDED.is_active,
     updated_at = CURRENT_TIMESTAMP;
 
 CREATE TABLE ratings (

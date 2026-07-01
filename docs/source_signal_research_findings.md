@@ -596,15 +596,16 @@ Current status:
 - `analytics/scripts/merge_tmdb_keywords_retry_preview.py` merges successful retry rows into the main preview/report and can clean temporary retry/backup artifacts after a clean merge.
 - Final main artifacts are `analytics/processed/tmdb_keywords/tmdb_keywords_preview.json` and `analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_report.json`.
 - Retry targets, retry previews, retry reports, and before-merge backups are temporary and should be cleaned after a successful merge.
-- TMDb keyword database import and Source Signals v1 are still future steps.
+- TMDb keyword database import is implemented through the normalized keyword storage/import layer.
+- Source Signals v1, keyword-to-signal mapping, and frontend Watch Profile UI are still future steps.
 
 ## 15. Future Implementation Sequence
 
 Recommended order:
 
 1. Assess keyword coverage/usefulness.
-2. Decide schema for imported keywords/source tags.
-3. Import TMDb keywords.
+2. Import TMDb keywords from the final preview with the normalized importer.
+3. Build keyword filtering/mapping config.
 4. Implement structured Source Signals v1 from:
    - metadata
    - ratings
@@ -646,7 +647,7 @@ Product language guardrails:
 
 Open questions:
 
-- Should TMDb keywords be stored in a normalized table or provider payload JSON?
+- Are the normalized keyword tables sufficient for source-signal generation, or do they need admin/review fields later?
 - Should keyword-to-signal mapping be config-driven?
 - Should keywords display directly or only through derived signals?
 - How should confidence be calculated when TMDb provides no relevance score?

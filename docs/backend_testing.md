@@ -38,6 +38,9 @@ Covered areas:
 - content-person role type constraint verification
 - TMDb keyword preview helper behavior
 - TMDb keyword retry/merge helper behavior
+- TMDb keyword storage schema verification
+- TMDb keyword importer dry-run/idempotency helper behavior
+- TMDb keyword health-check summary behavior
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
 
@@ -102,6 +105,9 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_people_schema.py` — read-only people/cast/crew schema verification
 - `backend/tests/test_tmdb_keywords_preview.py` — TMDb keyword preview helper tests without live TMDb calls
 - `backend/tests/test_tmdb_keywords_retry_merge.py` — TMDb keyword retry/merge helper tests without database writes
+- `backend/tests/test_tmdb_keywords_schema.py` — read-only TMDb keyword storage schema verification
+- `backend/tests/test_tmdb_keywords_importer.py` — TMDb keyword importer helper tests without database writes
+- `backend/tests/test_tmdb_keywords_health_check.py` — TMDb keyword health-check summary tests without database access
 
 ## 6. Important Bug Caught by Tests
 

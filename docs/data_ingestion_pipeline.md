@@ -33,12 +33,11 @@ Future ingestion updates should go into this document.
 | TMDb ratings import | Implemented | `analytics/scripts/import_content_ratings_from_preview.py` | Only with `--apply` | Imports TMDb vote data from the processed metadata preview into provider-neutral ratings tables. |
 | IMDb ratings import | Implemented | `analytics/scripts/import_imdb_ratings.py` | Only with `--apply` | Uses local official IMDb non-commercial `title.ratings.tsv`; matches only through stored IMDb external IDs. |
 | Letterboxd ratings preview/import | Implemented | `analytics/scripts/preview_letterboxd_ratings_match.py`, `analytics/scripts/import_letterboxd_ratings_from_preview.py` | Import only with `--apply` | Uses reviewed local dataset preview. Review text is ignored. Letterboxd is displayed as a dataset snapshot and excluded from InsightStream Score v1. |
-| TMDb keywords preview | Implemented, preview-only | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py` | No | Fetches movie/TV keyword preview and report only. |
+| TMDb keywords preview/import | Implemented | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
 
-- TMDb keyword database import.
 - Structured Source Signals v1.
 - Watch Profile UI from source signals.
 - Review ingestion.
@@ -133,7 +132,7 @@ python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-am
 python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous
 
 # 9. Health check.
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd
+python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
 The first run of every import script should be reviewed before applying. The dry-run after apply should be clean or show only intentional unchanged rows.
@@ -283,7 +282,7 @@ python3 analytics/scripts/import_content_metadata_from_preview.py --apply
 
 python3 analytics/scripts/import_content_metadata_from_preview.py
 
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd
+python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
 Planner behavior:
@@ -354,14 +353,15 @@ Health check flags:
 ```bash
 python3 analytics/scripts/check_ingestion_health.py --expect-imdb
 python3 analytics/scripts/check_ingestion_health.py --expect-letterboxd
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd
+python3 analytics/scripts/check_ingestion_health.py --expect-tmdb-keywords
+python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
-## 10. TMDb Keywords Preview Workflow
+## 10. TMDb Keywords Preview and Import Workflow
 
-TMDb keywords are structured provider tags for movies and TV/series. They are useful for future source-signal work, but they are preview-only today.
+TMDb keywords are structured provider tags for movies and TV/series. The preview and normalized raw-keyword import layers are implemented for future source-signal work.
 
-Keyword presence is weak evidence, not proof. Missing keywords are not proof that a trait is absent. This workflow does not fetch reviews and does not write to the database.
+Keyword presence is weak evidence, not proof. Missing keywords are not proof that a trait is absent. The preview workflow does not fetch reviews and does not write to the database. The importer stores raw TMDb keywords only; it does not create source signals, expose keywords through the API, or update the frontend.
 
 ### Full Preview With Retry Target Generation
 
@@ -462,6 +462,52 @@ titles_with_keywords: 150
 errors: []
 ```
 
+### Import Keywords From Preview
+
+Review the keyword import dry-run first:
+
+```bash
+python3 analytics/scripts/import_tmdb_keywords_from_preview.py
+```
+
+Apply the import only after reviewing the dry-run:
+
+```bash
+python3 analytics/scripts/import_tmdb_keywords_from_preview.py --apply
+```
+
+Run one more dry-run after apply to confirm idempotency:
+
+```bash
+python3 analytics/scripts/import_tmdb_keywords_from_preview.py
+```
+
+Useful batch-safe options:
+
+```bash
+python3 analytics/scripts/import_tmdb_keywords_from_preview.py --content-type movie
+python3 analytics/scripts/import_tmdb_keywords_from_preview.py --content-id 123
+python3 analytics/scripts/import_tmdb_keywords_from_preview.py --only-content-ids-file analytics/config/some_content_ids.json
+```
+
+Importer behavior:
+
+- upserts keyword source `tmdb`;
+- upserts TMDb provider keywords by `external_keyword_id`;
+- upserts content-keyword relationships by `content_id`, internal `keyword_id`, and source;
+- tracks `first_seen_at`, `last_seen_at`, `fetched_at`, `source_preview_generated_at`, `import_run_id`, and `import_report_path`;
+- skips failed preview rows;
+- dedupes repeated keyword rows per title;
+- does not delete or stale-mark missing keywords in v1;
+- does not create `source_signals`;
+- does not update backend API/frontend display.
+
+The importer writes a dry-run/apply report:
+
+```text
+analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_import_report.json
+```
+
 ## 11. Output Artifact Policy
 
 Tracked or reviewable processed artifacts depend on the repo's current data-artifact convention. In general:
@@ -493,13 +539,13 @@ Do not commit API keys, tokens, downloaded provider datasets, or raw review text
 Read-only ingestion health check:
 
 ```bash
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd
+python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
 Strict mode:
 
 ```bash
-python3 analytics/scripts/check_ingestion_health.py --strict --expect-imdb --expect-letterboxd
+python3 analytics/scripts/check_ingestion_health.py --strict --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
 Backend tests:
@@ -536,6 +582,8 @@ SELECT COUNT(*) FROM content_availability;
 SELECT COUNT(*) FROM content_certifications;
 SELECT COUNT(*) FROM people;
 SELECT COUNT(*) FROM content_people;
+SELECT COUNT(*) FROM provider_keywords;
+SELECT COUNT(*) FROM content_keywords;
 ```
 
 ## 13. Current Known Keyword Findings
@@ -577,9 +625,9 @@ Keyword presence is weak evidence, not proof. Missing keyword is not proof of ab
 These are future tasks, not implemented:
 
 1. Assess keyword usefulness/filtering.
-2. Decide keyword storage schema.
-3. Implement TMDb keyword import.
-4. Implement structured Source Signals v1.
+2. Build keyword filtering/mapping config.
+3. Implement structured Source Signals v1.
+4. Expose source signals in the content detail API.
 5. Add Watch Profile UI.
 6. Improve Insight Summary from source signals.
 7. Later add review-derived signals after source/legal policy is clear.

@@ -43,6 +43,14 @@ DEFAULT_REPORT_PATH = (
     / "run_reports"
     / "ingestion_health_report.json"
 )
+DEFAULT_TMDB_KEYWORDS_REPORT_PATH = (
+    REPO_ROOT
+    / "analytics"
+    / "processed"
+    / "tmdb_keywords"
+    / "run_reports"
+    / "tmdb_keywords_report.json"
+)
 SUPPORTED_CONTENT_TYPES = {"movie", "series"}
 SUPPORTED_SOURCE_NAMES = {"tmdb"}
 REQUIRED_TARGET_FIELDS = {
@@ -107,6 +115,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help=(
             "Treat missing Letterboxd rating source, missing imported rows, "
             "or missing Letterboxd rating URLs as failures."
+        ),
+    )
+    parser.add_argument(
+        "--expect-tmdb-keywords",
+        action="store_true",
+        help=(
+            "Treat missing TMDb keyword tables, source seed, or imported keyword "
+            "relationships as failures."
         ),
     )
     return parser.parse_args(argv)
@@ -323,7 +339,7 @@ def duplicate_query_definitions(table_columns: dict[str, set[str]]) -> dict[str,
         else "''"
     )
 
-    return {
+    queries = {
         "content": """
             SELECT title, content_type, COUNT(*) AS duplicate_count
             FROM content
@@ -398,6 +414,14 @@ def duplicate_query_definitions(table_columns: dict[str, set[str]]) -> dict[str,
             HAVING COUNT(*) > 1;
         """,
     }
+    if table_columns.get("content_keywords"):
+        queries["content_keywords"] = """
+            SELECT content_id, keyword_id, source_id, COUNT(*) AS duplicate_count
+            FROM content_keywords
+            GROUP BY content_id, keyword_id, source_id
+            HAVING COUNT(*) > 1;
+        """
+    return queries
 
 
 def fetch_rows(connection: Any, query: str, params: dict[str, Any] | None = None) -> list[dict[str, Any]]:
@@ -1093,6 +1117,213 @@ def ratings_summary(
     }, warnings, failures
 
 
+def load_tmdb_keywords_preview_report() -> dict[str, Any]:
+    if not DEFAULT_TMDB_KEYWORDS_REPORT_PATH.exists():
+        return {
+            "report_path": relative_path(DEFAULT_TMDB_KEYWORDS_REPORT_PATH),
+            "report_exists": False,
+            "failed_preview_rows": None,
+        }
+
+    try:
+        data = json.loads(DEFAULT_TMDB_KEYWORDS_REPORT_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {
+            "report_path": relative_path(DEFAULT_TMDB_KEYWORDS_REPORT_PATH),
+            "report_exists": True,
+            "failed_preview_rows": None,
+            "report_error": "malformed_json",
+        }
+
+    return {
+        "report_path": relative_path(DEFAULT_TMDB_KEYWORDS_REPORT_PATH),
+        "report_exists": True,
+        "generated_at": data.get("generated_at"),
+        "total_titles_selected": data.get("total_titles_selected"),
+        "successful_fetches": data.get("successful_fetches"),
+        "failed_preview_rows": data.get("failed_fetches"),
+        "titles_with_zero_keywords": data.get("titles_with_zero_keywords"),
+        "overall_keyword_coverage_percent": data.get("overall_keyword_coverage_percent"),
+    }
+
+
+def tmdb_keyword_summary(
+    connection: Any,
+    table_columns: dict[str, set[str]],
+    expect_tmdb_keywords: bool = False,
+) -> tuple[dict[str, Any], list[str], list[str]]:
+    warnings: list[str] = []
+    failures: list[str] = []
+    required_keyword_tables = {
+        "keyword_sources",
+        "provider_keywords",
+        "content_keywords",
+    }
+    present_keyword_tables = {
+        table for table in required_keyword_tables if table_columns.get(table)
+    }
+    missing_keyword_tables = sorted(required_keyword_tables - present_keyword_tables)
+    preview_report = load_tmdb_keywords_preview_report()
+
+    if missing_keyword_tables:
+        message = (
+            "TMDb keywords: missing keyword table(s): "
+            + ", ".join(missing_keyword_tables)
+            + "."
+        )
+        if expect_tmdb_keywords:
+            failures.append(message)
+        return {
+            "keyword_tables_present": False,
+            "missing_keyword_tables": missing_keyword_tables,
+            "tmdb_keyword_source_count": 0,
+            "provider_keyword_row_count": 0,
+            "content_keyword_relationship_count": 0,
+            "content_with_tmdb_external_id": 0,
+            "content_with_imported_tmdb_keywords": 0,
+            "movie_content_with_tmdb_external_id": 0,
+            "movie_content_with_imported_tmdb_keywords": 0,
+            "series_content_with_tmdb_external_id": 0,
+            "series_content_with_imported_tmdb_keywords": 0,
+            "movie_keyword_coverage_percent": 0,
+            "series_keyword_coverage_percent": 0,
+            "overall_keyword_coverage_percent": 0,
+            "titles_with_zero_imported_keywords": 0,
+            "titles_with_zero_imported_keyword_details": [],
+            "latest_keyword_import_timestamp": None,
+            "preview_report": preview_report,
+        }, warnings, failures
+
+    source_row = fetch_rows(
+        connection,
+        """
+        SELECT COUNT(*) FILTER (WHERE source_name = 'tmdb') AS tmdb_keyword_source_count
+        FROM keyword_sources;
+        """,
+    )[0]
+    keyword_row = fetch_rows(
+        connection,
+        """
+        SELECT COUNT(*) AS provider_keyword_row_count
+        FROM provider_keywords pk
+        JOIN keyword_sources ks ON ks.id = pk.source_id
+        WHERE ks.source_name = 'tmdb';
+        """,
+    )[0]
+    relationship_row = fetch_rows(
+        connection,
+        """
+        SELECT
+            COUNT(*) AS content_keyword_relationship_count,
+            MAX(last_seen_at) AS latest_keyword_import_timestamp
+        FROM content_keywords ck
+        JOIN keyword_sources ks ON ks.id = ck.source_id
+        WHERE ks.source_name = 'tmdb';
+        """,
+    )[0]
+    coverage_row = fetch_rows(
+        connection,
+        """
+        SELECT
+            COUNT(DISTINCT c.id) AS content_with_tmdb_external_id,
+            COUNT(DISTINCT c.id) FILTER (WHERE c.content_type = 'movie')
+                AS movie_content_with_tmdb_external_id,
+            COUNT(DISTINCT c.id) FILTER (WHERE c.content_type = 'series')
+                AS series_content_with_tmdb_external_id,
+            COUNT(DISTINCT ck.content_id) AS content_with_imported_tmdb_keywords,
+            COUNT(DISTINCT ck.content_id) FILTER (WHERE c.content_type = 'movie')
+                AS movie_content_with_imported_tmdb_keywords,
+            COUNT(DISTINCT ck.content_id) FILTER (WHERE c.content_type = 'series')
+                AS series_content_with_imported_tmdb_keywords
+        FROM content c
+        JOIN external_ids ei
+          ON ei.content_id = c.id
+         AND ei.source_name = 'tmdb'
+        LEFT JOIN keyword_sources ks ON ks.source_name = 'tmdb'
+        LEFT JOIN content_keywords ck
+          ON ck.content_id = c.id
+         AND ck.source_id = ks.id;
+        """,
+    )[0]
+    missing_rows = fetch_rows(
+        connection,
+        """
+        SELECT
+            c.id AS content_id,
+            c.title,
+            c.content_type,
+            ei.external_id AS tmdb_id
+        FROM content c
+        JOIN external_ids ei
+          ON ei.content_id = c.id
+         AND ei.source_name = 'tmdb'
+        LEFT JOIN keyword_sources ks ON ks.source_name = 'tmdb'
+        LEFT JOIN content_keywords ck
+          ON ck.content_id = c.id
+         AND ck.source_id = ks.id
+        GROUP BY c.id, c.title, c.content_type, ei.external_id
+        HAVING COUNT(ck.id) = 0
+        ORDER BY c.title ASC;
+        """,
+    )
+
+    total_tmdb = coverage_row["content_with_tmdb_external_id"] or 0
+    total_with_keywords = coverage_row["content_with_imported_tmdb_keywords"] or 0
+    movie_tmdb = coverage_row["movie_content_with_tmdb_external_id"] or 0
+    movie_with_keywords = coverage_row["movie_content_with_imported_tmdb_keywords"] or 0
+    series_tmdb = coverage_row["series_content_with_tmdb_external_id"] or 0
+    series_with_keywords = coverage_row["series_content_with_imported_tmdb_keywords"] or 0
+
+    summary = {
+        "keyword_tables_present": True,
+        "missing_keyword_tables": [],
+        **source_row,
+        **keyword_row,
+        **relationship_row,
+        "content_with_tmdb_external_id": total_tmdb,
+        "content_with_imported_tmdb_keywords": total_with_keywords,
+        "movie_content_with_tmdb_external_id": movie_tmdb,
+        "movie_content_with_imported_tmdb_keywords": movie_with_keywords,
+        "series_content_with_tmdb_external_id": series_tmdb,
+        "series_content_with_imported_tmdb_keywords": series_with_keywords,
+        "movie_keyword_coverage_percent": (
+            round(movie_with_keywords / movie_tmdb * 100, 2) if movie_tmdb else 0
+        ),
+        "series_keyword_coverage_percent": (
+            round(series_with_keywords / series_tmdb * 100, 2) if series_tmdb else 0
+        ),
+        "overall_keyword_coverage_percent": (
+            round(total_with_keywords / total_tmdb * 100, 2) if total_tmdb else 0
+        ),
+        "titles_with_zero_imported_keywords": len(missing_rows),
+        "titles_with_zero_imported_keyword_details": missing_rows[:50],
+        "preview_report": preview_report,
+    }
+
+    if source_row["tmdb_keyword_source_count"] == 0:
+        message = "TMDb keywords: TMDb keyword source is missing."
+        if expect_tmdb_keywords:
+            failures.append(message)
+        else:
+            warnings.append(message)
+    if expect_tmdb_keywords and keyword_row["provider_keyword_row_count"] == 0:
+        failures.append("TMDb keywords: expected provider keyword rows are missing.")
+    if expect_tmdb_keywords and relationship_row["content_keyword_relationship_count"] == 0:
+        failures.append("TMDb keywords: expected content keyword relationships are missing.")
+    if missing_rows:
+        warnings.append(
+            "TMDb keywords: "
+            f"{len(missing_rows)} TMDb-linked content item(s) have no imported keywords."
+        )
+    if preview_report.get("failed_preview_rows"):
+        warnings.append(
+            "TMDb keywords: latest keyword preview report has "
+            f"{preview_report['failed_preview_rows']} failed fetch row(s)."
+        )
+
+    return summary, warnings, failures
+
+
 def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     generated_at = datetime.now(timezone.utc).isoformat()
     targets_path = resolve_path(args.targets)
@@ -1103,6 +1334,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "fail_on_warning": args.fail_on_warning,
         "expect_imdb": args.expect_imdb,
         "expect_letterboxd": args.expect_letterboxd,
+        "expect_tmdb_keywords": args.expect_tmdb_keywords,
     }
     warnings: list[str] = []
     failures: list[str] = []
@@ -1115,6 +1347,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     person_summary: dict[str, Any] = {}
     series_summary: dict[str, Any] = {}
     rating_summary: dict[str, Any] = {}
+    keyword_summary: dict[str, Any] = {}
 
     try:
         raw_targets, _ = load_targets(targets_path)
@@ -1135,24 +1368,30 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         try:
             engine = create_engine(database_url)
             with engine.connect() as connection:
+                required_table_names = [
+                    "content",
+                    "external_ids",
+                    "person_external_ids",
+                    "content_people",
+                    "content_availability",
+                    "content_certifications",
+                    "content_series_metadata",
+                    "rating_sources",
+                    "content_ratings",
+                ]
+                optional_table_names = [
+                    "keyword_sources",
+                    "provider_keywords",
+                    "content_keywords",
+                ]
                 table_columns = {
                     table_name: get_table_columns(connection, table_name)
-                    for table_name in [
-                        "content",
-                        "external_ids",
-                        "person_external_ids",
-                        "content_people",
-                        "content_availability",
-                        "content_certifications",
-                        "content_series_metadata",
-                        "rating_sources",
-                        "content_ratings",
-                    ]
+                    for table_name in required_table_names + optional_table_names
                 }
                 missing_required_tables = [
                     table
-                    for table, columns in table_columns.items()
-                    if not columns
+                    for table in required_table_names
+                    if not table_columns.get(table)
                 ]
                 if missing_required_tables:
                     failures.append(
@@ -1198,6 +1437,14 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                     ]
                 warnings.extend(rating_warnings)
                 failures.extend(rating_failures)
+
+                keyword_summary, keyword_warnings, keyword_failures = tmdb_keyword_summary(
+                    connection,
+                    table_columns,
+                    expect_tmdb_keywords=args.expect_tmdb_keywords,
+                )
+                warnings.extend(keyword_warnings)
+                failures.extend(keyword_failures)
         except SQLAlchemyError as exc:
             failures.append(f"Database health check failed: {exc}")
 
@@ -1215,6 +1462,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "person_detail_summary": person_summary,
         "series_lifecycle_summary": series_summary,
         "ratings_summary": rating_summary,
+        "tmdb_keywords_summary": keyword_summary,
         "warnings": warnings,
         "failures": failures,
         "status": status,
@@ -1233,6 +1481,7 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
     person = report.get("person_detail_summary") or {}
     series = report.get("series_lifecycle_summary") or {}
     ratings = report.get("ratings_summary") or {}
+    keywords = report.get("tmdb_keywords_summary") or {}
     duplicate_checks = report.get("duplicate_checks") or {}
     duplicate_failures = [
         name for name, result in duplicate_checks.items() if result.get("status") != "passed"
@@ -1296,6 +1545,16 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
         f"{ratings.get('movies_with_letterboxd_rating', 0)}/"
         f"{ratings.get('total_movies', 0)} movies covered"
     )
+    if keywords.get("keyword_tables_present"):
+        print(
+            "TMDb keywords: "
+            f"source {'present' if keywords.get('tmdb_keyword_source_count', 0) else 'missing'}, "
+            f"{keywords.get('provider_keyword_row_count', 0)} provider keywords, "
+            f"{keywords.get('content_with_imported_tmdb_keywords', 0)}/"
+            f"{keywords.get('content_with_tmdb_external_id', 0)} TMDb-linked content covered"
+        )
+    else:
+        print("TMDb keywords: tables not present")
     print(f"Warnings: {len(report.get('warnings') or [])}")
     print(f"Failures: {len(report.get('failures') or [])}")
     print(f"Final health status: {report.get('status')}")

@@ -214,6 +214,39 @@ ON content_ratings (rating_source_id, normalized_score);
 CREATE INDEX IF NOT EXISTS idx_rating_sources_source_name
 ON rating_sources (source_name);
 
+
+-- ------------------------------------------------------------
+-- Keyword indexes
+-- ------------------------------------------------------------
+
+-- Speeds up keyword source lookup by provider name.
+CREATE INDEX IF NOT EXISTS idx_keyword_sources_source_name
+ON keyword_sources (source_name);
+
+-- Speeds up provider keyword upserts and source-specific lookup.
+CREATE INDEX IF NOT EXISTS idx_provider_keywords_source_external_keyword
+ON provider_keywords (source_id, external_keyword_id);
+
+-- Speeds up keyword mapping, reporting, and future keyword search/discovery.
+CREATE INDEX IF NOT EXISTS idx_provider_keywords_normalized_keyword_name
+ON provider_keywords (normalized_keyword_name);
+
+-- Speeds up fetching keyword relationships for content detail/source signals.
+CREATE INDEX IF NOT EXISTS idx_content_keywords_content_id
+ON content_keywords (content_id);
+
+-- Speeds up reverse keyword coverage and reporting.
+CREATE INDEX IF NOT EXISTS idx_content_keywords_keyword_id
+ON content_keywords (keyword_id);
+
+-- Speeds up source-specific keyword coverage reports.
+CREATE INDEX IF NOT EXISTS idx_content_keywords_source_id
+ON content_keywords (source_id);
+
+-- Speeds up content + source joins for source signal generation.
+CREATE INDEX IF NOT EXISTS idx_content_keywords_content_source
+ON content_keywords (content_id, source_id);
+
 -- Speeds up fetching ratings for content details.
 CREATE INDEX IF NOT EXISTS idx_ratings_content_id
 ON ratings (content_id);
