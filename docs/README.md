@@ -29,6 +29,7 @@ For ingestion work, use `docs/data_ingestion_pipeline.md` as the single source o
 - `review_source_signals_foundation_plan.md` - review/source-signal foundation and guardrails.
 - `external_data_source_signal_feasibility_plan.md` - source feasibility matrix and recommended source strategy.
 - `source_signal_research_findings.md` - implementation-facing source-signal research findings.
+- `tmdb_keyword_import_signal_mapping_plan.md` - implementation-facing plan for TMDb keyword storage, import, filtering, and signal mapping.
 
 ### Frontend / Navigation
 
