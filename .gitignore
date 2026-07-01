@@ -33,3 +33,11 @@ frontend/dist/
 # OS / editor
 .DS_Store
 .vscode/
+
+# Generated/local ingestion artifacts
+analytics/processed/
+analytics/datasets/
+
+# Generated temporary ingestion config
+analytics/config/series_refresh_targets.json
+analytics/config/tmdb_keywords_retry_targets.json
