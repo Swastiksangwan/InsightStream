@@ -41,6 +41,7 @@ Covered areas:
 - TMDb keyword storage schema verification
 - TMDb keyword importer dry-run/idempotency helper behavior
 - TMDb keyword health-check summary behavior
+- keyword-to-signal preview mapping/helper behavior, including v3.2.1 metadata fallback, curated overrides, partial-output protection, semantic QA report fields, generator/QA version fields, and product-copy safeguards
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
 
@@ -108,6 +109,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_tmdb_keywords_schema.py` — read-only TMDb keyword storage schema verification
 - `backend/tests/test_tmdb_keywords_importer.py` — TMDb keyword importer helper tests without database writes
 - `backend/tests/test_tmdb_keywords_health_check.py` — TMDb keyword health-check summary tests without database access
+- `backend/tests/test_keyword_signal_preview.py` — keyword-to-signal preview mapping, metadata fallback, curated override, partial-output protection, semantic QA versioning, and product-copy tests without live DB/API calls
 
 ## 6. Important Bug Caught by Tests
 

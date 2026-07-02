@@ -34,6 +34,7 @@ Future ingestion updates should go into this document.
 | IMDb ratings import | Implemented | `analytics/scripts/import_imdb_ratings.py` | Only with `--apply` | Uses local official IMDb non-commercial `title.ratings.tsv`; matches only through stored IMDb external IDs. |
 | Letterboxd ratings preview/import | Implemented | `analytics/scripts/preview_letterboxd_ratings_match.py`, `analytics/scripts/import_letterboxd_ratings_from_preview.py` | Import only with `--apply` | Uses reviewed local dataset preview. Review text is ignored. Letterboxd is displayed as a dataset snapshot and excluded from InsightStream Score v1. |
 | TMDb keywords preview/import | Implemented | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
+| Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
@@ -508,6 +509,71 @@ The importer writes a dry-run/apply report:
 analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_import_report.json
 ```
 
+### Build Keyword-to-Signal Mapping Preview
+
+The keyword-to-signal preview layer converts imported raw TMDb keywords into local, product-friendly watch guidance previews. It can also use local metadata fallback and curated title overrides for weak keyword-only profiles. It does not create `source_signals` tables, change backend APIs, or update the frontend.
+
+Default preview:
+
+```bash
+python3 analytics/scripts/build_keyword_signal_preview.py
+```
+
+Include internal keyword/evidence debug details:
+
+```bash
+python3 analytics/scripts/build_keyword_signal_preview.py \
+  --include-debug \
+  --output analytics/processed/source_signals/debug/source_signal_preview_debug.json \
+  --report-output analytics/processed/source_signals/debug/source_signal_preview_debug_report.json
+```
+
+Preview a small movie sample:
+
+```bash
+python3 analytics/scripts/build_keyword_signal_preview.py \
+  --content-type movie \
+  --limit 20 \
+  --output analytics/processed/source_signals/debug/source_signal_preview_movie_limit_20.json \
+  --report-output analytics/processed/source_signals/debug/source_signal_preview_movie_limit_20_report.json
+```
+
+Partial/debug runs using `--limit`, `--content-type movie`, `--content-type series`,
+`--content-id`, `--only-content-ids-file`, or `--include-debug` must pass both
+`--output` and `--report-output`. This prevents local QA samples from overwriting the
+full-catalog preview/report.
+
+The preview script reads:
+
+```text
+analytics/config/source_signal_keyword_mapping.json
+analytics/config/source_signal_title_overrides.json
+```
+
+It writes local-only processed outputs:
+
+```text
+analytics/processed/source_signals/source_signal_preview.json
+analytics/processed/source_signals/run_reports/source_signal_preview_report.json
+```
+
+Preview behavior:
+
+- reads imported TMDb keywords from `keyword_sources`, `provider_keywords`, and `content_keywords`;
+- applies the curated keyword-to-signal mapping config, currently `2026-07-02-v3.1`;
+- applies curated title overrides, currently `2026-07-02-v3.1`, for known weak or misleading keyword-only previews;
+- uses local genre metadata fallback only when keyword-derived signals are weak;
+- excludes noisy keywords from user-facing guidance;
+- suppresses spoiler-unsafe keywords from user-facing guidance;
+- generates technical signal objects plus natural `watch_guidance`;
+- uses deterministic phrase rules to avoid raw-keyword phrasing such as awkward viewer labels or generic filler copy;
+- reports mapping quality diagnostics such as source counts, count-plus-detail rows for fallback/override/keyword-only titles, low-signal rows, one-signal rows, bad primary identities, semantic QA rows, override candidates, and high-value unmapped candidates;
+- reports `preview_generator_version` and `semantic_qa_version`, currently `2026-07-02-v3.2.1`;
+- flags generic or semantically conflicting watch-feel output for curated review without failing the preview run;
+- hides raw keywords unless `--include-debug` is passed;
+- writes local preview/report JSON only;
+- does not call TMDb, fetch reviews, scrape, write DB rows, or update frontend/API behavior.
+
 ## 11. Output Artifact Policy
 
 Tracked or reviewable processed artifacts depend on the repo's current data-artifact convention. In general:
@@ -518,6 +584,7 @@ Tracked or reviewable processed artifacts depend on the repo's current data-arti
 - Temporary keyword retry target files are ignored.
 - Temporary keyword retry preview/report files are ignored.
 - Temporary before-retry-merge backup files are ignored.
+- Source-signal preview outputs under `analytics/processed/source_signals/` are local-only.
 - Final processed previews/reports may be kept locally for analysis or committed only when intentionally useful for the project state.
 
 Ignored paths include:
@@ -530,6 +597,7 @@ analytics/processed/tmdb_keywords/*_retry_preview.json
 analytics/processed/tmdb_keywords/*.before_retry_merge.json
 analytics/processed/tmdb_keywords/run_reports/*_retry_report.json
 analytics/processed/tmdb_keywords/run_reports/*.before_retry_merge.json
+analytics/processed/source_signals/
 ```
 
 Do not commit API keys, tokens, downloaded provider datasets, or raw review text.
@@ -624,9 +692,9 @@ Keyword presence is weak evidence, not proof. Missing keyword is not proof of ab
 
 These are future tasks, not implemented:
 
-1. Assess keyword usefulness/filtering.
-2. Build keyword filtering/mapping config.
-3. Implement structured Source Signals v1.
+1. Review the v3 keyword-to-signal preview output and continue refining mapping/fallback/override quality.
+2. Decide source signal DB/API storage shape.
+3. Implement structured Source Signals v1 persistence or runtime builder.
 4. Expose source signals in the content detail API.
 5. Add Watch Profile UI.
 6. Improve Insight Summary from source signals.

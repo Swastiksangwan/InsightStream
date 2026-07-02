@@ -50,7 +50,16 @@ Current status:
 - Coverage is strong across the current catalog after retry merge.
 - The preview workflow remains DB-write-free.
 - Normalized keyword storage/import is implemented through `backend/migrations/009_add_tmdb_keyword_storage.sql` and `analytics/scripts/import_tmdb_keywords_from_preview.py`.
-- Source-signal mapping, content-detail API exposure, and frontend Watch Profile UI are still future work.
+- Keyword-to-signal mapping preview is implemented through `analytics/config/source_signal_keyword_mapping.json` and `analytics/scripts/build_keyword_signal_preview.py`.
+- Mapping config `2026-07-02-v3.1` expands high-value crime/thriller, fantasy, period, horror, political, sci-fi, comedy, and disaster mappings, while keeping noisy/spoiler-unsafe keywords out of public guidance.
+- Curated title overrides live in `analytics/config/source_signal_title_overrides.json` and correct known weak/misleading keyword-only previews without deleting raw keywords.
+- Override config `2026-07-02-v3.1` adds v3.2.1 targeted semantic corrections for high-value titles where keyword-only output was too generic or slightly misleading.
+- Metadata fallback uses local genre metadata only when keyword-derived signals are weak; fallback signals are marked `metadata_fallback`.
+- Override-added signals are marked `curated_override`.
+- The preview report now includes source counts, count-plus-detail fields for fallback/override/keyword-only title groups, low-signal rows, one-signal rows, missing watch-feel rows, bad primary identities, semantic QA rows for generic/conflicting watch guidance, override candidates, and high-value unmapped candidates.
+- The preview report includes `preview_generator_version` and `semantic_qa_version`, currently `2026-07-02-v3.2.1`.
+- Partial/debug source-signal preview runs must pass explicit `--output` and `--report-output` paths so they do not overwrite the full-catalog preview/report.
+- Source-signal DB storage, content-detail API exposure, and frontend Watch Profile UI are still future work.
 
 Useful observed keywords include:
 
@@ -826,24 +835,27 @@ Recommended order:
 3. Implement `import_tmdb_keywords_from_preview.py`. Done.
 4. Import keywords from final preview. Manual apply step.
 5. Add keyword ingestion health checks. Done.
-6. Build keyword filtering/mapping config.
-7. Implement Source Signals v1 builder.
-8. Expose `source_signals` in content detail API.
-9. Add compact Watch Profile UI.
-10. Improve Insight Summary using `source_signals`.
-11. Later evaluate MovieLens/MPST for taxonomy/modeling.
-12. Later evaluate review-derived signals.
+6. Build keyword filtering/mapping config and preview script. Done.
+7. Review v3 preview quality and continue refining mapping, fallback rules, and title overrides.
+8. Decide whether Source Signals v1 should be persisted or generated at API time.
+9. Implement Source Signals v1 builder/storage.
+10. Expose `source_signals` in content detail API.
+11. Add compact Watch Profile UI.
+12. Improve Insight Summary using `source_signals`.
+13. Later evaluate MovieLens/MPST for taxonomy/modeling.
+14. Later evaluate review-derived signals.
 
 ## 19. Recommended Next Coding Task
 
 ```text
-Build keyword filtering/mapping config
+Review keyword signal preview quality
 ```
 
 Suggested scope:
 
-- curated keyword-to-signal mapping config
-- conservative confidence rules
-- backend tests for mapping validation
+- inspect local preview/report outputs
+- identify awkward or overconfident guidance left after the v3 fallback/override pass
+- adjust curated mapping config, metadata fallback rules, or title overrides
+- decide source signal DB/API strategy
 - no `source_signals` yet
 - no frontend yet

@@ -1,0 +1,1067 @@
+{
+  "override_version": "2026-07-02-v3.1",
+  "description": "Curated corrections for source-signal preview when keyword-only mapping is incomplete or misleading.",
+  "overrides": [
+    {
+      "title": "Breaking Bad",
+      "content_type": "series",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "character-driven crime drama",
+          "label": "Character-driven crime drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "tense",
+          "label": "Tense",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "moral pressure",
+          "label": "Moral pressure",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [
+        {"value": "offbeat comedy"},
+        {"value": "darkly funny"}
+      ],
+      "signals_to_suppress": [
+        {"value": "offbeat comedy"}
+      ],
+      "preferred_watch_feel": "A tense, character-driven crime drama about pressure, consequence, and moral decline.",
+      "preferred_chips": ["Character-driven crime drama", "Tense", "Crime world", "Moral pressure"],
+      "preferred_best_for": ["Crime dramas", "Character-driven series", "Tense stories"],
+      "notes": "Keyword-only output can overemphasize dark comedy; keep crime drama as primary."
+    },
+    {
+      "title": "Jurassic Park",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "sci-fi adventure",
+          "label": "Sci-fi adventure",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "creature suspense",
+          "label": "Creature suspense",
+          "confidence": "high"
+        },
+        {
+          "dimension": "mood",
+          "value": "suspenseful",
+          "label": "Suspenseful",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A sci-fi adventure built around creature-driven suspense and wonder.",
+      "preferred_chips": ["Sci-fi adventure", "Creature threat", "Suspenseful", "Adventure"],
+      "preferred_best_for": ["Sci-fi adventures", "Creature thrillers", "Suspenseful blockbusters"],
+      "notes": "Product identity needs adventure/wonder, not only creature threat."
+    },
+    {
+      "title": "Succession",
+      "content_type": "series",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "corporate power drama",
+          "label": "Corporate power drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "family power struggle",
+          "label": "Family power struggle",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "satirical",
+          "label": "Satirical",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A sharp corporate family drama built around power, ego, and succession battles.",
+      "preferred_chips": ["Corporate power drama", "Family conflict", "Satirical", "Tense"],
+      "preferred_best_for": ["Corporate dramas", "Family power struggles", "Sharp satirical stories"],
+      "notes": "Curated business/family power identity."
+    },
+    {
+      "title": "The Social Network",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "tech-industry drama",
+          "label": "Tech-industry drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "ambition and rivalry",
+          "label": "Ambition and rivalry",
+          "confidence": "high"
+        },
+        {
+          "dimension": "pacing",
+          "value": "dialogue-driven",
+          "label": "Dialogue-driven",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [
+        {"value": "complex story"}
+      ],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A sharp tech-industry drama about ambition, rivalry, and reputation.",
+      "preferred_chips": ["Tech-industry drama", "Ambition", "Rivalry", "Dialogue-driven"],
+      "preferred_best_for": ["Modern dramas", "Founder stories", "Dialogue-driven stories"],
+      "notes": "Avoid abstract complexity as the primary identity."
+    },
+    {
+      "title": "Titanic",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "topic_theme",
+          "value": "romantic historical drama",
+          "label": "Romantic historical drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "disaster story",
+          "label": "Disaster story",
+          "confidence": "high"
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "label": "Emotional",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A romantic historical drama with large-scale disaster stakes.",
+      "preferred_chips": ["Romantic drama", "Historical setting", "Disaster story", "Emotional"],
+      "preferred_best_for": ["Romantic dramas", "Historical dramas", "Emotional stories"],
+      "notes": "Keeps romance/history/disaster in balance."
+    },
+    {
+      "title": "Planet Earth",
+      "content_type": "series",
+      "signals_to_add": [
+        {
+          "dimension": "topic_theme",
+          "value": "nature documentary",
+          "label": "Nature documentary",
+          "confidence": "high"
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "educational viewing",
+          "label": "Educational viewing",
+          "confidence": "high"
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "label": "Expansive",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A visually driven nature documentary with an educational, expansive feel.",
+      "preferred_chips": ["Nature documentary", "Wildlife", "Educational", "Visually driven"],
+      "preferred_best_for": ["Nature documentaries", "Educational viewing", "Relaxed discovery"],
+      "notes": "Documentary identity is clearer than keyword-only output."
+    },
+    {
+      "title": "Our Planet",
+      "content_type": "series",
+      "signals_to_add": [
+        {
+          "dimension": "topic_theme",
+          "value": "nature documentary",
+          "label": "Nature documentary",
+          "confidence": "high"
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "educational viewing",
+          "label": "Educational viewing",
+          "confidence": "high"
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "label": "Expansive",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A visually driven nature documentary with an educational, expansive feel.",
+      "preferred_chips": ["Nature documentary", "Wildlife", "Educational", "Visually driven"],
+      "preferred_best_for": ["Nature documentaries", "Educational viewing", "Relaxed discovery"],
+      "notes": "Documentary identity is clearer than keyword-only output."
+    },
+    {
+      "title": "The Grand Budapest Hotel",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "whimsical period comedy",
+          "label": "Whimsical period comedy",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "playful",
+          "label": "Playful",
+          "confidence": "high"
+        },
+        {
+          "dimension": "pacing",
+          "value": "fast-moving",
+          "label": "Fast-moving",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A whimsical period comedy with stylized humor and fast-moving charm.",
+      "preferred_chips": ["Whimsical comedy", "Period setting", "Stylized", "Playful"],
+      "preferred_best_for": ["Stylized comedies", "Offbeat period stories", "Playful stories"],
+      "notes": "Wes Anderson style needs product-friendly wording."
+    },
+    {
+      "title": "La La Land",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "topic_theme",
+          "value": "music-driven romantic drama",
+          "label": "Music-driven romantic drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "mood",
+          "value": "hopeful",
+          "label": "Hopeful",
+          "confidence": "medium"
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "label": "Emotional",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [
+        {"value": "complex story"},
+        {"value": "dialogue-heavy"},
+        {"value": "bold"}
+      ],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A romantic music-driven drama with hopeful energy and bittersweet emotion.",
+      "preferred_chips": ["Music-driven story", "Romantic drama", "Hopeful", "Emotional"],
+      "preferred_best_for": ["Musical dramas", "Romantic stories", "Emotional feel-good watches"],
+      "notes": "Avoid abstract complexity as primary watch identity."
+    },
+    {
+      "title": "Poor Things",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "offbeat fantasy-drama",
+          "label": "Offbeat fantasy-drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "mood",
+          "value": "surreal",
+          "label": "Surreal",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "bold",
+          "label": "Bold",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A bold offbeat fantasy-drama with surreal humor and unusual character discovery.",
+      "preferred_chips": ["Offbeat fantasy", "Surreal", "Bold", "Darkly funny"],
+      "preferred_best_for": ["Offbeat dramas", "Surreal stories", "Bold character pieces"],
+      "notes": "Curated offbeat fantasy/drama identity."
+    },
+    {
+      "title": "The White Lotus",
+      "content_type": "series",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "satirical social drama",
+          "label": "Satirical social drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "darkly funny",
+          "label": "Darkly funny",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "class tension",
+          "label": "Class tension",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A satirical social drama with sharp class tension and darkly funny discomfort.",
+      "preferred_chips": ["Social satire", "Darkly funny", "Class tension", "Ensemble drama"],
+      "preferred_best_for": ["Satirical dramas", "Ensemble stories", "Darkly funny social commentary"],
+      "notes": "Curated satire/social-drama identity."
+    },
+    {
+      "title": "Whiplash",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "topic_theme",
+          "value": "music drama",
+          "label": "Music drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "intensity",
+          "value": "high",
+          "label": "Intense",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "psychological pressure",
+          "label": "Psychological pressure",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "An intense music drama built around obsession, pressure, and ambition.",
+      "preferred_chips": ["Music drama", "Intense", "Ambition", "Psychological pressure"],
+      "preferred_best_for": ["Intense dramas", "Music-driven stories", "Character pressure stories"],
+      "notes": "Curated music/intensity identity."
+    },
+    {
+      "title": "Anatomy of a Fall",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "courtroom drama",
+          "label": "Courtroom drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "pacing",
+          "value": "slow-burn",
+          "label": "Slow-burn",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "tense",
+          "label": "Tense",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A tense courtroom drama built around ambiguity, relationships, and slow-burn investigation.",
+      "preferred_chips": ["Courtroom drama", "Slow-burn mystery", "Tense", "Character drama"],
+      "preferred_best_for": ["Legal dramas", "Slow-burn mysteries", "Tense character stories"],
+      "notes": "Curated legal-drama identity for weak keyword-only preview."
+    },
+    {
+      "title": "There Will Be Blood",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "severe character drama",
+          "label": "Character drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "ambition and power",
+          "label": "Ambition and power",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "severe",
+          "label": "Severe tone",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A severe character drama about ambition, power, and moral decay.",
+      "preferred_chips": ["Character drama", "Ambition", "Power struggle", "Severe tone"],
+      "preferred_best_for": ["Intense character dramas", "Ambition stories", "Serious dramas"],
+      "notes": "Curated heavy character-drama identity for weak keyword-only preview."
+    },
+    {
+      "title": "Barbie",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "satirical fantasy-comedy",
+          "label": "Satirical comedy",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "playful",
+          "label": "Playful",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "self-aware social commentary",
+          "label": "Self-aware",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A playful satirical fantasy-comedy with bright style and self-aware social commentary.",
+      "preferred_chips": ["Satirical comedy", "Playful", "Fantasy world", "Self-aware"],
+      "preferred_best_for": ["Satirical comedies", "Playful fantasy stories", "Stylish crowd-pleasers"],
+      "notes": "Curated fantasy-comedy/social-satire identity."
+    },
+    {
+      "title": "Interstellar",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "space sci-fi drama",
+          "label": "Space sci-fi",
+          "confidence": "high"
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "label": "Emotional",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "survival stakes",
+          "label": "Survival stakes",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "An emotional space sci-fi drama about survival, time, and human connection.",
+      "preferred_chips": ["Space sci-fi", "Emotional", "Survival stakes", "Big-scale sci-fi"],
+      "preferred_best_for": ["Space sci-fi dramas", "Emotional blockbusters", "Big-concept sci-fi"],
+      "notes": "Curated emotional space sci-fi identity."
+    },
+    {
+      "title": "Puss in Boots: The Last Wish",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "animated adventure",
+          "label": "Animated adventure",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "playful",
+          "label": "Playful",
+          "confidence": "high"
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "label": "Emotional",
+          "confidence": "medium"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A playful animated adventure with fairy-tale energy and surprisingly emotional stakes.",
+      "preferred_chips": ["Animated adventure", "Playful", "Fairy-tale world", "Emotional"],
+      "preferred_best_for": ["Animated adventures", "Family-friendly fantasy", "Playful stories"],
+      "notes": "Curated animated/fairy-tale adventure identity."
+    },
+    {
+      "title": "The Departed",
+      "content_type": "movie",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "undercover crime thriller",
+          "label": "Undercover crime",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "tense",
+          "label": "Tense",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "gritty",
+          "label": "Gritty",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A tense undercover crime thriller built around loyalty, deception, and pressure.",
+      "preferred_chips": ["Undercover crime", "Tense", "Gritty", "Crime thriller"],
+      "preferred_best_for": ["Crime thrillers", "Undercover stories", "Tense ensemble dramas"],
+      "notes": "Curated undercover crime-thriller identity."
+    },
+    {
+      "title": "The Penguin",
+      "content_type": "series",
+      "signals_to_add": [
+        {
+          "dimension": "audience_expectation",
+          "value": "gritty crime drama",
+          "label": "Crime drama",
+          "confidence": "high"
+        },
+        {
+          "dimension": "tone",
+          "value": "gritty",
+          "label": "Gritty",
+          "confidence": "high"
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "underworld power struggle",
+          "label": "Underworld",
+          "confidence": "high"
+        }
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A gritty crime drama about power, survival, and underworld ambition.",
+      "preferred_chips": ["Crime drama", "Gritty", "Power struggle", "Underworld"],
+      "preferred_best_for": ["Crime dramas", "Dark character stories", "Underworld power plays"],
+      "notes": "Curated underworld crime-drama identity."
+    },
+    {
+      "title": "Top Gun: Maverick",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "aviation action drama", "label": "Aviation action", "confidence": "high"},
+        {"dimension": "pacing", "value": "high-adrenaline", "label": "High-adrenaline", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "legacy sequel", "label": "Legacy sequel", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "war story"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A high-adrenaline aviation action drama built around legacy, skill, and spectacle.",
+      "preferred_chips": ["Aviation action", "High-adrenaline", "Legacy sequel", "Spectacle"],
+      "preferred_best_for": ["Action blockbusters", "Aviation stories", "High-energy crowd-pleasers"],
+      "preferred_consider_first": [],
+      "notes": "Avoids reducing the film to a generic war-story label."
+    },
+    {
+      "title": "The Prestige",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "rivalry mystery", "label": "Rivalry mystery", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "obsession and illusion", "label": "Obsession and illusion", "confidence": "high"},
+        {"dimension": "tone", "value": "twisty", "label": "Twisty", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "fantasy story"}, {"value": "fantasy world"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A twisty rivalry mystery about obsession, illusion, and sacrifice.",
+      "preferred_chips": ["Rivalry mystery", "Obsession", "Illusion", "Twisty"],
+      "preferred_best_for": ["Puzzle-box mysteries", "Rivalry dramas", "Twist-driven stories"],
+      "preferred_consider_first": [],
+      "notes": "Keeps mystery/rivalry ahead of generic fantasy adventure."
+    },
+    {
+      "title": "Spirited Away",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "magical coming-of-age fantasy", "label": "Magical coming-of-age", "confidence": "high"},
+        {"dimension": "mood", "value": "gentle wonder", "label": "Gentle wonder", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "surreal discovery", "label": "Surreal discovery", "confidence": "medium"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A magical coming-of-age fantasy with gentle wonder and surreal discovery.",
+      "preferred_chips": ["Magical world", "Coming-of-age", "Gentle wonder", "Surreal"],
+      "preferred_best_for": ["Animated fantasy", "Coming-of-age stories", "Gentle magical adventures"],
+      "preferred_consider_first": [],
+      "notes": "Productizes the fantasy identity without flattening it into generic adventure."
+    },
+    {
+      "title": "The Lord of the Rings: The Fellowship of the Ring",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "epic fantasy quest", "label": "Epic fantasy", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "fellowship and mythic world", "label": "Fellowship", "confidence": "high"},
+        {"dimension": "pacing", "value": "quest adventure", "label": "Quest adventure", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "An epic fantasy quest built around fellowship, danger, and mythic world-building.",
+      "preferred_chips": ["Epic fantasy", "Quest adventure", "Fellowship", "Mythic world"],
+      "preferred_best_for": ["Epic fantasy", "Quest adventures", "Immersive world-building"],
+      "preferred_consider_first": [],
+      "notes": "Adds a specific fantasy-quest identity."
+    },
+    {
+      "title": "The Lord of the Rings: The Return of the King",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "epic fantasy finale", "label": "Epic fantasy finale", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "final battle and sacrifice", "label": "Final battle", "confidence": "high"},
+        {"dimension": "mood", "value": "emotional payoff", "label": "Emotional payoff", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "An epic fantasy finale with large-scale battles, sacrifice, and emotional payoff.",
+      "preferred_chips": ["Epic fantasy", "Final battle", "Emotional payoff", "Mythic world"],
+      "preferred_best_for": ["Epic fantasy finales", "Large-scale adventure", "Emotional fantasy stories"],
+      "preferred_consider_first": [],
+      "notes": "Keeps finale stakes visible without raw keyword dumping."
+    },
+    {
+      "title": "The Expanse",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "grounded space-opera drama", "label": "Space opera", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "political sci-fi", "label": "Political sci-fi", "confidence": "high"},
+        {"dimension": "mood", "value": "interplanetary tension", "label": "Interplanetary tension", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A grounded space-opera drama built around politics, survival, and interplanetary tension.",
+      "preferred_chips": ["Space opera", "Political sci-fi", "Survival stakes", "Interplanetary tension"],
+      "preferred_best_for": ["Space-opera dramas", "Political sci-fi", "Long-form world-building"],
+      "preferred_consider_first": [],
+      "notes": "Avoids a too-short space-opera line."
+    },
+    {
+      "title": "Ex Machina",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "AI chamber thriller", "label": "AI thriller", "confidence": "high"},
+        {"dimension": "tone", "value": "tense", "label": "Tense", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "control and consciousness", "label": "Controlled setting", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "warm"}, {"value": "friendship story"}],
+      "signals_to_suppress": [{"value": "warm"}, {"value": "friendship story"}],
+      "preferred_watch_feel": "A tense AI chamber thriller about control, consciousness, and distrust.",
+      "preferred_chips": ["AI thriller", "Tense", "Psychological sci-fi", "Controlled setting"],
+      "preferred_best_for": ["AI stories", "Psychological sci-fi", "Tense chamber dramas"],
+      "preferred_consider_first": [],
+      "notes": "Suppresses misleading warm/friendship identity."
+    },
+    {
+      "title": "Django Unchained",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "revenge western", "label": "Revenge western", "confidence": "high"},
+        {"dimension": "tone", "value": "stylized", "label": "Stylized", "confidence": "high"},
+        {"dimension": "mood", "value": "darkly funny", "label": "Darkly funny", "confidence": "medium"}
+      ],
+      "signals_to_demote": [{"value": "warm"}, {"value": "friendship story"}],
+      "signals_to_suppress": [{"value": "warm"}, {"value": "friendship story"}],
+      "preferred_watch_feel": "A stylized revenge western with tense confrontations and darkly comic edge.",
+      "preferred_chips": ["Revenge western", "Tense", "Stylized", "Darkly funny"],
+      "preferred_best_for": ["Revenge stories", "Westerns", "Stylized action dramas"],
+      "preferred_consider_first": ["Better suited for viewers comfortable with darker or more intense stories."],
+      "notes": "Removes warm friendship phrasing from the revenge identity."
+    },
+    {
+      "title": "Stranger Things",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "supernatural adventure", "label": "Supernatural adventure", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "coming-of-age mystery", "label": "Coming-of-age", "confidence": "high"},
+        {"dimension": "mood", "value": "eerie", "label": "Eerie", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "superhero story"}, {"value": "superhero team story"}],
+      "signals_to_suppress": [{"value": "superhero story"}, {"value": "superhero team story"}],
+      "preferred_watch_feel": "An eerie coming-of-age supernatural adventure with friendship, mystery, and high-stakes danger.",
+      "preferred_chips": ["Supernatural adventure", "Coming-of-age", "Friendship", "Eerie"],
+      "preferred_best_for": ["Supernatural mysteries", "Coming-of-age adventures", "Friendship-led stories"],
+      "preferred_consider_first": [],
+      "notes": "Keeps superhero wording out of the primary identity."
+    },
+    {
+      "title": "The Bear",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "kitchen workplace drama", "label": "Kitchen workplace drama", "confidence": "high"},
+        {"dimension": "intensity", "value": "high", "label": "Intense", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "character pressure", "label": "Character pressure", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "An intense kitchen workplace drama built around pressure, grief, and personal ambition.",
+      "preferred_chips": ["Kitchen workplace drama", "Intense", "Emotional", "Character pressure"],
+      "preferred_best_for": ["Workplace dramas", "Character-driven series", "Pressure-cooker stories"],
+      "preferred_consider_first": ["Expect a more emotionally intense watch."],
+      "notes": "Makes the kitchen/workplace pressure identity specific."
+    },
+    {
+      "title": "Forrest Gump",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "life-spanning drama", "label": "Life-spanning drama", "confidence": "high"},
+        {"dimension": "mood", "value": "nostalgic", "label": "Nostalgic", "confidence": "high"},
+        {"dimension": "mood", "value": "emotional", "label": "Emotional", "confidence": "medium"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A warm life-spanning drama built around memory, resilience, and emotional nostalgia.",
+      "preferred_chips": ["Life-spanning drama", "Warm", "Nostalgic", "Emotional"],
+      "preferred_best_for": ["Emotional dramas", "Life-story films", "Nostalgic crowd-pleasers"],
+      "preferred_consider_first": [],
+      "notes": "Replaces generic friendship wording with a broader life-story identity."
+    },
+    {
+      "title": "Past Lives",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "restrained romantic drama", "label": "Restrained romance", "confidence": "high"},
+        {"dimension": "mood", "value": "emotional", "label": "Emotional", "confidence": "medium"},
+        {"dimension": "pacing", "value": "quiet", "label": "Quiet drama", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "friendship story"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A restrained romantic drama about memory, timing, and emotional possibility.",
+      "preferred_chips": ["Restrained romance", "Memory", "Emotional", "Quiet drama"],
+      "preferred_best_for": ["Romantic dramas", "Quiet character stories", "Reflective watches"],
+      "preferred_consider_first": ["Expect a slower, more restrained watch."],
+      "notes": "Keeps the romance/reflection identity ahead of generic friendship."
+    },
+    {
+      "title": "The Holdovers",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "bittersweet character comedy", "label": "Bittersweet comedy", "confidence": "high"},
+        {"dimension": "tone", "value": "warm", "label": "Warm", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "unlikely companionship", "label": "Unlikely companionship", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A warm, bittersweet character comedy about loneliness, connection, and unlikely companionship.",
+      "preferred_chips": ["Bittersweet comedy", "Character-focused", "Warm", "Unlikely companionship"],
+      "preferred_best_for": ["Character comedies", "Warm dramas", "Bittersweet holiday watches"],
+      "preferred_consider_first": [],
+      "notes": "Avoids awkward abstract grief/healing phrasing."
+    },
+    {
+      "title": "The Wild Robot",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "animated survival story", "label": "Animated adventure", "confidence": "high"},
+        {"dimension": "tone", "value": "gentle", "label": "Gentle", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "found family", "label": "Found family", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "tech-driven sci-fi"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A gentle animated survival story about connection, nature, and found family.",
+      "preferred_chips": ["Animated adventure", "Gentle", "Nature", "Found family"],
+      "preferred_best_for": ["Animated family stories", "Gentle adventures", "Emotional comfort watches"],
+      "preferred_consider_first": [],
+      "notes": "Avoids reducing the title to tech-driven sci-fi."
+    },
+    {
+      "title": "Gladiator",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "historical revenge epic", "label": "Historical epic", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "honor and personal loss", "label": "Honor", "confidence": "high"},
+        {"dimension": "pacing", "value": "spectacle-driven", "label": "Spectacle", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A grand historical revenge epic built around honor, spectacle, and personal loss.",
+      "preferred_chips": ["Historical epic", "Revenge story", "Spectacle", "Honor"],
+      "preferred_best_for": ["Historical action epics", "Revenge stories", "Large-scale dramas"],
+      "preferred_consider_first": [],
+      "notes": "Adds specific historical revenge-epic identity."
+    },
+    {
+      "title": "Godzilla Minus One",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "creature-disaster drama", "label": "Creature disaster", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "grief and survival", "label": "Survival", "confidence": "high"},
+        {"dimension": "intensity", "value": "high", "label": "Large-scale threat", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A period creature-disaster drama about grief, survival, and large-scale devastation.",
+      "preferred_chips": ["Creature disaster", "Period setting", "Survival", "Large-scale threat"],
+      "preferred_best_for": ["Creature features", "Disaster dramas", "Period action spectacle"],
+      "preferred_consider_first": ["Better suited for viewers comfortable with darker or more intense stories."],
+      "notes": "Keeps period and disaster elements balanced."
+    },
+    {
+      "title": "Killers of the Flower Moon",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "historical crime drama", "label": "Historical crime drama", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "federal investigation", "label": "Federal investigation", "confidence": "high"},
+        {"dimension": "tone", "value": "dark", "label": "Dark tone", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A dark historical crime drama built around exploitation, investigation, and systemic corruption.",
+      "preferred_chips": ["Historical crime drama", "Federal investigation", "Corruption", "Dark tone"],
+      "preferred_best_for": ["Historical crime dramas", "Investigation-led stories", "Serious dramas"],
+      "preferred_consider_first": ["Expect a slower, more restrained watch."],
+      "notes": "Adds investigation and corruption context without review claims."
+    },
+    {
+      "title": "Mission: Impossible - Dead Reckoning Part One",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "spy-action thriller", "label": "Spy action", "confidence": "high"},
+        {"dimension": "pacing", "value": "fast-paced", "label": "Fast-paced", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "mission thriller", "label": "Mission thriller", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A fast spy-action thriller built around pursuit, deception, and large-scale set pieces.",
+      "preferred_chips": ["Spy action", "Fast-paced", "Mission thriller", "Spectacle"],
+      "preferred_best_for": ["Spy thrillers", "Action blockbusters", "Fast-paced set pieces"],
+      "preferred_consider_first": [],
+      "notes": "Makes action/spy identity more specific than generic plot-driven phrasing."
+    },
+    {
+      "title": "RRR",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "historical action epic", "label": "Historical action epic", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "friendship and rebellion", "label": "Friendship", "confidence": "high"},
+        {"dimension": "pacing", "value": "high-energy", "label": "High-energy", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A high-energy historical action epic built around friendship, rebellion, and spectacle.",
+      "preferred_chips": ["Historical action epic", "Friendship", "Rebellion", "High-energy"],
+      "preferred_best_for": ["Action epics", "Friendship-led stories", "Spectacle-driven crowd-pleasers"],
+      "preferred_consider_first": [],
+      "notes": "Adds high-energy historical action identity."
+    },
+    {
+      "title": "Society of the Snow",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "survival drama", "label": "Survival drama", "confidence": "high"},
+        {"dimension": "tone", "value": "serious", "label": "Serious tone", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "human resilience", "label": "Human resilience", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A serious survival drama about endurance, crisis, and human resilience.",
+      "preferred_chips": ["Survival drama", "Serious tone", "Human resilience", "Crisis"],
+      "preferred_best_for": ["Survival stories", "Serious dramas", "Emotionally intense watches"],
+      "preferred_consider_first": ["Expect a heavier and more restrained watch."],
+      "notes": "Curated survival-drama identity."
+    },
+    {
+      "title": "The Crown",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "royal historical drama", "label": "Royal drama", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "duty and public image", "label": "Political pressure", "confidence": "high"},
+        {"dimension": "tone", "value": "serious", "label": "Serious tone", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A serious royal historical drama built around duty, politics, and public image.",
+      "preferred_chips": ["Royal drama", "Historical setting", "Political pressure", "Serious tone"],
+      "preferred_best_for": ["Historical dramas", "Royal family stories", "Political character dramas"],
+      "preferred_consider_first": [],
+      "notes": "Curated royal historical-drama identity."
+    },
+    {
+      "title": "The Wolf of Wall Street",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "finance satire", "label": "Finance satire", "confidence": "high"},
+        {"dimension": "tone", "value": "darkly funny", "label": "Darkly funny", "confidence": "high"},
+        {"dimension": "pacing", "value": "fast-paced", "label": "Fast-paced", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A fast, darkly comic finance satire about excess, ambition, and collapse.",
+      "preferred_chips": ["Finance satire", "Darkly funny", "Excess", "Fast-paced"],
+      "preferred_best_for": ["Dark comedies", "Finance stories", "Fast-paced rise-and-fall dramas"],
+      "preferred_consider_first": [],
+      "notes": "Adds finance satire identity."
+    },
+    {
+      "title": "Deadpool & Wolverine",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "superhero action-comedy", "label": "Superhero action-comedy", "confidence": "high"},
+        {"dimension": "tone", "value": "self-aware", "label": "Self-aware", "confidence": "high"},
+        {"dimension": "pacing", "value": "fast-paced", "label": "Fast-paced", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A self-aware superhero action-comedy with irreverent humor and fast-paced spectacle.",
+      "preferred_chips": ["Superhero action-comedy", "Self-aware", "Fast-paced", "Irreverent"],
+      "preferred_best_for": ["Superhero comedies", "Fast-paced action", "Self-aware franchise stories"],
+      "preferred_consider_first": [],
+      "notes": "Curated superhero action-comedy identity."
+    },
+    {
+      "title": "INVINCIBLE",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "animated superhero drama", "label": "Animated superhero drama", "confidence": "high"},
+        {"dimension": "intensity", "value": "high", "label": "High-stakes", "confidence": "high"},
+        {"dimension": "pacing", "value": "action-heavy", "label": "Action-heavy", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A high-stakes animated superhero drama with brutal consequences and coming-of-age pressure.",
+      "preferred_chips": ["Animated superhero drama", "High-stakes", "Coming-of-age", "Action-heavy"],
+      "preferred_best_for": ["Animated superhero stories", "Coming-of-age action", "Darker comic-book dramas"],
+      "preferred_consider_first": ["Better suited for viewers comfortable with darker or more intense stories."],
+      "notes": "Curated darker animated superhero identity."
+    },
+    {
+      "title": "Fight Club",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "psychological drama", "label": "Psychological drama", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "identity and alienation", "label": "Identity", "confidence": "high"},
+        {"dimension": "tone", "value": "dark", "label": "Dark tone", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "dystopian future"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A dark psychological drama about identity, alienation, and self-destruction.",
+      "preferred_chips": ["Psychological drama", "Identity", "Alienation", "Dark tone"],
+      "preferred_best_for": ["Psychological dramas", "Dark character studies", "Identity-focused stories"],
+      "preferred_consider_first": ["Better suited for viewers comfortable with darker or more intense stories."],
+      "notes": "Prevents dystopian-future wording from becoming the primary identity."
+    },
+    {
+      "title": "The Shawshank Redemption",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "prison drama", "label": "Prison drama", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "hope and endurance", "label": "Hope", "confidence": "high"},
+        {"dimension": "tone", "value": "serious", "label": "Serious tone", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "period setting"}, {"value": "cynical"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A serious prison drama about hope, endurance, and friendship.",
+      "preferred_chips": ["Prison drama", "Hope", "Endurance", "Friendship"],
+      "preferred_best_for": ["Prison dramas", "Hopeful dramas", "Friendship-led stories"],
+      "preferred_consider_first": [],
+      "notes": "Keeps prison/hope identity ahead of generic period wording."
+    },
+    {
+      "title": "The Truman Show",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "reality-bending satire", "label": "Reality-bending satire", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "identity and control", "label": "Identity", "confidence": "high"},
+        {"dimension": "tone", "value": "satirical", "label": "Satirical", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "offbeat comedy"}, {"value": "bleak"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A satirical reality-bending comedy-drama about identity, control, and freedom.",
+      "preferred_chips": ["Reality-bending satire", "Identity", "Control", "Freedom"],
+      "preferred_best_for": ["Satirical dramas", "Reality-bending stories", "Thoughtful crowd-pleasers"],
+      "preferred_consider_first": [],
+      "notes": "Avoids bleak/offbeat comedy as the primary identity."
+    },
+    {
+      "title": "The Substance",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "body-horror satire", "label": "Body-horror satire", "confidence": "high"},
+        {"dimension": "tone", "value": "bold", "label": "Bold", "confidence": "high"},
+        {"dimension": "mood", "value": "surreal", "label": "Surreal", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "offbeat comedy"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A bold body-horror satire about vanity, identity, and surreal discomfort.",
+      "preferred_chips": ["Body-horror satire", "Bold", "Surreal", "Darkly funny"],
+      "preferred_best_for": ["Bold horror satires", "Surreal stories", "Uncomfortable character pieces"],
+      "preferred_consider_first": ["Better suited for viewers comfortable with darker or more intense stories."],
+      "notes": "Makes horror satire primary, with dark comedy secondary."
+    },
+    {
+      "title": "The Matrix",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "cyberpunk action sci-fi", "label": "Cyberpunk sci-fi", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "reality and control", "label": "Reality-bending", "confidence": "high"},
+        {"dimension": "pacing", "value": "action-heavy", "label": "Action-heavy", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "dystopian future"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A sleek cyberpunk action sci-fi built around reality, control, and martial-arts spectacle.",
+      "preferred_chips": ["Cyberpunk sci-fi", "Martial-arts action", "Reality-bending", "Action-heavy"],
+      "preferred_best_for": ["Action sci-fi", "Cyberpunk stories", "Reality-bending blockbusters"],
+      "preferred_consider_first": [],
+      "notes": "Adds cyberpunk/action-sci-fi identity."
+    },
+    {
+      "title": "The Queen's Gambit",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "stylish character drama", "label": "Character drama", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "talent and isolation", "label": "Competition", "confidence": "high"},
+        {"dimension": "mood", "value": "stylish", "label": "Stylish", "confidence": "high"}
+      ],
+      "signals_to_demote": [{"value": "coming-of-age"}],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A stylish character drama about talent, isolation, and competitive pressure.",
+      "preferred_chips": ["Character drama", "Competition", "Isolation", "Stylish"],
+      "preferred_best_for": ["Character dramas", "Competition stories", "Stylish limited series"],
+      "preferred_consider_first": [],
+      "notes": "Adds competition/character-drama identity."
+    }
+  ]
+}
