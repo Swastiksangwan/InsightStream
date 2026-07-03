@@ -247,6 +247,42 @@ ON content_keywords (source_id);
 CREATE INDEX IF NOT EXISTS idx_content_keywords_content_source
 ON content_keywords (content_id, source_id);
 
+-- ------------------------------------------------------------
+-- Source signal indexes
+-- ------------------------------------------------------------
+
+-- Speeds up import-run lookup and idempotency checks.
+CREATE INDEX IF NOT EXISTS idx_source_signal_import_runs_run_key
+ON source_signal_import_runs (run_key);
+
+-- Speeds up fetching current source signals for content details.
+CREATE INDEX IF NOT EXISTS idx_content_source_signals_content_id
+ON content_source_signals (content_id);
+
+-- Speeds up source-signal filtering/reporting by dimension.
+CREATE INDEX IF NOT EXISTS idx_content_source_signals_dimension
+ON content_source_signals (dimension);
+
+-- Speeds up future signal search/discovery work.
+CREATE INDEX IF NOT EXISTS idx_content_source_signals_value
+ON content_source_signals (value);
+
+-- Speeds up active/current signal reads.
+CREATE INDEX IF NOT EXISTS idx_content_source_signals_is_active
+ON content_source_signals (is_active);
+
+-- Speeds up per-content grouped signal reads.
+CREATE INDEX IF NOT EXISTS idx_content_source_signals_content_dimension
+ON content_source_signals (content_id, dimension);
+
+-- Speeds up current watch guidance lookups.
+CREATE INDEX IF NOT EXISTS idx_content_watch_guidance_content_id
+ON content_watch_guidance (content_id);
+
+-- Speeds up readiness reporting before frontend/API exposure.
+CREATE INDEX IF NOT EXISTS idx_content_watch_guidance_frontend_ready
+ON content_watch_guidance (frontend_ready);
+
 -- Speeds up fetching ratings for content details.
 CREATE INDEX IF NOT EXISTS idx_ratings_content_id
 ON ratings (content_id);

@@ -35,11 +35,12 @@ Future ingestion updates should go into this document.
 | Letterboxd ratings preview/import | Implemented | `analytics/scripts/preview_letterboxd_ratings_match.py`, `analytics/scripts/import_letterboxd_ratings_from_preview.py` | Import only with `--apply` | Uses reviewed local dataset preview. Review text is ignored. Letterboxd is displayed as a dataset snapshot and excluded from InsightStream Score v1. |
 | TMDb keywords preview/import | Implemented | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
 | Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
+| Source signal storage import | Implemented, backend/storage only | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. Does not expose API/frontend display. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
 
-- Structured Source Signals v1.
+- Source signal content-detail API exposure.
 - Watch Profile UI from source signals.
 - Review ingestion.
 - Review-derived signals.
@@ -574,6 +575,42 @@ Preview behavior:
 - writes local preview/report JSON only;
 - does not call TMDb, fetch reviews, scrape, write DB rows, or update frontend/API behavior.
 
+### Import Source Signal Storage
+
+The source-signal storage importer reads the generated preview/report and writes current source signals plus productized watch guidance into backend storage tables. It remains backend/storage only: no content-detail API field or frontend display is added by this step.
+
+Dry-run:
+
+```bash
+python3 analytics/scripts/import_source_signals_from_preview.py
+```
+
+Write:
+
+```bash
+python3 analytics/scripts/import_source_signals_from_preview.py --write
+```
+
+Idempotency check:
+
+```bash
+python3 analytics/scripts/import_source_signals_from_preview.py
+python3 analytics/scripts/import_source_signals_from_preview.py --write
+```
+
+Importer behavior:
+
+- dry-run by default, with no DB writes;
+- `--write` creates one `source_signal_import_runs` row and upserts current rows in `content_source_signals` and `content_watch_guidance`;
+- imports only content IDs present in the selected preview scope;
+- does not touch content IDs outside the selected preview;
+- hard-deletes obsolete source signals only for selected content IDs;
+- preserves mapping, override, preview-generator, and semantic-QA versions;
+- blocks writes when semantic QA counts are non-zero unless `--allow-semantic-qa-issues` is passed;
+- blocks partial preview writes unless `--allow-partial-preview` is passed;
+- stores `storage_ready = true` and `frontend_ready = false` by default;
+- writes generated import reports under `analytics/processed/source_signals/run_reports/`, which remain local-only and ignored.
+
 ## 11. Output Artifact Policy
 
 Tracked or reviewable processed artifacts depend on the repo's current data-artifact convention. In general:
@@ -607,13 +644,22 @@ Do not commit API keys, tokens, downloaded provider datasets, or raw review text
 Read-only ingestion health check:
 
 ```bash
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
+python3 analytics/scripts/check_ingestion_health.py \
+  --expect-imdb \
+  --expect-letterboxd \
+  --expect-tmdb-keywords \
+  --expect-source-signals
 ```
 
 Strict mode:
 
 ```bash
-python3 analytics/scripts/check_ingestion_health.py --strict --expect-imdb --expect-letterboxd --expect-tmdb-keywords
+python3 analytics/scripts/check_ingestion_health.py \
+  --strict \
+  --expect-imdb \
+  --expect-letterboxd \
+  --expect-tmdb-keywords \
+  --expect-source-signals
 ```
 
 Backend tests:
@@ -693,10 +739,9 @@ Keyword presence is weak evidence, not proof. Missing keyword is not proof of ab
 These are future tasks, not implemented:
 
 1. Review the v3 keyword-to-signal preview output and continue refining mapping/fallback/override quality.
-2. Decide source signal DB/API storage shape.
-3. Implement structured Source Signals v1 persistence or runtime builder.
-4. Expose source signals in the content detail API.
-5. Add Watch Profile UI.
-6. Improve Insight Summary from source signals.
-7. Later add review-derived signals after source/legal policy is clear.
-8. Later add LLM-assisted summaries from approved stored signals.
+2. Product-copy polish pass before public display.
+3. Expose source signals in the content detail API.
+4. Add Watch Profile UI.
+5. Improve Insight Summary from source signals.
+6. Later add review-derived signals after source/legal policy is clear.
+7. Later add LLM-assisted summaries from approved stored signals.

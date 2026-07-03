@@ -59,7 +59,9 @@ Current status:
 - The preview report now includes source counts, count-plus-detail fields for fallback/override/keyword-only title groups, low-signal rows, one-signal rows, missing watch-feel rows, bad primary identities, semantic QA rows for generic/conflicting watch guidance, override candidates, and high-value unmapped candidates.
 - The preview report includes `preview_generator_version` and `semantic_qa_version`, currently `2026-07-02-v3.2.1`.
 - Partial/debug source-signal preview runs must pass explicit `--output` and `--report-output` paths so they do not overwrite the full-catalog preview/report.
-- Source-signal DB storage, content-detail API exposure, and frontend Watch Profile UI are still future work.
+- Source-signal DB storage is implemented through `backend/migrations/010_add_source_signal_storage.sql` and `analytics/scripts/import_source_signals_from_preview.py`.
+- The storage importer is dry-run by default, writes only with `--write`, preserves provenance/version fields, blocks semantic-QA issues unless explicitly allowed, and marks stored guidance as `storage_ready = true` / `frontend_ready = false`.
+- Content-detail API exposure and frontend Watch Profile UI are still future work.
 
 Useful observed keywords include:
 
@@ -836,9 +838,9 @@ Recommended order:
 4. Import keywords from final preview. Manual apply step.
 5. Add keyword ingestion health checks. Done.
 6. Build keyword filtering/mapping config and preview script. Done.
-7. Review v3 preview quality and continue refining mapping, fallback rules, and title overrides.
-8. Decide whether Source Signals v1 should be persisted or generated at API time.
-9. Implement Source Signals v1 builder/storage.
+7. Review v3 preview quality and continue refining mapping, fallback rules, and title overrides. Done for v3.2.1.
+8. Implement Source Signals v1 storage/importer. Done.
+9. Product-copy polish pass before public display.
 10. Expose `source_signals` in content detail API.
 11. Add compact Watch Profile UI.
 12. Improve Insight Summary using `source_signals`.
@@ -848,14 +850,13 @@ Recommended order:
 ## 19. Recommended Next Coding Task
 
 ```text
-Review keyword signal preview quality
+Plan source signal API and Watch Profile display
 ```
 
 Suggested scope:
 
-- inspect local preview/report outputs
-- identify awkward or overconfident guidance left after the v3 fallback/override pass
-- adjust curated mapping config, metadata fallback rules, or title overrides
-- decide source signal DB/API strategy
-- no `source_signals` yet
-- no frontend yet
+- read stored `content_source_signals` and `content_watch_guidance`
+- keep raw keywords internal/admin only
+- expose productized source signals through content detail API
+- design compact Watch Profile UI
+- keep `frontend_ready = false` until copy/design review is complete

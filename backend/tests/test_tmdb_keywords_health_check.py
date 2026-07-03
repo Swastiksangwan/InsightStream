@@ -96,3 +96,65 @@ def test_tmdb_keyword_health_summary_fails_when_expected_tables_missing():
     assert warnings == []
     assert failures
 
+
+def test_source_signal_health_summary_reports_coverage(monkeypatch):
+    health = load_health_module()
+
+    def fake_fetch_rows(_connection, query, _params=None):
+        if "FROM source_signal_import_runs" in query:
+            return [{"source_signal_import_run_count": 1}]
+        if "source_signal_ready_content" in query:
+            return [
+                {
+                    "source_signal_ready_content": 150,
+                    "content_with_watch_guidance": 150,
+                    "content_with_active_source_signals": 150,
+                    "frontend_ready_guidance_count": 0,
+                    "active_source_signal_count": 620,
+                }
+            ]
+        if "FROM content_source_signals" in query and "HAVING COUNT(*) > 1" in query:
+            return []
+        if "missing_source_signal_details" in query:
+            return []
+        if "JOIN content_keywords" in query and "HAVING" in query:
+            return []
+        return []
+
+    monkeypatch.setattr(health, "fetch_rows", fake_fetch_rows)
+
+    summary, warnings, failures = health.source_signal_summary(
+        object(),
+        {
+            "source_signal_import_runs": {"id"},
+            "content_source_signals": {"id"},
+            "content_watch_guidance": {"content_id"},
+        },
+        expect_source_signals=True,
+    )
+
+    assert summary["source_signal_tables_present"] is True
+    assert summary["source_signal_import_run_count"] == 1
+    assert summary["source_signal_guidance_coverage_percent"] == 100.0
+    assert summary["source_signal_active_signal_coverage_percent"] == 100.0
+    assert warnings == []
+    assert failures == []
+
+
+def test_source_signal_health_summary_fails_when_expected_tables_missing():
+    health = load_health_module()
+
+    summary, warnings, failures = health.source_signal_summary(
+        object(),
+        {
+            "source_signal_import_runs": set(),
+            "content_source_signals": set(),
+            "content_watch_guidance": set(),
+        },
+        expect_source_signals=True,
+    )
+
+    assert summary["source_signal_tables_present"] is False
+    assert "content_source_signals" in summary["missing_source_signal_tables"]
+    assert warnings == []
+    assert failures

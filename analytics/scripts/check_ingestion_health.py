@@ -125,6 +125,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "relationships as failures."
         ),
     )
+    parser.add_argument(
+        "--expect-source-signals",
+        action="store_true",
+        help=(
+            "Treat missing source-signal storage, watch guidance, or source-signal "
+            "coverage as failures."
+        ),
+    )
     return parser.parse_args(argv)
 
 
@@ -419,6 +427,14 @@ def duplicate_query_definitions(table_columns: dict[str, set[str]]) -> dict[str,
             SELECT content_id, keyword_id, source_id, COUNT(*) AS duplicate_count
             FROM content_keywords
             GROUP BY content_id, keyword_id, source_id
+            HAVING COUNT(*) > 1;
+        """
+    if table_columns.get("content_source_signals"):
+        queries["content_source_signals"] = """
+            SELECT content_id, dimension, value, COUNT(*) AS duplicate_count
+            FROM content_source_signals
+            WHERE is_active = TRUE
+            GROUP BY content_id, dimension, value
             HAVING COUNT(*) > 1;
         """
     return queries
@@ -1324,6 +1340,141 @@ def tmdb_keyword_summary(
     return summary, warnings, failures
 
 
+def source_signal_summary(
+    connection: Any,
+    table_columns: dict[str, set[str]],
+    expect_source_signals: bool = False,
+) -> tuple[dict[str, Any], list[str], list[str]]:
+    warnings: list[str] = []
+    failures: list[str] = []
+    required_tables = {
+        "source_signal_import_runs",
+        "content_source_signals",
+        "content_watch_guidance",
+    }
+    present_tables = {table for table in required_tables if table_columns.get(table)}
+    missing_tables = sorted(required_tables - present_tables)
+
+    if missing_tables:
+        message = (
+            "Source signals: missing table(s): " + ", ".join(missing_tables) + "."
+        )
+        if expect_source_signals:
+            failures.append(message)
+        return {
+            "source_signal_tables_present": False,
+            "missing_source_signal_tables": missing_tables,
+            "source_signal_import_run_count": 0,
+            "source_signal_ready_content": 0,
+            "content_with_watch_guidance": 0,
+            "content_with_active_source_signals": 0,
+            "source_signal_guidance_coverage_percent": 0,
+            "source_signal_active_signal_coverage_percent": 0,
+            "active_source_signal_count": 0,
+            "frontend_ready_guidance_count": 0,
+            "duplicate_active_signal_rows": 0,
+            "missing_source_signal_details": [],
+        }, warnings, failures
+
+    run_row = fetch_rows(
+        connection,
+        """
+        SELECT COUNT(*) AS source_signal_import_run_count
+        FROM source_signal_import_runs;
+        """,
+    )[0]
+    coverage_row = fetch_rows(
+        connection,
+        """
+        SELECT
+            COUNT(DISTINCT ck.content_id) AS source_signal_ready_content,
+            COUNT(DISTINCT cwg.content_id) AS content_with_watch_guidance,
+            COUNT(DISTINCT css.content_id) AS content_with_active_source_signals,
+            COUNT(DISTINCT cwg.content_id) FILTER (WHERE cwg.frontend_ready = TRUE)
+                AS frontend_ready_guidance_count,
+            COUNT(css.id) FILTER (WHERE css.is_active = TRUE) AS active_source_signal_count
+        FROM content_keywords ck
+        LEFT JOIN content_watch_guidance cwg ON cwg.content_id = ck.content_id
+        LEFT JOIN content_source_signals css
+          ON css.content_id = ck.content_id
+         AND css.is_active = TRUE;
+        """,
+    )[0]
+    duplicate_rows = fetch_rows(
+        connection,
+        """
+        SELECT content_id, dimension, value, COUNT(*) AS duplicate_count
+        FROM content_source_signals
+        WHERE is_active = TRUE
+        GROUP BY content_id, dimension, value
+        HAVING COUNT(*) > 1
+        ORDER BY content_id ASC, dimension ASC, value ASC;
+        """,
+    )
+    missing_rows = fetch_rows(
+        connection,
+        """
+        SELECT
+            c.id AS content_id,
+            c.title,
+            c.content_type,
+            COUNT(DISTINCT cwg.content_id) AS has_watch_guidance,
+            COUNT(css.id) FILTER (WHERE css.is_active = TRUE) AS active_signal_count
+        FROM content c
+        JOIN content_keywords ck ON ck.content_id = c.id
+        LEFT JOIN content_watch_guidance cwg ON cwg.content_id = c.id
+        LEFT JOIN content_source_signals css
+          ON css.content_id = c.id
+         AND css.is_active = TRUE
+        GROUP BY c.id, c.title, c.content_type
+        HAVING COUNT(DISTINCT cwg.content_id) = 0
+            OR COUNT(css.id) FILTER (WHERE css.is_active = TRUE) = 0
+        ORDER BY c.title ASC;
+        """,
+    )
+
+    ready_count = coverage_row["source_signal_ready_content"] or 0
+    guidance_count = coverage_row["content_with_watch_guidance"] or 0
+    signal_count = coverage_row["content_with_active_source_signals"] or 0
+    summary = {
+        "source_signal_tables_present": True,
+        "missing_source_signal_tables": [],
+        **run_row,
+        **coverage_row,
+        "source_signal_guidance_coverage_percent": (
+            round(guidance_count / ready_count * 100, 2) if ready_count else 0
+        ),
+        "source_signal_active_signal_coverage_percent": (
+            round(signal_count / ready_count * 100, 2) if ready_count else 0
+        ),
+        "duplicate_active_signal_rows": len(duplicate_rows),
+        "duplicate_active_signal_details": duplicate_rows[:50],
+        "missing_source_signal_details": missing_rows[:50],
+    }
+
+    if duplicate_rows:
+        failures.append(
+            f"Source signals: {len(duplicate_rows)} duplicate active signal row group(s)."
+        )
+    if expect_source_signals and run_row["source_signal_import_run_count"] == 0:
+        failures.append("Source signals: expected source signal import run is missing.")
+    if expect_source_signals and ready_count and guidance_count < ready_count:
+        failures.append(
+            "Source signals: expected watch guidance coverage for all source-signal-ready content."
+        )
+    if expect_source_signals and ready_count and signal_count < ready_count:
+        failures.append(
+            "Source signals: expected active source signals for all source-signal-ready content."
+        )
+    if missing_rows and not expect_source_signals:
+        warnings.append(
+            "Source signals: "
+            f"{len(missing_rows)} source-signal-ready content item(s) lack guidance or active signals."
+        )
+
+    return summary, warnings, failures
+
+
 def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     generated_at = datetime.now(timezone.utc).isoformat()
     targets_path = resolve_path(args.targets)
@@ -1335,6 +1486,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "expect_imdb": args.expect_imdb,
         "expect_letterboxd": args.expect_letterboxd,
         "expect_tmdb_keywords": args.expect_tmdb_keywords,
+        "expect_source_signals": args.expect_source_signals,
     }
     warnings: list[str] = []
     failures: list[str] = []
@@ -1348,6 +1500,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     series_summary: dict[str, Any] = {}
     rating_summary: dict[str, Any] = {}
     keyword_summary: dict[str, Any] = {}
+    source_signals_summary: dict[str, Any] = {}
 
     try:
         raw_targets, _ = load_targets(targets_path)
@@ -1383,6 +1536,9 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                     "keyword_sources",
                     "provider_keywords",
                     "content_keywords",
+                    "source_signal_import_runs",
+                    "content_source_signals",
+                    "content_watch_guidance",
                 ]
                 table_columns = {
                     table_name: get_table_columns(connection, table_name)
@@ -1445,6 +1601,18 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
                 )
                 warnings.extend(keyword_warnings)
                 failures.extend(keyword_failures)
+
+                (
+                    source_signals_summary,
+                    source_signal_warnings,
+                    source_signal_failures,
+                ) = source_signal_summary(
+                    connection,
+                    table_columns,
+                    expect_source_signals=args.expect_source_signals,
+                )
+                warnings.extend(source_signal_warnings)
+                failures.extend(source_signal_failures)
         except SQLAlchemyError as exc:
             failures.append(f"Database health check failed: {exc}")
 
@@ -1463,6 +1631,7 @@ def build_report(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         "series_lifecycle_summary": series_summary,
         "ratings_summary": rating_summary,
         "tmdb_keywords_summary": keyword_summary,
+        "source_signals_summary": source_signals_summary,
         "warnings": warnings,
         "failures": failures,
         "status": status,
@@ -1482,6 +1651,7 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
     series = report.get("series_lifecycle_summary") or {}
     ratings = report.get("ratings_summary") or {}
     keywords = report.get("tmdb_keywords_summary") or {}
+    source_signals = report.get("source_signals_summary") or {}
     duplicate_checks = report.get("duplicate_checks") or {}
     duplicate_failures = [
         name for name, result in duplicate_checks.items() if result.get("status") != "passed"
@@ -1555,6 +1725,16 @@ def print_summary(report: dict[str, Any], output_path: Path) -> None:
         )
     else:
         print("TMDb keywords: tables not present")
+    if source_signals.get("source_signal_tables_present"):
+        print(
+            "Source signals: "
+            f"{source_signals.get('content_with_watch_guidance', 0)}/"
+            f"{source_signals.get('source_signal_ready_content', 0)} with watch guidance, "
+            f"{source_signals.get('content_with_active_source_signals', 0)}/"
+            f"{source_signals.get('source_signal_ready_content', 0)} with active signals"
+        )
+    else:
+        print("Source signals: tables not present")
     print(f"Warnings: {len(report.get('warnings') or [])}")
     print(f"Failures: {len(report.get('failures') or [])}")
     print(f"Final health status: {report.get('status')}")
