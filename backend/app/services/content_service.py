@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 
 from app.services.insight_summary_service import build_insight_summary
+from app.services.source_signal_service import get_content_decision_layer
 
 
 CONTENT_SELECT_FIELDS = """
@@ -989,6 +990,7 @@ def get_content_details_service(content_id: int, db: Session):
 
     ratings = get_detail_ratings(db, content_id)
     credits = get_content_credits_service(content_id, db)
+    decision_layer = get_content_decision_layer(db, content_id)
 
     summary_query = text("""
         SELECT
@@ -1025,6 +1027,7 @@ def get_content_details_service(content_id: int, db: Session):
             "ratings": ratings,
             "series_metadata": series_metadata,
             "credits": credits,
+            "decision_layer": decision_layer,
         }
     )
 
@@ -1035,5 +1038,6 @@ def get_content_details_service(content_id: int, db: Session):
         "ratings": ratings,
         "series_metadata": series_metadata,
         "insight_summary": insight_summary,
+        "decision_layer": decision_layer,
         "summary": summary
     }

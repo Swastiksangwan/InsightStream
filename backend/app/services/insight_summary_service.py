@@ -583,6 +583,69 @@ def build_watch_note(content_type, runtime, series_metadata, availability, confi
     return None
 
 
+def ensure_sentence(value):
+    if not has_text(value):
+        return value
+    stripped = value.strip()
+    return stripped if stripped.endswith(".") else f"{stripped}."
+
+
+def source_watch_profile(decision_layer):
+    if not decision_layer:
+        return None
+    profile = decision_layer.get("watch_profile") or {}
+    if has_text(profile.get("watch_feel")):
+        return profile
+    if profile.get("chips") or profile.get("best_for") or profile.get("consider_first"):
+        return profile
+    return None
+
+
+def source_profile_summary(
+    watch_profile,
+    content_type,
+    rating,
+    availability,
+    series_metadata,
+):
+    watch_feel = watch_profile.get("watch_feel")
+    if not has_text(watch_feel):
+        return None
+
+    summary = ensure_sentence(watch_feel)
+    support = []
+    if rating["summary_phrase"]:
+        support.append(rating["summary_phrase"])
+    if availability:
+        support.append(availability["summary_phrase"])
+
+    if content_type == "series":
+        status_label = format_status(
+            (series_metadata or {}).get("series_status_normalized")
+        )
+        if status_label == "ongoing":
+            support.append("ongoing-series context")
+        elif status_label == "completed":
+            support.append("completed-series context")
+
+    if support:
+        summary += f" It also has {' and '.join(unique_preserve_order(support))}."
+
+    return summary
+
+
+def source_profile_signal_value(watch_profile):
+    chips = watch_profile.get("chips") or []
+    if chips:
+        return ", ".join(chips[:2])
+
+    best_for = watch_profile.get("best_for") or []
+    if best_for:
+        return best_for[0]
+
+    return None
+
+
 def build_insight_summary(content_detail: dict) -> dict:
     content = content_detail.get("content") or {}
     genres = content_detail.get("genres") or []
@@ -590,6 +653,8 @@ def build_insight_summary(content_detail: dict) -> dict:
     ratings = content_detail.get("ratings") or {}
     series_metadata = content_detail.get("series_metadata") or None
     credits = content_detail.get("credits") or {}
+    decision_layer = content_detail.get("decision_layer") or None
+    watch_profile = source_watch_profile(decision_layer)
 
     has_overview = has_text(content.get("overview"))
     has_genres = bool(genres)
@@ -605,6 +670,7 @@ def build_insight_summary(content_detail: dict) -> dict:
         has_credits,
         has_rating,
         series_metadata,
+        watch_profile,
     ]):
         return empty_insight_summary()
 
@@ -642,8 +708,26 @@ def build_insight_summary(content_detail: dict) -> dict:
             availability,
         )
 
+    if watch_profile:
+        if has_text(watch_profile.get("watch_feel")):
+            headline = ensure_sentence(watch_profile["watch_feel"])
+        enriched_summary = source_profile_summary(
+            watch_profile,
+            content_type,
+            rating,
+            availability,
+            series_metadata,
+        )
+        if enriched_summary:
+            summary = enriched_summary
+
     if has_overview or has_genres:
         add_generated_from(generated_from, "metadata")
+
+    if watch_profile:
+        watch_fit_signal = source_profile_signal_value(watch_profile)
+        add_signal(key_signals, "Watch fit", watch_fit_signal)
+        add_generated_from(generated_from, "watch_profile")
 
     if rating["signal"]:
         add_signal(key_signals, "Audience", rating["signal"])
@@ -713,6 +797,12 @@ def build_insight_summary(content_detail: dict) -> dict:
         rating,
         availability,
     )
+    if watch_profile:
+        best_for = unique_preserve_order(
+            (watch_profile.get("best_for") or [])
+            + (watch_profile.get("chips") or [])
+            + best_for
+        )[:4]
     watch_note = build_watch_note(
         content_type,
         runtime,
@@ -720,6 +810,8 @@ def build_insight_summary(content_detail: dict) -> dict:
         availability,
         confidence,
     )
+    if watch_profile and watch_profile.get("consider_first"):
+        watch_note = watch_profile["consider_first"][0]
 
     return {
         "headline": headline,

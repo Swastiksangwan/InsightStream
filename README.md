@@ -31,6 +31,7 @@ Completed:
 - Clickable person cards and person detail pages with biography and filmography.
 - Small TMDb attribution footer in the frontend.
 - TMDb keyword preview pipeline with retry/merge workflow for future source signals.
+- Source-signal decision layer in the content detail API, using stored watch guidance while keeping raw keywords internal.
 
 Next planned:
 
@@ -38,6 +39,7 @@ Next planned:
 - Scalable metadata ingestion plan before expanding to 100+ titles.
 - Ratings source architecture.
 - Rating normalization and unified score strategy.
+- Watch Profile frontend display from the source-signal decision layer.
 - Review intelligence, pros/cons, and verdict pipeline.
 
 ## 3. Tech Stack
@@ -115,6 +117,8 @@ Content:
 - `GET /content/discover`
 - `GET /content/by-genre/{genre_name}`
 - `GET /content/by-platform/{platform_name}`
+
+`GET /content/{content_id}/details` includes ratings, availability, Insight Summary, and a nullable source-signal `decision_layer` when stored watch guidance exists. Raw TMDb keywords and source-signal debug metadata are not exposed by default.
 
 Metadata:
 

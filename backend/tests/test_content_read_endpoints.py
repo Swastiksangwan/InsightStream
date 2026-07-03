@@ -383,6 +383,38 @@ def first_series_with_lifecycle_metadata(db_session):
     ).mappings().first()
 
 
+def first_content_with_watch_guidance(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT c.id, c.title
+            FROM content c
+            JOIN content_watch_guidance cwg ON cwg.content_id = c.id
+            ORDER BY c.id ASC
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
+def first_content_without_watch_guidance(db_session):
+    return db_session.execute(
+        text(
+            """
+            SELECT c.id, c.title
+            FROM content c
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM content_watch_guidance cwg
+                WHERE cwg.content_id = c.id
+            )
+            ORDER BY c.id ASC
+            LIMIT 1;
+            """
+        )
+    ).mappings().first()
+
+
 def test_get_content_returns_seed_or_larger_catalog(client):
     response = client.get("/content?limit=20")
     data = response.json()
@@ -870,8 +902,50 @@ def test_get_content_details_for_seeded_title(client, content_id_by_title):
     assert isinstance(data["insight_summary"]["best_for"], list)
     assert isinstance(data["insight_summary"]["key_signals"], list)
     assert isinstance(data["insight_summary"]["generated_from"], list)
+    assert "decision_layer" in data
     assert data["summary"] is not None
     assert data["series_metadata"] is None
+
+
+def test_content_details_include_decision_layer_when_source_signals_exist(
+    client,
+    db_session,
+):
+    row = first_content_with_watch_guidance(db_session)
+    if row is None:
+        pytest.skip("No imported source-signal watch guidance exists in this database.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    data = response.json()
+
+    assert response.status_code == 200
+    decision_layer = data["decision_layer"]
+    assert decision_layer is not None
+    assert decision_layer["watch_profile"]["watch_feel"]
+    assert isinstance(decision_layer["watch_profile"]["chips"], list)
+    assert isinstance(decision_layer["decision_support"]["reasons"], list)
+    assert decision_layer["signal_quality"]["has_watch_guidance"] is True
+    public_text = str(decision_layer).lower()
+    assert "tmdb_keywords" not in public_text
+    assert "mapping_version" not in public_text
+    assert "source_names" not in public_text
+    assert "raw keyword" not in public_text
+    assert all(
+        "viewers" not in chip.lower()
+        for chip in decision_layer["watch_profile"]["chips"]
+    )
+
+
+def test_content_details_handle_missing_decision_layer_safely(client, db_session):
+    row = first_content_without_watch_guidance(db_session)
+    if row is None:
+        pytest.skip("All content has imported source-signal watch guidance.")
+
+    response = client.get(f"/content/{row['id']}/details")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["decision_layer"] is None
 
 
 def test_content_details_include_imported_ratings_when_available(client, db_session):

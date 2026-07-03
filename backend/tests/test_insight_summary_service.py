@@ -96,6 +96,32 @@ def credits(director=None, creator=None):
     }
 
 
+def decision_layer(**profile_overrides):
+    watch_profile = {
+        "watch_feel": "A tense character-driven crime drama about pressure and consequence.",
+        "chips": ["Character-driven crime drama", "Tense", "Crime world"],
+        "best_for": ["Crime dramas", "Character-driven stories"],
+        "consider_first": [
+            "Better suited for viewers comfortable with darker or more intense stories."
+        ],
+    }
+    watch_profile.update(profile_overrides)
+    return {
+        "watch_profile": watch_profile,
+        "decision_support": {
+            "headline": "Best suited for viewers looking for a tense character-driven crime drama.",
+            "reasons": ["Clear character-driven crime drama identity."],
+            "cautions": watch_profile["consider_first"],
+        },
+        "signal_quality": {
+            "storage_ready": True,
+            "frontend_ready": False,
+            "has_watch_guidance": True,
+            "has_source_signals": True,
+        },
+    }
+
+
 def labels(summary):
     return {signal["label"] for signal in summary["key_signals"]}
 
@@ -114,6 +140,19 @@ def combined_text(summary):
 def assert_no_unsupported_marketing(summary):
     text = combined_text(summary)
     for phrase in UNSUPPORTED_MARKETING_PHRASES:
+        assert phrase not in text
+
+
+def assert_no_technical_source_signal_terms(summary):
+    text = combined_text(summary)
+    for phrase in (
+        "keyword",
+        "tmdb_keywords",
+        "source_signal",
+        "source signal",
+        "confidence",
+        "mapping_version",
+    ):
         assert phrase not in text
 
 
@@ -149,6 +188,56 @@ def test_movie_with_rich_metadata_gets_non_empty_insight_summary():
     assert summary["confidence"] == "high"
     assert_clean_chips(summary)
     assert_no_unsupported_marketing(summary)
+
+
+def test_source_signal_guidance_enriches_insight_summary():
+    summary = build_insight_summary(
+        {
+            "content": base_content(title="Breaking Bad", type="series", runtime=None),
+            "genres": ["Crime", "Drama"],
+            "platforms": availability("streaming"),
+            "ratings": ratings(88),
+            "series_metadata": {
+                "series_status_normalized": "ended",
+                "released_seasons_count": 5,
+            },
+            "credits": credits(creator="Example Creator"),
+            "decision_layer": decision_layer(),
+        }
+    )
+
+    assert summary["headline"].startswith("A tense character-driven crime drama")
+    assert "pressure and consequence" in summary["summary"]
+    assert "strong audience backing" in summary["summary"]
+    assert "Character-driven crime drama" in summary["best_for"]
+    assert any(
+        signal["label"] == "Watch fit"
+        and "Character-driven crime drama" in signal["value"]
+        for signal in summary["key_signals"]
+    )
+    assert summary["watch_note"].startswith("Better suited")
+    assert "watch_profile" in summary["generated_from"]
+    assert_no_technical_source_signal_terms(summary)
+    assert_no_unsupported_marketing(summary)
+
+
+def test_insight_summary_falls_back_without_source_signal_guidance():
+    summary = build_insight_summary(
+        {
+            "content": base_content(title="Fallback Movie"),
+            "genres": ["Drama", "History"],
+            "platforms": availability("streaming"),
+            "ratings": ratings(82),
+            "series_metadata": None,
+            "credits": credits(director="Example Director"),
+            "decision_layer": None,
+        }
+    )
+
+    assert summary["headline"]
+    assert "historical drama" in combined_text(summary)
+    assert "watch_profile" not in summary["generated_from"]
+    assert_no_technical_source_signal_terms(summary)
 
 
 def test_ongoing_series_gets_series_aware_signals():

@@ -86,6 +86,32 @@ class InsightSummary(BaseModel):
     confidence: str
 
 
+class WatchProfileSchema(BaseModel):
+    watch_feel: Optional[str] = None
+    chips: List[str]
+    best_for: List[str]
+    consider_first: List[str]
+
+
+class DecisionSupportSchema(BaseModel):
+    headline: Optional[str] = None
+    reasons: List[str]
+    cautions: List[str]
+
+
+class SourceSignalQualitySchema(BaseModel):
+    storage_ready: bool
+    frontend_ready: bool
+    has_watch_guidance: bool
+    has_source_signals: bool
+
+
+class ContentDecisionLayerSchema(BaseModel):
+    watch_profile: WatchProfileSchema
+    decision_support: DecisionSupportSchema
+    signal_quality: SourceSignalQualitySchema
+
+
 class SeriesMetadata(BaseModel):
     number_of_seasons: Optional[int] = None
     number_of_episodes: Optional[int] = None
@@ -153,4 +179,5 @@ class ContentDetailsResponse(BaseModel):
     ratings: RatingsResponse
     series_metadata: Optional[SeriesMetadata] = None
     insight_summary: InsightSummary
+    decision_layer: Optional[ContentDecisionLayerSchema] = None
     summary: Optional[Summary] = None

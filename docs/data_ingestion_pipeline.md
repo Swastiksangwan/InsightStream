@@ -35,12 +35,12 @@ Future ingestion updates should go into this document.
 | Letterboxd ratings preview/import | Implemented | `analytics/scripts/preview_letterboxd_ratings_match.py`, `analytics/scripts/import_letterboxd_ratings_from_preview.py` | Import only with `--apply` | Uses reviewed local dataset preview. Review text is ignored. Letterboxd is displayed as a dataset snapshot and excluded from InsightStream Score v1. |
 | TMDb keywords preview/import | Implemented | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
 | Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
-| Source signal storage import | Implemented, backend/storage only | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. Does not expose API/frontend display. |
+| Source signal storage import | Implemented | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
+| Source signal decision layer API | Implemented, backend-only | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns a sanitized `decision_layer` object. No frontend display yet. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
 
-- Source signal content-detail API exposure.
 - Watch Profile UI from source signals.
 - Review ingestion.
 - Review-derived signals.
@@ -611,6 +611,22 @@ Importer behavior:
 - stores `storage_ready = true` and `frontend_ready = false` by default;
 - writes generated import reports under `analytics/processed/source_signals/run_reports/`, which remain local-only and ignored.
 
+### Source Signal Decision Layer API
+
+The backend content detail response now includes a nullable `decision_layer` object when stored source-signal guidance exists. This is a backend/API integration step only; the frontend does not display it yet.
+
+The decision layer:
+
+- reads `content_watch_guidance` and active `content_source_signals`;
+- returns a productized `watch_profile` with `watch_feel`, sanitized `chips`, `best_for`, and `consider_first`;
+- returns compact `decision_support` copy with headline, reasons, and cautions;
+- returns `signal_quality`, including `storage_ready`, `frontend_ready`, `has_watch_guidance`, and `has_source_signals`;
+- filters or rewrites mechanical labels such as platform/viewer chips before they reach the public API;
+- does not expose raw TMDb keywords, mapping versions, source names, or provider payloads by default;
+- lets Insight Summary use stored watch guidance for richer deterministic copy while keeping metadata/rating/availability fallback behavior.
+
+`frontend_ready` remains a data-quality flag. It is returned so the future frontend can decide whether to show, hide, or label the section, but it does not block backend/dev integration.
+
 ## 11. Output Artifact Policy
 
 Tracked or reviewable processed artifacts depend on the repo's current data-artifact convention. In general:
@@ -740,8 +756,8 @@ These are future tasks, not implemented:
 
 1. Review the v3 keyword-to-signal preview output and continue refining mapping/fallback/override quality.
 2. Product-copy polish pass before public display.
-3. Expose source signals in the content detail API.
+3. Continue product-copy QA on source-signal decision-layer output.
 4. Add Watch Profile UI.
-5. Improve Insight Summary from source signals.
+5. Improve frontend Insight Summary presentation from source signals.
 6. Later add review-derived signals after source/legal policy is clear.
 7. Later add LLM-assisted summaries from approved stored signals.
