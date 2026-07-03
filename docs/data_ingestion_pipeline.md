@@ -623,9 +623,12 @@ The decision layer:
 - returns `signal_quality`, including `storage_ready`, `frontend_ready`, `has_watch_guidance`, and `has_source_signals`;
 - filters or rewrites mechanical labels such as platform/viewer chips before they reach the public API;
 - does not expose raw TMDb keywords, mapping versions, source names, or provider payloads by default;
-- lets Insight Summary use stored watch guidance for richer deterministic copy while keeping metadata/rating/availability fallback behavior.
+- lets Insight Summary use stored watch guidance for richer deterministic copy while keeping metadata/rating/availability fallback behavior;
+- keeps platform names in explicit Access signals rather than watch-profile identity labels.
 
 `frontend_ready` remains a data-quality flag. It is returned so the future frontend can decide whether to show, hide, or label the section, but it does not block backend/dev integration.
+
+The legacy `summary` object may still appear in detail responses for backward compatibility. New frontend work should prefer `ratings`, `insight_summary`, and `decision_layer` for decision-support UI.
 
 ## 11. Output Artifact Policy
 
@@ -756,8 +759,7 @@ These are future tasks, not implemented:
 
 1. Review the v3 keyword-to-signal preview output and continue refining mapping/fallback/override quality.
 2. Product-copy polish pass before public display.
-3. Continue product-copy QA on source-signal decision-layer output.
-4. Add Watch Profile UI.
-5. Improve frontend Insight Summary presentation from source signals.
+3. Add Watch Profile UI from the sanitized `decision_layer`.
+4. Improve frontend Insight Summary presentation from source signals.
 6. Later add review-derived signals after source/legal policy is clear.
 7. Later add LLM-assisted summaries from approved stored signals.

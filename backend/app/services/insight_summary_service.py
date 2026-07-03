@@ -482,7 +482,7 @@ def build_series_summary(
         connector = " and " if " with " in summary else " with "
         summary += f"{connector}{' and '.join(support)}"
         if status_label == "completed":
-            summary += ". Good fit for a finished binge with no weekly-release wait"
+            summary += ". Better for a finished binge with no weekly-release wait"
         elif status_label == "ongoing":
             summary += ". Best for viewers who want to follow an active series; wait if you prefer completed shows"
         else:
@@ -575,7 +575,7 @@ def build_watch_note(content_type, runtime, series_metadata, availability, confi
         if status_label == "ongoing":
             return "Best for viewers who want to follow an active series; wait if you prefer completed shows."
         if status_label == "completed":
-            return "Good fit for a finished binge with no weekly-release wait."
+            return "Better for a finished binge with no weekly-release wait."
 
     if confidence == "low":
         return "Decision support is limited because ratings, availability, or credits are incomplete."
@@ -617,7 +617,7 @@ def source_profile_summary(
     if rating["summary_phrase"]:
         support.append(rating["summary_phrase"])
     if availability:
-        support.append(availability["summary_phrase"])
+        support.append(source_profile_access_phrase(availability))
 
     if content_type == "series":
         status_label = format_status(
@@ -629,9 +629,30 @@ def source_profile_summary(
             support.append("completed-series context")
 
     if support:
-        summary += f" It also has {' and '.join(unique_preserve_order(support))}."
+        summary += (
+            " It pairs this watch profile with "
+            f"{' and '.join(unique_preserve_order(support))}."
+        )
 
     return summary
+
+
+def source_profile_access_phrase(availability):
+    if not availability:
+        return None
+
+    region = availability.get("region")
+    suffix = f" in {region}" if region else ""
+    kind = availability.get("kind")
+
+    if kind == "streaming":
+        return f"streaming access{suffix}"
+    if kind == "rent_buy":
+        return f"rent/buy access{suffix}"
+    if kind == "free_ads":
+        return f"free or ad-supported access{suffix}"
+
+    return f"stored access context{suffix}"
 
 
 def source_profile_signal_value(watch_profile):

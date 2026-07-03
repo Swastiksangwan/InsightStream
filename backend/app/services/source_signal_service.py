@@ -4,6 +4,10 @@ from sqlalchemy.orm import Session
 
 GENERIC_REJECT_TERMS = (
     "jiohotstar",
+    "netflix",
+    "prime video",
+    "amazon prime video",
+    "apple tv",
     "netflix viewers",
     "prime video viewers",
     "amazon prime video viewers",
@@ -11,6 +15,12 @@ GENERIC_REJECT_TERMS = (
     "platform viewers",
     "availability viewers",
     "ott viewers",
+    "provider",
+    "keyword",
+    "tmdb_keywords",
+    "source_names",
+    "mapping_version",
+    "confidence",
 )
 
 WEAK_STANDALONE_LABELS = {
@@ -23,6 +33,28 @@ WEAK_STANDALONE_LABELS = {
     "prime video",
     "amazon prime video",
     "serious stories",
+}
+
+WEAK_SECONDARY_CHIPS = {
+    "spy story",
+    "spy thriller",
+    "spy thrillers",
+    "serious tone",
+    "complex",
+    "bold",
+}
+
+MOOD_TONE_ONLY_CHIPS = {
+    "tense",
+    "emotional",
+    "playful",
+    "serious",
+    "serious tone",
+    "surreal",
+    "thoughtful",
+    "foreboding",
+    "dark tone",
+    "gritty",
 }
 
 LABEL_REWRITES = {
@@ -54,6 +86,17 @@ LABEL_REWRITES = {
     "war story viewers": "War dramas",
     "coming-of-age viewers": "Coming-of-age stories",
 }
+
+SIGNAL_DIMENSION_PRIORITY = {
+    "audience_expectation": 1,
+    "topic_theme": 2,
+    "tone": 3,
+    "mood": 4,
+    "pacing": 5,
+    "intensity": 6,
+    "content_caution_proxy": 7,
+}
+
 
 def has_text(value):
     return isinstance(value, str) and bool(value.strip())
@@ -138,10 +181,72 @@ def sanitize_label(value):
     return cleaned
 
 
-def sanitize_labels(values, limit):
-    return unique_preserve_order(
+def sanitize_labels(values, limit=None):
+    labels = unique_preserve_order(
         value for value in (sanitize_label(item) for item in values or []) if value
-    )[:limit]
+    )
+    return labels[:limit] if limit is not None else labels
+
+
+def signal_priority(signal):
+    return SIGNAL_DIMENSION_PRIORITY.get(signal.get("dimension"), 99)
+
+
+def prioritized_signal_labels(signals):
+    ordered = sorted(
+        signals,
+        key=lambda signal: (
+            signal_priority(signal),
+            signal.get("label", "").lower(),
+        ),
+    )
+    return unique_preserve_order(
+        label
+        for label in (sanitize_label(signal.get("label")) for signal in ordered)
+        if label
+    )
+
+
+def prioritize_chips(stored_chips, signals, limit=5):
+    primary_signal_labels = prioritized_signal_labels(
+        signal
+        for signal in signals
+        if signal.get("dimension") in {"audience_expectation", "topic_theme"}
+    )
+    feel_signal_labels = prioritized_signal_labels(
+        signal
+        for signal in signals
+        if signal.get("dimension") in {"tone", "mood"}
+    )
+    pacing_signal_labels = prioritized_signal_labels(
+        signal for signal in signals if signal.get("dimension") == "pacing"
+    )
+    stored_labels = sanitize_labels(stored_chips)
+
+    candidates = unique_preserve_order(
+        primary_signal_labels + feel_signal_labels + pacing_signal_labels + stored_labels
+    )
+    strong_candidates = [
+        label
+        for label in candidates
+        if label.lower() not in WEAK_SECONDARY_CHIPS
+    ]
+    if len(strong_candidates) >= 3:
+        candidates = strong_candidates
+
+    primary_count = sum(
+        1
+        for label in candidates
+        if label in primary_signal_labels and label.lower() not in WEAK_SECONDARY_CHIPS
+    )
+    if primary_count >= 2:
+        candidates = [
+            label
+            for label in candidates
+            if label.lower() not in WEAK_SECONDARY_CHIPS or label not in primary_signal_labels
+        ]
+
+    return candidates[:limit]
 
 
 def public_signal_rows(rows):
@@ -236,6 +341,62 @@ def values_by_dimension(signals):
     return grouped
 
 
+def first_signal_label(grouped, dimensions):
+    for dimension in dimensions:
+        for label in grouped.get(dimension) or []:
+            sanitized = sanitize_label(label)
+            if sanitized:
+                return sanitized
+    return None
+
+
+def theme_phrase(label):
+    if not has_text(label):
+        return None
+    lower_label = label.lower()
+    if "memory and identity" in lower_label:
+        return "memory-and-identity themes"
+    if "sci-fi" in lower_label or "sci fi" in lower_label:
+        return lower_first(label)
+    if lower_label.endswith("story") or lower_label.endswith("stories"):
+        return lower_first(label)
+    return lower_first(label)
+
+
+def feel_phrase(label):
+    if not has_text(label):
+        return None
+    lower_label = label.lower()
+    if lower_label in {"surreal", "thoughtful", "foreboding", "tense", "gritty"}:
+        return f"{lower_label} tone"
+    if lower_label.endswith("tone"):
+        return lower_label
+    return lower_first(label)
+
+
+def pacing_reason(pacing, identity, watch_feel):
+    if not has_text(pacing):
+        return None
+    lower_pacing = pacing.lower()
+    lower_watch_feel = (watch_feel or "").lower()
+
+    if "plot-driven" in lower_pacing and (
+        "memory" in lower_watch_feel
+        or "identity" in lower_watch_feel
+        or "puzzle" in lower_watch_feel
+        or "heist" in (identity or "").lower()
+    ):
+        return "Plot-driven structure makes it better for viewers who enjoy puzzle-like stories."
+
+    if "fast" in lower_pacing:
+        return "Fast-paced structure points toward a higher-energy watch."
+
+    if "slow" in lower_pacing:
+        return "Slower pacing makes it better for a more focused watch."
+
+    return f"{sentence_case(pacing)} structure helps set the viewing rhythm."
+
+
 def build_decision_headline(watch_profile):
     identity = simplify_watch_feel_for_headline(watch_profile.get("watch_feel"))
     if identity:
@@ -258,30 +419,69 @@ def build_decision_reasons(watch_profile, signals):
     best_for = watch_profile.get("best_for") or []
     grouped = values_by_dimension(signals)
 
-    identity = next(
-        (
-            chip
-            for chip in chips
-            if chip.lower() not in {"tense", "emotional", "playful", "serious tone"}
-        ),
-        None,
+    identity = first_signal_label(grouped, ("audience_expectation", "topic_theme"))
+    if not identity:
+        identity = next(
+            (
+                chip
+                for chip in chips
+                if chip.lower() not in MOOD_TONE_ONLY_CHIPS
+                and chip.lower() not in WEAK_SECONDARY_CHIPS
+            ),
+            None,
+        )
+
+    theme = first_signal_label(grouped, ("topic_theme",))
+    if theme and identity and theme.lower() == identity.lower():
+        theme = None
+
+    if identity and theme:
+        reasons.append(
+            f"Strong {lower_first(identity)} identity with {theme_phrase(theme)}."
+        )
+    elif identity:
+        reasons.append(f"Strong {lower_first(identity)} identity.")
+
+    feel = first_signal_label(grouped, ("mood", "tone"))
+    if feel:
+        feel_text = feel_phrase(feel)
+        if theme:
+            reasons.append(
+                f"{sentence_case(feel_text)} gives it a distinctive watch feel."
+            )
+        else:
+            reasons.append(f"{sentence_case(feel_text)} shapes the watch feel.")
+
+    pacing = first_signal_label(grouped, ("pacing",))
+    pacing_text = pacing_reason(
+        pacing,
+        identity,
+        watch_profile.get("watch_feel"),
     )
-    if identity:
-        reasons.append(f"Clear {lower_first(identity)} identity.")
+    if pacing_text:
+        reasons.append(pacing_text)
 
-    if best_for:
-        reasons.append(f"Good fit for {lower_first(best_for[0])}.")
+    if best_for and len(reasons) < 2:
+        reasons.append(f"Works best for {lower_first(best_for[0])}.")
 
-    feel_values = unique_preserve_order(
-        (grouped.get("tone") or [])[:1] + (grouped.get("mood") or [])[:1]
-    )
-    if feel_values:
-        feel_text = ", ".join(lower_first(value) for value in feel_values)
-        reasons.append(f"Expect a {feel_text} feel.")
+    if len(reasons) < 2:
+        secondary_chip = next(
+            (
+                chip
+                for chip in chips
+                if chip != identity
+                and chip.lower() not in MOOD_TONE_ONLY_CHIPS
+                and chip.lower() not in WEAK_SECONDARY_CHIPS
+            ),
+            None,
+        )
+        if secondary_chip:
+            reasons.append(
+                f"Secondary signals point toward {lower_first(secondary_chip)}."
+            )
 
-    pacing = (grouped.get("pacing") or [])[:1]
-    if pacing:
-        reasons.append(f"{sentence_case(pacing[0])} pacing is part of the watch profile.")
+    if len(reasons) < 2 and has_text(watch_profile.get("watch_feel")):
+        reasons.append("The watch feel is specific enough for a clearer watch decision.")
 
     return unique_preserve_order(reasons)[:4]
 
@@ -302,7 +502,7 @@ def build_decision_cautions(watch_profile, signals):
     return []
 
 
-def build_watch_profile(guidance):
+def build_watch_profile(guidance, signals=None):
     if not guidance:
         return {
             "watch_feel": None,
@@ -311,11 +511,16 @@ def build_watch_profile(guidance):
             "consider_first": [],
         }
 
+    public_signals = signals or []
     return {
         "watch_feel": (
             guidance["watch_feel"] if has_text(guidance["watch_feel"]) else None
         ),
-        "chips": sanitize_labels(json_list(guidance.get("chips")), limit=5),
+        "chips": prioritize_chips(
+            json_list(guidance.get("chips")),
+            public_signals,
+            limit=5,
+        ),
         "best_for": sanitize_labels(json_list(guidance.get("best_for")), limit=4),
         "consider_first": sanitize_labels(
             json_list(guidance.get("consider_first")),
@@ -335,8 +540,8 @@ def get_content_decision_layer(
     if not guidance and not signal_rows:
         return None
 
-    watch_profile = build_watch_profile(guidance)
     public_signals = public_signal_rows(signal_rows)
+    watch_profile = build_watch_profile(guidance, public_signals)
     decision_support = {
         "headline": build_decision_headline(watch_profile),
         "reasons": build_decision_reasons(watch_profile, public_signals),
@@ -357,8 +562,12 @@ def get_content_decision_layer(
     if include_debug:
         decision_layer["debug"] = {
             "signals": public_signals,
-            "keyword_counts": json_dict(guidance.get("keyword_counts")) if guidance else {},
-            "signal_sources": json_list(guidance.get("signal_sources")) if guidance else [],
+            "keyword_counts": (
+                json_dict(guidance.get("keyword_counts")) if guidance else {}
+            ),
+            "signal_sources": (
+                json_list(guidance.get("signal_sources")) if guidance else []
+            ),
         }
 
     return decision_layer

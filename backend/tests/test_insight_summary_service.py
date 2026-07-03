@@ -110,7 +110,7 @@ def decision_layer(**profile_overrides):
         "watch_profile": watch_profile,
         "decision_support": {
             "headline": "Best suited for viewers looking for a tense character-driven crime drama.",
-            "reasons": ["Clear character-driven crime drama identity."],
+            "reasons": ["Strong character-driven crime drama identity."],
             "cautions": watch_profile["consider_first"],
         },
         "signal_quality": {
@@ -209,7 +209,15 @@ def test_source_signal_guidance_enriches_insight_summary():
     assert summary["headline"].startswith("A tense character-driven crime drama")
     assert "pressure and consequence" in summary["summary"]
     assert "strong audience backing" in summary["summary"]
+    assert "streaming access in India" in summary["summary"]
+    assert "Example Platform" not in summary["summary"]
+    assert "It also has" not in summary["summary"]
+    assert len(summary["summary"]) < 260
     assert "Character-driven crime drama" in summary["best_for"]
+    assert any(
+        signal["label"] == "Access" and "Example Platform" in signal["value"]
+        for signal in summary["key_signals"]
+    )
     assert any(
         signal["label"] == "Watch fit"
         and "Character-driven crime drama" in signal["value"]

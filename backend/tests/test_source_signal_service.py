@@ -116,7 +116,11 @@ def test_decision_layer_returns_sanitized_watch_profile_and_decision_copy():
     assert decision_layer["decision_support"]["headline"] == (
         "Best suited for viewers looking for a tense character-driven crime drama."
     )
-    assert decision_layer["decision_support"]["reasons"]
+    reasons = decision_layer["decision_support"]["reasons"]
+    assert reasons
+    assert all("Clear " not in reason for reason in reasons)
+    assert all("Good fit for" not in reason for reason in reasons)
+    assert all("watch profile" not in reason for reason in reasons)
     assert decision_layer["decision_support"]["cautions"]
     assert decision_layer["signal_quality"] == {
         "storage_ready": True,
@@ -142,11 +146,58 @@ def test_decision_layer_keeps_useful_chips():
 
     decision_layer = get_content_decision_layer(db, 1)
 
-    assert decision_layer["watch_profile"]["chips"] == [
-        "Dark fantasy",
-        "Political power drama",
-        "Power struggle",
+    assert "Political power drama" in decision_layer["watch_profile"]["chips"]
+    assert "Dark fantasy" in decision_layer["watch_profile"]["chips"]
+    assert "Power struggle" in decision_layer["watch_profile"]["chips"]
+    assert "JioHotstar viewers" not in decision_layer["watch_profile"]["chips"]
+
+
+def test_decision_layer_prioritizes_strong_chips_over_weak_secondary_chips():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel=(
+                "A surreal heist story about memory and identity with a layered "
+                "sci-fi setup."
+            ),
+            chips=[
+                "Spy story",
+                "Heist story",
+                "Memory and identity",
+                "Surreal",
+                "Thoughtful",
+                "Plot-driven",
+            ],
+            best_for=["Heist stories", "Puzzle-like stories"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Heist story"),
+            signal_row("audience_expectation", "Spy story"),
+            signal_row("topic_theme", "Memory and identity"),
+            signal_row("mood", "Surreal"),
+            signal_row("tone", "Thoughtful"),
+            signal_row("pacing", "Plot-driven"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(db, 1)
+    chips = decision_layer["watch_profile"]["chips"]
+    reasons = decision_layer["decision_support"]["reasons"]
+
+    assert chips[:5] == [
+        "Heist story",
+        "Memory and identity",
+        "Thoughtful",
+        "Surreal",
+        "Plot-driven",
     ]
+    assert "Spy story" not in chips
+    assert any("heist story" in reason.lower() for reason in reasons)
+    assert any("memory-and-identity" in reason.lower() for reason in reasons)
+    assert any("puzzle-like stories" in reason.lower() for reason in reasons)
+    assert all("Clear " not in reason for reason in reasons)
+    assert all("Good fit for" not in reason for reason in reasons)
+    assert all("is part of the watch profile" not in reason for reason in reasons)
 
 
 def test_decision_layer_returns_none_without_guidance_or_signals():
@@ -168,3 +219,4 @@ def test_decision_layer_does_not_expose_technical_fields_by_default():
     assert "source_names" not in public_text
     assert "tmdb_keywords" not in public_text
     assert "confidence" not in public_text
+    assert "provider" not in public_text

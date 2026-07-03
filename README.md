@@ -118,7 +118,7 @@ Content:
 - `GET /content/by-genre/{genre_name}`
 - `GET /content/by-platform/{platform_name}`
 
-`GET /content/{content_id}/details` includes ratings, availability, Insight Summary, and a nullable source-signal `decision_layer` when stored watch guidance exists. Raw TMDb keywords and source-signal debug metadata are not exposed by default.
+`GET /content/{content_id}/details` includes ratings, availability, Insight Summary, and a nullable source-signal `decision_layer` when stored watch guidance exists. Raw TMDb keywords and source-signal debug metadata are not exposed by default. New frontend work should prefer `ratings`, `insight_summary`, and `decision_layer`; the legacy `summary` object remains for backward compatibility.
 
 Metadata:
 

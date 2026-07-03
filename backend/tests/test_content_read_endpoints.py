@@ -929,10 +929,25 @@ def test_content_details_include_decision_layer_when_source_signals_exist(
     assert "tmdb_keywords" not in public_text
     assert "mapping_version" not in public_text
     assert "source_names" not in public_text
+    assert "confidence" not in public_text
+    assert "provider" not in public_text
     assert "raw keyword" not in public_text
+    labels = (
+        decision_layer["watch_profile"]["chips"]
+        + decision_layer["watch_profile"]["best_for"]
+    )
+    blocked_identity_phrases = (
+        "jiohotstar viewers",
+        "netflix viewers",
+        "prime video viewers",
+        "serialized drama viewers",
+        "platform viewers",
+        "availability viewers",
+    )
     assert all(
-        "viewers" not in chip.lower()
-        for chip in decision_layer["watch_profile"]["chips"]
+        blocked not in label.lower()
+        for label in labels
+        for blocked in blocked_identity_phrases
     )
 
 

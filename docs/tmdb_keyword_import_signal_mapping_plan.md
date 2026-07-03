@@ -62,6 +62,7 @@ Current status:
 - Source-signal DB storage is implemented through `backend/migrations/010_add_source_signal_storage.sql` and `analytics/scripts/import_source_signals_from_preview.py`.
 - The storage importer is dry-run by default, writes only with `--write`, preserves provenance/version fields, blocks semantic-QA issues unless explicitly allowed, and marks stored guidance as `storage_ready = true` / `frontend_ready = false`.
 - The content-detail API now exposes a sanitized `decision_layer` built from stored guidance/signals. Raw keywords, mapping versions, source names, and provider payloads are not exposed by default.
+- Decision-layer output prioritizes stronger identity/theme/mood chips, filters mechanical platform/viewer labels, and returns product-friendly reasons rather than keyword-analysis phrasing.
 - Frontend Watch Profile UI is still future work.
 
 Useful observed keywords include:
@@ -843,10 +844,11 @@ Recommended order:
 8. Implement Source Signals v1 storage/importer. Done.
 9. Product-copy polish pass before public display.
 10. Expose a sanitized source-signal decision layer in content detail API. Done.
-11. Add compact Watch Profile UI.
-12. Improve frontend Insight Summary presentation using source-signal guidance.
-13. Later evaluate MovieLens/MPST for taxonomy/modeling.
-14. Later evaluate review-derived signals.
+11. Polish backend decision-layer copy before frontend display. Done.
+12. Add compact Watch Profile UI.
+13. Improve frontend Insight Summary presentation using source-signal guidance.
+14. Later evaluate MovieLens/MPST for taxonomy/modeling.
+15. Later evaluate review-derived signals.
 
 ## 19. Recommended Next Coding Task
 

@@ -115,7 +115,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_keyword_signal_preview.py` — keyword-to-signal preview mapping, metadata fallback, curated override, partial-output protection, semantic QA versioning, and product-copy tests without live DB/API calls
 - `backend/tests/test_source_signal_schema.py` — source-signal storage schema and index verification
 - `backend/tests/test_source_signal_importer.py` — source-signal importer dry-run, write, validation, idempotency, and JSONB helper tests without live DB/API calls
-- `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization, watch profile, and decision-copy tests without live DB/API calls
+- `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization, chip priority, watch profile, and product-friendly decision-copy tests without live DB/API calls
 
 ## 6. Important Bug Caught by Tests
 
