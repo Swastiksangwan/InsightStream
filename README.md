@@ -26,12 +26,13 @@ Completed:
 - TV aggregate credits support for series cast, with regular TV credits as fallback.
 - Person detail/biography preview and safe biography import.
 - Backend APIs for content credits, person detail, and person credits.
-- Redesigned content detail page with metadata, availability, ratings, cast/crew, and watch actions.
+- Redesigned content detail page with metadata, availability, ratings, compact decision display, cast/crew, and watch actions.
 - Clickable genre chips to filtered discovery.
 - Clickable person cards and person detail pages with biography and filmography.
 - Small TMDb attribution footer in the frontend.
 - TMDb keyword preview pipeline with retry/merge workflow for future source signals.
 - Source-signal decision layer in the content detail API, including compact `decision_layer.display` output while keeping raw keywords internal.
+- Frontend detail page display using compact `decision_layer.display`.
 
 Next planned:
 
@@ -39,7 +40,6 @@ Next planned:
 - Scalable metadata ingestion plan before expanding to 100+ titles.
 - Ratings source architecture.
 - Rating normalization and unified score strategy.
-- Frontend display using compact `decision_layer.display`.
 - Review intelligence, pros/cons, and verdict pipeline.
 
 ## 3. Tech Stack

@@ -1,3 +1,4 @@
+import { cleanPublicList, cleanPublicText } from "@/lib/publicDisplay";
 import type { InsightSummary } from "@/types/content";
 
 type SummaryPanelProps = {
@@ -34,8 +35,47 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
     );
   }
 
-  const bestFor = summary.best_for ?? [];
-  const keySignals = summary.key_signals ?? [];
+  const headline = cleanPublicText(summary.headline, { blockPlatformNames: true });
+  const body = cleanPublicText(summary.summary, { blockPlatformNames: true });
+  const bestFor = cleanPublicList(summary.best_for, {
+    blockPlatformNames: true,
+  });
+  const keySignals = (summary.key_signals ?? [])
+    .map((signal) => {
+      const label = cleanPublicText(signal.label, { blockPlatformNames: true });
+      const isAccessSignal = label?.toLowerCase() === "access";
+      const value = cleanPublicText(signal.value, {
+        blockPlatformNames: !isAccessSignal,
+      });
+
+      if (!label || !value) {
+        return null;
+      }
+
+      return { label, value };
+    })
+    .filter((signal): signal is { label: string; value: string } => Boolean(signal));
+  const watchNote = cleanPublicText(summary.watch_note, {
+    blockPlatformNames: true,
+  });
+
+  if (
+    !headline &&
+    !body &&
+    bestFor.length === 0 &&
+    keySignals.length === 0 &&
+    !watchNote
+  ) {
+    return (
+      <section className="detail-panel detail-panel--wide">
+        <div className="detail-panel__header">
+          <span className="section-label">Decision support</span>
+          <h2>Insight Summary</h2>
+        </div>
+        <p className="detail-empty">Not enough structured data to generate a summary yet.</p>
+      </section>
+    );
+  }
 
   return (
     <section className="detail-panel detail-panel--wide">
@@ -44,10 +84,8 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
         <h2>Insight Summary</h2>
       </div>
 
-      {summary.headline ? (
-        <h3 className="insight-summary__headline">{summary.headline}</h3>
-      ) : null}
-      {summary.summary ? <p className="insight-summary__body">{summary.summary}</p> : null}
+      {headline ? <h3 className="insight-summary__headline">{headline}</h3> : null}
+      {body ? <p className="insight-summary__body">{body}</p> : null}
 
       {bestFor.length > 0 ? (
         <div className="insight-summary__group">
@@ -74,10 +112,10 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
         </div>
       ) : null}
 
-      {summary.watch_note ? (
+      {watchNote ? (
         <div className="insight-summary__group">
           <h3>Consider first</h3>
-          <p className="insight-summary__note">{summary.watch_note}</p>
+          <p className="insight-summary__note">{watchNote}</p>
         </div>
       ) : null}
     </section>

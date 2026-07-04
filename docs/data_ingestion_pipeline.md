@@ -36,12 +36,11 @@ Future ingestion updates should go into this document.
 | TMDb keywords preview/import | Implemented | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
 | Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
 | Source signal storage import | Implemented | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
-| Source signal decision layer API | Implemented, backend-only | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output. No frontend display yet. |
+| Source signal decision layer API/UI | Implemented | `backend/app/services/source_signal_service.py`, content detail API, `frontend/components/DecisionDisplayCard.tsx` | No | Reads stored source signals/watch guidance, returns sanitized compatibility fields plus compact `decision_layer.display`, and displays the compact object on detail pages without raw keywords. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
 
-- Watch Profile UI from source signals.
 - Review ingestion.
 - Review-derived signals.
 - LLM-assisted summaries from approved stored signals.
@@ -613,7 +612,7 @@ Importer behavior:
 
 ### Source Signal Decision Layer API
 
-The backend content detail response now includes a nullable `decision_layer` object when stored source-signal guidance exists. This is a backend/API integration step only; the frontend does not display it yet.
+The backend content detail response now includes a nullable `decision_layer` object when stored source-signal guidance exists. The frontend detail page uses the compact `decision_layer.display` object for the new decision-support UI.
 
 The decision layer:
 
@@ -627,7 +626,7 @@ The decision layer:
 - lets Insight Summary use stored watch guidance for richer deterministic copy while keeping metadata/rating/availability fallback behavior;
 - keeps platform names in explicit Access signals rather than watch-profile identity labels.
 
-`decision_layer.display` is the future frontend-preferred contract because it avoids repeating sentence-style `watch_profile`, `decision_support`, and `insight_summary` copy across multiple UI blocks. Older `watch_profile` and `decision_support` fields remain available for backward compatibility.
+`decision_layer.display` is the frontend-preferred contract because it avoids repeating sentence-style `watch_profile`, `decision_support`, and `insight_summary` copy across multiple UI blocks. Older `watch_profile` and `decision_support` fields remain available for backward compatibility.
 
 Preferred display shape:
 
@@ -649,9 +648,9 @@ Preferred display shape:
 }
 ```
 
-`frontend_ready` remains a data-quality flag. It is returned so the future frontend can decide whether to show, hide, or label the section, but it does not block backend/dev integration.
+`frontend_ready` remains a data-quality flag. The compact frontend display does not show readiness flags or use them as public labels.
 
-The legacy `summary` object may still appear in detail responses for backward compatibility. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display` for decision-support UI.
+The legacy `summary` object may still appear in detail responses for backward compatibility. Frontend decision-support UI should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display`.
 
 ## 11. Output Artifact Policy
 

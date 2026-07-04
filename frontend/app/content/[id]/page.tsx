@@ -1,4 +1,8 @@
 import { CreditsSection } from "@/components/CreditsSection";
+import {
+  DecisionDisplayCard,
+  hasDecisionDisplay,
+} from "@/components/DecisionDisplayCard";
 import { DetailHero } from "@/components/DetailHero";
 import { DetailOverview } from "@/components/DetailOverview";
 import { DetailSidebar } from "@/components/DetailSidebar";
@@ -128,8 +132,11 @@ export default async function ContentDetailPage({ params }: ContentDetailPagePro
           />
 
           <div className="detail-main-column detail-main-column--supporting">
+            <DecisionDisplayCard display={details.decision_layer?.display} />
+            {!hasDecisionDisplay(details.decision_layer?.display) ? (
+              <SummaryPanel summary={details.insight_summary} />
+            ) : null}
             <CreditsSection credits={credits} />
-            <SummaryPanel summary={details.insight_summary} />
           </div>
         </section>
       </main>

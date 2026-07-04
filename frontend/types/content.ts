@@ -121,6 +121,33 @@ export type InsightSummary = {
   confidence: "low" | "medium" | "high" | string;
 };
 
+export type DecisionDisplayFact = {
+  label: string;
+  value: string;
+};
+
+export type DecisionDisplayProfile = {
+  identity?: string[];
+  themes?: string[];
+  feel?: string[];
+  pace?: string | null;
+  best_for?: string[];
+  consider_first?: string[];
+};
+
+export type DecisionDisplay = {
+  primary_insight?: string | null;
+  profile?: DecisionDisplayProfile | null;
+  supporting_facts?: DecisionDisplayFact[];
+};
+
+export type DecisionLayer = {
+  display?: DecisionDisplay | null;
+  watch_profile?: unknown;
+  decision_support?: unknown;
+  signal_quality?: unknown;
+};
+
 export type ContentDetailsResponse = {
   content: Content;
   genres: string[];
@@ -128,6 +155,7 @@ export type ContentDetailsResponse = {
   ratings: RatingsResponse;
   series_metadata?: SeriesMetadata | null;
   insight_summary: InsightSummary;
+  decision_layer?: DecisionLayer | null;
   summary?: Summary | null;
 };
 
