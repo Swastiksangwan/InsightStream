@@ -27,6 +27,37 @@ GENERIC_REJECT_TERMS = (
     "storage_ready",
 )
 
+BLOCKED_PUBLIC_DISPLAY_PHRASES = (
+    "all themes",
+    "complex story",
+    "bleak mood complex story",
+    "built around all themes",
+    "built around heist story",
+    "built around spy story",
+    "keyword",
+    "tmdb_keywords",
+    "source_names",
+    "mapping_version",
+    "provider keyword",
+    "source_signal",
+    "source signal",
+    "jiohotstar viewers",
+    "netflix viewers",
+    "prime video viewers",
+    "serialized drama viewers",
+    "platform viewers",
+    "availability viewers",
+)
+
+DISPLAY_LABEL_NORMALIZATIONS = {
+    "bleak mood": "Bleak",
+    "dark mood": "Dark",
+    "high intensity": "High-stakes",
+    "high stakes": "High-stakes",
+    "sci fi": "Sci-fi",
+    "science fiction": "Sci-fi",
+}
+
 WEAK_STANDALONE_LABELS = {
     "content",
     "drama",
@@ -37,6 +68,11 @@ WEAK_STANDALONE_LABELS = {
     "prime video",
     "amazon prime video",
     "serious stories",
+    "all themes",
+    "complex story",
+    "dark story",
+    "serious story",
+    "story",
 }
 
 WEAK_SECONDARY_CHIPS = {
@@ -66,9 +102,11 @@ DISPLAY_WEAK_LABELS = WEAK_STANDALONE_LABELS | {
     "stories",
     "serious",
     "serious stories",
+    "bleak mood complex story",
 }
 
 DISPLAY_FEEL_LABELS = {
+    "atmospheric",
     "bleak",
     "dark",
     "dark tone",
@@ -77,8 +115,10 @@ DISPLAY_FEEL_LABELS = {
     "gritty",
     "high-adrenaline",
     "high adrenaline",
+    "high-stakes",
     "intense",
     "playful",
+    "pressure-heavy",
     "serious",
     "surreal",
     "tense",
@@ -131,6 +171,29 @@ DISPLAY_IDENTITY_LIKE_THEME_TERMS = (
     "western",
 )
 
+IDENTITY_LIKE_THEME_LABELS = {
+    "action story",
+    "adventure story",
+    "crime drama",
+    "drama",
+    "fantasy adventure",
+    "fantasy story",
+    "heist story",
+    "serialized drama",
+    "spy story",
+    "superhero story",
+}
+
+WEAK_IDENTITY_LABELS = {
+    "adventure story",
+    "complex story",
+    "dark story",
+    "drama",
+    "fantasy story",
+    "serious story",
+    "story",
+}
+
 SIMILAR_DISPLAY_GROUPS = (
     {
         "high-stakes",
@@ -144,6 +207,56 @@ SIMILAR_DISPLAY_GROUPS = (
     {"fantasy adventure", "fantasy world", "magical world"},
     {"superhero story", "superhero team story"},
 )
+
+DISPLAY_LABEL_RANKS = {
+    "identity": {
+        "sci-fi heist": 1,
+        "political dark fantasy": 1,
+        "cyberpunk action sci-fi": 1,
+        "kitchen workplace drama": 1,
+        "courtroom drama": 1,
+        "legal thriller": 1,
+        "emotional space sci-fi": 1,
+        "space survival drama": 1,
+        "animated superhero drama": 1,
+        "psychological thriller": 1,
+        "nature documentary": 1,
+        "heist story": 8,
+        "fantasy story": 20,
+        "adventure story": 20,
+        "drama": 30,
+    },
+    "theme": {
+        "memory and identity": 1,
+        "reality and control": 1,
+        "power struggle": 1,
+        "family conflict": 2,
+        "moral decline": 2,
+        "survival": 2,
+        "investigation": 2,
+        "grief": 2,
+        "ambition": 2,
+        "rebellion": 2,
+        "sacrifice": 2,
+        "humanity's future": 2,
+        "humanity’s future": 2,
+    },
+    "feel": {
+        "surreal": 1,
+        "foreboding": 1,
+        "tense": 2,
+        "pressure-heavy": 2,
+        "thoughtful": 2,
+        "atmospheric": 2,
+        "high-adrenaline": 2,
+        "warm": 2,
+        "bleak": 3,
+        "dark": 4,
+        "dark tone": 4,
+        "intense": 5,
+        "high-stakes": 5,
+    },
+}
 
 LABEL_REWRITES = {
     "fantasy story viewers": "Fantasy stories",
@@ -258,10 +371,17 @@ def sanitize_label(value):
     cleaned = " ".join(value.strip().split())
     lower_value = cleaned.lower()
 
+    if lower_value in DISPLAY_LABEL_NORMALIZATIONS:
+        cleaned = DISPLAY_LABEL_NORMALIZATIONS[lower_value]
+        lower_value = cleaned.lower()
+
     if lower_value in LABEL_REWRITES:
         return LABEL_REWRITES[lower_value]
 
     if any(term in lower_value for term in GENERIC_REJECT_TERMS):
+        return None
+
+    if any(phrase in lower_value for phrase in BLOCKED_PUBLIC_DISPLAY_PHRASES):
         return None
 
     if lower_value in WEAK_STANDALONE_LABELS:
@@ -276,6 +396,32 @@ def sanitize_label(value):
     return cleaned
 
 
+def blocked_public_display_phrases(value):
+    if not has_text(value):
+        return []
+    lower_value = value.lower()
+    return [
+        phrase
+        for phrase in BLOCKED_PUBLIC_DISPLAY_PHRASES
+        if phrase in lower_value
+    ]
+
+
+def sanitize_public_display_text(value):
+    if not has_text(value):
+        return None
+    cleaned = " ".join(value.strip().split())
+    if blocked_public_display_phrases(cleaned):
+        return None
+    if any(term in cleaned.lower() for term in GENERIC_REJECT_TERMS):
+        return None
+    return cleaned
+
+
+def display_has_blocked_public_phrase(display):
+    return bool(blocked_public_display_phrases(str(display)))
+
+
 def sanitize_labels(values, limit=None):
     labels = unique_preserve_order(
         value for value in (sanitize_label(item) for item in values or []) if value
@@ -288,10 +434,36 @@ def display_safe_label(value):
     if not label:
         return None
 
-    if label.lower() in DISPLAY_WEAK_LABELS:
+    if is_weak_display_label(label):
         return None
 
     return label
+
+
+def is_weak_display_label(value):
+    if not has_text(value):
+        return True
+    lower_value = value.lower().strip()
+    return lower_value in DISPLAY_WEAK_LABELS or bool(
+        blocked_public_display_phrases(lower_value)
+    )
+
+
+def is_identity_like_label(value):
+    if not has_text(value):
+        return False
+    lower_value = value.lower().strip()
+    if lower_value in IDENTITY_LIKE_THEME_LABELS:
+        return True
+    if lower_value.endswith(" story") or lower_value.endswith(" stories"):
+        return True
+    return any(term in lower_value for term in DISPLAY_IDENTITY_LIKE_THEME_TERMS)
+
+
+def is_theme_like_label(value):
+    if not has_text(value) or is_weak_display_label(value):
+        return False
+    return not is_identity_like_label(value)
 
 
 def similar_display_group(label):
@@ -314,7 +486,22 @@ def more_specific_label(left, right):
     return left if len(left) >= len(right) else right
 
 
-def compact_display_labels(values, limit=None):
+def rank_display_labels(labels, group=None):
+    ranked = unique_preserve_order(labels)
+    if not group:
+        return ranked
+    ranks = DISPLAY_LABEL_RANKS.get(group or "", {})
+    return sorted(
+        ranked,
+        key=lambda label: (
+            ranks.get(label.lower(), 10),
+            1 if label.lower() in WEAK_IDENTITY_LABELS else 0,
+            label.lower(),
+        ),
+    )
+
+
+def compact_display_labels(values, limit=None, group=None):
     output = []
     for value in values or []:
         label = display_safe_label(value)
@@ -324,7 +511,7 @@ def compact_display_labels(values, limit=None):
         label_lower = label.lower()
         replaced = False
         skip = False
-        group = similar_display_group(label)
+        similar_group = similar_display_group(label)
 
         for index, existing in enumerate(output):
             existing_lower = existing.lower()
@@ -338,7 +525,7 @@ def compact_display_labels(values, limit=None):
                 break
 
             existing_group = similar_display_group(existing)
-            if group and existing_group and group is existing_group:
+            if similar_group and existing_group and similar_group is existing_group:
                 output[index] = more_specific_label(existing, label)
                 replaced = True
                 break
@@ -348,6 +535,7 @@ def compact_display_labels(values, limit=None):
 
         output.append(label)
 
+    output = rank_display_labels(output, group=group)
     return output[:limit] if limit is not None else output
 
 
@@ -650,7 +838,7 @@ def build_decision_reasons(watch_profile, signals):
 
 
 def build_decision_cautions(watch_profile, signals):
-    cautions = sanitize_labels(watch_profile.get("consider_first") or [], limit=2)
+    cautions = build_display_cautions(watch_profile, signals, limit=2)
     if cautions:
         return cautions
 
@@ -722,6 +910,100 @@ def has_animation_context(display_context, all_label_text):
     return "animation" in f"{all_label_text} {genre_text}"
 
 
+def has_genre_context(display_context, *markers):
+    genre_text = genre_context_text(display_context)
+    return any(marker in genre_text for marker in markers)
+
+
+def combined_display_text(watch_profile, signals, labels=None, display_context=None):
+    genre_text = genre_context_text(display_context)
+    parts = [
+        genre_text,
+        watch_profile.get("watch_feel") or "",
+        *(watch_profile.get("chips") or []),
+        *(watch_profile.get("best_for") or []),
+        *(labels or []),
+        *(
+            signal.get("label") or ""
+            for signal in signals or []
+            if has_text(signal.get("label"))
+        ),
+    ]
+    return " ".join(part.lower() for part in parts if has_text(part))
+
+
+def is_weak_identity_label(value):
+    if not has_text(value):
+        return True
+    lower_value = value.lower()
+    return lower_value in WEAK_IDENTITY_LABELS or is_weak_display_label(value)
+
+
+def infer_context_identity(watch_profile, signals, display_context=None):
+    text_value = combined_display_text(
+        watch_profile,
+        signals,
+        display_context=display_context,
+    )
+
+    has_scifi = has_scifi_context(display_context, text_value)
+    has_fantasy = has_genre_context(display_context, "fantasy") or "fantasy" in text_value
+    has_animation = has_animation_context(display_context, text_value)
+    has_crime = has_genre_context(display_context, "crime") or "crime" in text_value
+    has_history = has_genre_context(display_context, "history", "historical")
+    has_documentary = has_genre_context(display_context, "documentary")
+
+    if has_scifi and "heist" in text_value:
+        return "Sci-fi heist"
+    if has_scifi and "cyberpunk" in text_value:
+        return "Cyberpunk action sci-fi"
+    if has_scifi and any(term in text_value for term in ("reality", "control")) and (
+        "action" in text_value or "martial" in text_value
+    ):
+        return "Cyberpunk action sci-fi"
+    if has_scifi and "space" in text_value and any(
+        term in text_value
+        for term in ("survival", "family", "time", "humanity", "future")
+    ):
+        if "emotional" in text_value or "family" in text_value:
+            return "Emotional space sci-fi"
+        return "Space survival drama"
+    if has_fantasy and any(
+        term in text_value
+        for term in ("political", "power struggle", "succession", "court intrigue")
+    ):
+        return "Political dark fantasy"
+    if "kitchen" in text_value and "workplace" in text_value:
+        return "Kitchen workplace drama"
+    if any(term in text_value for term in ("courtroom", "legal")):
+        if "thriller" in text_value:
+            return "Legal thriller"
+        return "Courtroom drama"
+    if has_animation and "superhero" in text_value:
+        return "Animated superhero drama"
+    if has_documentary and any(
+        term in text_value for term in ("nature", "wildlife", "planet")
+    ):
+        return "Nature documentary"
+    if has_documentary:
+        return "Documentary"
+
+    if has_scifi:
+        return (
+            "Sci-fi drama"
+            if has_genre_context(display_context, "drama")
+            else "Sci-fi story"
+        )
+    if has_crime:
+        return "Crime drama"
+    if has_history:
+        return "Historical drama"
+    if has_animation and has_genre_context(display_context, "adventure"):
+        return "Animated adventure"
+
+    return None
+
+
 def enrich_identity_labels(labels, watch_profile, signals, display_context=None):
     watch_feel = (watch_profile.get("watch_feel") or "").lower()
     all_label_text = " ".join(
@@ -774,7 +1056,7 @@ def enrich_identity_labels(labels, watch_profile, signals, display_context=None)
             if label.lower() not in {"fantasy adventure", "fantasy world", "dark fantasy"}
         ]
 
-    return compact_display_labels(enriched, limit=3)
+    return compact_display_labels(enriched, limit=3, group="identity")
 
 
 def remove_profile_overlaps(values, blocked_values, limit=None):
@@ -793,31 +1075,159 @@ def remove_profile_overlaps(values, blocked_values, limit=None):
     return compact_display_labels(filtered, limit=limit)
 
 
-def is_identity_like_theme(label):
-    if not has_text(label):
+def identity_overlaps(left, right):
+    if not has_text(left) or not has_text(right):
         return False
-    lower_label = label.lower()
-    return any(term in lower_label for term in DISPLAY_IDENTITY_LIKE_THEME_TERMS)
+    left_lower = left.lower()
+    right_lower = right.lower()
+    return left_lower in right_lower or right_lower in left_lower
+
+
+def merge_context_identity(identity, fallback_identity):
+    if not fallback_identity:
+        return identity
+
+    current = identity or []
+    current_lower = {label.lower() for label in current}
+    fallback_lower = fallback_identity.lower()
+
+    if fallback_lower in current_lower:
+        return current
+
+    if not current or all(is_weak_identity_label(label) for label in current):
+        return [fallback_identity] + [
+            label for label in current if not is_weak_identity_label(label)
+        ]
+
+    related_replacements = {
+        "sci-fi heist": {"heist story"},
+        "political dark fantasy": {
+            "dark fantasy",
+            "fantasy adventure",
+            "fantasy story",
+            "fantasy world",
+            "political power drama",
+        },
+        "animated superhero drama": {"superhero story", "superhero team story"},
+    }
+    if fallback_lower in related_replacements:
+        return [fallback_identity] + [
+            label
+            for label in current
+            if label.lower() not in related_replacements[fallback_lower]
+        ]
+
+    if any(identity_overlaps(label, fallback_identity) for label in current):
+        return [
+            fallback_identity if identity_overlaps(label, fallback_identity) else label
+            for label in current
+        ]
+
+    if fallback_lower in {
+        "sci-fi heist",
+        "political dark fantasy",
+        "cyberpunk action sci-fi",
+        "kitchen workplace drama",
+        "emotional space sci-fi",
+        "space survival drama",
+    }:
+        return [fallback_identity] + current
+
+    return current
+
+
+def is_identity_like_theme(label):
+    return is_identity_like_label(label)
 
 
 def prioritize_theme_labels(labels):
-    compacted = compact_display_labels(labels)
+    compacted = compact_display_labels(labels, group="theme")
     core_themes = [
-        label for label in compacted if not is_identity_like_theme(label)
+        label for label in compacted if is_theme_like_label(label)
     ]
 
     if not core_themes:
         return compacted
 
-    return compact_display_labels(core_themes)
+    return compact_display_labels(core_themes, group="theme")
 
 
 def primary_theme_labels(themes):
     prioritized = prioritize_theme_labels(themes)
     core_themes = [
-        theme for theme in prioritized if not is_identity_like_theme(theme)
+        theme for theme in prioritized if is_theme_like_label(theme)
     ]
-    return (core_themes or prioritized)[:2]
+    return core_themes[:3]
+
+
+def has_signal_label(signals, dimensions, terms):
+    for signal in signals or []:
+        if dimensions and signal.get("dimension") not in dimensions:
+            continue
+        label = (signal.get("label") or "").lower()
+        value = (signal.get("value") or "").lower()
+        if any(term in f"{label} {value}" for term in terms):
+            return True
+    return False
+
+
+def generic_caution_text(value):
+    lower_value = value.lower()
+    return (
+        "better suited for viewers comfortable with darker or more intense stories"
+        in lower_value
+        or "may feel complex" in lower_value
+        or "more intense than casual viewing" in lower_value
+    )
+
+
+def specific_caution_candidates(watch_profile, signals):
+    candidates = []
+    pace_text = " ".join(
+        [
+            watch_profile.get("watch_feel") or "",
+            *(watch_profile.get("chips") or []),
+            *(watch_profile.get("best_for") or []),
+        ]
+    ).lower()
+
+    if (
+        has_signal_label(signals, {"pacing"}, {"plot-driven"})
+        or "puzzle" in pace_text
+        or "complex" in pace_text
+    ):
+        candidates.append("Dense structure may require attention.")
+
+    if has_signal_label(signals, {"pacing"}, {"slow-burn", "slow burn"}):
+        candidates.append("Slow-burn pacing may feel deliberate.")
+
+    if has_signal_label(
+        signals,
+        {"mood", "tone", "intensity"},
+        {"dark", "bleak", "foreboding", "intense", "high-stakes"},
+    ):
+        candidates.append("Darker tone may not suit casual viewing.")
+
+    if has_signal_label(
+        signals,
+        {"content_caution_proxy"},
+        {"violence", "mature", "adult", "frightening", "intense material"},
+    ):
+        candidates.append(
+            "May be better suited for viewers comfortable with mature or intense material."
+        )
+
+    return unique_preserve_order(candidates)
+
+
+def build_display_cautions(watch_profile, signals, limit=1):
+    stored = sanitize_labels(watch_profile.get("consider_first") or [])
+    specific = specific_caution_candidates(watch_profile, signals)
+
+    if stored and not any(generic_caution_text(caution) for caution in stored):
+        return compact_display_labels(stored, limit=limit)
+
+    return compact_display_labels(specific or stored, limit=limit)
 
 
 def build_display_pace(watch_profile, signals):
@@ -895,6 +1305,7 @@ def build_display_profile(watch_profile, signals, display_context=None):
             and chip.lower() not in WEAK_SECONDARY_CHIPS
         ],
         limit=5,
+        group="identity",
     )
     identity = enrich_identity_labels(
         identity_candidates,
@@ -902,10 +1313,20 @@ def build_display_profile(watch_profile, signals, display_context=None):
         signals,
         display_context=display_context,
     )
+    identity = merge_context_identity(
+        identity,
+        infer_context_identity(
+            watch_profile,
+            signals,
+            display_context=display_context,
+        ),
+    )
+    identity = compact_display_labels(identity, limit=3, group="identity")
     strong_identity = [
         label
         for label in identity
         if label.lower() not in WEAK_SECONDARY_CHIPS
+        and not is_weak_identity_label(label)
     ]
     if strong_identity:
         identity = strong_identity[:3]
@@ -942,8 +1363,9 @@ def build_display_profile(watch_profile, signals, display_context=None):
             if has_text(chip) and chip.lower() in DISPLAY_FEEL_LABELS
         ],
         limit=5,
+        group="feel",
     )
-    feel = compact_display_labels(feel_candidates, limit=2)
+    feel = compact_display_labels(feel_candidates, limit=2, group="feel")
 
     return {
         "identity": identity[:3],
@@ -951,7 +1373,7 @@ def build_display_profile(watch_profile, signals, display_context=None):
         "feel": feel[:2],
         "pace": build_display_pace(watch_profile, signals),
         "best_for": compact_display_labels(best_for, limit=2),
-        "consider_first": compact_display_labels(consider_first, limit=2),
+        "consider_first": build_display_cautions(watch_profile, signals, limit=1),
     }
 
 
@@ -990,12 +1412,27 @@ def build_primary_insight(display_profile, watch_profile, display_context=None):
     if not has_text(identity):
         return None
 
+    if is_weak_identity_label(identity):
+        fallback_identity = infer_context_identity(
+            watch_profile,
+            [],
+            display_context=display_context,
+        )
+        if fallback_identity:
+            identity = fallback_identity
+
     identity_phrase = lower_first(identity)
+    identity_starts_with_feel = any(
+        identity_phrase.startswith(feel_label)
+        for feel_label in DISPLAY_FEEL_LABELS
+    )
     feel = next(
         (
             label
             for label in display_profile.get("feel") or []
-            if has_text(label) and label.lower() not in identity_phrase.lower()
+            if has_text(label)
+            and not identity_starts_with_feel
+            and label.lower() not in identity_phrase.lower()
         ),
         None,
     )
@@ -1005,9 +1442,21 @@ def build_primary_insight(display_profile, watch_profile, display_context=None):
 
     themes = primary_theme_labels(display_profile.get("themes") or [])
     if themes:
-        sentence += f" built around {join_short_list(themes[:2])}"
+        theme_text = join_short_list(themes[:3])
+        if theme_text:
+            if any(
+                marker in identity_phrase
+                for marker in ("cyberpunk", "reality-bending")
+            ):
+                sentence += f" about {theme_text}"
+            elif "kitchen workplace drama" in identity_phrase:
+                sentence += f" shaped by {theme_text}"
+            else:
+                sentence += f" built around {theme_text}"
     elif display_profile.get("pace"):
         sentence += f" with {lower_first(display_profile['pace'])} structure"
+    elif feel:
+        sentence += f" with a {lower_first(feel)} tone"
 
     audience_phrase = strong_audience_backing_phrase(display_context)
     if audience_phrase and len(sentence) <= 126:
@@ -1017,7 +1466,15 @@ def build_primary_insight(display_profile, watch_profile, display_context=None):
     if len(sentence) > 180:
         sentence = ensure_sentence(sentence[:177].rsplit(" ", 1)[0])
 
-    return sentence
+    if sanitize_public_display_text(sentence):
+        return sentence
+
+    fallback = f"{article_for(identity_phrase).capitalize()} {identity_phrase}"
+    if display_profile.get("pace"):
+        fallback += f" with {lower_first(display_profile['pace'])} structure"
+    elif feel:
+        fallback += f" with a {lower_first(feel)} tone"
+    return ensure_sentence(fallback) if sanitize_public_display_text(fallback) else None
 
 
 def format_scoring_source_count(count):

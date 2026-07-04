@@ -1,4 +1,5 @@
 from app.services.source_signal_service import (
+    display_has_blocked_public_phrase,
     get_content_decision_layer,
     sanitize_label,
     sanitize_labels,
@@ -120,6 +121,10 @@ def test_sanitize_labels_removes_platform_and_weak_labels():
         ],
         limit=5,
     ) == ["Dark fantasy", "Tense"]
+
+
+def assert_display_has_no_blocked_phrases(display):
+    assert not display_has_blocked_public_phrase(display)
 
 
 def test_decision_layer_returns_sanitized_watch_profile_and_decision_copy():
@@ -269,6 +274,7 @@ def test_decision_display_groups_compact_profile_and_facts():
     )
 
     display = decision_layer["display"]
+    assert_display_has_no_blocked_phrases(display)
     assert display["primary_insight"].startswith("A surreal sci-fi heist")
     assert "memory and identity" in display["primary_insight"].lower()
     assert "strong audience backing" in display["primary_insight"].lower()
@@ -330,12 +336,148 @@ def test_decision_display_deduplicates_overlapping_feel_labels():
 
     decision_layer = get_content_decision_layer(db, 1)
     profile = decision_layer["display"]["profile"]
+    assert_display_has_no_blocked_phrases(decision_layer["display"])
 
     assert "Political dark fantasy" in profile["identity"]
     assert "Fantasy adventure" not in profile["identity"]
     assert "Power struggle" in profile["themes"]
     assert len(profile["feel"]) <= 2
     assert not {"High-stakes", "Intense"} <= set(profile["feel"])
+
+
+def test_decision_display_blocks_bad_public_phrases_globally():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A bleak mood complex story built around all themes.",
+            chips=[
+                "All themes",
+                "Complex story",
+                "Bleak mood",
+                "Heist story",
+                "Spy story",
+                "Prime Video viewers",
+                "JioHotstar viewers",
+            ],
+            best_for=["Serialized drama viewers", "Availability viewers"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Heist story"),
+            signal_row("topic_theme", "Heist story"),
+            signal_row("topic_theme", "Spy story"),
+            signal_row("topic_theme", "All themes"),
+            signal_row("mood", "Bleak mood"),
+            signal_row("pacing", "Plot-driven"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(genres=["Science Fiction", "Thriller"]),
+    )
+
+    display = decision_layer["display"]
+    display_text = str(display).lower()
+    assert_display_has_no_blocked_phrases(display)
+    for blocked in (
+        "all themes",
+        "complex story",
+        "bleak mood",
+        "built around heist story",
+        "built around spy story",
+        "prime video viewers",
+        "jiohotstar viewers",
+    ):
+        assert blocked not in display_text
+    assert display["profile"]["identity"][0] == "Sci-fi heist"
+
+
+def test_decision_display_builds_space_scifi_from_context_without_bad_fallbacks():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A complex story with space, family, and time pressure.",
+            chips=[
+                "Space sci-fi",
+                "Survival",
+                "Family",
+                "Time",
+                "Humanity's future",
+                "Emotional",
+                "Atmospheric",
+                "Complex story",
+                "Dystopian future",
+            ],
+            best_for=["Space sci-fi viewers"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Space sci-fi"),
+            signal_row("topic_theme", "Survival"),
+            signal_row("topic_theme", "Family"),
+            signal_row("topic_theme", "Time"),
+            signal_row("topic_theme", "Humanity's future"),
+            signal_row("mood", "Emotional"),
+            signal_row("tone", "Atmospheric"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(genres=["Science Fiction", "Adventure", "Drama"]),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    assert_display_has_no_blocked_phrases(display)
+    assert "space sci-fi" in insight
+    assert any(
+        theme.lower() in insight
+        for theme in ("survival", "family", "time", "humanity's future")
+    )
+    assert "bleak mood complex story" not in insight
+    assert "all themes" not in insight
+    assert "complex story built around" not in insight
+
+
+def test_decision_display_uses_specific_cautions_for_complex_and_dark_profiles():
+    complex_db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=["Heist story", "Memory and identity", "Plot-driven"],
+            consider_first=[
+                "Better suited for viewers comfortable with darker or more intense stories."
+            ],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Heist story"),
+            signal_row("topic_theme", "Memory and identity"),
+            signal_row("pacing", "Plot-driven"),
+        ],
+    )
+    complex_layer = get_content_decision_layer(complex_db, 1)
+    assert complex_layer["display"]["profile"]["consider_first"] == [
+        "Dense structure may require attention."
+    ]
+
+    dark_db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=["Dark fantasy", "Power struggle", "Foreboding"],
+            consider_first=[
+                "Better suited for viewers comfortable with darker or more intense stories."
+            ],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Dark fantasy"),
+            signal_row("topic_theme", "Power struggle"),
+            signal_row("mood", "Foreboding"),
+            signal_row("intensity", "High-stakes"),
+        ],
+    )
+    dark_layer = get_content_decision_layer(dark_db, 1)
+    cautions = dark_layer["display"]["profile"]["consider_first"]
+    assert cautions == ["Darker tone may not suit casual viewing."]
+    assert len(cautions) <= 2
 
 
 def test_decision_display_removes_platform_identity_but_keeps_access_fact():
@@ -361,7 +503,7 @@ def test_decision_display_removes_platform_identity_but_keeps_access_fact():
     assert "jiohotstar viewers" not in display_text
     assert "netflix viewers" not in display_text
     assert "prime video viewers" not in display_text
-    assert "fantasy story" in " ".join(
+    assert "fantasy" in " ".join(
         decision_layer["display"]["profile"]["identity"]
     ).lower()
     assert {"label": "Access", "value": "Streaming in India"} in decision_layer[

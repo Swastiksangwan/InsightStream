@@ -36,7 +36,7 @@ Future ingestion updates should go into this document.
 | TMDb keywords preview/import | Implemented | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
 | Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
 | Source signal storage import | Implemented | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
-| Source signal decision layer API | Implemented, backend-only | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output. No frontend display yet. |
+| Source signal decision layer API | Implemented | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output for frontend use. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
@@ -613,7 +613,7 @@ Importer behavior:
 
 ### Source Signal Decision Layer API
 
-The backend content detail response now includes a nullable `decision_layer` object when stored source-signal guidance exists. This is a backend/API integration step only; the frontend does not display it yet.
+The backend content detail response now includes a nullable `decision_layer` object when stored source-signal guidance exists. Frontend display should consume the compact `decision_layer.display` contract rather than raw source-signal internals.
 
 The decision layer:
 
@@ -623,11 +623,15 @@ The decision layer:
 - returns compact `decision_support` copy with headline, reasons, and cautions;
 - returns `signal_quality`, including `storage_ready`, `frontend_ready`, `has_watch_guidance`, and `has_source_signals`;
 - filters or rewrites mechanical labels such as platform/viewer chips before they reach the public API;
+- applies global display-quality cleanup so weak labels, identity-like themes, repeated dark/intense phrasing, platform-as-identity labels, and blocked technical terms do not reach `decision_layer.display`;
+- ranks and deduplicates identity, theme, feel, and pace labels before building the compact profile;
 - does not expose raw TMDb keywords, mapping versions, source names, or provider payloads by default;
 - lets Insight Summary use stored watch guidance for richer deterministic copy while keeping metadata/rating/availability fallback behavior;
 - keeps platform names in explicit Access signals rather than watch-profile identity labels.
 
-`decision_layer.display` is the future frontend-preferred contract because it avoids repeating sentence-style `watch_profile`, `decision_support`, and `insight_summary` copy across multiple UI blocks. Older `watch_profile` and `decision_support` fields remain available for backward compatibility.
+`decision_layer.display` is the frontend-preferred contract because it avoids repeating sentence-style `watch_profile`, `decision_support`, and `insight_summary` copy across multiple UI blocks. Older `watch_profile` and `decision_support` fields remain available for backward compatibility.
+
+Backend display examples such as sci-fi heist, political dark fantasy, and kitchen workplace drama are covered as regression tests for global rules. They should not be treated as title-by-title copywriting. Future catalog batches should use preview QA and API review to identify weak mapped labels, then improve shared mapping/cleanup rules before adding one-off overrides.
 
 Preferred display shape:
 
@@ -781,8 +785,8 @@ Keyword presence is weak evidence, not proof. Missing keyword is not proof of ab
 These are future tasks, not implemented:
 
 1. Review the v3 keyword-to-signal preview output and continue refining mapping/fallback/override quality.
-2. Product-copy polish pass before public display.
-3. Add Watch Profile UI from the sanitized `decision_layer`.
+2. Continue backend display-quality polish from stored source signals.
+3. Continue frontend polish around the compact `decision_layer.display` contract.
 4. Improve frontend Insight Summary presentation from source signals.
 6. Later add review-derived signals after source/legal policy is clear.
 7. Later add LLM-assisted summaries from approved stored signals.
