@@ -26,13 +26,12 @@ Completed:
 - TV aggregate credits support for series cast, with regular TV credits as fallback.
 - Person detail/biography preview and safe biography import.
 - Backend APIs for content credits, person detail, and person credits.
-- Redesigned content detail page with metadata, availability, ratings, compact decision display, cast/crew, and watch actions.
+- Redesigned content detail page with metadata, availability, ratings, cast/crew, and watch actions.
 - Clickable genre chips to filtered discovery.
 - Clickable person cards and person detail pages with biography and filmography.
 - Small TMDb attribution footer in the frontend.
 - TMDb keyword preview pipeline with retry/merge workflow for future source signals.
 - Source-signal decision layer in the content detail API, including compact `decision_layer.display` output while keeping raw keywords internal.
-- Frontend detail page display using compact `decision_layer.display`.
 
 Next planned:
 
@@ -40,6 +39,7 @@ Next planned:
 - Scalable metadata ingestion plan before expanding to 100+ titles.
 - Ratings source architecture.
 - Rating normalization and unified score strategy.
+- Further frontend polish around compact `decision_layer.display`.
 - Review intelligence, pros/cons, and verdict pipeline.
 
 ## 3. Tech Stack
@@ -118,7 +118,7 @@ Content:
 - `GET /content/by-genre/{genre_name}`
 - `GET /content/by-platform/{platform_name}`
 
-`GET /content/{content_id}/details` includes ratings, availability, Insight Summary, and a nullable source-signal `decision_layer` when stored watch guidance exists. `decision_layer.display` is the preferred compact frontend contract; older `watch_profile` and `decision_support` fields remain for compatibility. Raw TMDb keywords and source-signal debug metadata are not exposed by default. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display`; the legacy `summary` object remains for backward compatibility.
+`GET /content/{content_id}/details` includes ratings, availability, Insight Summary, and a nullable source-signal `decision_layer` when stored watch guidance exists. `decision_layer.display` is the preferred compact frontend contract; older `watch_profile` and `decision_support` fields remain for compatibility. The backend ranks, dedupes, and sanitizes display labels before returning them, so raw TMDb keywords, weak platform/viewer labels, and source-signal debug metadata are not exposed by default. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display`; the legacy `summary` object remains for backward compatibility.
 
 Metadata:
 
