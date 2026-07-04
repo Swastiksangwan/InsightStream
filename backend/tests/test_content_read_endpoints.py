@@ -924,6 +924,9 @@ def test_content_details_include_decision_layer_when_source_signals_exist(
     assert decision_layer["watch_profile"]["watch_feel"]
     assert isinstance(decision_layer["watch_profile"]["chips"], list)
     assert isinstance(decision_layer["decision_support"]["reasons"], list)
+    assert decision_layer["display"]["primary_insight"]
+    assert isinstance(decision_layer["display"]["profile"]["identity"], list)
+    assert isinstance(decision_layer["display"]["supporting_facts"], list)
     assert decision_layer["signal_quality"]["has_watch_guidance"] is True
     public_text = str(decision_layer).lower()
     assert "tmdb_keywords" not in public_text

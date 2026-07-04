@@ -74,6 +74,35 @@ def signal_row(dimension, label, value=None, confidence="medium"):
     }
 
 
+def display_context(**overrides):
+    context = {
+        "content": {
+            "type": "movie",
+            "age_rating": "UA",
+            "runtime": 148,
+        },
+        "genres": ["Science Fiction", "Thriller"],
+        "ratings": {
+            "unified_score": 86,
+            "scoring_source_count": 2,
+        },
+        "platforms": [
+            {
+                "name": "JioHotstar",
+                "availability_type": "streaming",
+                "region_code": "IN",
+            }
+        ],
+        "credits": {
+            "directors": [{"name": "Christopher Nolan"}],
+            "creators": [],
+        },
+        "series_metadata": None,
+    }
+    context.update(overrides)
+    return context
+
+
 def test_sanitize_label_rewrites_viewer_patterns():
     assert sanitize_label("Fantasy story viewers") == "Fantasy stories"
     assert sanitize_label("AI themes viewers") == "AI-driven sci-fi"
@@ -122,6 +151,7 @@ def test_decision_layer_returns_sanitized_watch_profile_and_decision_copy():
     assert all("Good fit for" not in reason for reason in reasons)
     assert all("watch profile" not in reason for reason in reasons)
     assert decision_layer["decision_support"]["cautions"]
+    assert decision_layer["display"]["primary_insight"]
     assert decision_layer["signal_quality"] == {
         "storage_ready": True,
         "frontend_ready": False,
@@ -156,8 +186,7 @@ def test_decision_layer_prioritizes_strong_chips_over_weak_secondary_chips():
     db = FakeDecisionDb(
         guidance=guidance_row(
             watch_feel=(
-                "A surreal heist story about memory and identity with a layered "
-                "sci-fi setup."
+                "A surreal heist story about memory and identity with a layered setup."
             ),
             chips=[
                 "Spy story",
@@ -174,6 +203,7 @@ def test_decision_layer_prioritizes_strong_chips_over_weak_secondary_chips():
             signal_row("audience_expectation", "Heist story"),
             signal_row("audience_expectation", "Spy story"),
             signal_row("topic_theme", "Memory and identity"),
+            signal_row("topic_theme", "Spy story"),
             signal_row("mood", "Surreal"),
             signal_row("tone", "Thoughtful"),
             signal_row("pacing", "Plot-driven"),
@@ -198,6 +228,170 @@ def test_decision_layer_prioritizes_strong_chips_over_weak_secondary_chips():
     assert all("Clear " not in reason for reason in reasons)
     assert all("Good fit for" not in reason for reason in reasons)
     assert all("is part of the watch profile" not in reason for reason in reasons)
+
+
+def test_decision_display_groups_compact_profile_and_facts():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel=(
+                "A surreal heist story about memory and identity with a layered setup."
+            ),
+            chips=[
+                "Spy story",
+                "Heist story",
+                "Memory and identity",
+                "Surreal",
+                "Thoughtful",
+                "Plot-driven",
+            ],
+            best_for=[
+                "Heist stories",
+                "Stories about memory and identity",
+                "Prime Video viewers",
+            ],
+            consider_first=["May feel complex on first watch."],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Heist story"),
+            signal_row("audience_expectation", "Spy story"),
+            signal_row("topic_theme", "Memory and identity"),
+            signal_row("topic_theme", "Spy story"),
+            signal_row("mood", "Surreal"),
+            signal_row("tone", "Thoughtful"),
+            signal_row("pacing", "Plot-driven"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(),
+    )
+
+    display = decision_layer["display"]
+    assert display["primary_insight"].startswith("A surreal sci-fi heist")
+    assert "memory and identity" in display["primary_insight"].lower()
+    assert "strong audience backing" in display["primary_insight"].lower()
+    assert "Best suited" not in display["primary_insight"]
+    assert len(display["primary_insight"]) <= 180
+    assert display["profile"]["identity"] == ["Sci-fi heist"]
+    assert "Spy story" not in display["profile"]["identity"]
+    assert "Spy story" not in display["profile"]["themes"]
+    assert display["profile"]["themes"] == ["Memory and identity"]
+    assert display["profile"]["feel"][:2] == ["Surreal", "Thoughtful"]
+    assert display["profile"]["pace"] == "Plot-driven and puzzle-like"
+    assert display["profile"]["best_for"] == [
+        "Heist stories",
+        "Stories about memory and identity",
+    ]
+
+    facts = display["supporting_facts"]
+    assert len(facts) <= 4
+    assert {"label": "Audience", "value": "86/100 from 2 scoring sources"} in facts
+    assert {"label": "Access", "value": "Streaming in India"} in facts
+    assert {
+        "label": "Creative lead",
+        "value": "Directed by Christopher Nolan",
+    } in facts
+    assert {"label": "Age rating", "value": "UA"} in facts
+
+
+def test_decision_display_deduplicates_overlapping_feel_labels():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel=(
+                "A political dark fantasy built around power struggles and "
+                "foreboding tension."
+            ),
+            chips=[
+                "Fantasy adventure",
+                "Dark fantasy",
+                "Political power drama",
+                "Power struggle",
+                "High-stakes",
+                "Intense",
+                "Tense",
+                "Foreboding",
+            ],
+            best_for=["Political power dramas", "Fantasy adventures"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Dark fantasy"),
+            signal_row("topic_theme", "Political power drama"),
+            signal_row("topic_theme", "Power struggle"),
+            signal_row("mood", "Foreboding"),
+            signal_row("tone", "Dark tone"),
+            signal_row("intensity", "High-stakes"),
+            signal_row("intensity", "Intense"),
+            signal_row("pacing", "Slow-burn"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(db, 1)
+    profile = decision_layer["display"]["profile"]
+
+    assert "Political dark fantasy" in profile["identity"]
+    assert "Fantasy adventure" not in profile["identity"]
+    assert "Power struggle" in profile["themes"]
+    assert len(profile["feel"]) <= 2
+    assert not {"High-stakes", "Intense"} <= set(profile["feel"])
+
+
+def test_decision_display_removes_platform_identity_but_keeps_access_fact():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=["JioHotstar viewers", "Fantasy story viewers", "Warm"],
+            best_for=["Netflix viewers", "Fantasy adventure viewers"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Fantasy story"),
+            signal_row("mood", "Warm"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(),
+    )
+
+    display_text = str(decision_layer["display"]).lower()
+    assert "jiohotstar viewers" not in display_text
+    assert "netflix viewers" not in display_text
+    assert "prime video viewers" not in display_text
+    assert "fantasy story" in " ".join(
+        decision_layer["display"]["profile"]["identity"]
+    ).lower()
+    assert {"label": "Access", "value": "Streaming in India"} in decision_layer[
+        "display"
+    ]["supporting_facts"]
+
+
+def test_decision_display_does_not_expose_internal_terms():
+    db = FakeDecisionDb(
+        guidance=guidance_row(),
+        signals=[
+            signal_row("tone", "Tense"),
+            signal_row("topic_theme", "source_signal debug"),
+            signal_row("mood", "mapping_version"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(db, 1)
+    display_text = str(decision_layer["display"]).lower()
+
+    for blocked in (
+        "keyword",
+        "tmdb_keywords",
+        "source_names",
+        "mapping_version",
+        "provider",
+        "confidence",
+        "source_signal",
+    ):
+        assert blocked not in display_text
 
 
 def test_decision_layer_returns_none_without_guidance_or_signals():

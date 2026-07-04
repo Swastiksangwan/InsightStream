@@ -990,7 +990,18 @@ def get_content_details_service(content_id: int, db: Session):
 
     ratings = get_detail_ratings(db, content_id)
     credits = get_content_credits_service(content_id, db)
-    decision_layer = get_content_decision_layer(db, content_id)
+    decision_layer = get_content_decision_layer(
+        db,
+        content_id,
+        display_context={
+            "content": content,
+            "genres": genres,
+            "platforms": platforms,
+            "ratings": ratings,
+            "credits": credits,
+            "series_metadata": series_metadata,
+        },
+    )
 
     summary_query = text("""
         SELECT

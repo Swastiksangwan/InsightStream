@@ -36,7 +36,7 @@ Future ingestion updates should go into this document.
 | TMDb keywords preview/import | Implemented | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
 | Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
 | Source signal storage import | Implemented | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
-| Source signal decision layer API | Implemented, backend-only | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns a sanitized `decision_layer` object. No frontend display yet. |
+| Source signal decision layer API | Implemented, backend-only | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output. No frontend display yet. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
@@ -618,6 +618,7 @@ The backend content detail response now includes a nullable `decision_layer` obj
 The decision layer:
 
 - reads `content_watch_guidance` and active `content_source_signals`;
+- returns `display`, the preferred compact frontend-facing object with `primary_insight`, grouped profile labels, and supporting facts;
 - returns a productized `watch_profile` with `watch_feel`, sanitized `chips`, `best_for`, and `consider_first`;
 - returns compact `decision_support` copy with headline, reasons, and cautions;
 - returns `signal_quality`, including `storage_ready`, `frontend_ready`, `has_watch_guidance`, and `has_source_signals`;
@@ -626,9 +627,31 @@ The decision layer:
 - lets Insight Summary use stored watch guidance for richer deterministic copy while keeping metadata/rating/availability fallback behavior;
 - keeps platform names in explicit Access signals rather than watch-profile identity labels.
 
+`decision_layer.display` is the future frontend-preferred contract because it avoids repeating sentence-style `watch_profile`, `decision_support`, and `insight_summary` copy across multiple UI blocks. Older `watch_profile` and `decision_support` fields remain available for backward compatibility.
+
+Preferred display shape:
+
+```json
+{
+  "primary_insight": "A surreal sci-fi heist built around memory and identity, with strong audience backing.",
+  "profile": {
+    "identity": ["Sci-fi heist"],
+    "themes": ["Memory and identity"],
+    "feel": ["Surreal", "Thoughtful"],
+    "pace": "Plot-driven and puzzle-like",
+    "best_for": ["Heist stories", "Stories about memory and identity"],
+    "consider_first": ["May feel complex on first watch."]
+  },
+  "supporting_facts": [
+    {"label": "Audience", "value": "86/100 from 2 scoring sources"},
+    {"label": "Access", "value": "Streaming in India"}
+  ]
+}
+```
+
 `frontend_ready` remains a data-quality flag. It is returned so the future frontend can decide whether to show, hide, or label the section, but it does not block backend/dev integration.
 
-The legacy `summary` object may still appear in detail responses for backward compatibility. New frontend work should prefer `ratings`, `insight_summary`, and `decision_layer` for decision-support UI.
+The legacy `summary` object may still appear in detail responses for backward compatibility. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display` for decision-support UI.
 
 ## 11. Output Artifact Policy
 

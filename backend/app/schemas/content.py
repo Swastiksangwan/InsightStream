@@ -99,6 +99,26 @@ class DecisionSupportSchema(BaseModel):
     cautions: List[str]
 
 
+class DecisionDisplayProfileSchema(BaseModel):
+    identity: List[str]
+    themes: List[str]
+    feel: List[str]
+    pace: Optional[str] = None
+    best_for: List[str]
+    consider_first: List[str]
+
+
+class DecisionDisplayFactSchema(BaseModel):
+    label: str
+    value: str
+
+
+class DecisionDisplaySchema(BaseModel):
+    primary_insight: Optional[str] = None
+    profile: DecisionDisplayProfileSchema
+    supporting_facts: List[DecisionDisplayFactSchema]
+
+
 class SourceSignalQualitySchema(BaseModel):
     storage_ready: bool
     frontend_ready: bool
@@ -109,6 +129,7 @@ class SourceSignalQualitySchema(BaseModel):
 class ContentDecisionLayerSchema(BaseModel):
     watch_profile: WatchProfileSchema
     decision_support: DecisionSupportSchema
+    display: Optional[DecisionDisplaySchema] = None
     signal_quality: SourceSignalQualitySchema
 
 

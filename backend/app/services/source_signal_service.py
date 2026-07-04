@@ -21,6 +21,10 @@ GENERIC_REJECT_TERMS = (
     "source_names",
     "mapping_version",
     "confidence",
+    "source_signal",
+    "source signal",
+    "frontend_ready",
+    "storage_ready",
 )
 
 WEAK_STANDALONE_LABELS = {
@@ -56,6 +60,90 @@ MOOD_TONE_ONLY_CHIPS = {
     "dark tone",
     "gritty",
 }
+
+DISPLAY_WEAK_LABELS = WEAK_STANDALONE_LABELS | {
+    "story",
+    "stories",
+    "serious",
+    "serious stories",
+}
+
+DISPLAY_FEEL_LABELS = {
+    "bleak",
+    "dark",
+    "dark tone",
+    "emotional",
+    "foreboding",
+    "gritty",
+    "high-adrenaline",
+    "high adrenaline",
+    "intense",
+    "playful",
+    "serious",
+    "surreal",
+    "tense",
+    "thoughtful",
+    "warm",
+}
+
+DISPLAY_PACING_LABELS = {
+    "action-heavy",
+    "character-driven",
+    "dialogue-heavy",
+    "fast-paced",
+    "plot-driven",
+    "slow-burn",
+}
+
+DISPLAY_IDENTITY_KEYWORDS = (
+    "action",
+    "adventure",
+    "comedy",
+    "crime",
+    "documentary",
+    "drama",
+    "fantasy",
+    "heist",
+    "horror",
+    "mystery",
+    "sci-fi",
+    "sci fi",
+    "story",
+    "thriller",
+    "western",
+)
+
+DISPLAY_IDENTITY_LIKE_THEME_TERMS = (
+    "action",
+    "adventure",
+    "comedy",
+    "crime",
+    "documentary",
+    "drama",
+    "fantasy",
+    "heist",
+    "horror",
+    "mystery",
+    "sci-fi",
+    "sci fi",
+    "story",
+    "thriller",
+    "western",
+)
+
+SIMILAR_DISPLAY_GROUPS = (
+    {
+        "high-stakes",
+        "high stakes",
+        "high intensity",
+        "intense",
+        "pressure-heavy",
+        "constant pressure",
+    },
+    {"dark", "dark tone", "bleak", "foreboding", "gritty"},
+    {"fantasy adventure", "fantasy world", "magical world"},
+    {"superhero story", "superhero team story"},
+)
 
 LABEL_REWRITES = {
     "fantasy story viewers": "Fantasy stories",
@@ -123,6 +211,13 @@ def lower_first(value):
     return stripped[:1].lower() + stripped[1:]
 
 
+def ensure_sentence(value):
+    if not has_text(value):
+        return value
+    stripped = value.strip()
+    return stripped if stripped.endswith(".") else f"{stripped}."
+
+
 def article_for(value):
     if not has_text(value):
         return "a"
@@ -186,6 +281,74 @@ def sanitize_labels(values, limit=None):
         value for value in (sanitize_label(item) for item in values or []) if value
     )
     return labels[:limit] if limit is not None else labels
+
+
+def display_safe_label(value):
+    label = sanitize_label(value)
+    if not label:
+        return None
+
+    if label.lower() in DISPLAY_WEAK_LABELS:
+        return None
+
+    return label
+
+
+def similar_display_group(label):
+    lower_label = label.lower()
+    for group in SIMILAR_DISPLAY_GROUPS:
+        if lower_label in group:
+            return group
+    return None
+
+
+def more_specific_label(left, right):
+    left_lower = left.lower()
+    right_lower = right.lower()
+
+    if left_lower in right_lower and left_lower != right_lower:
+        return right
+    if right_lower in left_lower and left_lower != right_lower:
+        return left
+
+    return left if len(left) >= len(right) else right
+
+
+def compact_display_labels(values, limit=None):
+    output = []
+    for value in values or []:
+        label = display_safe_label(value)
+        if not label:
+            continue
+
+        label_lower = label.lower()
+        replaced = False
+        skip = False
+        group = similar_display_group(label)
+
+        for index, existing in enumerate(output):
+            existing_lower = existing.lower()
+            if existing_lower == label_lower:
+                skip = True
+                break
+
+            if label_lower in existing_lower or existing_lower in label_lower:
+                output[index] = more_specific_label(existing, label)
+                replaced = True
+                break
+
+            existing_group = similar_display_group(existing)
+            if group and existing_group and group is existing_group:
+                output[index] = more_specific_label(existing, label)
+                replaced = True
+                break
+
+        if skip or replaced:
+            continue
+
+        output.append(label)
+
+    return output[:limit] if limit is not None else output
 
 
 def signal_priority(signal):
@@ -529,10 +692,513 @@ def build_watch_profile(guidance, signals=None):
     }
 
 
+def signal_labels_for_dimensions(signals, dimensions):
+    return [
+        signal.get("label")
+        for signal in sorted(signals, key=signal_priority)
+        if signal.get("dimension") in dimensions
+    ]
+
+
+def genre_context_text(display_context):
+    genres = (display_context or {}).get("genres") or []
+    return " ".join(
+        genre.lower()
+        for genre in genres
+        if has_text(genre)
+    )
+
+
+def has_scifi_context(display_context, all_label_text):
+    genre_text = genre_context_text(display_context)
+    return any(
+        marker in f"{all_label_text} {genre_text}"
+        for marker in ("sci-fi", "sci fi", "science fiction")
+    )
+
+
+def has_animation_context(display_context, all_label_text):
+    genre_text = genre_context_text(display_context)
+    return "animation" in f"{all_label_text} {genre_text}"
+
+
+def enrich_identity_labels(labels, watch_profile, signals, display_context=None):
+    watch_feel = (watch_profile.get("watch_feel") or "").lower()
+    all_label_text = " ".join(
+        [watch_feel]
+        + [label.lower() for label in labels or [] if has_text(label)]
+        + [
+            (signal.get("label") or "").lower()
+            for signal in signals or []
+            if has_text(signal.get("label"))
+        ]
+    )
+
+    enriched = []
+    for label in labels:
+        lower_label = label.lower()
+        if lower_label == "heist story" and has_scifi_context(
+            display_context,
+            all_label_text,
+        ):
+            enriched.append("Sci-fi heist")
+            continue
+        if lower_label in {"fantasy adventure", "fantasy world"} and (
+            "political power drama" in all_label_text
+            or "power struggle" in all_label_text
+            or "dark fantasy" in all_label_text
+        ):
+            enriched.append("Political dark fantasy")
+            continue
+        if lower_label == "dark fantasy" and (
+            "political" in all_label_text
+            or "power struggle" in all_label_text
+            or "succession" in all_label_text
+        ):
+            enriched.append("Political dark fantasy")
+            continue
+        if lower_label == "superhero story" and has_animation_context(
+            display_context,
+            all_label_text,
+        ):
+            enriched.append("Animated superhero drama")
+            continue
+        enriched.append(label)
+
+    if "Sci-fi heist" in enriched:
+        enriched = [label for label in enriched if label.lower() != "heist story"]
+    if "Political dark fantasy" in enriched:
+        enriched = [
+            label
+            for label in enriched
+            if label.lower() not in {"fantasy adventure", "fantasy world", "dark fantasy"}
+        ]
+
+    return compact_display_labels(enriched, limit=3)
+
+
+def remove_profile_overlaps(values, blocked_values, limit=None):
+    blocked = {value.lower() for value in blocked_values or [] if has_text(value)}
+    filtered = []
+    for value in values or []:
+        lower_value = value.lower()
+        if lower_value in blocked:
+            continue
+        if any(
+            lower_value in blocked_value or blocked_value in lower_value
+            for blocked_value in blocked
+        ):
+            continue
+        filtered.append(value)
+    return compact_display_labels(filtered, limit=limit)
+
+
+def is_identity_like_theme(label):
+    if not has_text(label):
+        return False
+    lower_label = label.lower()
+    return any(term in lower_label for term in DISPLAY_IDENTITY_LIKE_THEME_TERMS)
+
+
+def prioritize_theme_labels(labels):
+    compacted = compact_display_labels(labels)
+    core_themes = [
+        label for label in compacted if not is_identity_like_theme(label)
+    ]
+
+    if not core_themes:
+        return compacted
+
+    return compact_display_labels(core_themes)
+
+
+def primary_theme_labels(themes):
+    prioritized = prioritize_theme_labels(themes)
+    core_themes = [
+        theme for theme in prioritized if not is_identity_like_theme(theme)
+    ]
+    return (core_themes or prioritized)[:2]
+
+
+def build_display_pace(watch_profile, signals):
+    pacing_labels = compact_display_labels(
+        signal_labels_for_dimensions(signals, {"pacing"})
+        + [
+            chip
+            for chip in watch_profile.get("chips") or []
+            if has_text(chip) and chip.lower() in DISPLAY_PACING_LABELS
+        ],
+        limit=2,
+    )
+
+    if not pacing_labels:
+        return None
+
+    primary = pacing_labels[0]
+    lower_primary = primary.lower()
+    watch_text = " ".join(
+        [watch_profile.get("watch_feel") or ""]
+        + (watch_profile.get("chips") or [])
+        + (watch_profile.get("best_for") or [])
+    ).lower()
+
+    if "plot-driven" in lower_primary:
+        if any(
+            term in watch_text
+            for term in ("puzzle", "heist", "memory", "identity")
+        ):
+            return "Plot-driven and puzzle-like"
+        return "Plot-driven"
+    if "slow" in lower_primary:
+        if any(term in watch_text for term in ("investigation", "mystery", "courtroom")):
+            return "Slow-burn and investigative"
+        return "Slow-burn"
+    if "fast" in lower_primary or "action-heavy" in lower_primary:
+        return "Fast-paced and action-led"
+    if "character-driven" in lower_primary:
+        return "Character-driven"
+    if "dialogue" in lower_primary:
+        return "Dialogue-driven"
+
+    return primary
+
+
+def build_display_profile(watch_profile, signals, display_context=None):
+    chips = watch_profile.get("chips") or []
+    best_for = watch_profile.get("best_for") or []
+    consider_first = watch_profile.get("consider_first") or []
+
+    audience_identity_labels = signal_labels_for_dimensions(
+        signals,
+        {"audience_expectation"},
+    )
+    topic_labels = signal_labels_for_dimensions(signals, {"topic_theme"})
+    topic_identity_labels = [
+        label
+        for label in topic_labels
+        if has_text(label)
+        and any(keyword in label.lower() for keyword in DISPLAY_IDENTITY_KEYWORDS)
+    ]
+    identity_candidates = compact_display_labels(
+        audience_identity_labels
+        + topic_identity_labels
+        + [
+            chip
+            for chip in chips
+            if has_text(chip)
+            and any(
+                keyword in chip.lower()
+                for keyword in DISPLAY_IDENTITY_KEYWORDS
+            )
+            and chip.lower() not in DISPLAY_FEEL_LABELS
+            and chip.lower() not in DISPLAY_PACING_LABELS
+            and chip.lower() not in WEAK_SECONDARY_CHIPS
+        ],
+        limit=5,
+    )
+    identity = enrich_identity_labels(
+        identity_candidates,
+        watch_profile,
+        signals,
+        display_context=display_context,
+    )
+    strong_identity = [
+        label
+        for label in identity
+        if label.lower() not in WEAK_SECONDARY_CHIPS
+    ]
+    if strong_identity:
+        identity = strong_identity[:3]
+
+    topic_theme_candidates = remove_profile_overlaps(
+        prioritize_theme_labels(topic_labels),
+        identity,
+        limit=4,
+    )
+    if topic_theme_candidates:
+        themes = topic_theme_candidates
+    else:
+        chip_theme_candidates = [
+            chip
+            for chip in chips
+            if has_text(chip)
+            and chip.lower() not in DISPLAY_FEEL_LABELS
+            and chip.lower() not in DISPLAY_PACING_LABELS
+            and chip.lower() not in WEAK_SECONDARY_CHIPS
+        ]
+        themes = remove_profile_overlaps(
+            prioritize_theme_labels(chip_theme_candidates),
+            identity,
+            limit=3,
+        )
+
+    feel_candidates = compact_display_labels(
+        signal_labels_for_dimensions(signals, {"mood"})
+        + signal_labels_for_dimensions(signals, {"tone"})
+        + signal_labels_for_dimensions(signals, {"intensity"})
+        + [
+            chip
+            for chip in chips
+            if has_text(chip) and chip.lower() in DISPLAY_FEEL_LABELS
+        ],
+        limit=5,
+    )
+    feel = compact_display_labels(feel_candidates, limit=2)
+
+    return {
+        "identity": identity[:3],
+        "themes": themes[:3],
+        "feel": feel[:2],
+        "pace": build_display_pace(watch_profile, signals),
+        "best_for": compact_display_labels(best_for, limit=2),
+        "consider_first": compact_display_labels(consider_first, limit=2),
+    }
+
+
+def join_short_list(values):
+    cleaned = [
+        lower_first(value)
+        for value in values or []
+        if has_text(value)
+    ]
+    if not cleaned:
+        return None
+    if len(cleaned) == 1:
+        return cleaned[0]
+    return f"{', '.join(cleaned[:-1])}, and {cleaned[-1]}"
+
+
+def strong_audience_backing_phrase(display_context):
+    ratings = (display_context or {}).get("ratings") or {}
+    score = ratings.get("unified_score")
+    scoring_count = ratings.get("scoring_source_count") or 0
+
+    if score is not None and score >= 75 and scoring_count >= 2:
+        return "strong audience backing"
+
+    return None
+
+
+def build_primary_insight(display_profile, watch_profile, display_context=None):
+    identity = (display_profile.get("identity") or [None])[0]
+    watch_feel = watch_profile.get("watch_feel")
+
+    if not has_text(identity):
+        simplified = simplify_watch_feel_for_headline(watch_feel)
+        identity = sentence_case(simplified) if simplified else None
+
+    if not has_text(identity):
+        return None
+
+    identity_phrase = lower_first(identity)
+    feel = next(
+        (
+            label
+            for label in display_profile.get("feel") or []
+            if has_text(label) and label.lower() not in identity_phrase.lower()
+        ),
+        None,
+    )
+    feel_prefix = f"{lower_first(feel)} " if feel else ""
+    subject = f"{feel_prefix}{identity_phrase}".strip()
+    sentence = f"{article_for(subject).capitalize()} {subject}"
+
+    themes = primary_theme_labels(display_profile.get("themes") or [])
+    if themes:
+        sentence += f" built around {join_short_list(themes[:2])}"
+    elif display_profile.get("pace"):
+        sentence += f" with {lower_first(display_profile['pace'])} structure"
+
+    audience_phrase = strong_audience_backing_phrase(display_context)
+    if audience_phrase and len(sentence) <= 126:
+        sentence += f", with {audience_phrase}"
+
+    sentence = ensure_sentence(sentence)
+    if len(sentence) > 180:
+        sentence = ensure_sentence(sentence[:177].rsplit(" ", 1)[0])
+
+    return sentence
+
+
+def format_scoring_source_count(count):
+    return f"{count} scoring source{'s' if count != 1 else ''}"
+
+
+def build_audience_fact(display_context):
+    ratings = (display_context or {}).get("ratings") or {}
+    score = ratings.get("unified_score")
+    if score is None:
+        return None
+
+    scoring_count = ratings.get("scoring_source_count") or 0
+    if scoring_count > 0:
+        return {
+            "label": "Audience",
+            "value": f"{score}/100 from {format_scoring_source_count(scoring_count)}",
+        }
+
+    return {"label": "Audience", "value": f"{score}/100"}
+
+
+def availability_kind(platforms):
+    platform_types = {
+        (platform.get("availability_type") or "").lower()
+        for platform in platforms or []
+        if isinstance(platform, dict)
+    }
+    if "streaming" in platform_types or "stream" in platform_types:
+        return "Streaming"
+    if "rent" in platform_types and "buy" in platform_types:
+        return "Rent/buy"
+    if "rent" in platform_types:
+        return "Rent"
+    if "buy" in platform_types:
+        return "Buy"
+    if "free" in platform_types or "ads" in platform_types:
+        return "Free/ad-supported"
+    return "Availability"
+
+
+def availability_region(platforms):
+    regions = unique_preserve_order(
+        platform.get("region_code")
+        for platform in platforms or []
+        if isinstance(platform, dict) and has_text(platform.get("region_code"))
+    )
+    if "IN" in regions:
+        return "India"
+    if len(regions) == 1:
+        return regions[0]
+    return None
+
+
+def build_access_fact(display_context):
+    platforms = (display_context or {}).get("platforms") or []
+    if not platforms:
+        return None
+
+    kind = availability_kind(platforms)
+    region = availability_region(platforms)
+    return {
+        "label": "Access",
+        "value": f"{kind} in {region}" if region else kind,
+    }
+
+
+def first_credit_name(credits, group_name):
+    for credit in (credits or {}).get(group_name) or []:
+        if isinstance(credit, dict) and has_text(credit.get("name")):
+            return credit["name"].strip()
+    return None
+
+
+def build_creative_fact(display_context):
+    content = (display_context or {}).get("content") or {}
+    credits = (display_context or {}).get("credits") or {}
+    content_type = content.get("type")
+
+    if content_type == "series":
+        creator = first_credit_name(credits, "creators")
+        if creator:
+            return {"label": "Creative lead", "value": f"Created by {creator}"}
+
+    director = first_credit_name(credits, "directors")
+    if director:
+        return {"label": "Creative lead", "value": f"Directed by {director}"}
+
+    return None
+
+
+def build_age_rating_fact(display_context):
+    content = (display_context or {}).get("content") or {}
+    age_rating = content.get("age_rating")
+    if has_text(age_rating):
+        return {"label": "Age rating", "value": age_rating.strip()}
+    return None
+
+
+def build_series_status_fact(display_context):
+    series_metadata = (display_context or {}).get("series_metadata") or {}
+    status = series_metadata.get("series_status_normalized") or series_metadata.get(
+        "series_status"
+    )
+    if not has_text(status):
+        return None
+
+    status_label = title_case_phrase(status.replace("_", " "))
+    season_count = series_metadata.get("number_of_seasons")
+    if season_count:
+        return {
+            "label": "Series status",
+            "value": (
+                f"{status_label} · {season_count} "
+                f"season{'s' if season_count != 1 else ''}"
+            ),
+        }
+
+    return {"label": "Series status", "value": status_label}
+
+
+def build_runtime_fact(display_context):
+    content = (display_context or {}).get("content") or {}
+    runtime = content.get("runtime")
+    if not runtime:
+        return None
+    if content.get("type") == "movie" and runtime >= 150:
+        return {"label": "Runtime", "value": f"{runtime} min"}
+    return None
+
+
+def build_supporting_facts(display_context):
+    candidates = [
+        build_audience_fact(display_context),
+        build_access_fact(display_context),
+        build_creative_fact(display_context),
+        build_age_rating_fact(display_context),
+        build_series_status_fact(display_context),
+        build_runtime_fact(display_context),
+    ]
+
+    facts = []
+    seen_labels = set()
+    for fact in candidates:
+        if not fact:
+            continue
+        label = sanitize_label(fact.get("label"))
+        value = sanitize_label(fact.get("value"))
+        if not label or not value:
+            continue
+        label_key = label.lower()
+        if label_key in seen_labels:
+            continue
+        seen_labels.add(label_key)
+        facts.append({"label": label, "value": value})
+
+    return facts[:4]
+
+
+def build_decision_display(watch_profile, signals, display_context=None):
+    profile = build_display_profile(
+        watch_profile,
+        signals,
+        display_context=display_context,
+    )
+    return {
+        "primary_insight": build_primary_insight(
+            profile,
+            watch_profile,
+            display_context,
+        ),
+        "profile": profile,
+        "supporting_facts": build_supporting_facts(display_context),
+    }
+
+
 def get_content_decision_layer(
     db: Session,
     content_id: int,
     include_debug: bool = False,
+    display_context: dict = None,
 ):
     guidance = fetch_watch_guidance(db, content_id)
     signal_rows = fetch_active_source_signals(db, content_id)
@@ -547,6 +1213,11 @@ def get_content_decision_layer(
         "reasons": build_decision_reasons(watch_profile, public_signals),
         "cautions": build_decision_cautions(watch_profile, public_signals),
     }
+    display = build_decision_display(
+        watch_profile,
+        public_signals,
+        display_context=display_context,
+    )
     signal_quality = {
         "storage_ready": bool(guidance.get("storage_ready")) if guidance else False,
         "frontend_ready": bool(guidance.get("frontend_ready")) if guidance else False,
@@ -556,6 +1227,7 @@ def get_content_decision_layer(
     decision_layer = {
         "watch_profile": watch_profile,
         "decision_support": decision_support,
+        "display": display,
         "signal_quality": signal_quality,
     }
 
