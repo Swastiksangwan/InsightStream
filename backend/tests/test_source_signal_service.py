@@ -191,7 +191,7 @@ def test_decision_layer_prioritizes_strong_chips_over_weak_secondary_chips():
     db = FakeDecisionDb(
         guidance=guidance_row(
             watch_feel=(
-                "A surreal heist story about memory and identity with a layered setup."
+                "A surreal heist story about memory and identity with a layered sci-fi setup."
             ),
             chips=[
                 "Spy story",
@@ -239,7 +239,7 @@ def test_decision_display_groups_compact_profile_and_facts():
     db = FakeDecisionDb(
         guidance=guidance_row(
             watch_feel=(
-                "A surreal heist story about memory and identity with a layered setup."
+                "A surreal heist story about memory and identity with a layered sci-fi setup."
             ),
             chips=[
                 "Spy story",
@@ -270,7 +270,7 @@ def test_decision_display_groups_compact_profile_and_facts():
     decision_layer = get_content_decision_layer(
         db,
         1,
-        display_context=display_context(),
+        display_context=display_context(genres=["Fantasy", "Adventure"]),
     )
 
     display = decision_layer["display"]
@@ -386,6 +386,9 @@ def test_decision_display_blocks_bad_public_phrases_globally():
         "bleak mood",
         "built around heist story",
         "built around spy story",
+        "built around eerie",
+        "warm corruption story",
+        "heavier watch assassin story",
         "prime video viewers",
         "jiohotstar viewers",
     ):
@@ -439,6 +442,305 @@ def test_decision_display_builds_space_scifi_from_context_without_bad_fallbacks(
     assert "bleak mood complex story" not in insight
     assert "all themes" not in insight
     assert "complex story built around" not in insight
+
+
+def test_decision_display_prefers_prison_drama_over_corruption_setting_context():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A warm corruption story built around 1940s setting and hope.",
+            chips=[
+                "Corruption story",
+                "Freedom story",
+                "1940s setting",
+                "Hope",
+                "Friendship",
+                "Warm",
+                "Cynical",
+            ],
+            best_for=["Prison drama", "Corruption story"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Corruption story"),
+            signal_row("topic_theme", "1940s setting"),
+            signal_row("topic_theme", "Hope"),
+            signal_row("topic_theme", "Endurance"),
+            signal_row("topic_theme", "Friendship"),
+            signal_row("tone", "Warm"),
+            signal_row("tone", "Cynical"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "movie",
+                "overview": (
+                    "A prison inmate endures a long sentence, builds friendship, "
+                    "and holds onto hope under a corrupt warden."
+                ),
+            },
+            genres=["Drama"],
+            ratings={"unified_score": 94, "scoring_source_count": 2},
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    assert display["profile"]["identity"][0] == "Prison drama"
+    assert insight.startswith("a serious prison drama")
+    assert "warm corruption story" not in insight
+    assert "1940s setting" not in themes
+    assert themes & {"hope", "endurance", "friendship", "institutional corruption"}
+    assert "exceptional audience backing" in insight
+
+
+def test_decision_display_prefers_satirical_scifi_anthology_over_crime_story():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A bleak crime story built around dystopian future.",
+            chips=[
+                "Crime story",
+                "Dystopian future",
+                "Bleak",
+                "Darkly funny",
+            ],
+            best_for=["Crime drama viewers", "Dystopian future viewers"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Crime story"),
+            signal_row("topic_theme", "Dystopian future"),
+            signal_row("mood", "Bleak"),
+            signal_row("tone", "Darkly funny"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": (
+                    "A satirical anthology about technology, future society, "
+                    "surveillance, and moral consequences."
+                ),
+            },
+            genres=["Science Fiction", "Drama"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    assert "sci-fi anthology" in " ".join(display["profile"]["identity"]).lower()
+    assert "crime story" not in insight
+    assert "technology and society" in themes
+    assert "moral consequences" in themes
+
+
+def test_decision_display_prefers_serial_killer_crime_thriller_without_repetition():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel=(
+                "A tense investigation-led mystery built around detective investigation."
+            ),
+            chips=[
+                "Investigation-led mystery",
+                "Detective investigation",
+                "Serial-killer investigation",
+                "Tense",
+                "Dark",
+            ],
+            best_for=["Investigation-led mystery viewers"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Investigation-led mystery"),
+            signal_row("topic_theme", "Detective investigation"),
+            signal_row("topic_theme", "Serial-killer investigation"),
+            signal_row("mood", "Tense"),
+            signal_row("tone", "Dark"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "movie",
+                "overview": (
+                    "Two detectives hunt a serial killer whose murders follow "
+                    "the seven deadly sins."
+                ),
+            },
+            genres=["Crime", "Mystery", "Thriller"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+
+    assert any(
+        identity in " ".join(display["profile"]["identity"]).lower()
+        for identity in ("neo-noir crime thriller", "serial-killer investigation")
+    )
+    assert "built around detective investigation" not in insight
+    assert "serial-killer investigation" in insight
+
+
+def test_decision_display_prefers_action_crime_investigation_over_assassin_story():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel=(
+                "A heavier watch assassin story built around police investigation."
+            ),
+            chips=[
+                "Assassin story",
+                "Police investigation",
+                "Heavier watch",
+                "Action-heavy",
+            ],
+            best_for=["Assassin Story", "Police Investigation"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Assassin story"),
+            signal_row("topic_theme", "Police investigation"),
+            signal_row("topic_theme", "Corruption"),
+            signal_row("pacing", "Action-heavy"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": (
+                    "A drifter and former military police investigator uncovers "
+                    "a local conspiracy and corruption."
+                ),
+            },
+            genres=["Action", "Crime", "Drama"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    display_text = str(display).lower()
+
+    assert "action-crime investigation" in " ".join(
+        display["profile"]["identity"]
+    ).lower()
+    assert "assassin story" not in display_text
+    assert "heavier watch assassin story" not in display_text
+    assert "heavier watch" not in display["primary_insight"].lower()
+
+
+def test_decision_display_keeps_eerie_as_feel_for_survival_thriller():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A tense psychological thriller built around eerie.",
+            chips=[
+                "Psychological thriller",
+                "Survival",
+                "Trauma",
+                "Group collapse",
+                "Past consequences",
+                "Eerie",
+                "Tense",
+            ],
+            best_for=["Psychological thriller", "Survival mystery"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Psychological thriller"),
+            signal_row("topic_theme", "Eerie"),
+            signal_row("topic_theme", "Survival"),
+            signal_row("topic_theme", "Trauma"),
+            signal_row("mood", "Eerie"),
+            signal_row("tone", "Tense"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": (
+                    "After a plane crash in the wilderness, the group faces "
+                    "survival, trauma, group collapse, and past consequences."
+                ),
+            },
+            genres=["Drama", "Mystery", "Horror"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    assert display["profile"]["identity"][0] == "Psychological survival thriller"
+    assert "built around eerie" not in insight
+    assert "eerie" in {feel.lower() for feel in display["profile"]["feel"]}
+    assert "eerie" not in themes
+    assert themes & {"survival", "trauma", "group collapse", "past consequences"}
+
+
+def test_decision_display_can_infer_mythic_superhero_mystery():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A superhero story built around comic-book roots.",
+            chips=[
+                "Superhero story",
+                "Mystery",
+                "Identity conflict",
+                "Mythology",
+                "Action-heavy",
+            ],
+            best_for=["Superhero story viewers"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Superhero story"),
+            signal_row("topic_theme", "Identity conflict"),
+            signal_row("topic_theme", "Mythology"),
+            signal_row("pacing", "Action-heavy"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": (
+                    "A hero with blackouts and fractured identities is drawn "
+                    "into Egyptian gods and mythology."
+                ),
+            },
+            genres=["Fantasy", "Mystery", "Action"],
+        ),
+    )
+
+    display = decision_layer["display"]
+
+    assert display["profile"]["identity"][0] == "Mythic superhero mystery"
+    assert "identity conflict" in {
+        theme.lower() for theme in display["profile"]["themes"]
+    }
+    assert "mythology" in {theme.lower() for theme in display["profile"]["themes"]}
 
 
 def test_decision_display_uses_specific_cautions_for_complex_and_dark_profiles():

@@ -34,6 +34,9 @@ BLOCKED_PUBLIC_DISPLAY_PHRASES = (
     "built around all themes",
     "built around heist story",
     "built around spy story",
+    "built around eerie",
+    "heavier watch assassin story",
+    "warm corruption story",
     "keyword",
     "tmdb_keywords",
     "source_names",
@@ -52,6 +55,7 @@ BLOCKED_PUBLIC_DISPLAY_PHRASES = (
 DISPLAY_LABEL_NORMALIZATIONS = {
     "bleak mood": "Bleak",
     "dark mood": "Dark",
+    "detective investigation": "Investigation",
     "high intensity": "High-stakes",
     "high stakes": "High-stakes",
     "sci fi": "Sci-fi",
@@ -73,9 +77,16 @@ WEAK_STANDALONE_LABELS = {
     "dark story",
     "serious story",
     "story",
+    "heavier watch",
 }
 
 WEAK_SECONDARY_CHIPS = {
+    "assassin story",
+    "corruption story",
+    "crime story",
+    "detective investigation",
+    "freedom story",
+    "heavier watch",
     "spy story",
     "spy thriller",
     "spy thrillers",
@@ -100,7 +111,6 @@ MOOD_TONE_ONLY_CHIPS = {
 DISPLAY_WEAK_LABELS = WEAK_STANDALONE_LABELS | {
     "story",
     "stories",
-    "serious",
     "serious stories",
     "bleak mood complex story",
 }
@@ -108,9 +118,12 @@ DISPLAY_WEAK_LABELS = WEAK_STANDALONE_LABELS | {
 DISPLAY_FEEL_LABELS = {
     "atmospheric",
     "bleak",
+    "cynical",
     "dark",
     "dark tone",
+    "darkly funny",
     "emotional",
+    "eerie",
     "foreboding",
     "gritty",
     "high-adrenaline",
@@ -153,6 +166,31 @@ DISPLAY_IDENTITY_KEYWORDS = (
     "western",
 )
 
+DOMINANT_IDENTITY_LABELS = {
+    "action-crime investigation",
+    "action-crime investigation series",
+    "animated superhero drama",
+    "courtroom drama",
+    "cyberpunk action sci-fi",
+    "dark sci-fi anthology",
+    "emotional space sci-fi",
+    "hard-edged action series",
+    "historical revenge epic",
+    "kitchen workplace drama",
+    "mythic superhero mystery",
+    "nature documentary",
+    "neo-noir crime thriller",
+    "political dark fantasy",
+    "prison drama",
+    "psychological survival thriller",
+    "satirical sci-fi anthology",
+    "sci-fi heist",
+    "serial-killer investigation",
+    "space survival drama",
+    "supernatural superhero adventure",
+    "tech dystopia anthology",
+}
+
 DISPLAY_IDENTITY_LIKE_THEME_TERMS = (
     "action",
     "adventure",
@@ -175,23 +213,45 @@ IDENTITY_LIKE_THEME_LABELS = {
     "action story",
     "adventure story",
     "crime drama",
+    "crime story",
     "drama",
     "fantasy adventure",
     "fantasy story",
     "heist story",
+    "horror story",
+    "investigation-led mystery",
     "serialized drama",
     "spy story",
     "superhero story",
 }
 
 WEAK_IDENTITY_LABELS = {
+    "assassin story",
     "adventure story",
     "complex story",
+    "corruption story",
+    "crime story",
     "dark story",
     "drama",
     "fantasy story",
+    "freedom story",
+    "heavier watch",
+    "horror story",
     "serious story",
     "story",
+}
+
+NON_THEME_LABELS = DISPLAY_FEEL_LABELS | {
+    "1940s setting",
+    "1950s setting",
+    "1960s setting",
+    "1970s setting",
+    "1980s setting",
+    "1990s setting",
+    "2000s setting",
+    "detective investigation",
+    "offbeat comedy",
+    "period setting",
 }
 
 SIMILAR_DISPLAY_GROUPS = (
@@ -210,6 +270,18 @@ SIMILAR_DISPLAY_GROUPS = (
 
 DISPLAY_LABEL_RANKS = {
     "identity": {
+        "prison drama": 1,
+        "neo-noir crime thriller": 1,
+        "serial-killer investigation": 1,
+        "action-crime investigation": 1,
+        "action-crime investigation series": 1,
+        "hard-edged action series": 1,
+        "satirical sci-fi anthology": 1,
+        "dark sci-fi anthology": 1,
+        "tech dystopia anthology": 1,
+        "psychological survival thriller": 1,
+        "mythic superhero mystery": 1,
+        "supernatural superhero adventure": 1,
         "sci-fi heist": 1,
         "political dark fantasy": 1,
         "cyberpunk action sci-fi": 1,
@@ -221,7 +293,11 @@ DISPLAY_LABEL_RANKS = {
         "animated superhero drama": 1,
         "psychological thriller": 1,
         "nature documentary": 1,
+        "crime story": 18,
         "heist story": 8,
+        "assassin story": 25,
+        "corruption story": 25,
+        "freedom story": 25,
         "fantasy story": 20,
         "adventure story": 20,
         "drama": 30,
@@ -229,10 +305,23 @@ DISPLAY_LABEL_RANKS = {
     "theme": {
         "memory and identity": 1,
         "reality and control": 1,
+        "technology and society": 1,
+        "moral consequences": 1,
+        "surveillance and control": 1,
+        "identity conflict": 1,
+        "mythology": 1,
+        "serial-killer investigation": 1,
         "power struggle": 1,
         "family conflict": 2,
         "moral decline": 2,
         "survival": 2,
+        "trauma": 2,
+        "group collapse": 2,
+        "past consequences": 2,
+        "institutional corruption": 2,
+        "hope": 2,
+        "endurance": 2,
+        "friendship": 2,
         "investigation": 2,
         "grief": 2,
         "ambition": 2,
@@ -240,6 +329,8 @@ DISPLAY_LABEL_RANKS = {
         "sacrifice": 2,
         "humanity's future": 2,
         "humanity’s future": 2,
+        "dystopian future": 8,
+        "1940s setting": 30,
     },
     "feel": {
         "surreal": 1,
@@ -250,12 +341,33 @@ DISPLAY_LABEL_RANKS = {
         "atmospheric": 2,
         "high-adrenaline": 2,
         "warm": 2,
+        "cynical": 3,
         "bleak": 3,
         "dark": 4,
         "dark tone": 4,
         "intense": 5,
         "high-stakes": 5,
     },
+}
+
+BEST_FOR_LABEL_REWRITES = {
+    "action-crime investigation": "Crime investigations",
+    "assassin story": None,
+    "crime investigation": "Crime investigations",
+    "crime investigations": "Crime investigations",
+    "mythic superhero mystery": "Superhero mysteries",
+    "offbeat comedy": "Offbeat comedies",
+    "police investigation": "Crime investigations",
+    "prison drama": "Prison dramas",
+    "prison dramas": "Prison dramas",
+    "psychological survival thriller": "Psychological thrillers",
+    "psychological thriller": "Psychological thrillers",
+    "satirical sci-fi": "Satirical sci-fi",
+    "satirical sci-fi anthology": "Satirical sci-fi",
+    "serial-killer investigation": "Crime investigations",
+    "survival mystery": "Survival mysteries",
+    "survival stories": "Survival stories",
+    "superhero mystery": "Superhero mysteries",
 }
 
 LABEL_REWRITES = {
@@ -310,6 +422,20 @@ def title_case_phrase(value):
     return " ".join(word[:1].upper() + word[1:] for word in words)
 
 
+def title_case_label(value):
+    if not has_text(value):
+        return value
+
+    preserve_lower = {"and", "or", "of", "the", "a", "an", "to", "in"}
+    words = []
+    for index, word in enumerate(value.strip().split()):
+        if index > 0 and word.lower() in preserve_lower:
+            words.append(word.lower())
+        else:
+            words.append(word[:1].upper() + word[1:])
+    return " ".join(words)
+
+
 def sentence_case(value):
     if not has_text(value):
         return value
@@ -350,6 +476,11 @@ def unique_preserve_order(values):
         seen.add(key)
         output.append(cleaned)
     return output
+
+
+def contains_any(value, terms):
+    text_value = value or ""
+    return any(term in text_value for term in terms)
 
 
 def json_list(value):
@@ -462,6 +593,9 @@ def is_identity_like_label(value):
 
 def is_theme_like_label(value):
     if not has_text(value) or is_weak_display_label(value):
+        return False
+    lower_value = value.lower().strip()
+    if lower_value in NON_THEME_LABELS or lower_value.endswith(" setting"):
         return False
     return not is_identity_like_label(value)
 
@@ -897,17 +1031,30 @@ def genre_context_text(display_context):
     )
 
 
+def content_context_text(display_context):
+    content = (display_context or {}).get("content") or {}
+    values = [
+        content.get("title"),
+        content.get("overview"),
+        content.get("type"),
+    ]
+    return " ".join(value.lower() for value in values if has_text(value))
+
+
 def has_scifi_context(display_context, all_label_text):
     genre_text = genre_context_text(display_context)
     return any(
-        marker in f"{all_label_text} {genre_text}"
+        marker in f"{all_label_text} {genre_text} {content_context_text(display_context)}"
         for marker in ("sci-fi", "sci fi", "science fiction")
     )
 
 
 def has_animation_context(display_context, all_label_text):
     genre_text = genre_context_text(display_context)
-    return "animation" in f"{all_label_text} {genre_text}"
+    return (
+        "animation"
+        in f"{all_label_text} {genre_text} {content_context_text(display_context)}"
+    )
 
 
 def has_genre_context(display_context, *markers):
@@ -917,8 +1064,10 @@ def has_genre_context(display_context, *markers):
 
 def combined_display_text(watch_profile, signals, labels=None, display_context=None):
     genre_text = genre_context_text(display_context)
+    content_text = content_context_text(display_context)
     parts = [
         genre_text,
+        content_text,
         watch_profile.get("watch_feel") or "",
         *(watch_profile.get("chips") or []),
         *(watch_profile.get("best_for") or []),
@@ -930,6 +1079,11 @@ def combined_display_text(watch_profile, signals, labels=None, display_context=N
         ),
     ]
     return " ".join(part.lower() for part in parts if has_text(part))
+
+
+def content_type_context(display_context):
+    content = (display_context or {}).get("content") or {}
+    return (content.get("type") or "").lower()
 
 
 def is_weak_identity_label(value):
@@ -949,18 +1103,23 @@ def infer_context_identity(watch_profile, signals, display_context=None):
     has_scifi = has_scifi_context(display_context, text_value)
     has_fantasy = has_genre_context(display_context, "fantasy") or "fantasy" in text_value
     has_animation = has_animation_context(display_context, text_value)
+    has_action = has_genre_context(display_context, "action") or "action" in text_value
     has_crime = has_genre_context(display_context, "crime") or "crime" in text_value
     has_history = has_genre_context(display_context, "history", "historical")
     has_documentary = has_genre_context(display_context, "documentary")
+    has_mystery = (
+        has_genre_context(display_context, "mystery") or "mystery" in text_value
+    )
+    has_thriller = has_genre_context(display_context, "thriller") or "thriller" in text_value
+    has_horror = has_genre_context(display_context, "horror") or "horror" in text_value
+    is_series = content_type_context(display_context) == "series"
+
+    if contains_any(text_value, ("prison", "inmate", "warden")):
+        return "Prison drama"
 
     if has_scifi and "heist" in text_value:
         return "Sci-fi heist"
-    if has_scifi and "cyberpunk" in text_value:
-        return "Cyberpunk action sci-fi"
-    if has_scifi and any(term in text_value for term in ("reality", "control")) and (
-        "action" in text_value or "martial" in text_value
-    ):
-        return "Cyberpunk action sci-fi"
+
     if has_scifi and "space" in text_value and any(
         term in text_value
         for term in ("survival", "family", "time", "humanity", "future")
@@ -968,6 +1127,92 @@ def infer_context_identity(watch_profile, signals, display_context=None):
         if "emotional" in text_value or "family" in text_value:
             return "Emotional space sci-fi"
         return "Space survival drama"
+
+    if has_scifi and contains_any(
+        text_value,
+        ("anthology", "technology", "innovation", "society", "surveillance"),
+    ):
+        if contains_any(text_value, ("satire", "satirical", "darkly funny")):
+            return "Satirical sci-fi anthology"
+        if "anthology" in text_value:
+            return "Dark sci-fi anthology"
+        if contains_any(text_value, ("dystopia", "dystopian")) and contains_any(
+            text_value,
+            ("technology", "innovation", "society", "surveillance"),
+        ):
+            return "Tech dystopia anthology"
+
+    if (
+        has_crime
+        and (has_thriller or has_mystery)
+        and contains_any(
+            text_value,
+            ("serial killer", "serial-killer", "homicide", "detective", "murder", "sins"),
+        )
+    ):
+        if contains_any(text_value, ("neo noir", "neo-noir", "detective", "sins")):
+            return "Neo-noir crime thriller"
+        return "Serial-killer investigation"
+
+    if has_action and has_crime and contains_any(
+        text_value,
+        (
+            "police",
+            "military",
+            "military police",
+            "investigator",
+            "ex-military",
+            "drifter",
+            "lone investigator",
+            "corruption",
+            "conspiracy",
+        ),
+    ):
+        return (
+            "Action-crime investigation series"
+            if is_series
+            else "Action-crime investigation"
+        )
+
+    if contains_any(text_value, ("psychological thriller", "psychological")) and (
+        contains_any(
+            text_value,
+            ("survival", "trauma", "wilderness", "group collapse", "past consequences"),
+        )
+        or has_horror
+        or has_mystery
+    ):
+        return "Psychological survival thriller"
+
+    if (has_horror or has_mystery or has_thriller) and contains_any(
+        text_value,
+        ("survival", "plane crash", "wilderness", "trauma", "group collapse"),
+    ):
+        return "Psychological survival thriller"
+
+    if "superhero" in text_value and contains_any(
+        text_value,
+        (
+            "egypt",
+            "egyptian",
+            "gods",
+            "myth",
+            "mythology",
+            "identity",
+            "identities",
+            "blackout",
+        ),
+    ):
+        if has_mystery or contains_any(text_value, ("mystery", "identity", "blackout")):
+            return "Mythic superhero mystery"
+        return "Supernatural superhero adventure"
+
+    if has_scifi and "cyberpunk" in text_value:
+        return "Cyberpunk action sci-fi"
+    if has_scifi and any(term in text_value for term in ("reality", "control")) and (
+        "action" in text_value or "martial" in text_value
+    ):
+        return "Cyberpunk action sci-fi"
     if has_fantasy and any(
         term in text_value
         for term in ("political", "power struggle", "succession", "court intrigue")
@@ -1100,7 +1345,45 @@ def merge_context_identity(identity, fallback_identity):
         ]
 
     related_replacements = {
+        "action-crime investigation": {
+            "assassin story",
+            "crime story",
+            "police investigation",
+        },
+        "action-crime investigation series": {
+            "assassin story",
+            "crime story",
+            "police investigation",
+        },
+        "dark sci-fi anthology": {"crime story", "dystopian future"},
+        "mythic superhero mystery": {
+            "comic-book adaptation",
+            "superhero story",
+            "superhero team story",
+        },
+        "neo-noir crime thriller": {
+            "crime story",
+            "detective investigation",
+            "investigation-led mystery",
+        },
+        "prison drama": {
+            "corruption story",
+            "freedom story",
+            "period drama",
+        },
+        "psychological survival thriller": {
+            "horror story",
+            "psychological thriller",
+            "survival story",
+        },
+        "satirical sci-fi anthology": {"crime story", "dystopian future"},
         "sci-fi heist": {"heist story"},
+        "serial-killer investigation": {
+            "crime story",
+            "detective investigation",
+            "investigation-led mystery",
+        },
+        "tech dystopia anthology": {"crime story", "dystopian future"},
         "political dark fantasy": {
             "dark fantasy",
             "fantasy adventure",
@@ -1124,7 +1407,17 @@ def merge_context_identity(identity, fallback_identity):
         ]
 
     if fallback_lower in {
+        "action-crime investigation",
+        "action-crime investigation series",
+        "dark sci-fi anthology",
+        "mythic superhero mystery",
+        "neo-noir crime thriller",
+        "prison drama",
+        "psychological survival thriller",
+        "satirical sci-fi anthology",
         "sci-fi heist",
+        "serial-killer investigation",
+        "tech dystopia anthology",
         "political dark fantasy",
         "cyberpunk action sci-fi",
         "kitchen workplace drama",
@@ -1146,9 +1439,6 @@ def prioritize_theme_labels(labels):
         label for label in compacted if is_theme_like_label(label)
     ]
 
-    if not core_themes:
-        return compacted
-
     return compact_display_labels(core_themes, group="theme")
 
 
@@ -1158,6 +1448,181 @@ def primary_theme_labels(themes):
         theme for theme in prioritized if is_theme_like_label(theme)
     ]
     return core_themes[:3]
+
+
+def inferred_context_themes(watch_profile, signals, display_context=None):
+    text_value = combined_display_text(
+        watch_profile,
+        signals,
+        display_context=display_context,
+    )
+    themes = []
+
+    if contains_any(text_value, ("technology", "innovation", "society")):
+        themes.append("Technology and society")
+    if contains_any(
+        text_value,
+        ("moral consequence", "moral consequences", "morality", "ethical", "ethics"),
+    ):
+        themes.append("Moral consequences")
+    if contains_any(text_value, ("surveillance", "control", "controlled")):
+        themes.append("Surveillance and control")
+
+    if contains_any(text_value, ("serial killer", "serial-killer", "homicide", "sins")):
+        themes.append("Serial-killer investigation")
+    if contains_any(text_value, ("moral decay", "decay", "corruption")):
+        themes.append(
+            "Moral decay" if "moral" in text_value else "Institutional corruption"
+        )
+    if contains_any(
+        text_value,
+        ("justice", "detective", "investigation", "investigator"),
+    ):
+        themes.append("Investigation")
+
+    if contains_any(text_value, ("prison", "inmate", "warden")):
+        if "hope" in text_value:
+            themes.append("Hope")
+        if contains_any(text_value, ("endurance", "resilience", "years", "sentence")):
+            themes.append("Endurance")
+        if "friendship" in text_value or "friend" in text_value:
+            themes.append("Friendship")
+        if contains_any(text_value, ("corruption", "warden", "institution")):
+            themes.append("Institutional corruption")
+
+    if contains_any(text_value, ("survival", "survive", "wilderness", "plane crash")):
+        themes.append("Survival")
+    if "trauma" in text_value:
+        themes.append("Trauma")
+    if contains_any(text_value, ("group collapse", "group", "fracture", "fractures")):
+        themes.append("Group collapse")
+    if contains_any(text_value, ("past consequences", "past", "aftermath")):
+        themes.append("Past consequences")
+
+    if contains_any(text_value, ("military", "ex-military", "military police")):
+        themes.append("Military background")
+    if contains_any(text_value, ("lone investigator", "drifter", "investigator")):
+        themes.append("Lone investigator")
+    if "conspiracy" in text_value:
+        themes.append("Conspiracy")
+
+    if contains_any(text_value, ("egypt", "egyptian", "gods", "myth", "mythology")):
+        themes.append("Mythology")
+    if contains_any(
+        text_value,
+        ("identity conflict", "dual identity", "identities", "blackout"),
+    ):
+        themes.append("Identity conflict")
+
+    return unique_preserve_order(themes)
+
+
+def refine_theme_labels(themes, identity):
+    refined = compact_display_labels(themes, group="theme")
+    lower_themes = {theme.lower() for theme in refined}
+    identity_text = " ".join(identity or []).lower()
+
+    if "serial-killer investigation" in lower_themes:
+        refined = [
+            theme
+            for theme in refined
+            if theme.lower() not in {"investigation", "detective investigation"}
+        ]
+
+    if "investigation" in identity_text and len(refined) > 1:
+        refined = [theme for theme in refined if theme.lower() != "investigation"]
+
+    broader_tech_themes = {
+        "technology and society",
+        "moral consequences",
+        "surveillance and control",
+    }
+    if lower_themes & broader_tech_themes and len(refined) > 1:
+        refined = [theme for theme in refined if theme.lower() != "dystopian future"]
+
+    if len(refined) > 3:
+        refined = refined[:3]
+
+    return refined
+
+
+def singular_best_for_key(label):
+    lower_label = label.lower()
+    if lower_label.endswith("ies"):
+        return f"{lower_label[:-3]}y"
+    if lower_label.endswith("s"):
+        return lower_label[:-1]
+    return lower_label
+
+
+def normalize_best_for_label(label):
+    sanitized = sanitize_label(label)
+    if not sanitized:
+        return None
+
+    lower_label = sanitized.lower()
+    if lower_label in BEST_FOR_LABEL_REWRITES:
+        return BEST_FOR_LABEL_REWRITES[lower_label]
+
+    if lower_label.startswith("stories about "):
+        return f"Stories about {lower_label[len('stories about '):]}"
+
+    if lower_label in WEAK_IDENTITY_LABELS or lower_label in WEAK_SECONDARY_CHIPS:
+        return None
+
+    if lower_label.endswith(" story"):
+        return f"{title_case_label(sanitized[:-len(' story')])} stories"
+    if lower_label.endswith(" drama"):
+        return f"{title_case_label(sanitized)}s"
+    if lower_label.endswith(" thriller"):
+        return f"{title_case_label(sanitized)}s"
+
+    return title_case_label(sanitized)
+
+
+def sentence_case_best_for_label(label):
+    if not has_text(label):
+        return label
+    value = label.strip()
+    words = value.split()
+    if len(words) <= 1:
+        return value
+    preserved_terms = {"AI", "Sci-fi", "World", "War", "II"}
+    normalized_words = [
+        word if word in preserved_terms else word[:1].lower() + word[1:]
+        for word in words[1:]
+    ]
+    return " ".join([words[0], *normalized_words])
+
+
+def build_display_best_for(best_for, identity, themes, limit=2):
+    candidates = []
+    identity_text = " ".join(identity or []).lower()
+    for value in list(best_for or []) + list(identity or []) + list(themes or []):
+        normalized = normalize_best_for_label(value)
+        if (
+            normalized
+            and normalized.lower() == "crime dramas"
+            and "sci-fi anthology" in identity_text
+        ):
+            continue
+        if normalized:
+            candidates.append(normalized)
+
+    output = []
+    seen = set()
+    for candidate in candidates:
+        key = singular_best_for_key(candidate)
+        if key in seen:
+            continue
+        seen.add(key)
+        output.append(candidate)
+
+    return [
+        sentence_case_best_for_label(label)
+        for label in compact_display_labels(output, limit=limit)
+    ]
+
 
 
 def has_signal_label(signals, dimensions, terms):
@@ -1273,6 +1738,25 @@ def build_display_pace(watch_profile, signals):
     return primary
 
 
+def refine_feel_labels(feel, watch_profile, signals, display_context=None):
+    refined = compact_display_labels(feel, group="feel")
+    lower_values = {label.lower() for label in refined}
+    text_value = combined_display_text(
+        watch_profile,
+        signals,
+        labels=refined,
+        display_context=display_context,
+    )
+
+    if "warm" in lower_values and "cynical" in lower_values and not contains_any(
+        text_value,
+        ("satire", "satirical", "darkly funny", "dark comedy"),
+    ):
+        refined = [label for label in refined if label.lower() != "warm"]
+
+    return refined[:2]
+
+
 def build_display_profile(watch_profile, signals, display_context=None):
     chips = watch_profile.get("chips") or []
     best_for = watch_profile.get("best_for") or []
@@ -1282,7 +1766,14 @@ def build_display_profile(watch_profile, signals, display_context=None):
         signals,
         {"audience_expectation"},
     )
-    topic_labels = signal_labels_for_dimensions(signals, {"topic_theme"})
+    topic_labels = (
+        signal_labels_for_dimensions(signals, {"topic_theme"})
+        + inferred_context_themes(
+            watch_profile,
+            signals,
+            display_context=display_context,
+        )
+    )
     topic_identity_labels = [
         label
         for label in topic_labels
@@ -1331,10 +1822,13 @@ def build_display_profile(watch_profile, signals, display_context=None):
     if strong_identity:
         identity = strong_identity[:3]
 
-    topic_theme_candidates = remove_profile_overlaps(
-        prioritize_theme_labels(topic_labels),
+    topic_theme_candidates = refine_theme_labels(
+        remove_profile_overlaps(
+            prioritize_theme_labels(topic_labels),
+            identity,
+            limit=5,
+        ),
         identity,
-        limit=4,
     )
     if topic_theme_candidates:
         themes = topic_theme_candidates
@@ -1352,6 +1846,7 @@ def build_display_profile(watch_profile, signals, display_context=None):
             identity,
             limit=3,
         )
+        themes = refine_theme_labels(themes, identity)
 
     feel_candidates = compact_display_labels(
         signal_labels_for_dimensions(signals, {"mood"})
@@ -1365,14 +1860,32 @@ def build_display_profile(watch_profile, signals, display_context=None):
         limit=5,
         group="feel",
     )
-    feel = compact_display_labels(feel_candidates, limit=2, group="feel")
+    feel = refine_feel_labels(
+        feel_candidates,
+        watch_profile,
+        signals,
+        display_context=display_context,
+    )
+    if identity and identity[0].lower() == "prison drama":
+        feel = compact_display_labels(
+            [
+                "Serious",
+                *(
+                    label
+                    for label in feel
+                    if label.lower() not in {"warm", "cynical"}
+                ),
+            ],
+            limit=2,
+            group="feel",
+        )
 
     return {
         "identity": identity[:3],
         "themes": themes[:3],
         "feel": feel[:2],
         "pace": build_display_pace(watch_profile, signals),
-        "best_for": compact_display_labels(best_for, limit=2),
+        "best_for": build_display_best_for(best_for, identity, themes, limit=2),
         "consider_first": build_display_cautions(watch_profile, signals, limit=1),
     }
 
@@ -1395,10 +1908,46 @@ def strong_audience_backing_phrase(display_context):
     score = ratings.get("unified_score")
     scoring_count = ratings.get("scoring_source_count") or 0
 
-    if score is not None and score >= 75 and scoring_count >= 2:
+    if score is None or scoring_count < 2:
+        return None
+
+    if score >= 90:
+        return "exceptional audience backing"
+    if score >= 80:
         return "strong audience backing"
+    if score >= 70:
+        return "positive audience backing"
 
     return None
+
+
+def theme_clause_for_identity(identity_phrase, themes):
+    theme_text = join_short_list(themes[:3])
+    if not theme_text:
+        return None
+
+    lower_identity = identity_phrase.lower()
+    first_theme = themes[0].lower() if themes else ""
+
+    if first_theme == "serial-killer investigation":
+        return "built around a serial-killer investigation"
+
+    if "kitchen workplace drama" in lower_identity:
+        return f"shaped by {theme_text}"
+
+    if any(
+        marker in lower_identity
+        for marker in (
+            "anthology",
+            "cyberpunk",
+            "prison drama",
+            "psychological survival thriller",
+            "reality-bending",
+        )
+    ):
+        return f"about {theme_text}"
+
+    return f"built around {theme_text}"
 
 
 def build_primary_insight(display_profile, watch_profile, display_context=None):
@@ -1442,17 +1991,9 @@ def build_primary_insight(display_profile, watch_profile, display_context=None):
 
     themes = primary_theme_labels(display_profile.get("themes") or [])
     if themes:
-        theme_text = join_short_list(themes[:3])
-        if theme_text:
-            if any(
-                marker in identity_phrase
-                for marker in ("cyberpunk", "reality-bending")
-            ):
-                sentence += f" about {theme_text}"
-            elif "kitchen workplace drama" in identity_phrase:
-                sentence += f" shaped by {theme_text}"
-            else:
-                sentence += f" built around {theme_text}"
+        clause = theme_clause_for_identity(identity_phrase, themes)
+        if clause:
+            sentence += f" {clause}"
     elif display_profile.get("pace"):
         sentence += f" with {lower_first(display_profile['pace'])} structure"
     elif feel:
