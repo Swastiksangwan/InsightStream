@@ -624,14 +624,16 @@ The decision layer:
 - returns `signal_quality`, including `storage_ready`, `frontend_ready`, `has_watch_guidance`, and `has_source_signals`;
 - filters or rewrites mechanical labels such as platform/viewer chips before they reach the public API;
 - applies global display-quality cleanup so weak labels, identity-like themes, repeated dark/intense phrasing, platform-as-identity labels, and blocked technical terms do not reach `decision_layer.display`;
-- ranks and deduplicates identity, theme, feel, and pace labels before building the compact profile;
+- applies dominant-identity rules so stronger story forms such as prison drama, neo-noir crime thriller, satirical sci-fi anthology, action-crime investigation, psychological survival thriller, and mythic superhero mystery can beat weaker labels like `Crime story`, `Assassin story`, or `Corruption story`;
+- uses deterministic overview-assisted fallback cues only for compact classification, not freeform summary generation;
+- ranks and deduplicates identity, theme, feel, pace, and `best_for` labels before building the compact profile;
 - does not expose raw TMDb keywords, mapping versions, source names, or provider payloads by default;
 - lets Insight Summary use stored watch guidance for richer deterministic copy while keeping metadata/rating/availability fallback behavior;
 - keeps platform names in explicit Access signals rather than watch-profile identity labels.
 
 `decision_layer.display` is the frontend-preferred contract because it avoids repeating sentence-style `watch_profile`, `decision_support`, and `insight_summary` copy across multiple UI blocks. Older `watch_profile` and `decision_support` fields remain available for backward compatibility.
 
-Backend display examples such as sci-fi heist, political dark fantasy, and kitchen workplace drama are covered as regression tests for global rules. They should not be treated as title-by-title copywriting. Future catalog batches should use preview QA and API review to identify weak mapped labels, then improve shared mapping/cleanup rules before adding one-off overrides.
+Backend display examples such as sci-fi heist, political dark fantasy, kitchen workplace drama, prison drama, satirical sci-fi anthology, and psychological survival thriller are covered as regression tests for global rules. They should not be treated as title-by-title copywriting. Future catalog batches should use preview QA and API review to identify weak mapped labels, then improve shared mapping/cleanup rules before adding one-off overrides.
 
 Preferred display shape:
 
