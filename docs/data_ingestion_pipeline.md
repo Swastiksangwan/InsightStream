@@ -624,10 +624,10 @@ The decision layer:
 - returns compact `decision_support` copy with headline, reasons, and cautions;
 - returns `signal_quality`, including `storage_ready`, `frontend_ready`, `has_watch_guidance`, and `has_source_signals`;
 - filters or rewrites mechanical labels such as platform/viewer chips before they reach the public API;
-- applies global display-quality cleanup so weak labels, identity-like themes, repeated dark/intense phrasing, platform-as-identity labels, and blocked technical terms do not reach `decision_layer.display`;
-- applies dominant-identity rules so stronger story forms such as prison drama, neo-noir crime thriller, satirical sci-fi anthology, action-crime investigation, psychological survival thriller, and mythic superhero mystery can beat weaker labels like `Crime story`, `Assassin story`, or `Corruption story`;
+- applies global display-quality cleanup so weak labels, identity-like themes, repeated investigation phrasing, repeated dark/intense phrasing, platform-as-identity labels, and blocked technical terms do not reach `decision_layer.display`;
+- applies dominant-identity rules so stronger story forms such as prison drama, neo-noir crime thriller, historical crime drama, satirical sci-fi anthology, action-crime investigation, political-action mystery, psychological survival thriller, sci-fi mystery, and mythic superhero mystery can beat weaker labels like `Crime story`, `Assassin story`, or `Corruption story`;
 - uses deterministic overview-assisted fallback cues only for compact classification, not freeform summary generation;
-- fills missing compact themes from reusable context families such as historical/war drama, gangster crime, heist/spy stories, space survival, political conflict, multiverse family stories, romance/disaster, and coming-of-age memory dramas;
+- fills missing compact themes from reusable context families such as historical/war drama, World War II/Holocaust/occupation context, gangster crime, heist/spy stories, investigation/conspiracy stories, space survival, political conflict, multiverse family stories, romance/disaster, and coming-of-age memory dramas;
 - selects `consider_first` copy from specific signal context such as sustained tension, darker subject matter, emotional weight, eerie tone, slow-burn pacing, or dense/unusual structure instead of relying on generic caution text;
 - ranks and deduplicates identity, theme, feel, pace, and `best_for` labels before building the compact profile;
 - does not expose raw TMDb keywords, mapping versions, source names, or provider payloads by default;
@@ -713,7 +713,7 @@ Grades:
 
 Use the audit to answer which titles are safe to show, which need review, which bad phrases still appear, and whether the next fix belongs in backend display rules, keyword mapping, source-signal quality, metadata enrichment, or a curated override. Regenerate the reports after backend display-rule or mapping changes to compare before/after counts. Generated audit reports remain local-only and should not be committed.
 
-The audit casing checks allow known proper phrases and compact entertainment tokens such as `World War II`, `World War I`, `Sci-fi`, `Post-apocalyptic`, `AI`, `TV`, `PG-13`, and `TV-MA`, while still flagging awkward title-case labels such as `Historical Crime Drama`.
+The audit casing checks allow known proper phrases and compact entertainment tokens such as `World War II`, `World War I`, `Sci-fi`, `Post-apocalyptic`, `AI`, `TV`, `PG-13`, and `TV-MA`, while still flagging awkward title-case labels such as `Historical Crime Drama`. Backend display cleanup normalizes public `best_for` labels such as `Post-apocalyptic World` into product copy like `Post-apocalyptic worlds`.
 
 ## 11. Output Artifact Policy
 

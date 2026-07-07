@@ -645,6 +645,88 @@ def test_decision_display_prefers_action_crime_investigation_over_assassin_story
     assert "heavier watch" not in display["primary_insight"].lower()
 
 
+def test_decision_display_avoids_repeated_investigation_phrasing():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A tense investigation-led mystery built around federal investigation.",
+            chips=["Investigation-led mystery", "Federal investigation", "Tense"],
+            best_for=["Investigation-led mystery viewers"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Investigation-led mystery"),
+            signal_row("topic_theme", "Federal investigation"),
+            signal_row("topic_theme", "Conspiracy"),
+            signal_row("mood", "Tense"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": (
+                    "A federal agent uncovers conspiracy, surveillance, "
+                    "and government secrecy under political pressure."
+                ),
+            },
+            genres=["Action", "Thriller", "Mystery"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    assert "investigation built around federal investigation" not in insight
+    assert "investigation-led mystery built around federal investigation" not in insight
+    assert "federal investigation" not in themes
+    assert themes & {"conspiracy", "federal pressure", "government secrecy"}
+    assert display["profile"]["themes"]
+
+
+def test_decision_display_keeps_action_crime_themes_without_police_repetition():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A heavier watch assassin story built around police investigation.",
+            chips=["Assassin story", "Police investigation", "Military background"],
+            best_for=["Police Investigation"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Assassin story"),
+            signal_row("topic_theme", "Police investigation"),
+            signal_row("topic_theme", "Lone investigator"),
+            signal_row("topic_theme", "Military background"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": (
+                    "An ex-military drifter investigates local corruption and conspiracy "
+                    "with a military police background."
+                ),
+            },
+            genres=["Action", "Crime", "Thriller"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    assert "investigation series built around police investigation" not in insight
+    assert "police investigation" not in themes
+    assert themes & {"lone investigator", "military background", "conspiracy"}
+
+
 def test_decision_display_keeps_eerie_as_feel_for_survival_thriller():
     db = FakeDecisionDb(
         guidance=guidance_row(
@@ -831,6 +913,50 @@ def test_decision_display_adds_war_drama_theme_fallbacks():
     }
 
 
+def test_decision_display_adds_historical_war_themes_when_theme_signals_are_empty():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A serious historical drama.",
+            chips=["Historical drama", "Serious tone"],
+            best_for=["Historical dramas"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Historical drama"),
+            signal_row("tone", "Serious tone"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "movie",
+                "overview": (
+                    "World War II occupation, Nazi cruelty, soldiers, survival, "
+                    "and the human cost of war shape the story."
+                ),
+            },
+            genres=["Drama", "History", "War"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    assert "serious historical drama, with" not in insight
+    assert "tone tone" not in insight
+    assert themes & {
+        "war",
+        "human cost",
+        "survival",
+        "duty",
+        "institutional cruelty",
+    }
+
+
 def test_decision_display_adds_gangster_crime_theme_fallbacks():
     db = FakeDecisionDb(
         guidance=guidance_row(
@@ -968,6 +1094,28 @@ def test_decision_display_adds_heist_and_spy_theme_fallbacks():
     assert "built around spy story" not in spy_layer["display"][
         "primary_insight"
     ].lower()
+
+
+def test_decision_display_normalizes_post_apocalyptic_best_for_label():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A high-adrenaline post-apocalyptic survival story.",
+            chips=["Survival story", "High-adrenaline"],
+            best_for=["Post-apocalyptic World", "Survival stories"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Survival story"),
+            signal_row("topic_theme", "Survival"),
+            signal_row("mood", "High-adrenaline"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(db, 1)
+    best_for = decision_layer["display"]["profile"]["best_for"]
+
+    assert "Post-apocalyptic World" not in best_for
+    assert "Post-apocalyptic worlds" in best_for
 
 
 def test_decision_display_does_not_repeat_feel_as_tone_clause():

@@ -119,7 +119,7 @@ Content:
 - `GET /content/by-genre/{genre_name}`
 - `GET /content/by-platform/{platform_name}`
 
-`GET /content/{content_id}/details` includes ratings, availability, Insight Summary, and a nullable source-signal `decision_layer` when stored watch guidance exists. `decision_layer.display` is the preferred compact frontend contract; older `watch_profile` and `decision_support` fields remain for compatibility. The backend ranks, dedupes, sanitizes, and applies deterministic dominant-identity rules before returning display labels, so raw TMDb keywords, weak platform/viewer labels, and source-signal debug metadata are not exposed by default. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display`; the legacy `summary` object remains for backward compatibility.
+`GET /content/{content_id}/details` includes ratings, availability, Insight Summary, and a nullable source-signal `decision_layer` when stored watch guidance exists. `decision_layer.display` is the preferred compact frontend contract; older `watch_profile` and `decision_support` fields remain for compatibility. The backend ranks, dedupes, sanitizes, and applies deterministic dominant-identity rules before returning display labels, so raw TMDb keywords, weak platform/viewer labels, repeated investigation phrasing, and source-signal debug metadata are not exposed by default. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display`; the legacy `summary` object remains for backward compatibility.
 
 Metadata:
 

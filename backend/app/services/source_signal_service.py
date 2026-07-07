@@ -181,20 +181,24 @@ DOMINANT_IDENTITY_LABELS = {
     "dark sci-fi anthology",
     "emotional space sci-fi",
     "hard-edged action series",
+    "historical crime drama",
     "historical revenge epic",
     "kitchen workplace drama",
     "mythic superhero mystery",
     "nature documentary",
     "neo-noir crime thriller",
     "political dark fantasy",
+    "political-action mystery",
     "prison drama",
     "psychological survival thriller",
     "satirical sci-fi anthology",
     "sci-fi heist",
+    "sci-fi mystery",
     "serial-killer investigation",
     "space survival drama",
     "supernatural superhero adventure",
     "tech dystopia anthology",
+    "war drama",
 }
 
 DISPLAY_IDENTITY_LIKE_THEME_TERMS = (
@@ -301,10 +305,13 @@ DISPLAY_LABEL_RANKS = {
         "satirical sci-fi anthology": 1,
         "dark sci-fi anthology": 1,
         "tech dystopia anthology": 1,
+        "historical crime drama": 1,
         "psychological survival thriller": 1,
         "mythic superhero mystery": 1,
         "supernatural superhero adventure": 1,
+        "political-action mystery": 1,
         "sci-fi heist": 1,
+        "sci-fi mystery": 1,
         "political dark fantasy": 1,
         "cyberpunk action sci-fi": 1,
         "kitchen workplace drama": 1,
@@ -312,6 +319,7 @@ DISPLAY_LABEL_RANKS = {
         "legal thriller": 1,
         "emotional space sci-fi": 1,
         "space survival drama": 1,
+        "war drama": 1,
         "animated superhero drama": 1,
         "psychological thriller": 1,
         "nature documentary": 1,
@@ -330,6 +338,9 @@ DISPLAY_LABEL_RANKS = {
         "technology and society": 1,
         "moral consequences": 1,
         "surveillance and control": 1,
+        "government secrecy": 1,
+        "unexplained cases": 1,
+        "federal pressure": 1,
         "identity conflict": 1,
         "mythology": 1,
         "serial-killer investigation": 1,
@@ -343,12 +354,23 @@ DISPLAY_LABEL_RANKS = {
         "war": 2,
         "human cost": 2,
         "duty": 2,
+        "occupation": 2,
+        "denial": 2,
+        "moral horror": 2,
+        "brotherhood": 2,
         "crime": 2,
         "organized crime": 2,
         "loyalty": 2,
         "violence": 2,
         "moral chaos": 2,
         "corruption": 2,
+        "conspiracy": 2,
+        "exploitation": 2,
+        "federal investigation": 6,
+        "police investigation": 6,
+        "lone investigator": 2,
+        "military background": 2,
+        "belief": 2,
         "planning": 2,
         "deception": 2,
         "pressure": 2,
@@ -409,6 +431,7 @@ BEST_FOR_LABEL_REWRITES = {
     "crime investigation": "Crime investigations",
     "crime investigations": "Crime investigations",
     "crime mystery": "Crime mysteries",
+    "crime mystery stories": "Crime mysteries",
     "crime mystery story": "Crime mysteries",
     "dark tone stories": None,
     "drama viewers": None,
@@ -419,6 +442,8 @@ BEST_FOR_LABEL_REWRITES = {
     "offbeat comedy": "Offbeat comedies",
     "offbeat comedy viewers": "Offbeat comedies",
     "police investigation": "Crime investigations",
+    "post-apocalyptic world": "Post-apocalyptic worlds",
+    "post-apocalyptic worlds": "Post-apocalyptic worlds",
     "prison drama": "Prison dramas",
     "prison dramas": "Prison dramas",
     "psychological survival thriller": "Psychological thrillers",
@@ -429,6 +454,8 @@ BEST_FOR_LABEL_REWRITES = {
     "survival mystery": "Survival mysteries",
     "survival stories": "Survival stories",
     "superhero mystery": "Superhero mysteries",
+    "war drama": "War dramas",
+    "war story": "War dramas",
 }
 
 LABEL_REWRITES = {
@@ -683,16 +710,27 @@ STRONG_THEME_LABELS = {
     "humanity’s future",
     "identity",
     "identity conflict",
+    "belief",
+    "brotherhood",
+    "conspiracy",
+    "denial",
+    "exploitation",
+    "federal pressure",
+    "government secrecy",
     "institutional corruption",
     "institutional cruelty",
     "intelligence work",
     "isolation",
     "loyalty",
+    "lone investigator",
+    "military background",
     "memory and identity",
     "moral chaos",
     "moral decline",
+    "moral horror",
     "moral responsibility",
     "mythology",
+    "occupation",
     "past consequences",
     "planning",
     "political consequence",
@@ -1234,6 +1272,19 @@ def infer_context_identity(watch_profile, signals, display_context=None):
     has_action = has_genre_context(display_context, "action") or "action" in text_value
     has_crime = has_genre_context(display_context, "crime") or "crime" in text_value
     has_history = has_genre_context(display_context, "history", "historical")
+    has_war = has_genre_context(display_context, "war") or contains_any(
+        text_value,
+        (
+            "world war",
+            "war drama",
+            "war story",
+            "soldier",
+            "holocaust",
+            "nazi",
+            "occupation",
+            "battle",
+        ),
+    )
     has_documentary = has_genre_context(display_context, "documentary")
     has_mystery = (
         has_genre_context(display_context, "mystery") or "mystery" in text_value
@@ -1270,6 +1321,31 @@ def infer_context_identity(watch_profile, signals, display_context=None):
         ):
             return "Tech dystopia anthology"
 
+    if has_scifi and has_mystery and contains_any(
+        text_value,
+        ("unexplained", "fbi", "government secrecy", "belief", "paranormal"),
+    ):
+        return "Sci-fi mystery"
+
+    if has_action and (has_thriller or has_mystery) and contains_any(
+        text_value,
+        ("federal", "agent", "surveillance", "political", "government"),
+    ):
+        return "Political-action mystery"
+
+    if has_history and has_crime and contains_any(
+        text_value,
+        (
+            "institutional corruption",
+            "exploitation",
+            "federal",
+            "murder",
+            "investigation",
+            "corruption",
+        ),
+    ):
+        return "Historical crime drama"
+
     if (
         has_crime
         and (has_thriller or has_mystery)
@@ -1281,6 +1357,9 @@ def infer_context_identity(watch_profile, signals, display_context=None):
         if contains_any(text_value, ("neo noir", "neo-noir", "detective", "sins")):
             return "Neo-noir crime thriller"
         return "Serial-killer investigation"
+
+    if has_war:
+        return "War drama"
 
     if has_action and has_crime and contains_any(
         text_value,
@@ -1424,6 +1503,9 @@ def enrich_identity_labels(labels, watch_profile, signals, display_context=None)
         ):
             enriched.append("Animated superhero drama")
             continue
+        if lower_label == "war story":
+            enriched.append("War drama")
+            continue
         enriched.append(label)
 
     if "Sci-fi heist" in enriched:
@@ -1434,6 +1516,8 @@ def enrich_identity_labels(labels, watch_profile, signals, display_context=None)
             for label in enriched
             if label.lower() not in {"fantasy adventure", "fantasy world", "dark fantasy"}
         ]
+    if "War drama" in enriched:
+        enriched = [label for label in enriched if label.lower() != "war story"]
 
     return compact_display_labels(enriched, limit=3, group="identity")
 
@@ -1490,6 +1574,12 @@ def merge_context_identity(identity, fallback_identity):
             "police investigation",
         },
         "dark sci-fi anthology": {"crime story", "dystopian future"},
+        "historical crime drama": {
+            "crime story",
+            "federal investigation",
+            "investigation-led mystery",
+            "serial-killer investigation",
+        },
         "mythic superhero mystery": {
             "comic-book adaptation",
             "superhero story",
@@ -1525,7 +1615,22 @@ def merge_context_identity(identity, fallback_identity):
             "fantasy world",
             "political power drama",
         },
+        "political-action mystery": {
+            "investigation-led mystery",
+            "spy story",
+            "thriller",
+        },
+        "sci-fi mystery": {
+            "investigation-led mystery",
+            "mystery story",
+            "crime story",
+        },
         "animated superhero drama": {"superhero story", "superhero team story"},
+        "war drama": {
+            "historical drama",
+            "period drama",
+            "war story",
+        },
     }
     if fallback_lower in related_replacements:
         return [fallback_identity] + [
@@ -1544,12 +1649,15 @@ def merge_context_identity(identity, fallback_identity):
         "action-crime investigation",
         "action-crime investigation series",
         "dark sci-fi anthology",
+        "historical crime drama",
         "mythic superhero mystery",
         "neo-noir crime thriller",
+        "political-action mystery",
         "prison drama",
         "psychological survival thriller",
         "satirical sci-fi anthology",
         "sci-fi heist",
+        "sci-fi mystery",
         "serial-killer investigation",
         "tech dystopia anthology",
         "political dark fantasy",
@@ -1557,6 +1665,7 @@ def merge_context_identity(identity, fallback_identity):
         "kitchen workplace drama",
         "emotional space sci-fi",
         "space survival drama",
+        "war drama",
     }:
         return [fallback_identity] + current
 
@@ -1584,6 +1693,23 @@ def primary_theme_labels(themes):
     return core_themes[:3]
 
 
+INVESTIGATION_THEME_LABELS = {
+    "detective investigation",
+    "federal investigation",
+    "investigation",
+    "police investigation",
+}
+
+
+def is_investigation_like_theme(label):
+    if not has_text(label):
+        return False
+    lower_label = label.lower().strip()
+    return lower_label in INVESTIGATION_THEME_LABELS or lower_label.endswith(
+        " investigation"
+    )
+
+
 def inferred_context_themes(watch_profile, signals, display_context=None):
     text_value = combined_display_text(
         watch_profile,
@@ -1609,20 +1735,33 @@ def inferred_context_themes(watch_profile, signals, display_context=None):
             "nazi",
             "soldier",
             "occupation",
+            "battle",
             "war drama",
             "war story",
             "war",
         ),
     ):
         themes.append("War")
+        themes.append("Human cost")
         if contains_any(text_value, ("holocaust", "nazi", "occupation", "cruelty")):
             themes.append("Institutional cruelty")
-        if contains_any(text_value, ("human cost", "loss", "casualty", "civilian")):
-            themes.append("Human cost")
-        if contains_any(text_value, ("survival", "survive", "escape")):
+        if contains_any(text_value, ("denial", "banality", "ordinary life")):
+            themes.append("Denial")
+        if contains_any(text_value, ("moral horror", "atrocity", "holocaust", "nazi")):
+            themes.append("Moral horror")
+        if contains_any(text_value, ("occupation", "occupied")):
+            themes.append("Occupation")
+        if contains_any(
+            text_value,
+            ("survival", "survive", "escape", "battle", "soldier"),
+        ):
             themes.append("Survival")
-        if contains_any(text_value, ("soldier", "duty", "mission")):
+        if contains_any(text_value, ("soldier", "duty", "mission", "battle")):
             themes.append("Duty")
+        if contains_any(text_value, ("brotherhood", "brothers", "company")):
+            themes.append("Brotherhood")
+        if contains_any(text_value, ("moral responsibility", "responsibility")):
+            themes.append("Moral responsibility")
 
     if contains_any(text_value, ("technology", "innovation", "society")):
         themes.append("Technology and society")
@@ -1633,6 +1772,17 @@ def inferred_context_themes(watch_profile, signals, display_context=None):
         themes.append("Moral consequences")
     if contains_any(text_value, ("surveillance", "control", "controlled")):
         themes.append("Surveillance and control")
+    if contains_any(
+        text_value,
+        ("government secrecy", "classified", "cover-up", "coverup"),
+    ):
+        themes.append("Government secrecy")
+    if contains_any(text_value, ("unexplained", "paranormal", "unresolved cases")):
+        themes.append("Unexplained cases")
+    if contains_any(text_value, ("federal pressure", "federal", "agent", "fbi")):
+        themes.append("Federal pressure")
+    if "belief" in text_value:
+        themes.append("Belief")
 
     if contains_any(text_value, ("serial killer", "serial-killer", "homicide", "sins")):
         themes.append("Serial-killer investigation")
@@ -1640,6 +1790,8 @@ def inferred_context_themes(watch_profile, signals, display_context=None):
         themes.append(
             "Moral decay" if "moral" in text_value else "Institutional corruption"
         )
+    if "exploitation" in text_value:
+        themes.append("Exploitation")
     if contains_any(
         text_value,
         ("justice", "detective", "investigation", "investigator"),
@@ -1762,6 +1914,16 @@ def refine_theme_labels(themes, identity):
     if "investigation" in identity_text and len(refined) > 1:
         refined = [theme for theme in refined if theme.lower() != "investigation"]
 
+    if (
+        ("investigation" in identity_text or "mystery" in identity_text)
+        and len(refined) > 1
+    ):
+        non_investigation_themes = [
+            theme for theme in refined if not is_investigation_like_theme(theme)
+        ]
+        if non_investigation_themes:
+            refined = non_investigation_themes
+
     broader_tech_themes = {
         "technology and society",
         "moral consequences",
@@ -1817,7 +1979,20 @@ def sentence_case_best_for_label(label):
     words = value.split()
     if len(words) <= 1:
         return value
-    preserved_terms = {"AI", "Sci-fi", "World", "War", "II"}
+    preserved_terms = {
+        "AI",
+        "IMDb",
+        "PG-13",
+        "Post-apocalyptic",
+        "Sci-fi",
+        "TMDb",
+        "TV",
+        "TV-MA",
+        "World",
+        "War",
+        "I",
+        "II",
+    }
     normalized_words = [
         word if word in preserved_terms else word[:1].lower() + word[1:]
         for word in words[1:]
@@ -2190,6 +2365,19 @@ def theme_clause_for_identity(identity_phrase, themes):
     lower_identity = identity_phrase.lower()
     first_theme = themes[0].lower() if themes else ""
 
+    if (
+        ("investigation" in lower_identity or "mystery" in lower_identity)
+        and all(is_investigation_like_theme(theme) for theme in themes)
+    ):
+        theme_text_lower = " ".join(themes).lower()
+        if "federal" in theme_text_lower:
+            return "focused on federal pressure"
+        if "police" in theme_text_lower or "detective" in theme_text_lower:
+            return "focused on case pressure"
+        if "serial-killer" in theme_text_lower or "serial killer" in theme_text_lower:
+            return "focused on a serial-killer case"
+        return None
+
     if first_theme == "serial-killer investigation":
         return "built around a serial-killer investigation"
 
@@ -2200,17 +2388,22 @@ def theme_clause_for_identity(identity_phrase, themes):
         marker in lower_identity
         for marker in (
             "anthology",
+            "action-crime investigation",
             "cyberpunk",
             "crime story",
             "disaster story",
             "gangster",
+            "historical crime drama",
             "historical drama",
             "prison drama",
+            "political-action mystery",
             "psychological survival thriller",
             "reality-bending",
+            "sci-fi mystery",
             "space sci-fi",
             "space survival drama",
             "supernatural story",
+            "war drama",
             "war story",
         )
     ):
