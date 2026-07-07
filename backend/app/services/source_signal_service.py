@@ -1,3 +1,5 @@
+import re
+
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -55,11 +57,15 @@ BLOCKED_PUBLIC_DISPLAY_PHRASES = (
 DISPLAY_LABEL_NORMALIZATIONS = {
     "bleak mood": "Bleak",
     "dark mood": "Dark",
+    "dark tone": "Dark",
     "detective investigation": "Investigation",
+    "gritty tone": "Gritty",
     "high intensity": "High-stakes",
     "high stakes": "High-stakes",
+    "serious tone": "Serious",
     "sci fi": "Sci-fi",
     "science fiction": "Sci-fi",
+    "warm mood": "Warm",
 }
 
 WEAK_STANDALONE_LABELS = {
@@ -254,6 +260,22 @@ NON_THEME_LABELS = DISPLAY_FEEL_LABELS | {
     "period setting",
 }
 
+ABOUTNESS_THEME_LABELS = {
+    "crime",
+    "organized crime",
+    "war",
+    "romance",
+    "disaster",
+}
+
+GENERIC_THEME_LABELS = {
+    "all themes",
+    "content",
+    "drama",
+    "story",
+    "stories",
+}
+
 SIMILAR_DISPLAY_GROUPS = (
     {
         "high-stakes",
@@ -312,12 +334,43 @@ DISPLAY_LABEL_RANKS = {
         "mythology": 1,
         "serial-killer investigation": 1,
         "power struggle": 1,
+        "scientific ambition": 1,
+        "moral responsibility": 1,
+        "political consequence": 1,
         "family conflict": 2,
         "moral decline": 2,
         "survival": 2,
+        "war": 2,
+        "human cost": 2,
+        "duty": 2,
+        "crime": 2,
+        "organized crime": 2,
+        "loyalty": 2,
+        "violence": 2,
+        "moral chaos": 2,
+        "corruption": 2,
+        "planning": 2,
+        "deception": 2,
+        "pressure": 2,
+        "espionage": 2,
+        "betrayal": 2,
+        "intelligence work": 2,
+        "isolation": 2,
+        "resourcefulness": 2,
+        "political survival": 2,
+        "cultural conflict": 2,
+        "class divide": 2,
+        "romance": 2,
+        "loss": 2,
+        "disaster": 2,
+        "identity": 2,
+        "regret": 2,
+        "acceptance": 2,
+        "multiverse chaos": 2,
         "trauma": 2,
         "group collapse": 2,
         "past consequences": 2,
+        "institutional cruelty": 2,
         "institutional corruption": 2,
         "hope": 2,
         "endurance": 2,
@@ -355,8 +408,16 @@ BEST_FOR_LABEL_REWRITES = {
     "assassin story": None,
     "crime investigation": "Crime investigations",
     "crime investigations": "Crime investigations",
+    "crime mystery": "Crime mysteries",
+    "crime mystery story": "Crime mysteries",
+    "dark tone stories": None,
+    "drama viewers": None,
+    "fantasy story": "Fantasy stories",
+    "gangster crime story": "Gangster crime dramas",
+    "gangster crime stories": "Gangster crime dramas",
     "mythic superhero mystery": "Superhero mysteries",
     "offbeat comedy": "Offbeat comedies",
+    "offbeat comedy viewers": "Offbeat comedies",
     "police investigation": "Crime investigations",
     "prison drama": "Prison dramas",
     "prison dramas": "Prison dramas",
@@ -597,7 +658,74 @@ def is_theme_like_label(value):
     lower_value = value.lower().strip()
     if lower_value in NON_THEME_LABELS or lower_value.endswith(" setting"):
         return False
+    if lower_value in ABOUTNESS_THEME_LABELS:
+        return True
     return not is_identity_like_label(value)
+
+
+STRONG_THEME_LABELS = {
+    "acceptance",
+    "ambition",
+    "betrayal",
+    "class divide",
+    "cultural conflict",
+    "deception",
+    "duty",
+    "endurance",
+    "espionage",
+    "family conflict",
+    "friendship",
+    "grief",
+    "group collapse",
+    "hope",
+    "human cost",
+    "humanity's future",
+    "humanity’s future",
+    "identity",
+    "identity conflict",
+    "institutional corruption",
+    "institutional cruelty",
+    "intelligence work",
+    "isolation",
+    "loyalty",
+    "memory and identity",
+    "moral chaos",
+    "moral decline",
+    "moral responsibility",
+    "mythology",
+    "past consequences",
+    "planning",
+    "political consequence",
+    "political survival",
+    "power struggle",
+    "pressure",
+    "rebellion",
+    "regret",
+    "resourcefulness",
+    "romance",
+    "sacrifice",
+    "scientific ambition",
+    "survival",
+    "technology and society",
+    "trauma",
+    "violence",
+    "war",
+}
+
+
+def is_weak_or_generic_theme(value):
+    if not is_theme_like_label(value):
+        return True
+    lower_value = value.lower().strip()
+    return lower_value in GENERIC_THEME_LABELS or lower_value.endswith(" setting")
+
+
+def should_add_theme_fallback(existing_themes):
+    if not existing_themes:
+        return True
+    if all(is_weak_or_generic_theme(theme) for theme in existing_themes):
+        return True
+    return not any(theme.lower().strip() in STRONG_THEME_LABELS for theme in existing_themes)
 
 
 def similar_display_group(label):
@@ -1207,6 +1335,12 @@ def infer_context_identity(watch_profile, signals, display_context=None):
             return "Mythic superhero mystery"
         return "Supernatural superhero adventure"
 
+    if contains_any(text_value, ("coming-of-age", "coming of age")) and contains_any(
+        text_value,
+        ("memory", "emotional", "thoughtful", "intimate"),
+    ):
+        return "Intimate coming-of-age drama"
+
     if has_scifi and "cyberpunk" in text_value:
         return "Cyberpunk action sci-fi"
     if has_scifi and any(term in text_value for term in ("reality", "control")) and (
@@ -1458,6 +1592,38 @@ def inferred_context_themes(watch_profile, signals, display_context=None):
     )
     themes = []
 
+    if contains_any(
+        text_value,
+        ("atomic bomb", "scientist", "nuclear", "manhattan project"),
+    ):
+        themes.append("Scientific ambition")
+        themes.append("Moral responsibility")
+        themes.append("Political consequence")
+    if contains_any(
+        text_value,
+        (
+            "world war ii",
+            "world war i",
+            "wwii",
+            "holocaust",
+            "nazi",
+            "soldier",
+            "occupation",
+            "war drama",
+            "war story",
+            "war",
+        ),
+    ):
+        themes.append("War")
+        if contains_any(text_value, ("holocaust", "nazi", "occupation", "cruelty")):
+            themes.append("Institutional cruelty")
+        if contains_any(text_value, ("human cost", "loss", "casualty", "civilian")):
+            themes.append("Human cost")
+        if contains_any(text_value, ("survival", "survive", "escape")):
+            themes.append("Survival")
+        if contains_any(text_value, ("soldier", "duty", "mission")):
+            themes.append("Duty")
+
     if contains_any(text_value, ("technology", "innovation", "society")):
         themes.append("Technology and society")
     if contains_any(
@@ -1480,6 +1646,27 @@ def inferred_context_themes(watch_profile, signals, display_context=None):
     ):
         themes.append("Investigation")
 
+    if contains_any(
+        text_value,
+        ("gangster", "organized crime", "mob", "mafia", "hitman"),
+    ):
+        themes.append("Crime")
+        themes.append("Loyalty")
+        if contains_any(text_value, ("violent", "violence", "hitman", "murder")):
+            themes.append("Violence")
+        themes.append("Moral chaos")
+        if "corruption" in text_value:
+            themes.append("Corruption")
+
+    if "heist" in text_value:
+        themes.append("Planning")
+        themes.append("Deception")
+        themes.append("Pressure")
+    if contains_any(text_value, ("spy", "espionage", "mi5", "intelligence")):
+        themes.append("Espionage")
+        themes.append("Betrayal")
+        themes.append("Intelligence work")
+
     if contains_any(text_value, ("prison", "inmate", "warden")):
         if "hope" in text_value:
             themes.append("Hope")
@@ -1492,6 +1679,17 @@ def inferred_context_themes(watch_profile, signals, display_context=None):
 
     if contains_any(text_value, ("survival", "survive", "wilderness", "plane crash")):
         themes.append("Survival")
+    if contains_any(
+        text_value,
+        ("space survival", "space sci-fi", "space opera", "astronaut", "mars", "stranded"),
+    ):
+        themes.append("Survival")
+        themes.append("Isolation")
+        themes.append("Resourcefulness")
+        if contains_any(text_value, ("humanity", "future")):
+            themes.append("Humanity's future")
+        if "power struggle" in text_value:
+            themes.append("Power struggle")
     if "trauma" in text_value:
         themes.append("Trauma")
     if contains_any(text_value, ("group collapse", "group", "fracture", "fractures")):
@@ -1513,6 +1711,38 @@ def inferred_context_themes(watch_profile, signals, display_context=None):
         ("identity conflict", "dual identity", "identities", "blackout"),
     ):
         themes.append("Identity conflict")
+
+    if contains_any(
+        text_value,
+        ("leadership", "rule", "ruler", "clan", "empire", "throne", "court", "government"),
+    ):
+        themes.append("Power struggle")
+        themes.append("Loyalty")
+        if contains_any(text_value, ("culture", "cultural", "outsider")):
+            themes.append("Cultural conflict")
+        themes.append("Political survival")
+
+    if contains_any(text_value, ("multiverse", "absurdist", "martial arts")):
+        themes.append("Family conflict")
+        themes.append("Identity")
+        if "regret" in text_value:
+            themes.append("Regret")
+        themes.append("Acceptance")
+        themes.append("Multiverse chaos")
+
+    if contains_any(text_value, ("romantic drama", "romance", "historical romance")):
+        themes.append("Romance")
+    if contains_any(text_value, ("class divide", "class", "wealth", "aristocrat")):
+        themes.append("Class divide")
+    if contains_any(text_value, ("disaster story", "disaster", "shipwreck", "titanic")):
+        themes.append("Disaster")
+        themes.append("Survival")
+        themes.append("Loss")
+
+    if contains_any(text_value, ("coming-of-age", "coming of age")):
+        themes.append("Identity")
+    if contains_any(text_value, ("memory", "memories")):
+        themes.append("Memory and identity")
 
     return unique_preserve_order(themes)
 
@@ -1646,41 +1876,65 @@ def generic_caution_text(value):
     )
 
 
+def signal_text(signals):
+    return " ".join(
+        f"{signal.get('label') or ''} {signal.get('value') or ''}".strip()
+        for signal in signals or []
+    ).lower()
+
+
 def specific_caution_candidates(watch_profile, signals):
     candidates = []
-    pace_text = " ".join(
+    context_text = " ".join(
         [
             watch_profile.get("watch_feel") or "",
             *(watch_profile.get("chips") or []),
             *(watch_profile.get("best_for") or []),
+            signal_text(signals),
         ]
     ).lower()
 
     if (
         has_signal_label(signals, {"pacing"}, {"plot-driven"})
-        or "puzzle" in pace_text
-        or "complex" in pace_text
+        or contains_any(context_text, ("puzzle", "complex", "surreal", "multiverse"))
     ):
-        candidates.append("Dense structure may require attention.")
+        candidates.append("Dense or unusual structure may require attention.")
 
-    if has_signal_label(signals, {"pacing"}, {"slow-burn", "slow burn"}):
+    if has_signal_label(
+        signals,
+        {"pacing"},
+        {"slow-burn", "slow burn"},
+    ) or contains_any(context_text, ("slow-burn", "slow burn")):
         candidates.append("Slow-burn pacing may feel deliberate.")
+
+    if contains_any(context_text, ("horror", "eerie", "supernatural")):
+        candidates.append("Eerie tone may not suit lighter viewing.")
+
+    if contains_any(
+        context_text,
+        ("intense", "high-stakes", "pressure-heavy", "constant pressure"),
+    ):
+        candidates.append("Sustained tension may feel heavy for casual viewing.")
+
+    if contains_any(context_text, ("emotional", "grief", "loss")):
+        candidates.append("Emotional themes may feel heavy.")
 
     if has_signal_label(
         signals,
         {"mood", "tone", "intensity"},
-        {"dark", "bleak", "foreboding", "intense", "high-stakes"},
+        {"dark", "bleak", "foreboding", "gritty"},
+    ) or contains_any(
+        context_text,
+        ("dark", "bleak", "gritty", "crime", "violence", "violent"),
     ):
-        candidates.append("Darker tone may not suit casual viewing.")
+        candidates.append("Darker subject matter may not suit casual viewing.")
 
     if has_signal_label(
         signals,
         {"content_caution_proxy"},
         {"violence", "mature", "adult", "frightening", "intense material"},
     ):
-        candidates.append(
-            "May be better suited for viewers comfortable with mature or intense material."
-        )
+        candidates.append("Darker subject matter may not suit casual viewing.")
 
     return unique_preserve_order(candidates)
 
@@ -1766,14 +2020,21 @@ def build_display_profile(watch_profile, signals, display_context=None):
         signals,
         {"audience_expectation"},
     )
-    topic_labels = (
-        signal_labels_for_dimensions(signals, {"topic_theme"})
-        + inferred_context_themes(
+    source_topic_labels = signal_labels_for_dimensions(signals, {"topic_theme"})
+    source_theme_candidates = refine_theme_labels(
+        prioritize_theme_labels(source_topic_labels),
+        [],
+    )
+    fallback_topic_labels = (
+        inferred_context_themes(
             watch_profile,
             signals,
             display_context=display_context,
         )
+        if should_add_theme_fallback(source_theme_candidates)
+        else []
     )
+    topic_labels = source_topic_labels + fallback_topic_labels
     topic_identity_labels = [
         label
         for label in topic_labels
@@ -1940,14 +2201,65 @@ def theme_clause_for_identity(identity_phrase, themes):
         for marker in (
             "anthology",
             "cyberpunk",
+            "crime story",
+            "disaster story",
+            "gangster",
+            "historical drama",
             "prison drama",
             "psychological survival thriller",
             "reality-bending",
+            "space sci-fi",
+            "space survival drama",
+            "supernatural story",
+            "war story",
         )
     ):
         return f"about {theme_text}"
 
     return f"built around {theme_text}"
+
+
+FEEL_PHRASE_NORMALIZATIONS = {
+    "serious tone": "serious",
+    "dark tone": "dark",
+    "gritty tone": "gritty",
+    "bleak mood": "bleak",
+    "warm mood": "warm",
+}
+
+
+def normalize_display_phrase(value):
+    if not has_text(value):
+        return value
+    normalized = " ".join(value.strip().split())
+    lower_normalized = normalized.lower()
+
+    for source, replacement in FEEL_PHRASE_NORMALIZATIONS.items():
+        if lower_normalized == source:
+            return replacement
+        if lower_normalized.startswith(f"{source} "):
+            return f"{replacement}{normalized[len(source):]}"
+
+    normalized = re.sub(
+        r"\b(serious|dark|gritty)\s+tone\b",
+        r"\1",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    normalized = re.sub(
+        r"\b(bleak|warm)\s+mood\b",
+        r"\1",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    normalized = re.sub(r"\btone\s+tone\b", "tone", normalized, flags=re.IGNORECASE)
+    normalized = re.sub(r"\bmood\s+mood\b", "mood", normalized, flags=re.IGNORECASE)
+    return " ".join(normalized.split())
+
+
+def normalized_feel_adjective(value):
+    normalized = normalize_display_phrase(value)
+    return lower_first(normalized) if has_text(normalized) else None
 
 
 def build_primary_insight(display_profile, watch_profile, display_context=None):
@@ -1970,21 +2282,22 @@ def build_primary_insight(display_profile, watch_profile, display_context=None):
         if fallback_identity:
             identity = fallback_identity
 
-    identity_phrase = lower_first(identity)
+    identity_phrase = lower_first(normalize_display_phrase(identity))
     identity_starts_with_feel = any(
         identity_phrase.startswith(feel_label)
         for feel_label in DISPLAY_FEEL_LABELS
     )
-    feel = next(
+    raw_feel = next(
         (
             label
             for label in display_profile.get("feel") or []
             if has_text(label)
             and not identity_starts_with_feel
-            and label.lower() not in identity_phrase.lower()
+            and normalized_feel_adjective(label) not in identity_phrase.lower()
         ),
         None,
     )
+    feel = normalized_feel_adjective(raw_feel)
     feel_prefix = f"{lower_first(feel)} " if feel else ""
     subject = f"{feel_prefix}{identity_phrase}".strip()
     sentence = f"{article_for(subject).capitalize()} {subject}"
@@ -1996,8 +2309,6 @@ def build_primary_insight(display_profile, watch_profile, display_context=None):
             sentence += f" {clause}"
     elif display_profile.get("pace"):
         sentence += f" with {lower_first(display_profile['pace'])} structure"
-    elif feel:
-        sentence += f" with a {lower_first(feel)} tone"
 
     audience_phrase = strong_audience_backing_phrase(display_context)
     if audience_phrase and len(sentence) <= 126:
@@ -2013,8 +2324,6 @@ def build_primary_insight(display_profile, watch_profile, display_context=None):
     fallback = f"{article_for(identity_phrase).capitalize()} {identity_phrase}"
     if display_profile.get("pace"):
         fallback += f" with {lower_first(display_profile['pace'])} structure"
-    elif feel:
-        fallback += f" with a {lower_first(feel)} tone"
     return ensure_sentence(fallback) if sanitize_public_display_text(fallback) else None
 
 

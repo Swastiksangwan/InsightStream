@@ -743,6 +743,259 @@ def test_decision_display_can_infer_mythic_superhero_mystery():
     assert "mythology" in {theme.lower() for theme in display["profile"]["themes"]}
 
 
+def test_decision_display_normalizes_repeated_tone_phrasing_for_historical_drama():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A serious tone historical drama with a serious tone tone.",
+            chips=["Historical drama", "Serious tone"],
+            best_for=["Historical dramas"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Historical drama"),
+            signal_row("tone", "Serious tone"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "movie",
+                "overview": (
+                    "A scientist leads the Manhattan Project and confronts "
+                    "nuclear war, political consequence, and moral responsibility."
+                ),
+            },
+            genres=["Drama", "History"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    for blocked in (
+        "tone tone",
+        "mood mood",
+        "serious tone historical drama with a serious tone tone",
+    ):
+        assert blocked not in insight
+    assert insight.startswith("a serious historical drama")
+    assert themes & {
+        "scientific ambition",
+        "moral responsibility",
+        "political consequence",
+        "war",
+    }
+
+
+def test_decision_display_adds_war_drama_theme_fallbacks():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A serious tone war story.",
+            chips=["War story", "World War II dramas", "Serious tone"],
+            best_for=["World War II dramas"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "War story"),
+            signal_row("tone", "Serious tone"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "movie",
+                "overview": (
+                    "World War II soldiers face occupation, survival, duty, "
+                    "and the human cost of war."
+                ),
+            },
+            genres=["Drama", "History", "War"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    assert "tone tone" not in insight
+    assert themes & {"war", "human cost", "survival", "institutional cruelty", "duty"}
+    assert "world war ii dramas" in {
+        label.lower() for label in display["profile"]["best_for"]
+    }
+
+
+def test_decision_display_adds_gangster_crime_theme_fallbacks():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A dark tone gangster crime story with a dark tone tone.",
+            chips=["Gangster crime story", "Offbeat comedy", "Dark tone"],
+            best_for=["Offbeat comedy viewers", "Gangster crime story"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Gangster crime story"),
+            signal_row("tone", "Dark tone"),
+            signal_row("tone", "Darkly funny"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "movie",
+                "overview": (
+                    "Gangsters, a hitman, loyalty, violence, and moral chaos "
+                    "collide inside organized crime."
+                ),
+            },
+            genres=["Crime", "Thriller"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    insight = display["primary_insight"].lower()
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+
+    assert "dark tone tone" not in insight
+    assert "gangster crime story" in insight
+    assert "darkly funny" in insight or "dark" in insight
+    assert themes & {"crime", "loyalty", "moral chaos", "violence"}
+    assert "offbeat comedies" in {
+        label.lower() for label in display["profile"]["best_for"]
+    }
+
+
+def test_decision_display_adds_space_survival_themes_and_specific_caution():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A space survival drama.",
+            chips=["Space sci-fi", "Survival", "Resourcefulness"],
+            best_for=["Space sci-fi viewers", "Survival stories"],
+            consider_first=[
+                "Better suited for viewers comfortable with darker or more intense stories."
+            ],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Space survival drama"),
+            signal_row("intensity", "High-stakes"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "movie",
+                "overview": (
+                    "An astronaut stranded on Mars uses resourcefulness, isolation, "
+                    "and survival instincts while humanity plans a rescue."
+                ),
+            },
+            genres=["Science Fiction", "Adventure", "Drama"],
+        ),
+    )
+
+    display = decision_layer["display"]
+    themes = {theme.lower() for theme in display["profile"]["themes"]}
+    caution = " ".join(display["profile"]["consider_first"]).lower()
+
+    assert themes & {"survival", "resourcefulness", "isolation", "humanity's future"}
+    assert "better suited for viewers comfortable" not in caution
+    assert caution
+    assert "a space survival drama, with positive audience backing" not in display[
+        "primary_insight"
+    ].lower()
+
+
+def test_decision_display_adds_heist_and_spy_theme_fallbacks():
+    heist_db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A heist story.",
+            chips=["Heist story", "Plot-driven"],
+            best_for=["Heist stories"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Heist story"),
+            signal_row("pacing", "Plot-driven"),
+        ],
+    )
+
+    heist_layer = get_content_decision_layer(heist_db, 1)
+    heist_themes = {
+        theme.lower() for theme in heist_layer["display"]["profile"]["themes"]
+    }
+
+    assert heist_themes & {"planning", "deception", "pressure"}
+    assert "built around heist story" not in heist_layer["display"][
+        "primary_insight"
+    ].lower()
+
+    spy_db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A spy story.",
+            chips=["Spy story", "Plot-driven"],
+            best_for=["Spy thrillers"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Spy story"),
+            signal_row("pacing", "Plot-driven"),
+        ],
+    )
+
+    spy_layer = get_content_decision_layer(
+        spy_db,
+        1,
+        display_context=display_context(
+            content={"type": "movie", "overview": "MI5 espionage and intelligence work."},
+            genres=["Thriller"],
+        ),
+    )
+    spy_themes = {theme.lower() for theme in spy_layer["display"]["profile"]["themes"]}
+
+    assert spy_themes & {"espionage", "betrayal", "intelligence work"}
+    assert "built around spy story" not in spy_layer["display"][
+        "primary_insight"
+    ].lower()
+
+
+def test_decision_display_does_not_repeat_feel_as_tone_clause():
+    for identity, feel, bad_phrase in [
+        ("Disaster story", "Emotional", "emotional disaster story with a emotional tone"),
+        ("Supernatural story", "Eerie", "eerie supernatural story with a eerie tone"),
+    ]:
+        db = FakeDecisionDb(
+            guidance=guidance_row(
+                watch_feel=f"An {feel.lower()} {identity.lower()} with a {feel.lower()} tone.",
+                chips=[identity, feel],
+                best_for=[],
+                consider_first=[],
+            ),
+            signals=[
+                signal_row("audience_expectation", identity),
+                signal_row("mood", feel),
+            ],
+        )
+
+        decision_layer = get_content_decision_layer(db, 1)
+        insight = decision_layer["display"]["primary_insight"].lower()
+
+        assert bad_phrase not in insight
+        assert "tone tone" not in insight
+        assert "mood mood" not in insight
+
+
 def test_decision_display_uses_specific_cautions_for_complex_and_dark_profiles():
     complex_db = FakeDecisionDb(
         guidance=guidance_row(
@@ -759,7 +1012,7 @@ def test_decision_display_uses_specific_cautions_for_complex_and_dark_profiles()
     )
     complex_layer = get_content_decision_layer(complex_db, 1)
     assert complex_layer["display"]["profile"]["consider_first"] == [
-        "Dense structure may require attention."
+        "Dense or unusual structure may require attention."
     ]
 
     dark_db = FakeDecisionDb(
@@ -778,7 +1031,7 @@ def test_decision_display_uses_specific_cautions_for_complex_and_dark_profiles()
     )
     dark_layer = get_content_decision_layer(dark_db, 1)
     cautions = dark_layer["display"]["profile"]["consider_first"]
-    assert cautions == ["Darker tone may not suit casual viewing."]
+    assert cautions == ["Sustained tension may feel heavy for casual viewing."]
     assert len(cautions) <= 2
 
 

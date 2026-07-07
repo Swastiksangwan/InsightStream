@@ -44,7 +44,7 @@ Covered areas:
 - keyword-to-signal preview mapping/helper behavior, including v3.2.1 metadata fallback, curated overrides, partial-output protection, semantic QA report fields, generator/QA version fields, and product-copy safeguards
 - source-signal storage schema verification
 - source-signal importer dry-run/write/idempotency validation
-- source-signal decision-layer display grouping, deduplication, supporting facts, and public-output sanitization
+- source-signal decision-layer display grouping, deduplication, supporting facts, theme fallbacks, specific caution copy, and public-output sanitization
 - decision display quality-audit helper behavior, including issue detection, scoring, grading, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
 - source-signal ingestion health-check summary behavior
 
@@ -117,7 +117,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_keyword_signal_preview.py` — keyword-to-signal preview mapping, metadata fallback, curated override, partial-output protection, semantic QA versioning, and product-copy tests without live DB/API calls
 - `backend/tests/test_source_signal_schema.py` — source-signal storage schema and index verification
 - `backend/tests/test_source_signal_importer.py` — source-signal importer dry-run, write, validation, idempotency, and JSONB helper tests without live DB/API calls
-- `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization, chip priority, watch profile, compact `decision_layer.display`, supporting facts, global display-quality cleanup, dominant identity selection, overview-assisted fallback, identity/theme/feel dedupe, caution wording, and product-friendly decision-copy tests without live DB/API calls
+- `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization, chip priority, watch profile, compact `decision_layer.display`, supporting facts, global display-quality cleanup, dominant identity selection, overview-assisted theme fallback, identity/theme/feel dedupe, specific caution wording, and product-friendly decision-copy tests without live DB/API calls
 - `backend/tests/test_decision_display_quality_audit.py` — decision display quality-audit helper tests for clean/missing displays, technical leaks, platform-viewer leaks, generic labels, scoring, CSV rows, summary aggregation, and fail flags without DB writes
 
 ## 6. Important Bug Caught by Tests
