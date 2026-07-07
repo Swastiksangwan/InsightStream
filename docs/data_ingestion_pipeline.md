@@ -37,6 +37,7 @@ Future ingestion updates should go into this document.
 | Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
 | Source signal storage import | Implemented | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
 | Source signal decision layer API | Implemented | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output for frontend use. |
+| Decision display QA audit | Implemented | `analytics/scripts/audit_decision_display_quality.py` | No | Read-only catalog audit for compact display quality scores, issue codes, review candidates, and generated local JSON/CSV/summary reports. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
@@ -658,6 +659,59 @@ Preferred display shape:
 `frontend_ready` remains a data-quality flag. It is returned so the future frontend can decide whether to show, hide, or label the section, but it does not block backend/dev integration.
 
 The legacy `summary` object may still appear in detail responses for backward compatibility. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display` for decision-support UI.
+
+### Decision Display Quality Audit
+
+The decision display audit checks catalog-wide `decision_layer.display` quality using the same backend content detail service that powers the API. It is read-only and writes local-only QA reports.
+
+Run the full catalog audit:
+
+```bash
+python3 analytics/scripts/audit_decision_display_quality.py
+```
+
+Audit one title or a batch:
+
+```bash
+python3 analytics/scripts/audit_decision_display_quality.py --content-id 6
+python3 analytics/scripts/audit_decision_display_quality.py --content-type movie --limit 50 --offset 0
+```
+
+Useful failure gates for CI-like local checks:
+
+```bash
+python3 analytics/scripts/audit_decision_display_quality.py \
+  --fail-on-critical \
+  --fail-under-score 80
+```
+
+Generated reports:
+
+```text
+analytics/processed/source_signals/decision_display_quality_report.json
+analytics/processed/source_signals/decision_display_quality_report.csv
+analytics/processed/source_signals/run_reports/decision_display_quality_summary.json
+```
+
+The detailed JSON contains per-title `display_quality_score`, `grade`, `display_ready`, `review_required`, issue rows, and suggested next steps. The CSV is spreadsheet-friendly and uses pipe-separated cells for multi-value fields such as identity, themes, feel, best-for labels, and supporting facts. The summary report includes grade counts, issue counts by code/severity, weakest titles, top issue examples, and content-type breakdowns.
+
+Scoring starts from 100 and subtracts deterministic penalties:
+
+- critical issue: -35
+- high issue: -20
+- medium issue: -10
+- low issue: -4
+
+Grades:
+
+- `excellent`: 90-100
+- `good`: 80-89
+- `needs_review`: 60-79
+- `blocked`: below 60 or any critical issue
+
+Use the audit to answer which titles are safe to show, which need review, which bad phrases still appear, and whether the next fix belongs in backend display rules, keyword mapping, source-signal quality, metadata enrichment, or a curated override. Generated audit reports remain local-only and should not be committed.
+
+The audit casing checks allow known proper phrases and compact entertainment tokens such as `World War II`, `World War I`, `Sci-fi`, `Post-apocalyptic`, `AI`, `TV`, `PG-13`, and `TV-MA`, while still flagging awkward title-case labels such as `Historical Crime Drama`.
 
 ## 11. Output Artifact Policy
 

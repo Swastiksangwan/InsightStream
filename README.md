@@ -32,6 +32,7 @@ Completed:
 - Small TMDb attribution footer in the frontend.
 - TMDb keyword preview pipeline with retry/merge workflow for future source signals.
 - Source-signal decision layer in the content detail API, including compact, rule-cleaned `decision_layer.display` output while keeping raw keywords internal.
+- Decision display quality audit script for catalog-wide QA of `decision_layer.display` scores, issues, and review candidates.
 
 Next planned:
 
