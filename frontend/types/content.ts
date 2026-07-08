@@ -13,6 +13,9 @@ export type Content = {
   age_rating_region?: string | null;
   age_rating_source?: string | null;
   age_rating_system?: string | null;
+  unified_score?: number | null;
+  source_count?: number | null;
+  scoring_source_count?: number | null;
 };
 
 export type SeriesMetadata = {

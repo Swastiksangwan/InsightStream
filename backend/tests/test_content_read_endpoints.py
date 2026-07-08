@@ -102,6 +102,143 @@ def expected_discover_recent_titles(db_session, limit):
     return [row["title"] for row in rows]
 
 
+def expected_top_rated_rows(db_session, limit, content_type=None):
+    params = {
+        "limit": limit,
+        "minimum_vote_count": MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
+    }
+    content_type_filter = ""
+    if content_type:
+        content_type_filter = "AND c.content_type = :content_type"
+        params["content_type"] = content_type
+
+    rows = db_session.execute(
+        text(
+            f"""
+            WITH rating_summary AS (
+                SELECT
+                    cr.content_id,
+                    ROUND(
+                        SUM(
+                            CASE
+                                WHEN cr.normalized_score IS NOT NULL
+                                 AND COALESCE(rs.weight, 0) > 0
+                                 AND cr.vote_count IS NOT NULL
+                                 AND cr.vote_count >= :minimum_vote_count
+                                THEN cr.normalized_score * COALESCE(rs.weight, 0)
+                                ELSE 0
+                            END
+                        )
+                        / NULLIF(
+                            SUM(
+                                CASE
+                                    WHEN cr.normalized_score IS NOT NULL
+                                     AND COALESCE(rs.weight, 0) > 0
+                                     AND cr.vote_count IS NOT NULL
+                                     AND cr.vote_count >= :minimum_vote_count
+                                    THEN COALESCE(rs.weight, 0)
+                                    ELSE 0
+                                END
+                            ),
+                            0
+                        )
+                    )::INTEGER AS unified_score,
+                    COUNT(*) AS source_count,
+                    COUNT(*) FILTER (
+                        WHERE cr.normalized_score IS NOT NULL
+                          AND COALESCE(rs.weight, 0) > 0
+                          AND cr.vote_count IS NOT NULL
+                          AND cr.vote_count >= :minimum_vote_count
+                    ) AS scoring_source_count
+                FROM content_ratings cr
+                JOIN rating_sources rs ON rs.id = cr.rating_source_id
+                WHERE rs.is_active = TRUE
+                GROUP BY cr.content_id
+            )
+            SELECT
+                c.title,
+                c.year,
+                rating_summary.unified_score,
+                rating_summary.source_count,
+                rating_summary.scoring_source_count
+            FROM content c
+            JOIN rating_summary ON rating_summary.content_id = c.id
+            WHERE rating_summary.unified_score IS NOT NULL
+              {content_type_filter}
+            ORDER BY
+                rating_summary.unified_score DESC NULLS LAST,
+                rating_summary.scoring_source_count DESC NULLS LAST,
+                rating_summary.source_count DESC NULLS LAST,
+                c.year DESC NULLS LAST,
+                c.title ASC
+            LIMIT :limit;
+            """
+        ),
+        params,
+    ).mappings().all()
+    return [dict(row) for row in rows]
+
+
+def first_top_rated_tie_group(db_session):
+    rows = db_session.execute(
+        text(
+            """
+            WITH rating_summary AS (
+                SELECT
+                    cr.content_id,
+                    ROUND(
+                        SUM(
+                            CASE
+                                WHEN cr.normalized_score IS NOT NULL
+                                 AND COALESCE(rs.weight, 0) > 0
+                                 AND cr.vote_count IS NOT NULL
+                                 AND cr.vote_count >= :minimum_vote_count
+                                THEN cr.normalized_score * COALESCE(rs.weight, 0)
+                                ELSE 0
+                            END
+                        )
+                        / NULLIF(
+                            SUM(
+                                CASE
+                                    WHEN cr.normalized_score IS NOT NULL
+                                     AND COALESCE(rs.weight, 0) > 0
+                                     AND cr.vote_count IS NOT NULL
+                                     AND cr.vote_count >= :minimum_vote_count
+                                    THEN COALESCE(rs.weight, 0)
+                                    ELSE 0
+                                END
+                            ),
+                            0
+                        )
+                    )::INTEGER AS unified_score,
+                    COUNT(*) AS source_count,
+                    COUNT(*) FILTER (
+                        WHERE cr.normalized_score IS NOT NULL
+                          AND COALESCE(rs.weight, 0) > 0
+                          AND cr.vote_count IS NOT NULL
+                          AND cr.vote_count >= :minimum_vote_count
+                    ) AS scoring_source_count
+                FROM content_ratings cr
+                JOIN rating_sources rs ON rs.id = cr.rating_source_id
+                WHERE rs.is_active = TRUE
+                GROUP BY cr.content_id
+            )
+            SELECT
+                rating_summary.unified_score,
+                COUNT(*) AS tied_count
+            FROM rating_summary
+            WHERE rating_summary.unified_score IS NOT NULL
+            GROUP BY rating_summary.unified_score
+            HAVING COUNT(*) > 1
+            ORDER BY rating_summary.unified_score DESC
+            LIMIT 1;
+            """
+        ),
+        {"minimum_vote_count": MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE},
+    ).mappings().first()
+    return dict(rows) if rows else None
+
+
 def recent_content_count(db_session, content_type=None):
     params = {}
     content_type_filter = ""
@@ -121,6 +258,28 @@ def recent_content_count(db_session, content_type=None):
         params,
     ).mappings().first()
     return row["total"]
+
+
+def recent_result_offset_for_title(db_session, title):
+    row = db_session.execute(
+        text(
+            """
+            SELECT result_offset
+            FROM (
+                SELECT
+                    title,
+                    ROW_NUMBER() OVER (
+                        ORDER BY COALESCE(latest_activity_date, release_date) DESC, title ASC
+                    ) - 1 AS result_offset
+                FROM content
+                WHERE COALESCE(latest_activity_date, release_date) IS NOT NULL
+            ) ranked_recent
+            WHERE title = :title;
+            """
+        ),
+        {"title": title},
+    ).mappings().first()
+    return row["result_offset"] if row else None
 
 
 def optional_content_id_by_title(db_session, title):
@@ -473,13 +632,19 @@ def test_get_recent_content(client, db_session):
     assert titles == expected_recent_titles(db_session, limit=5)
 
 
-def test_recent_sorting_preserves_series_original_release_date(client):
-    response = client.get("/content/recent?limit=5")
+def test_recent_sorting_preserves_series_original_release_date(client, db_session):
+    result_offset = recent_result_offset_for_title(db_session, "The Boys")
+    assert result_offset is not None
+
+    response = client.get(f"/content/recent?limit=1&offset={result_offset}")
+
     data = response.json()
 
-    the_boys = next(item for item in data["items"] if item["title"] == "The Boys")
-
     assert response.status_code == 200
+    assert len(data["items"]) == 1
+    the_boys = data["items"][0]
+
+    assert the_boys["title"] == "The Boys"
     assert the_boys["release_date"] == "2019-07-26"
     assert the_boys["year"] == 2019
 
@@ -511,22 +676,75 @@ def test_discover_recent_uses_latest_activity_date(client, db_session):
     )
 
 
-def test_get_top_rated_content(client):
-    response = client.get("/content/top-rated?limit=5")
+def test_get_top_rated_content(client, db_session):
+    limit = 5
+    expected_rows = expected_top_rated_rows(db_session, limit=limit)
+    if not expected_rows:
+        pytest.skip("No vote-backed content ratings are available for top-rated ordering.")
+
+    response = client.get(f"/content/top-rated?limit={limit}")
     data = response.json()
 
     assert response.status_code == 200
-    assert data["total"] >= MIN_SEED_TOTAL
-    assert len(data["items"]) == 5
+    assert len(data["items"]) == min(len(expected_rows), limit)
+    assert [item["title"] for item in data["items"]] == [
+        row["title"] for row in expected_rows
+    ]
+    assert [item["unified_score"] for item in data["items"]] == [
+        row["unified_score"] for row in expected_rows
+    ]
+    assert all(item["unified_score"] is not None for item in data["items"])
+    assert all("source_count" in item for item in data["items"])
+    assert all("scoring_source_count" in item for item in data["items"])
 
-    expected_high_score_titles = {
-        "Breaking Bad",
-        "Parasite",
-        "The Dark Knight",
-        "Spider-Man: Across the Spider-Verse",
-        "The Last of Us",
-    }
-    assert len(titles_from_items(data) & expected_high_score_titles) >= 3
+
+def test_top_rated_content_uses_scoring_source_tiebreaker(client, db_session):
+    tie_group = first_top_rated_tie_group(db_session)
+    if not tie_group:
+        pytest.skip("No tied unified-score group exists in this fixture.")
+
+    expected_rows = expected_top_rated_rows(db_session, limit=100)
+    tied_rows = [
+        row
+        for row in expected_rows
+        if row["unified_score"] == tie_group["unified_score"]
+    ]
+    if len({row["scoring_source_count"] for row in tied_rows}) < 2:
+        pytest.skip("Tied unified-score group has no scoring-source-count variation.")
+
+    response = client.get("/content/top-rated?limit=100")
+    data = response.json()
+    response_tied_rows = [
+        item
+        for item in data["items"]
+        if item["unified_score"] == tie_group["unified_score"]
+    ]
+
+    assert response.status_code == 200
+    assert [
+        item["scoring_source_count"] for item in response_tied_rows
+    ] == sorted(
+        [item["scoring_source_count"] for item in response_tied_rows],
+        reverse=True,
+    )
+
+
+def test_discover_top_rated_uses_same_ordering(client, db_session):
+    limit = 8
+    expected_rows = expected_top_rated_rows(db_session, limit=limit)
+    if not expected_rows:
+        pytest.skip("No vote-backed content ratings are available for top-rated ordering.")
+
+    response = client.get(f"/content/discover?sort_by=top_rated&limit={limit}")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert [item["title"] for item in data["items"][: len(expected_rows)]] == [
+        row["title"] for row in expected_rows
+    ]
+    assert [item["unified_score"] for item in data["items"][: len(expected_rows)]] == [
+        row["unified_score"] for row in expected_rows
+    ]
 
 
 def test_get_content_by_animation_genre(client, db_session):

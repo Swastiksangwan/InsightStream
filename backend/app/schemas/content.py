@@ -18,6 +18,9 @@ class Content(BaseModel):
     age_rating_region: Optional[str] = None
     age_rating_source: Optional[str] = None
     age_rating_system: Optional[str] = None
+    unified_score: Optional[int] = None
+    source_count: Optional[int] = None
+    scoring_source_count: Optional[int] = None
 
 
 class PaginatedContentResponse(BaseModel):
