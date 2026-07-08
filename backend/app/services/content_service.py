@@ -7,6 +7,8 @@ from app.services.insight_summary_service import build_insight_summary
 from app.services.source_signal_service import get_content_decision_layer
 
 
+MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE = 50
+
 CONTENT_SELECT_FIELDS = """
     c.id,
     c.title,
@@ -19,6 +21,64 @@ CONTENT_SELECT_FIELDS = """
     c.runtime,
     c.language,
     c.age_rating
+"""
+
+CONTENT_RATING_SUMMARY_JOIN = f"""
+    LEFT JOIN (
+        SELECT
+            cr.content_id,
+            ROUND(
+                SUM(
+                    CASE
+                        WHEN cr.normalized_score IS NOT NULL
+                         AND COALESCE(rs.weight, 0) > 0
+                         AND cr.vote_count IS NOT NULL
+                         AND cr.vote_count >= {MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE}
+                        THEN cr.normalized_score * COALESCE(rs.weight, 0)
+                        ELSE 0
+                    END
+                )
+                / NULLIF(
+                    SUM(
+                        CASE
+                            WHEN cr.normalized_score IS NOT NULL
+                             AND COALESCE(rs.weight, 0) > 0
+                             AND cr.vote_count IS NOT NULL
+                             AND cr.vote_count >= {MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE}
+                            THEN COALESCE(rs.weight, 0)
+                            ELSE 0
+                        END
+                    ),
+                    0
+                )
+            )::INTEGER AS unified_score,
+            COUNT(*) AS source_count,
+            COUNT(*) FILTER (
+                WHERE cr.normalized_score IS NOT NULL
+                  AND COALESCE(rs.weight, 0) > 0
+                  AND cr.vote_count IS NOT NULL
+                  AND cr.vote_count >= {MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE}
+            ) AS scoring_source_count
+        FROM content_ratings cr
+        JOIN rating_sources rs ON rs.id = cr.rating_source_id
+        WHERE rs.is_active = TRUE
+        GROUP BY cr.content_id
+    ) rating_summary ON rating_summary.content_id = c.id
+"""
+
+CONTENT_SCORE_SELECT_FIELDS = """
+    rating_summary.unified_score,
+    rating_summary.source_count,
+    rating_summary.scoring_source_count
+"""
+
+TOP_RATED_ORDER_BY = """
+    ORDER BY
+        rating_summary.unified_score DESC NULLS LAST,
+        rating_summary.scoring_source_count DESC NULLS LAST,
+        rating_summary.source_count DESC NULLS LAST,
+        c.year DESC NULLS LAST,
+        c.title ASC
 """
 
 RECENT_SORT_EXPRESSION = "COALESCE(c.latest_activity_date, c.release_date)"
@@ -37,6 +97,10 @@ AVAILABILITY_TYPE_ALIASES = {
 }
 
 
+def row_value(row, key, default=None):
+    return row[key] if key in row else default
+
+
 def build_content_object(content_row):
     return {
         "id": content_row["id"],
@@ -49,7 +113,10 @@ def build_content_object(content_row):
         "year": content_row["year"],
         "runtime": content_row["runtime"],
         "language": content_row["language"],
-        "age_rating": content_row["age_rating"]
+        "age_rating": content_row["age_rating"],
+        "unified_score": row_value(content_row, "unified_score"),
+        "source_count": row_value(content_row, "source_count"),
+        "scoring_source_count": row_value(content_row, "scoring_source_count"),
     }
 
 
@@ -396,9 +463,12 @@ def get_top_rated_content_service(
 ):
     base_from_query = """
         FROM content c
-        JOIN content_summary cs ON cs.content_id = c.id
-        WHERE cs.unified_score IS NOT NULL
+        {rating_summary_join}
+        WHERE rating_summary.unified_score IS NOT NULL
     """
+    base_from_query = base_from_query.format(
+        rating_summary_join=CONTENT_RATING_SUMMARY_JOIN,
+    )
 
     params = {
         "limit": limit,
@@ -411,9 +481,10 @@ def get_top_rated_content_service(
 
     data_query = text(f"""
         SELECT
-            {CONTENT_SELECT_FIELDS}
+            {CONTENT_SELECT_FIELDS},
+            {CONTENT_SCORE_SELECT_FIELDS}
         {base_from_query}
-        ORDER BY cs.unified_score DESC, c.release_date DESC, c.title ASC
+        {TOP_RATED_ORDER_BY}
         LIMIT :limit OFFSET :offset;
     """)
 
@@ -621,7 +692,6 @@ def get_discover_content_service(
 ):
     base_from_query = """
         FROM content c
-        LEFT JOIN content_summary cs ON cs.content_id = c.id
     """
 
     conditions = []
@@ -666,23 +736,24 @@ def get_discover_content_service(
         conditions.append("c.content_type = :content_type")
         params["content_type"] = content_type
 
-    if conditions:
-        base_from_query += " WHERE " + " AND ".join(conditions)
-
     # PostgreSQL requires ORDER BY fields to appear in SELECT when using SELECT DISTINCT.
-    # Internal sort fields are ignored by build_content_object(), keeping the API shape stable.
+    # Score fields are included in the public list response for debugging/future UI.
     if sort_by == "top_rated":
+        base_from_query += CONTENT_RATING_SUMMARY_JOIN
         select_fields = f"""
             {CONTENT_SELECT_FIELDS},
-            cs.unified_score AS sort_unified_score
+            {CONTENT_SCORE_SELECT_FIELDS}
         """
-        order_by = "ORDER BY sort_unified_score DESC NULLS LAST, c.release_date DESC, c.title ASC"
+        order_by = TOP_RATED_ORDER_BY
     else:
         select_fields = f"""
             {CONTENT_SELECT_FIELDS},
             {RECENT_SORT_EXPRESSION} AS sort_recent_date
         """
         order_by = "ORDER BY sort_recent_date DESC, c.title ASC"
+
+    if conditions:
+        base_from_query += " WHERE " + " AND ".join(conditions)
 
     data_query = text(f"""
         SELECT DISTINCT
@@ -703,8 +774,6 @@ def get_discover_content_service(
     count_result = db.execute(count_query, params)
     total = count_result.mappings().first()["total"]
 
-    # build_content_object ignores the internal sort_unified_score field,
-    # so the API response shape stays unchanged.
     items = [build_content_object(row) for row in rows]
 
     return {
@@ -847,9 +916,6 @@ def numeric_or_none(value):
     if value is None:
         return None
     return float(value)
-
-
-MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE = 50
 
 
 def round_unified_score(value):
