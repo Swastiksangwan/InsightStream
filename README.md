@@ -34,6 +34,7 @@ Completed:
 - Source-signal decision layer in the content detail API, including compact, rule-cleaned `decision_layer.display` output while keeping raw keywords internal.
 - Decision display quality audit script for catalog-wide QA of `decision_layer.display` scores, issues, and review candidates.
 - Source signal mapping quality audit script for stored signal richness, genre/subgenre gaps, calibrated fallback/caution diagnostics, and unmapped keyword opportunities.
+- Source signal mapping improvements v1 for reusable pacing, mood, survival, war, space-sci-fi, post-apocalyptic, kitchen-workplace, investigation, AI, and mythic/future-society signal quality.
 
 Next planned:
 

@@ -45,7 +45,7 @@ def test_load_keyword_signal_mapping_config():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
 
-    assert mapping["mapping_version"] == "2026-07-02-v3.1"
+    assert mapping["mapping_version"] == "2026-07-08-v1"
     assert "serial killer" in mapping["keyword_mappings"]
     assert "psychological thriller" in mapping["keyword_mappings"]
     assert "dark fantasy" in mapping["keyword_mappings"]
@@ -53,6 +53,13 @@ def test_load_keyword_signal_mapping_config():
     assert "aftercreditsstinger" in mapping["excluded_keywords"]
     assert "plot twist" in mapping["spoiler_unsafe_keywords"]
     assert "violence" in mapping["spoiler_unsafe_keywords"]
+
+
+def signal_values_for_dimension(item, dimension):
+    return {
+        signal["value"]
+        for signal in item["signals"].get(dimension, [])
+    }
 
 
 def test_title_override_config_loads_safely():
@@ -285,6 +292,142 @@ def test_organized_crime_generates_gritty_crime_guidance():
 
     assert "organized-crime story" in guidance_text
     assert "gritty" in guidance_text
+
+
+def test_slow_burn_keywords_produce_pacing_signals():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["slow burn", "meditative"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "slow-burn" in signal_values_for_dimension(item, "pacing")
+    assert {
+        "contemplative",
+    } & (
+        signal_values_for_dimension(item, "tone")
+        | signal_values_for_dimension(item, "mood")
+    )
+
+
+def test_tense_and_suspense_keywords_produce_mood_signals():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["tense", "suspense"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "tense" in signal_values_for_dimension(item, "mood")
+    assert "suspenseful" in signal_values_for_dimension(item, "mood")
+    assert "tense" in signal_values_for_dimension(item, "tone")
+
+
+def test_survival_keywords_add_theme_and_expectation():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["stranded", "survival", "escape"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert {
+        "survival",
+        "survival story",
+        "escape",
+    } & signal_values_for_dimension(item, "topic_theme")
+    assert "survival drama" in signal_values_for_dimension(item, "audience_expectation")
+    assert "plot-driven" in signal_values_for_dimension(item, "pacing")
+
+
+def test_absurd_and_dark_comedy_keywords_produce_tone_signals():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["absurd", "dark comedy"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "absurdist" in signal_values_for_dimension(item, "tone")
+    assert "darkly funny" in signal_values_for_dimension(item, "tone")
+    assert "offbeat comedy" in signal_values_for_dimension(item, "audience_expectation")
+
+
+def test_war_keywords_add_human_cost_and_duty_themes():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["war", "soldier", "battle"]),
+        mapping,
+        include_debug=False,
+    )
+
+    themes = signal_values_for_dimension(item, "topic_theme")
+    assert {"war", "human cost", "duty"} & themes
+    assert "war drama" in signal_values_for_dimension(item, "audience_expectation")
+    assert "serious" in signal_values_for_dimension(item, "tone")
+
+
+def test_post_apocalyptic_survival_keywords_add_subgenre_signal():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["post-apocalyptic", "survival"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "post-apocalyptic world" in signal_values_for_dimension(item, "topic_theme")
+    assert "post-apocalyptic survival drama" in signal_values_for_dimension(
+        item,
+        "audience_expectation",
+    )
+    assert "survival drama" in signal_values_for_dimension(item, "audience_expectation")
+
+
+def test_space_survival_keywords_add_space_survival_signals():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["space", "stranded", "spacecraft"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "space sci-fi" in signal_values_for_dimension(item, "topic_theme")
+    assert {
+        "space sci-fi",
+        "space survival sci-fi",
+        "survival drama",
+    } & signal_values_for_dimension(item, "audience_expectation")
+    assert "tense" in signal_values_for_dimension(item, "mood")
+
+
+def test_mapping_config_does_not_reintroduce_generic_weak_labels():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    labels = {
+        signal["display_label"]
+        for entry in mapping["keyword_mappings"].values()
+        for signal in entry.get("signals", [])
+    }
+
+    assert "Heavier watch" not in labels
+    assert "Bleak mood" not in labels
+    assert "Complex story" not in labels
 
 
 def test_best_for_labels_are_user_friendly():

@@ -763,6 +763,18 @@ The mapping audit is intentionally read-only and calibrated for practical QA:
 - Common useful labels such as `Tense`, `Suspenseful`, `Action-heavy`, `Emotional`, `Fast-paced`, `Slow-burn`, and `Darkly funny` are not treated as weak merely because they appear often.
 - Genre/subgenre suggestions use stricter evidence checks, especially for war/combat labels, to avoid noisy future-work warnings.
 
+Source Signal Mapping Improvements v1 adds reusable keyword rules for slow-burn pacing, tension/suspense mood, survival/escape themes, absurd/dark-comedy tone, war/human-cost/duty themes, space-survival sci-fi, post-apocalyptic survival, kitchen workplace drama, investigation/spy/crime expectations, AI/technology-and-society themes, and future-society/mythic sci-fi cues. It also replaces weak public labels such as `Heavier watch`, `Bleak mood`, and `Complex story` with more specific product labels.
+
+After editing `analytics/config/source_signal_keyword_mapping.json`, regenerate and verify the storage-backed quality layer:
+
+```bash
+python3 analytics/scripts/build_keyword_signal_preview.py
+python3 analytics/scripts/import_source_signals_from_preview.py --write
+python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords --expect-source-signals
+python3 analytics/scripts/audit_source_signal_mapping_quality.py
+python3 analytics/scripts/audit_decision_display_quality.py
+```
+
 Generated mapping-quality reports remain local-only and should not be committed. Use them to prioritize mapping-config updates, genre enrichment, curated title overrides, raw keyword coverage, backend display rules, or metadata enrichment.
 
 ## 11. Output Artifact Policy

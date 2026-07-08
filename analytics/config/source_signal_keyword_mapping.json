@@ -1,5 +1,5 @@
 {
-  "mapping_version": "2026-07-02-v3.1",
+  "mapping_version": "2026-07-08-v1",
   "description": "Curated keyword-to-signal mapping for TMDb keyword-derived watch guidance.",
   "source": "tmdb_keywords",
   "newly_mapped_from_previous_version": [
@@ -41,7 +41,95 @@
     "kingdom",
     "court intrigue",
     "dragon",
-    "medieval"
+    "medieval",
+    "slow burn",
+    "meditative",
+    "contemplative",
+    "tense",
+    "suspense",
+    "battle",
+    "stranded",
+    "escape",
+    "absurd",
+    "conspiracy",
+    "soldier",
+    "world war",
+    "wwii",
+    "vietnam war",
+    "post-apocalyptic",
+    "kitchen",
+    "astronaut",
+    "nasa",
+    "spacecraft",
+    "deep space",
+    "planet mars",
+    "engineering",
+    "optimistic",
+    "isolation",
+    "crime family",
+    "sicilian mafia",
+    "mafia war",
+    "rise to power",
+    "criminal mastermind",
+    "super villain",
+    "vigilante",
+    "crime fighter",
+    "chaos",
+    "dark future",
+    "desert wasteland",
+    "high-speed chase",
+    "on the run",
+    "freedom quest",
+    "road warfare",
+    "atomic bomb",
+    "moral dilemma",
+    "manhattan project",
+    "top secret project",
+    "physics",
+    "guilt",
+    "afterlife",
+    "day of the dead",
+    "life after death",
+    "musician",
+    "singer",
+    "hilarious",
+    "folk horror",
+    "supernatural horror",
+    "trapped",
+    "british spy",
+    "british intelligence",
+    "secret agent",
+    "mi5",
+    "terrorism",
+    "epidemic",
+    "infection",
+    "people smuggling",
+    "distant future",
+    "chosen one",
+    "desert",
+    "destiny",
+    "power",
+    "creature",
+    "giant creature",
+    "giant worm",
+    "sandstorm",
+    "planet",
+    "messiah",
+    "vengeance",
+    "religious allegory",
+    "artificial intelligence a i",
+    "computer",
+    "future",
+    "near future",
+    "love",
+    "loneliness",
+    "heartbreak",
+    "transhumanism",
+    "speculative",
+    "singularity",
+    "serene",
+    "intimate",
+    "operating system"
   ],
   "dimensions": [
     "topic_theme",
@@ -77,7 +165,10 @@
   ],
   "keyword_mappings": {
     "alien": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -99,7 +190,10 @@
       "notes": "Use as broad sci-fi expectation only."
     },
     "animation": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -113,7 +207,10 @@
       "notes": "Animation format signal, not a quality claim."
     },
     "anime": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -127,7 +224,10 @@
       "notes": "Style/format expectation only."
     },
     "artificial intelligence": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -149,7 +249,11 @@
       "notes": "Useful for sci-fi identity and expectation."
     },
     "assassin": {
-      "dimensions": ["audience_expectation", "intensity", "tone"],
+      "dimensions": [
+        "audience_expectation",
+        "intensity",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -162,7 +266,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -171,7 +275,10 @@
       "notes": "High-level action/thriller expectation."
     },
     "based on comic": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -185,7 +292,11 @@
       "notes": "Adaptation context that can support superhero/comic guidance."
     },
     "chef": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -194,12 +305,32 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "kitchen workplace drama",
+          "display_label": "Kitchen workplace drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "character-focused",
+          "display_label": "Character-focused",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
         }
       ],
       "notes": "Setting/theme signal."
     },
     "coming of age": {
-      "dimensions": ["topic_theme", "mood", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -221,7 +352,11 @@
       "notes": "Good for spoiler-safe watch identity."
     },
     "crime": {
-      "dimensions": ["topic_theme", "audience_expectation", "tone"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -238,12 +373,24 @@
           "weight": 1,
           "confidence": "low",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "crime drama",
+          "display_label": "Crime drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Broad genre refinement only."
     },
     "dark comedy": {
-      "dimensions": ["tone", "mood", "audience_expectation"],
+      "dimensions": [
+        "tone",
+        "mood",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "tone",
@@ -265,7 +412,11 @@
       "notes": "Avoid implying light comedy."
     },
     "detective": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "pacing"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -282,12 +433,25 @@
           "weight": 3,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "investigation-led",
+          "display_label": "Investigation-led",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Strong watch-expectation signal."
     },
     "dream": {
-      "dimensions": ["topic_theme", "mood", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation",
+        "pacing"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -304,12 +468,32 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "reality-bending story",
+          "display_label": "Reality-bending story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "puzzle-like",
+          "display_label": "Puzzle-like",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
         }
       ],
       "notes": "Use for broad watch feel, not plot explanation."
     },
     "drug cartel": {
-      "dimensions": ["topic_theme", "intensity", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "intensity",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -322,7 +506,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -331,7 +515,11 @@
       "notes": "Treat as crime-world context."
     },
     "dystopia": {
-      "dimensions": ["topic_theme", "mood", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -344,7 +532,7 @@
         {
           "dimension": "mood",
           "value": "bleak",
-          "display_label": "Bleak mood",
+          "display_label": "Bleak",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -353,7 +541,11 @@
       "notes": "Useful for sci-fi/watch-feel identity."
     },
     "family": {
-      "dimensions": ["topic_theme", "mood", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -370,12 +562,23 @@
           "weight": 1,
           "confidence": "low",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "family-focused story",
+          "display_label": "Family-focused story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Theme signal, not age-suitability."
     },
     "friendship": {
-      "dimensions": ["topic_theme", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -397,7 +600,11 @@
       "notes": "Use as gentle theme signal."
     },
     "gangster": {
-      "dimensions": ["topic_theme", "tone", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -414,12 +621,24 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "gangster crime story",
+          "display_label": "Gangster crime story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Crime-world expectation."
     },
     "ghost": {
-      "dimensions": ["topic_theme", "mood", "intensity"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "intensity"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -441,7 +660,11 @@
       "notes": "Mild horror/supernatural expectation."
     },
     "grief": {
-      "dimensions": ["topic_theme", "mood", "tone"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -463,7 +686,11 @@
       "notes": "Keep language gentle."
     },
     "haunted house": {
-      "dimensions": ["topic_theme", "mood", "intensity"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "intensity"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -485,7 +712,11 @@
       "notes": "Mild supernatural watch-feel signal."
     },
     "heist": {
-      "dimensions": ["topic_theme", "pacing", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "pacing",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -502,12 +733,32 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "heist story",
+          "display_label": "Heist story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "puzzle-like",
+          "display_label": "Puzzle-like",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Useful for watch plan expectations."
     },
     "investigation": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "pacing"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -516,12 +767,31 @@
           "weight": 3,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "investigation-led mystery",
+          "display_label": "Investigation-led mystery",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "investigation-led",
+          "display_label": "Investigation-led",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Broad mystery/crime structure."
     },
     "loss": {
-      "dimensions": ["topic_theme", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -543,7 +813,11 @@
       "notes": "Keep as high-level theme."
     },
     "mafia": {
-      "dimensions": ["topic_theme", "tone", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -560,12 +834,24 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "organized-crime drama",
+          "display_label": "Organized-crime drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Crime-world expectation."
     },
     "martial arts": {
-      "dimensions": ["topic_theme", "pacing", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "pacing",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -587,7 +873,11 @@
       "notes": "Action style signal."
     },
     "memory": {
-      "dimensions": ["topic_theme", "mood", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -609,7 +899,11 @@
       "notes": "Useful for cerebral sci-fi/drama guidance."
     },
     "monster": {
-      "dimensions": ["topic_theme", "intensity", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "intensity",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -622,7 +916,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -631,7 +925,11 @@
       "notes": "Do not overstate scares from keyword alone."
     },
     "murder": {
-      "dimensions": ["topic_theme", "tone", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -653,7 +951,11 @@
       "notes": "High-level expectation only, not a detailed warning."
     },
     "murder mystery": {
-      "dimensions": ["topic_theme", "audience_expectation", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -675,10 +977,22 @@
       "notes": "Strong watch expectation."
     },
     "music": {
-      "dimensions": ["topic_theme", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
+          "value": "music-driven story",
+          "display_label": "Music-driven story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
           "value": "music-driven story",
           "display_label": "Music-driven story",
           "weight": 2,
@@ -689,7 +1003,10 @@
       "notes": "Theme/setting signal."
     },
     "police": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -703,7 +1020,11 @@
       "notes": "Procedure/investigation context."
     },
     "political intrigue": {
-      "dimensions": ["topic_theme", "tone", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -725,7 +1046,10 @@
       "notes": "Decision-support tag for political strategy/drama."
     },
     "politics": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -739,7 +1063,12 @@
       "notes": "Broad political context."
     },
     "post-apocalyptic future": {
-      "dimensions": ["topic_theme", "mood", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -752,7 +1081,23 @@
         {
           "dimension": "mood",
           "value": "bleak",
-          "display_label": "Bleak mood",
+          "display_label": "Bleak",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "post-apocalyptic survival drama",
+          "display_label": "Post-apocalyptic survival drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -761,7 +1106,11 @@
       "notes": "World-setting and mood hint."
     },
     "revenge": {
-      "dimensions": ["topic_theme", "tone", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -783,7 +1132,11 @@
       "notes": "High-level story driver."
     },
     "road trip": {
-      "dimensions": ["topic_theme", "pacing", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "pacing",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -805,7 +1158,10 @@
       "notes": "Structure/setting expectation."
     },
     "robot": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -827,7 +1183,11 @@
       "notes": "Technology theme."
     },
     "romance": {
-      "dimensions": ["topic_theme", "mood", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -849,7 +1209,10 @@
       "notes": "Avoid promising romance as primary plot."
     },
     "satire": {
-      "dimensions": ["tone", "audience_expectation"],
+      "dimensions": [
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "tone",
@@ -858,12 +1221,23 @@
           "weight": 3,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "satirical story",
+          "display_label": "Satirical story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Tone signal."
     },
     "school": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -877,7 +1251,11 @@
       "notes": "Setting signal."
     },
     "serial killer": {
-      "dimensions": ["audience_expectation", "intensity", "tone"],
+      "dimensions": [
+        "audience_expectation",
+        "intensity",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -890,7 +1268,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -907,7 +1285,11 @@
       "notes": "Use as high-level watch expectation, not as detailed content warning."
     },
     "space": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -916,12 +1298,33 @@
           "weight": 3,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "space sci-fi",
+          "display_label": "Space sci-fi",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "display_label": "Expansive",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
         }
       ],
       "notes": "Safe sci-fi identity."
     },
     "space opera": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -930,12 +1333,39 @@
           "weight": 3,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "space sci-fi",
+          "display_label": "Space sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "display_label": "Expansive",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
         }
       ],
       "notes": "Strong sci-fi subgenre expectation."
     },
     "sports": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -949,7 +1379,12 @@
       "notes": "Topic/setting signal."
     },
     "spy": {
-      "dimensions": ["topic_theme", "pacing", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "pacing",
+        "audience_expectation",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -966,12 +1401,32 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "spy thriller",
+          "display_label": "Spy thriller",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
         }
       ],
       "notes": "Espionage expectation."
     },
     "superhero": {
-      "dimensions": ["topic_theme", "pacing", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "pacing",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -988,12 +1443,25 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "superhero story",
+          "display_label": "Superhero story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Comic/action expectation."
     },
     "survival": {
-      "dimensions": ["topic_theme", "intensity", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "intensity",
+        "audience_expectation",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1006,7 +1474,23 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "survival drama",
+          "display_label": "Survival drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -1015,7 +1499,10 @@
       "notes": "Good watch-feel signal."
     },
     "suspenseful": {
-      "dimensions": ["mood", "tone"],
+      "dimensions": [
+        "mood",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "mood",
@@ -1037,7 +1524,10 @@
       "notes": "Direct mood signal."
     },
     "time travel": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1051,7 +1541,11 @@
       "notes": "Strong sci-fi premise signal."
     },
     "trauma": {
-      "dimensions": ["topic_theme", "mood", "content_caution_proxy"],
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "content_caution_proxy"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1073,7 +1567,10 @@
       "notes": "Keep caution language mild."
     },
     "virtual reality": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1087,7 +1584,12 @@
       "notes": "Tech/sci-fi premise."
     },
     "war": {
-      "dimensions": ["topic_theme", "tone", "intensity"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "intensity",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1104,12 +1606,39 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "war drama",
+          "display_label": "War drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "human cost",
+          "display_label": "Human cost",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "duty",
+          "display_label": "Duty",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
         }
       ],
       "notes": "Tone/topic expectation, not detailed content advisory."
     },
     "workplace": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1118,12 +1647,24 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "workplace drama",
+          "display_label": "Workplace drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Setting signal."
     },
     "world war ii": {
-      "dimensions": ["topic_theme", "tone", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1140,12 +1681,32 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "World War II drama",
+          "display_label": "World War II drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "war",
+          "display_label": "War",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Historical setting signal."
     },
     "zombie": {
-      "dimensions": ["topic_theme", "intensity", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "intensity",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1158,7 +1719,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -1167,7 +1728,9 @@
       "notes": "Horror/survival expectation."
     },
     "3d animation": {
-      "dimensions": ["topic_theme"],
+      "dimensions": [
+        "topic_theme"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1181,7 +1744,9 @@
       "notes": "Format/style signal only."
     },
     "1940s": {
-      "dimensions": ["topic_theme"],
+      "dimensions": [
+        "topic_theme"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1195,7 +1760,9 @@
       "notes": "Period context; do not turn into audience label directly."
     },
     "1980s": {
-      "dimensions": ["topic_theme"],
+      "dimensions": [
+        "topic_theme"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1209,7 +1776,10 @@
       "notes": "Period context; do not turn into audience label directly."
     },
     "artificial intelligence ai": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1231,7 +1801,9 @@
       "notes": "Alias for artificial intelligence keyword variants."
     },
     "bold": {
-      "dimensions": ["tone"],
+      "dimensions": [
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "tone",
@@ -1245,12 +1817,15 @@
       "notes": "Soft style/tone hint only."
     },
     "complex": {
-      "dimensions": ["audience_expectation", "pacing"],
+      "dimensions": [
+        "audience_expectation",
+        "pacing"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
           "value": "complex story",
-          "display_label": "Complex story",
+          "display_label": "Layered story",
           "weight": 2,
           "confidence": "low",
           "spoiler_safe": true
@@ -1267,7 +1842,10 @@
       "notes": "Use gently; complexity is a weak keyword-only signal."
     },
     "corruption": {
-      "dimensions": ["topic_theme", "tone"],
+      "dimensions": [
+        "topic_theme",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1289,7 +1867,10 @@
       "notes": "Political/crime theme signal."
     },
     "court intrigue": {
-      "dimensions": ["audience_expectation", "topic_theme"],
+      "dimensions": [
+        "audience_expectation",
+        "topic_theme"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -1311,7 +1892,11 @@
       "notes": "Useful for royal/political strategy stories."
     },
     "dark fantasy": {
-      "dimensions": ["topic_theme", "tone", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1341,7 +1926,10 @@
       "notes": "Fantasy identity plus darker watch feel."
     },
     "disaster": {
-      "dimensions": ["topic_theme", "intensity"],
+      "dimensions": [
+        "topic_theme",
+        "intensity"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1354,7 +1942,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -1363,7 +1951,10 @@
       "notes": "Disaster premise; avoid detailed warning language."
     },
     "dragon": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1385,7 +1976,10 @@
       "notes": "High-level fantasy signal."
     },
     "fantasy world": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1407,7 +2001,10 @@
       "notes": "Safe fantasy identity."
     },
     "fbi": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1429,7 +2026,9 @@
       "notes": "Investigation structure signal."
     },
     "foreboding": {
-      "dimensions": ["mood"],
+      "dimensions": [
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "mood",
@@ -1443,7 +2042,10 @@
       "notes": "Mood hint."
     },
     "freedom": {
-      "dimensions": ["topic_theme", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1465,7 +2067,10 @@
       "notes": "Theme signal."
     },
     "grimdark": {
-      "dimensions": ["tone", "mood"],
+      "dimensions": [
+        "tone",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "tone",
@@ -1478,7 +2083,7 @@
         {
           "dimension": "mood",
           "value": "bleak",
-          "display_label": "Bleak mood",
+          "display_label": "Bleak",
           "weight": 3,
           "confidence": "medium",
           "spoiler_safe": true
@@ -1487,7 +2092,11 @@
       "notes": "Darker mood/tone signal."
     },
     "historical drama": {
-      "dimensions": ["topic_theme", "tone", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1504,12 +2113,22 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "historical drama",
+          "display_label": "Historical drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Period/story identity."
     },
     "hope": {
-      "dimensions": ["mood"],
+      "dimensions": [
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "mood",
@@ -1523,7 +2142,9 @@
       "notes": "Mood hint."
     },
     "hopeful": {
-      "dimensions": ["mood"],
+      "dimensions": [
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "mood",
@@ -1537,7 +2158,11 @@
       "notes": "Mood hint."
     },
     "horror": {
-      "dimensions": ["audience_expectation", "mood", "intensity"],
+      "dimensions": [
+        "audience_expectation",
+        "mood",
+        "intensity"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -1558,7 +2183,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -1567,12 +2192,14 @@
       "notes": "Genre expectation without graphic warning language."
     },
     "intense": {
-      "dimensions": ["intensity"],
+      "dimensions": [
+        "intensity"
+      ],
       "signals": [
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -1581,7 +2208,9 @@
       "notes": "Intensity hint only."
     },
     "kingdom": {
-      "dimensions": ["topic_theme"],
+      "dimensions": [
+        "topic_theme"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1595,7 +2224,10 @@
       "notes": "Royal/political setting signal."
     },
     "magic": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1617,7 +2249,10 @@
       "notes": "Fantasy identity."
     },
     "medieval": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1639,7 +2274,10 @@
       "notes": "Setting signal; fantasy only weakly inferred."
     },
     "mockumentary": {
-      "dimensions": ["audience_expectation", "tone"],
+      "dimensions": [
+        "audience_expectation",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -1661,7 +2299,11 @@
       "notes": "Comedy format expectation."
     },
     "neo noir": {
-      "dimensions": ["topic_theme", "tone", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1691,7 +2333,11 @@
       "notes": "Crime/thriller tone signal."
     },
     "nuclear catastrophe": {
-      "dimensions": ["topic_theme", "tone", "intensity"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "intensity"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1712,7 +2358,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -1721,7 +2367,11 @@
       "notes": "Use as disaster/history signal, not a graphic warning."
     },
     "organized crime": {
-      "dimensions": ["topic_theme", "tone"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1738,12 +2388,24 @@
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "organized-crime drama",
+          "display_label": "Organized-crime drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Crime-world signal."
     },
     "power struggle": {
-      "dimensions": ["topic_theme", "audience_expectation", "tone"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1773,7 +2435,11 @@
       "notes": "Political strategy/power drama signal."
     },
     "prison": {
-      "dimensions": ["topic_theme", "tone"],
+      "dimensions": [
+        "topic_theme",
+        "tone",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1790,12 +2456,25 @@
           "weight": 1,
           "confidence": "low",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "prison drama",
+          "display_label": "Prison drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Setting/theme signal."
     },
     "psychological thriller": {
-      "dimensions": ["audience_expectation", "mood", "tone", "intensity"],
+      "dimensions": [
+        "audience_expectation",
+        "mood",
+        "tone",
+        "intensity"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -1824,7 +2503,7 @@
         {
           "dimension": "intensity",
           "value": "high",
-          "display_label": "Heavier watch",
+          "display_label": "High intensity",
           "weight": 2,
           "confidence": "medium",
           "spoiler_safe": true
@@ -1833,7 +2512,9 @@
       "notes": "Thriller expectation and intensity, not review consensus."
     },
     "royalty": {
-      "dimensions": ["topic_theme"],
+      "dimensions": [
+        "topic_theme"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1847,7 +2528,10 @@
       "notes": "Royal/political setting signal."
     },
     "sitcom": {
-      "dimensions": ["audience_expectation", "tone"],
+      "dimensions": [
+        "audience_expectation",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -1869,7 +2553,10 @@
       "notes": "Comedy format signal."
     },
     "super power": {
-      "dimensions": ["topic_theme", "audience_expectation"],
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1883,7 +2570,10 @@
       "notes": "Superhero/superhuman premise signal."
     },
     "superhero team": {
-      "dimensions": ["audience_expectation", "topic_theme"],
+      "dimensions": [
+        "audience_expectation",
+        "topic_theme"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -1892,12 +2582,23 @@
           "weight": 3,
           "confidence": "medium",
           "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "superhero story",
+          "display_label": "Superhero story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
         }
       ],
       "notes": "Superhero ensemble expectation."
     },
     "supernatural": {
-      "dimensions": ["topic_theme", "mood"],
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "topic_theme",
@@ -1919,7 +2620,10 @@
       "notes": "Supernatural watch expectation."
     },
     "thriller": {
-      "dimensions": ["mood", "tone"],
+      "dimensions": [
+        "mood",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "mood",
@@ -1941,7 +2645,9 @@
       "notes": "Broad thriller mood/tone signal."
     },
     "tragic": {
-      "dimensions": ["mood"],
+      "dimensions": [
+        "mood"
+      ],
       "signals": [
         {
           "dimension": "mood",
@@ -1955,7 +2661,10 @@
       "notes": "Mood signal."
     },
     "workplace comedy": {
-      "dimensions": ["audience_expectation", "tone"],
+      "dimensions": [
+        "audience_expectation",
+        "tone"
+      ],
       "signals": [
         {
           "dimension": "audience_expectation",
@@ -1975,6 +2684,2663 @@
         }
       ],
       "notes": "Comedy/workplace expectation."
+    },
+    "slow burn": {
+      "dimensions": [
+        "pacing",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "pacing",
+          "value": "slow-burn",
+          "display_label": "Slow-burn",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "contemplative",
+          "display_label": "Contemplative",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Reusable pacing cue for slower, more patient watch profiles."
+    },
+    "meditative": {
+      "dimensions": [
+        "pacing",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "pacing",
+          "value": "slow-burn",
+          "display_label": "Slow-burn",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "contemplative",
+          "display_label": "Contemplative",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Quiet pacing/tone cue."
+    },
+    "contemplative": {
+      "dimensions": [
+        "tone",
+        "pacing"
+      ],
+      "signals": [
+        {
+          "dimension": "tone",
+          "value": "contemplative",
+          "display_label": "Contemplative",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "slow-burn",
+          "display_label": "Slow-burn",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Reflective tone cue."
+    },
+    "tense": {
+      "dimensions": [
+        "mood",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Direct tension cue from provider keyword."
+    },
+    "suspense": {
+      "dimensions": [
+        "mood",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "mood",
+          "value": "suspenseful",
+          "display_label": "Suspenseful",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Direct suspense cue from provider keyword."
+    },
+    "stranded": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "survival",
+          "display_label": "Survival",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "survival drama",
+          "display_label": "Survival drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Survival setup without overclaiming danger details."
+    },
+    "escape": {
+      "dimensions": [
+        "topic_theme",
+        "pacing"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "escape",
+          "display_label": "Escape",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "survival",
+          "display_label": "Survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "plot-driven",
+          "display_label": "Plot-driven",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Story motor around escape/survival."
+    },
+    "battle": {
+      "dimensions": [
+        "topic_theme",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "human cost",
+          "display_label": "Human cost",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "war",
+          "display_label": "War",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "War/combat cue focused on theme rather than graphic warning."
+    },
+    "soldier": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "duty",
+          "display_label": "Duty",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "war",
+          "display_label": "War",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "war drama",
+          "display_label": "War drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Military/war context cue."
+    },
+    "world war": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "war",
+          "display_label": "War",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "human cost",
+          "display_label": "Human cost",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "World War II drama",
+          "display_label": "World War II drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "World War context cue."
+    },
+    "wwii": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "war",
+          "display_label": "War",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "human cost",
+          "display_label": "Human cost",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "World War II drama",
+          "display_label": "World War II drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "World War context cue."
+    },
+    "vietnam war": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "war",
+          "display_label": "War",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "human cost",
+          "display_label": "Human cost",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "war drama",
+          "display_label": "War drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "War context cue."
+    },
+    "post-apocalyptic": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "post-apocalyptic world",
+          "display_label": "Post-apocalyptic world",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "post-apocalyptic survival drama",
+          "display_label": "Post-apocalyptic survival drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "bleak",
+          "display_label": "Bleak",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Alias for post-apocalyptic survival settings."
+    },
+    "kitchen": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "kitchen workplace",
+          "display_label": "Kitchen workplace",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "kitchen workplace drama",
+          "display_label": "Kitchen workplace drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Reusable kitchen/workplace setting cue."
+    },
+    "absurd": {
+      "dimensions": [
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "tone",
+          "value": "absurdist",
+          "display_label": "Absurdist",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "darkly funny",
+          "display_label": "Darkly funny",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Absurdist comedy/satire tone cue."
+    },
+    "conspiracy": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "conspiracy",
+          "display_label": "Conspiracy",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "conspiracy thriller",
+          "display_label": "Conspiracy thriller",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Investigation/conspiracy story cue."
+    },
+    "astronaut": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "space sci-fi",
+          "display_label": "Space sci-fi",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "space survival sci-fi",
+          "display_label": "Space survival sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "display_label": "Expansive",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Reusable space/survival sci-fi context cue."
+    },
+    "nasa": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "space sci-fi",
+          "display_label": "Space sci-fi",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "space survival sci-fi",
+          "display_label": "Space survival sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "display_label": "Expansive",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Reusable space/survival sci-fi context cue."
+    },
+    "spacecraft": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "space sci-fi",
+          "display_label": "Space sci-fi",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "space survival sci-fi",
+          "display_label": "Space survival sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "display_label": "Expansive",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Reusable space/survival sci-fi context cue."
+    },
+    "deep space": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "space sci-fi",
+          "display_label": "Space sci-fi",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "space survival sci-fi",
+          "display_label": "Space survival sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "display_label": "Expansive",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Reusable space/survival sci-fi context cue."
+    },
+    "planet mars": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "space sci-fi",
+          "display_label": "Space sci-fi",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "space survival sci-fi",
+          "display_label": "Space survival sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "expansive",
+          "display_label": "Expansive",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Reusable space/survival sci-fi context cue."
+    },
+    "engineering": {
+      "dimensions": [
+        "topic_theme",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "resourcefulness",
+          "display_label": "Resourcefulness",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "practical",
+          "display_label": "Practical",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Problem-solving/resourcefulness cue."
+    },
+    "optimistic": {
+      "dimensions": [
+        "mood",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "mood",
+          "value": "hopeful",
+          "display_label": "Hopeful",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "uplifting",
+          "display_label": "Uplifting",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Positive mood cue."
+    },
+    "isolation": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "isolation",
+          "display_label": "Isolation",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "lonely",
+          "display_label": "Lonely",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Isolation theme cue."
+    },
+    "crime family": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "organized crime story",
+          "display_label": "Organized crime story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "organized-crime drama",
+          "display_label": "Organized-crime drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "gritty",
+          "display_label": "Gritty tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Organized-crime family cue."
+    },
+    "sicilian mafia": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "organized crime story",
+          "display_label": "Organized crime story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "organized-crime drama",
+          "display_label": "Organized-crime drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "gritty",
+          "display_label": "Gritty tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Organized-crime family cue."
+    },
+    "mafia war": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "organized crime story",
+          "display_label": "Organized crime story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "power struggle",
+          "display_label": "Power struggle",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "organized-crime drama",
+          "display_label": "Organized-crime drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "gritty",
+          "display_label": "Gritty tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Organized crime power-conflict cue, not a war-drama cue."
+    },
+    "rise to power": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "power struggle",
+          "display_label": "Power struggle",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "power drama",
+          "display_label": "Power drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Power trajectory cue."
+    },
+    "criminal mastermind": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "crime world",
+          "display_label": "Crime world",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "superhero crime thriller",
+          "display_label": "Superhero crime thriller",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Superhero/crime antagonist cue."
+    },
+    "super villain": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "crime world",
+          "display_label": "Crime world",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "superhero crime thriller",
+          "display_label": "Superhero crime thriller",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Superhero/crime antagonist cue."
+    },
+    "vigilante": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "pacing"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "superhero story",
+          "display_label": "Superhero story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "superhero crime thriller",
+          "display_label": "Superhero crime thriller",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "action-heavy",
+          "display_label": "Action-heavy",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Superhero action/crime cue."
+    },
+    "crime fighter": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "pacing"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "superhero story",
+          "display_label": "Superhero story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "superhero crime thriller",
+          "display_label": "Superhero crime thriller",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "action-heavy",
+          "display_label": "Action-heavy",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Superhero action/crime cue."
+    },
+    "chaos": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "moral chaos",
+          "display_label": "Moral chaos",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Chaos theme cue."
+    },
+    "dark future": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "post-apocalyptic world",
+          "display_label": "Post-apocalyptic world",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "post-apocalyptic survival drama",
+          "display_label": "Post-apocalyptic survival drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "bleak",
+          "display_label": "Bleak",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Post-apocalyptic world cue."
+    },
+    "desert wasteland": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "post-apocalyptic world",
+          "display_label": "Post-apocalyptic world",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "post-apocalyptic survival drama",
+          "display_label": "Post-apocalyptic survival drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "bleak",
+          "display_label": "Bleak",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Post-apocalyptic world cue."
+    },
+    "high-speed chase": {
+      "dimensions": [
+        "pacing",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "pacing",
+          "value": "action-heavy",
+          "display_label": "Action-heavy",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "action spectacle",
+          "display_label": "Action spectacle",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Action pacing cue."
+    },
+    "road warfare": {
+      "dimensions": [
+        "pacing",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "pacing",
+          "value": "action-heavy",
+          "display_label": "Action-heavy",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "action spectacle",
+          "display_label": "Action spectacle",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Action pacing cue."
+    },
+    "on the run": {
+      "dimensions": [
+        "pacing",
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "pacing",
+          "value": "propulsive",
+          "display_label": "Propulsive",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "survival",
+          "display_label": "Survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Pursuit/survival story cue."
+    },
+    "freedom quest": {
+      "dimensions": [
+        "topic_theme"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "freedom",
+          "display_label": "Freedom",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "survival",
+          "display_label": "Survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Freedom/survival cue."
+    },
+    "atomic bomb": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "scientific ambition",
+          "display_label": "Scientific ambition",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "historical science drama",
+          "display_label": "Historical science drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Historical science-drama cue."
+    },
+    "manhattan project": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "scientific ambition",
+          "display_label": "Scientific ambition",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "historical science drama",
+          "display_label": "Historical science drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Historical science-drama cue."
+    },
+    "top secret project": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "scientific ambition",
+          "display_label": "Scientific ambition",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "historical science drama",
+          "display_label": "Historical science drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Historical science-drama cue."
+    },
+    "physics": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "scientific ambition",
+          "display_label": "Scientific ambition",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "historical science drama",
+          "display_label": "Historical science drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Historical science-drama cue."
+    },
+    "moral dilemma": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "moral responsibility",
+          "display_label": "Moral responsibility",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "thoughtful",
+          "display_label": "Thoughtful",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Moral responsibility cue."
+    },
+    "guilt": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "moral responsibility",
+          "display_label": "Moral responsibility",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "haunted",
+          "display_label": "Haunted",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Guilt/responsibility cue."
+    },
+    "musician": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "music-driven story",
+          "display_label": "Music-driven story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "music-driven story",
+          "display_label": "Music-driven story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Music-story cue."
+    },
+    "singer": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "music-driven story",
+          "display_label": "Music-driven story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "music-driven story",
+          "display_label": "Music-driven story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Music-story cue."
+    },
+    "afterlife": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "afterlife story",
+          "display_label": "Afterlife story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "display_label": "Emotional",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "High-level afterlife/family-fantasy cue."
+    },
+    "life after death": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "afterlife story",
+          "display_label": "Afterlife story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "display_label": "Emotional",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "High-level afterlife/family-fantasy cue."
+    },
+    "day of the dead": {
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "family tradition",
+          "display_label": "Family tradition",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "display_label": "Emotional",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "family fantasy",
+          "display_label": "Family fantasy",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Cultural/family fantasy cue."
+    },
+    "hilarious": {
+      "dimensions": [
+        "tone",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "tone",
+          "value": "playful",
+          "display_label": "Playful",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "light",
+          "display_label": "Light",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Comedy mood cue."
+    },
+    "folk horror": {
+      "dimensions": [
+        "audience_expectation",
+        "topic_theme",
+        "mood",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "audience_expectation",
+          "value": "folk horror mystery",
+          "display_label": "Folk horror mystery",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "supernatural story",
+          "display_label": "Supernatural story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "eerie",
+          "display_label": "Eerie",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "dark",
+          "display_label": "Dark tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Folk-horror expectation cue."
+    },
+    "supernatural horror": {
+      "dimensions": [
+        "audience_expectation",
+        "topic_theme",
+        "mood",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "audience_expectation",
+          "value": "supernatural horror",
+          "display_label": "Supernatural horror",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "supernatural story",
+          "display_label": "Supernatural story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "eerie",
+          "display_label": "Eerie",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "dark",
+          "display_label": "Dark tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Supernatural-horror cue."
+    },
+    "trapped": {
+      "dimensions": [
+        "topic_theme",
+        "mood",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "survival",
+          "display_label": "Survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "survival mystery",
+          "display_label": "Survival mystery",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Trapped/survival mystery cue."
+    },
+    "british spy": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "pacing"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "spy story",
+          "display_label": "Spy story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "spy thriller",
+          "display_label": "Spy thriller",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "plot-driven",
+          "display_label": "Plot-driven",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Espionage cue."
+    },
+    "british intelligence": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "pacing"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "spy story",
+          "display_label": "Spy story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "spy thriller",
+          "display_label": "Spy thriller",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "plot-driven",
+          "display_label": "Plot-driven",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Espionage cue."
+    },
+    "secret agent": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "pacing"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "spy story",
+          "display_label": "Spy story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "spy thriller",
+          "display_label": "Spy thriller",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "plot-driven",
+          "display_label": "Plot-driven",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Espionage cue."
+    },
+    "mi5": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "pacing"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "spy story",
+          "display_label": "Spy story",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "spy thriller",
+          "display_label": "Spy thriller",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "plot-driven",
+          "display_label": "Plot-driven",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Espionage cue."
+    },
+    "terrorism": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "terrorism investigation",
+          "display_label": "Terrorism investigation",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "spy thriller",
+          "display_label": "Spy thriller",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "High-level espionage/thriller context."
+    },
+    "epidemic": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "post-apocalyptic world",
+          "display_label": "Post-apocalyptic world",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "survival",
+          "display_label": "Survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "post-apocalyptic survival drama",
+          "display_label": "Post-apocalyptic survival drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "bleak",
+          "display_label": "Bleak",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Outbreak/survival context cue."
+    },
+    "infection": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "post-apocalyptic world",
+          "display_label": "Post-apocalyptic world",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "survival",
+          "display_label": "Survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "post-apocalyptic survival drama",
+          "display_label": "Post-apocalyptic survival drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "bleak",
+          "display_label": "Bleak",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Outbreak/survival context cue."
+    },
+    "people smuggling": {
+      "dimensions": [
+        "topic_theme",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "survival",
+          "display_label": "Survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Serious survival-world context."
+    },
+    "distant future": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "future society",
+          "display_label": "Future society",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "speculative sci-fi",
+          "display_label": "Speculative sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Future/near-future sci-fi context cue."
+    },
+    "future": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "future society",
+          "display_label": "Future society",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "speculative sci-fi",
+          "display_label": "Speculative sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Future/near-future sci-fi context cue."
+    },
+    "near future": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "future society",
+          "display_label": "Future society",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "speculative sci-fi",
+          "display_label": "Speculative sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Future/near-future sci-fi context cue."
+    },
+    "chosen one": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "destiny",
+          "display_label": "Destiny",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "mythic sci-fi drama",
+          "display_label": "Mythic sci-fi drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Mythic destiny cue."
+    },
+    "destiny": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "destiny",
+          "display_label": "Destiny",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "mythic",
+          "display_label": "Mythic",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Destiny theme cue."
+    },
+    "power": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "power struggle",
+          "display_label": "Power struggle",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "political power drama",
+          "display_label": "Political power drama",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Power-struggle cue."
+    },
+    "desert": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "desert survival",
+          "display_label": "Desert survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "harsh",
+          "display_label": "Harsh",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Desert/survival setting cue."
+    },
+    "sandstorm": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "desert survival",
+          "display_label": "Desert survival",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "harsh",
+          "display_label": "Harsh",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Desert/survival setting cue."
+    },
+    "creature": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "creature threat",
+          "display_label": "Creature threat",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "creature-driven sci-fi",
+          "display_label": "Creature-driven sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Creature-threat cue."
+    },
+    "giant creature": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "creature threat",
+          "display_label": "Creature threat",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "creature-driven sci-fi",
+          "display_label": "Creature-driven sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Creature-threat cue."
+    },
+    "giant worm": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "creature threat",
+          "display_label": "Creature threat",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "creature-driven sci-fi",
+          "display_label": "Creature-driven sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Creature-threat cue."
+    },
+    "planet": {
+      "dimensions": [
+        "topic_theme"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "space sci-fi",
+          "display_label": "Space sci-fi",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Planetary sci-fi setting cue."
+    },
+    "messiah": {
+      "dimensions": [
+        "topic_theme",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "messianic myth",
+          "display_label": "Messianic myth",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Mythic/religious sci-fi theme cue."
+    },
+    "vengeance": {
+      "dimensions": [
+        "topic_theme",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "revenge story",
+          "display_label": "Revenge story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Revenge-story alias."
+    },
+    "religious allegory": {
+      "dimensions": [
+        "topic_theme",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "faith and power",
+          "display_label": "Faith and power",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "serious",
+          "display_label": "Serious tone",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Faith/power allegory cue."
+    },
+    "artificial intelligence a i": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "artificial intelligence",
+          "display_label": "AI themes",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "tech-driven sci-fi",
+          "display_label": "Tech-driven sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Alias for TMDb artificial intelligence punctuation variant."
+    },
+    "computer": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "technology and society",
+          "display_label": "Technology and society",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "tech-driven sci-fi",
+          "display_label": "Tech-driven sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Technology-society cue."
+    },
+    "operating system": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "artificial intelligence",
+          "display_label": "AI themes",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "tech-driven sci-fi",
+          "display_label": "Tech-driven sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "AI/operating-system sci-fi cue."
+    },
+    "transhumanism": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "humanity and technology",
+          "display_label": "Humanity and technology",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "speculative sci-fi",
+          "display_label": "Speculative sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Speculative technology theme cue."
+    },
+    "speculative": {
+      "dimensions": [
+        "audience_expectation",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "audience_expectation",
+          "value": "speculative sci-fi",
+          "display_label": "Speculative sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "thoughtful",
+          "display_label": "Thoughtful",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Speculative story cue."
+    },
+    "singularity": {
+      "dimensions": [
+        "topic_theme",
+        "audience_expectation"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "artificial intelligence",
+          "display_label": "AI themes",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "tech-driven sci-fi",
+          "display_label": "Tech-driven sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "AI singularity cue."
+    },
+    "love": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "romantic connection",
+          "display_label": "Romantic connection",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "display_label": "Emotional",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Romantic/emotional connection cue."
+    },
+    "loneliness": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "loneliness",
+          "display_label": "Loneliness",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "melancholy",
+          "display_label": "Melancholy",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Loneliness mood/theme cue."
+    },
+    "heartbreak": {
+      "dimensions": [
+        "topic_theme",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "topic_theme",
+          "value": "heartbreak",
+          "display_label": "Heartbreak",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "display_label": "Emotional",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Emotional relationship cue."
+    },
+    "serene": {
+      "dimensions": [
+        "mood",
+        "tone"
+      ],
+      "signals": [
+        {
+          "dimension": "mood",
+          "value": "gentle",
+          "display_label": "Gentle",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "tone",
+          "value": "restrained",
+          "display_label": "Restrained",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Gentle mood cue."
+    },
+    "intimate": {
+      "dimensions": [
+        "tone",
+        "mood"
+      ],
+      "signals": [
+        {
+          "dimension": "tone",
+          "value": "intimate",
+          "display_label": "Intimate",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "mood",
+          "value": "emotional",
+          "display_label": "Emotional",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ],
+      "notes": "Intimate character-story cue."
     }
   },
   "signal_display": {
