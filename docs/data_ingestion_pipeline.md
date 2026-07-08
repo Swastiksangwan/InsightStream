@@ -38,6 +38,7 @@ Future ingestion updates should go into this document.
 | Source signal storage import | Implemented | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
 | Source signal decision layer API | Implemented | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output for frontend use. |
 | Decision display QA audit | Implemented | `analytics/scripts/audit_decision_display_quality.py` | No | Read-only catalog audit for compact display quality scores, issue codes, review candidates, and generated local JSON/CSV/summary reports. |
+| Source signal mapping QA audit | Implemented | `analytics/scripts/audit_source_signal_mapping_quality.py` | No | Read-only audit for stored signal richness, missing dimensions, generic genre/subgenre coverage, fallback dependency, and unmapped keyword opportunities. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
@@ -714,6 +715,55 @@ Grades:
 Use the audit to answer which titles are safe to show, which need review, which bad phrases still appear, and whether the next fix belongs in backend display rules, keyword mapping, source-signal quality, metadata enrichment, or a curated override. Regenerate the reports after backend display-rule or mapping changes to compare before/after counts. Generated audit reports remain local-only and should not be committed.
 
 The audit casing checks allow known proper phrases and compact entertainment tokens such as `World War II`, `World War I`, `Sci-fi`, `Post-apocalyptic`, `AI`, `TV`, `PG-13`, and `TV-MA`, while still flagging awkward title-case labels such as `Historical Crime Drama`. Backend display cleanup normalizes public `best_for` labels such as `Post-apocalyptic World` into product copy like `Post-apocalyptic worlds`.
+
+### Source Signal Mapping Quality Audit
+
+The source signal mapping audit checks the deeper data layer behind `decision_layer.display`. It is read-only and inspects stored raw provider keywords, active source-signal dimensions, watch-guidance fallback flags, genre/subgenre enrichment opportunities, compact rating/access support context, and the current compact display output.
+
+Run the full catalog audit:
+
+```bash
+python3 analytics/scripts/audit_source_signal_mapping_quality.py
+```
+
+Audit one title or a batch:
+
+```bash
+python3 analytics/scripts/audit_source_signal_mapping_quality.py --content-id 6
+python3 analytics/scripts/audit_source_signal_mapping_quality.py --content-type movie --limit 50 --offset 0
+```
+
+Useful failure gates for CI-like local checks:
+
+```bash
+python3 analytics/scripts/audit_source_signal_mapping_quality.py \
+  --fail-on-critical \
+  --fail-under-score 80
+```
+
+Generated reports:
+
+```text
+analytics/processed/source_signals/source_signal_mapping_quality_report.json
+analytics/processed/source_signals/source_signal_mapping_quality_report.csv
+analytics/processed/source_signals/run_reports/source_signal_mapping_quality_summary.json
+```
+
+The detailed JSON contains per-title `mapping_quality_score`, `grade`, `mapping_ready`, `review_required`, signal dimensions present/missing, genre quality, fallback dependency, unmapped keyword opportunities, issue rows, and suggested next steps. The CSV is spreadsheet-friendly and uses pipe-separated cells for multi-value fields such as genres, dimensions, labels, and issue codes.
+
+Use this audit differently from the decision display audit:
+
+- `audit_decision_display_quality.py` answers whether the current public compact display is safe and polished enough to show.
+- `audit_source_signal_mapping_quality.py` answers whether the underlying source-signal mappings are rich, specific, and scalable enough for future homepage sections, recommendations, reviews, and catalog expansion.
+
+The mapping audit is intentionally read-only and calibrated for practical QA:
+
+- Missing `content_caution_proxy` is currently an informational, future-facing diagnostic. Stronger intense/horror/dark-thriller contexts can still receive a meaningful caution-proxy warning.
+- Backend display fallback is diagnostic unless it appears to compensate for sparse stored mappings or missing identity/theme/feel dimensions.
+- Common useful labels such as `Tense`, `Suspenseful`, `Action-heavy`, `Emotional`, `Fast-paced`, `Slow-burn`, and `Darkly funny` are not treated as weak merely because they appear often.
+- Genre/subgenre suggestions use stricter evidence checks, especially for war/combat labels, to avoid noisy future-work warnings.
+
+Generated mapping-quality reports remain local-only and should not be committed. Use them to prioritize mapping-config updates, genre enrichment, curated title overrides, raw keyword coverage, backend display rules, or metadata enrichment.
 
 ## 11. Output Artifact Policy
 

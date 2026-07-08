@@ -46,6 +46,7 @@ Covered areas:
 - source-signal importer dry-run/write/idempotency validation
 - source-signal decision-layer display grouping, deduplication, supporting facts, repeated-investigation cleanup, historical/war theme fallbacks, specific caution copy, `best_for` normalization, and public-output sanitization
 - decision display quality-audit helper behavior, including issue detection, scoring, grading, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
+- source-signal mapping quality-audit helper behavior, including signal richness scoring, missing dimension detection, calibrated caution-proxy diagnostics, backend-display fallback diagnostics, weak/generic labels, stricter subgenre opportunity detection, unmapped keyword opportunities, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
 - source-signal ingestion health-check summary behavior
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
@@ -119,6 +120,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_source_signal_importer.py` — source-signal importer dry-run, write, validation, idempotency, and JSONB helper tests without live DB/API calls
 - `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization, chip priority, watch profile, compact `decision_layer.display`, supporting facts, global display-quality cleanup, dominant identity selection, overview-assisted theme fallback, repeated-investigation cleanup, historical/war fallback themes, `best_for` normalization, identity/theme/feel dedupe, specific caution wording, and product-friendly decision-copy tests without live DB/API calls
 - `backend/tests/test_decision_display_quality_audit.py` — decision display quality-audit helper tests for clean/missing displays, technical leaks, platform-viewer leaks, generic labels, scoring, CSV rows, summary aggregation, and fail flags without DB writes
+- `backend/tests/test_source_signal_mapping_quality_audit.py` — source-signal mapping quality-audit helper tests for rich records, missing signals, missing dimensions, calibrated caution-proxy behavior, backend-display fallback diagnostics, common-vs-weak labels, stricter genre/subgenre opportunities, unmapped keyword opportunities, CSV rows, summary aggregation, and fail flags without DB writes
 
 ## 6. Important Bug Caught by Tests
 
