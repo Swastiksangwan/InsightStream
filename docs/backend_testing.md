@@ -41,7 +41,7 @@ Covered areas:
 - TMDb keyword storage schema verification
 - TMDb keyword importer dry-run/idempotency helper behavior
 - TMDb keyword health-check summary behavior
-- keyword-to-signal preview mapping/helper behavior, including v3.2.1 metadata fallback, curated overrides, partial-output protection, semantic QA report fields, generator/QA version fields, product-copy safeguards, v1 reusable mapping rules, and v2 config hygiene plus family/emotional, workplace, supernatural, political/crime/survival, historical/war, and mythology/identity cues
+- keyword-to-signal preview mapping/helper behavior, including v3.2.1 metadata fallback, curated overrides, partial-output protection, semantic QA report fields, generator/QA version fields, product-copy safeguards, v1 reusable mapping rules, v2 config hygiene plus family/emotional, workplace, supernatural, political/crime/survival, historical/war, and mythology/identity cues, and v2.1 period/hotel/caper, social-satire, creature-adventure, superhero-team, mythic, and brisk-investigation cleanup
 - source-signal storage schema verification
 - source-signal importer dry-run/write/idempotency validation
 - source-signal decision-layer display grouping, deduplication, supporting facts, repeated-investigation cleanup, historical/war theme fallbacks, specific caution copy, `best_for` normalization, and public-output sanitization

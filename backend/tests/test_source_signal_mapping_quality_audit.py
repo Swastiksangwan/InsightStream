@@ -379,6 +379,65 @@ def test_war_drama_suggested_for_explicit_war_context():
     )
 
 
+def test_kitchen_workplace_requires_culinary_workplace_evidence():
+    module = load_audit_module()
+
+    office_ai_signals = [
+        signal("topic_theme", "Workplace setting"),
+        signal("audience_expectation", "AI thriller"),
+    ]
+    kitchen_signals = [
+        signal("topic_theme", "Kitchen workplace"),
+        signal("audience_expectation", "Kitchen workplace drama"),
+    ]
+
+    assert "Kitchen workplace drama" not in module.detect_subgenre_candidates(
+        ["Drama", "Sci-Fi"],
+        ["office", "artificial intelligence"],
+        office_ai_signals,
+    )
+    assert "Kitchen workplace drama" in module.detect_subgenre_candidates(
+        ["Drama"],
+        ["restaurant", "chef"],
+        kitchen_signals,
+    )
+
+
+def test_space_survival_requires_space_and_survival_or_mission_evidence():
+    module = load_audit_module()
+
+    assert "Space survival sci-fi" not in module.detect_subgenre_candidates(
+        ["Drama", "Fantasy", "Sci-Fi"],
+        ["time travel", "antihero"],
+        [signal("audience_expectation", "Reality-bending sci-fi")],
+    )
+    assert "Space survival sci-fi" not in module.detect_subgenre_candidates(
+        ["Drama", "Sci-Fi"],
+        ["survival"],
+        [signal("topic_theme", "Survival")],
+    )
+    assert "Space survival sci-fi" in module.detect_subgenre_candidates(
+        ["Drama", "Sci-Fi"],
+        ["space", "survival mission"],
+        [signal("topic_theme", "Space sci-fi")],
+    )
+
+
+def test_serial_killer_investigation_not_suggested_for_light_murder_comedy():
+    module = load_audit_module()
+
+    assert "Serial-killer investigation" not in module.detect_subgenre_candidates(
+        ["Comedy", "Crime", "Mystery"],
+        ["murder", "podcast", "evidence"],
+        [signal("audience_expectation", "Murder mystery")],
+    )
+    assert "Serial-killer investigation" in module.detect_subgenre_candidates(
+        ["Crime", "Mystery", "Thriller"],
+        ["serial killer", "detective"],
+        [signal("topic_theme", "Investigation")],
+    )
+
+
 def test_unmapped_keyword_opportunity_aggregation():
     module = load_audit_module()
     records = [

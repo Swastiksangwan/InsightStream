@@ -45,7 +45,7 @@ def test_load_keyword_signal_mapping_config():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
 
-    assert mapping["mapping_version"] == "2026-07-09-v2"
+    assert mapping["mapping_version"] == "2026-07-09-v2.1"
     assert "serial killer" in mapping["keyword_mappings"]
     assert "psychological thriller" in mapping["keyword_mappings"]
     assert "dark fantasy" in mapping["keyword_mappings"]
@@ -482,6 +482,49 @@ def test_workplace_keywords_produce_workplace_comedy_and_drama_context():
     assert "character-focused" in signal_values_for_dimension(item, "mood")
 
 
+def test_office_alone_does_not_create_workplace_comedy_identity():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["office"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "workplace setting" in signal_values_for_dimension(item, "topic_theme")
+    assert "workplace comedy" not in signal_values_for_dimension(
+        item,
+        "audience_expectation",
+    )
+
+
+def test_grand_budapest_style_period_hotel_caper_keywords_add_theme():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["hotel", "period drama", "theft", "mentor protégé relationship", "wartime"],
+        ),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "period comedy-drama" in signal_values_for_dimension(
+        item,
+        "audience_expectation",
+    )
+    assert {
+        "hotel setting",
+        "caper",
+        "mentorship",
+        "wartime backdrop",
+    } & signal_values_for_dimension(item, "topic_theme")
+    assert "stylized" in signal_values_for_dimension(item, "tone")
+
+
 def test_supernatural_keywords_produce_mystery_identity():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
@@ -554,6 +597,43 @@ def test_unrelated_future_or_fantasy_terms_do_not_gain_war_or_post_apocalyptic_s
     assert "war drama" not in rendered_signals
     assert "world war" not in rendered_signals
     assert "post-apocalyptic" not in rendered_signals
+
+
+def test_v2_1_remaining_review_candidate_keywords_fill_practical_dimensions():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    creature_item, _analysis = module.build_preview_item(
+        content_fixture(module, ["dinosaur", "theme park"]),
+        mapping,
+        include_debug=False,
+    )
+    superhero_item, _analysis = module.build_preview_item(
+        content_fixture(module, ["teen superhero", "teamwork", "excited"]),
+        mapping,
+        include_debug=False,
+    )
+    mystery_comedy_item, _analysis = module.build_preview_item(
+        content_fixture(module, ["podcast", "brisk", "evidence"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "creature thriller" in signal_values_for_dimension(
+        creature_item,
+        "audience_expectation",
+    )
+    assert "adventure-driven" in signal_values_for_dimension(creature_item, "pacing")
+    assert "heroic teamwork" in signal_values_for_dimension(
+        superhero_item,
+        "topic_theme",
+    )
+    assert "energetic" in signal_values_for_dimension(superhero_item, "mood")
+    assert "playful" in signal_values_for_dimension(mystery_comedy_item, "tone")
+    assert "investigation-led" in signal_values_for_dimension(
+        mystery_comedy_item,
+        "pacing",
+    )
 
 
 def test_mapping_config_does_not_reintroduce_generic_weak_labels():

@@ -767,6 +767,8 @@ Source Signal Mapping Improvements v1 adds reusable keyword rules for slow-burn 
 
 Source Signal Mapping Improvements v2 tightens mapping-config hygiene and adds reusable rules for family/emotional character drama, coming-of-age/emotional-growth stories, workplace comedy/drama, supernatural mystery, political/crime/survival drama, historical/war context, nature documentary tone, romantic disaster drama, and mythology/identity-led superhero mystery. Config entries should keep declared `dimensions` aligned with their actual signal dimensions, avoid empty signal arrays, and avoid technical or viewer-style public labels.
 
+Source Signal Mapping Improvements v2.1 is a targeted cleanup for the remaining weak stored-signal cases. It adds reusable period/hotel/caper, social-satire, creature-adventure, superhero-team, mythic/supernatural, brisk-investigation, action-crime, royal-power, and caper texture cues. It also tightens subgenre opportunity detection so `Kitchen workplace drama`, `Space survival sci-fi`, `Serial-killer investigation`, `Political dark fantasy`, `Mythic superhero mystery`, and war/combat candidates require concrete source evidence rather than a single vague keyword or display fallback text.
+
 After editing `analytics/config/source_signal_keyword_mapping.json`, regenerate and verify the storage-backed quality layer:
 
 ```bash

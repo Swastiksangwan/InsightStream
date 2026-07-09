@@ -591,26 +591,114 @@ def all_context_terms(
     return values
 
 
+def source_context_terms(
+    genres: list[str],
+    raw_keywords: list[str],
+    signals: list[dict[str, Any]],
+) -> list[str]:
+    values = []
+    values.extend(genres)
+    values.extend(raw_keywords)
+    values.extend(labels_from_signals(signals))
+    return values
+
+
+def context_has_any(context: str, terms: tuple[str, ...]) -> bool:
+    return any(term in context for term in terms)
+
+
+def has_kitchen_workplace_context(context: str) -> bool:
+    culinary_terms = (
+        "kitchen",
+        "restaurant",
+        "chef",
+        "culinary",
+        "food industry",
+        "fine dining",
+        "cooking",
+        "cuisine",
+    )
+    workplace_terms = (
+        "workplace",
+        "service",
+        "small business",
+        "restaurant",
+        "chef",
+        "kitchen",
+        "culinary",
+        "food industry",
+        "fine dining",
+    )
+    return context_has_any(context, culinary_terms) and context_has_any(context, workplace_terms)
+
+
+def has_serial_killer_investigation_context(genres: list[str], context: str) -> bool:
+    if "serial killer" in context or "serial-killer" in context:
+        return True
+    if has_genre(genres, "Comedy"):
+        return False
+    return (
+        has_genre(genres, "Crime")
+        and has_genre(genres, "Mystery", "Thriller")
+        and context_has_any(context, ("murder", "homicide"))
+        and context_has_any(context, ("detective", "investigation", "procedural"))
+    )
+
+
+def has_space_survival_context(context: str) -> bool:
+    space_terms = (
+        "space",
+        "spacecraft",
+        "astronaut",
+        "nasa",
+        "interplanetary",
+        "mars",
+        "space sci-fi",
+    )
+    survival_terms = (
+        "survival",
+        "stranded",
+        "mission",
+        "rescue",
+        "isolated",
+        "humanity's future",
+        "humanitys future",
+        "survival-driven",
+    )
+    return context_has_any(context, space_terms) and context_has_any(context, survival_terms)
+
+
 def detect_subgenre_candidates(
     genres: list[str],
     raw_keywords: list[str],
     signals: list[dict[str, Any]],
     display: dict[str, Any] | None = None,
 ) -> list[str]:
-    values = all_context_terms(genres, raw_keywords, signals, display)
+    # Detect opportunities from source evidence, not from display fallback text.
+    # The compact display is itself an audit target, so using it here can create
+    # circular false positives such as workplace or space-survival candidates.
+    values = source_context_terms(genres, raw_keywords, signals)
     context = " ".join(lower_text(value) for value in values)
     candidates: list[str] = []
 
     if has_genre(genres, "Sci-Fi", "Science Fiction") and "heist" in context:
         candidates.append("Sci-fi heist")
     if has_genre(genres, "Crime") and has_genre(genres, "Mystery", "Thriller"):
-        if any(term in context for term in ("serial killer", "detective", "investigation")):
+        if has_serial_killer_investigation_context(genres, context):
             candidates.append("Serial-killer investigation")
     if has_genre(genres, "Fantasy") and any(
-        term in context for term in ("political", "power struggle", "court intrigue")
+        term in context
+        for term in (
+            "political",
+            "power struggle",
+            "court intrigue",
+            "dynasty",
+            "throne",
+            "kingdom",
+        )
     ):
         candidates.append("Political dark fantasy")
-    if any(term in context for term in ("workplace", "kitchen", "chef", "restaurant")):
+    if has_kitchen_workplace_context(context):
         candidates.append("Kitchen workplace drama")
     if has_war_context(genres, context):
         if has_world_war_ii_context(context):
@@ -620,10 +708,10 @@ def detect_subgenre_candidates(
     if any(term in context for term in ("post apocalyptic", "post-apocalyptic")) and "survival" in context:
         candidates.append("Post-apocalyptic survival drama")
     if "superhero" in context and any(
-        term in context for term in ("mythology", "mythic", "egypt", "gods", "mystery")
+        term in context for term in ("mythology", "mythic", "egypt", "gods", "identity", "mystery")
     ):
         candidates.append("Mythic superhero mystery")
-    if "space" in context and "survival" in context:
+    if has_space_survival_context(context):
         candidates.append("Space survival sci-fi")
 
     return unique_preserve_order(candidates)

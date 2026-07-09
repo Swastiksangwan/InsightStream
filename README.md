@@ -36,6 +36,7 @@ Completed:
 - Source signal mapping quality audit script for stored signal richness, genre/subgenre gaps, calibrated fallback/caution diagnostics, and unmapped keyword opportunities.
 - Source signal mapping improvements v1 for reusable pacing, mood, survival, war, space-sci-fi, post-apocalyptic, kitchen-workplace, investigation, AI, and mythic/future-society signal quality.
 - Source signal mapping improvements v2 for config hygiene plus family/emotional, workplace, supernatural, political/crime/survival, historical/war, nature-documentary, and mythology/identity signal coverage.
+- Source signal mapping improvements v2.1 for targeted remaining-candidate cleanup and stricter subgenre false-positive protection.
 
 Next planned:
 
