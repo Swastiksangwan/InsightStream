@@ -41,7 +41,7 @@ Covered areas:
 - TMDb keyword storage schema verification
 - TMDb keyword importer dry-run/idempotency helper behavior
 - TMDb keyword health-check summary behavior
-- keyword-to-signal preview mapping/helper behavior, including v3.2.1 metadata fallback, curated overrides, partial-output protection, semantic QA report fields, generator/QA version fields, product-copy safeguards, and v1 reusable mapping rules for pacing, tension/suspense, survival, war, post-apocalyptic, space-sci-fi, kitchen-workplace, and AI/future-society cues
+- keyword-to-signal preview mapping/helper behavior, including v3.2.1 metadata fallback, curated overrides, partial-output protection, semantic QA report fields, generator/QA version fields, product-copy safeguards, v1 reusable mapping rules, and v2 config hygiene plus family/emotional, workplace, supernatural, political/crime/survival, historical/war, and mythology/identity cues
 - source-signal storage schema verification
 - source-signal importer dry-run/write/idempotency validation
 - source-signal decision-layer display grouping, deduplication, supporting facts, repeated-investigation cleanup, historical/war theme fallbacks, specific caution copy, `best_for` normalization, and public-output sanitization
@@ -115,7 +115,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_tmdb_keywords_schema.py` — read-only TMDb keyword storage schema verification
 - `backend/tests/test_tmdb_keywords_importer.py` — TMDb keyword importer helper tests without database writes
 - `backend/tests/test_tmdb_keywords_health_check.py` — TMDb keyword health-check summary tests without database access
-- `backend/tests/test_keyword_signal_preview.py` — keyword-to-signal preview mapping, reusable mapping rules, metadata fallback, curated override, partial-output protection, semantic QA versioning, and product-copy tests without live DB/API calls
+- `backend/tests/test_keyword_signal_preview.py` — keyword-to-signal preview mapping, reusable mapping rules, mapping-config hygiene, metadata fallback, curated override, partial-output protection, semantic QA versioning, and product-copy tests without live DB/API calls
 - `backend/tests/test_source_signal_schema.py` — source-signal storage schema and index verification
 - `backend/tests/test_source_signal_importer.py` — source-signal importer dry-run, write, validation, idempotency, and JSONB helper tests without live DB/API calls
 - `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization, chip priority, watch profile, compact `decision_layer.display`, supporting facts, global display-quality cleanup, dominant identity selection, overview-assisted theme fallback, repeated-investigation cleanup, historical/war fallback themes, `best_for` normalization, identity/theme/feel dedupe, specific caution wording, and product-friendly decision-copy tests without live DB/API calls

@@ -1033,6 +1033,12 @@ def product_primary_phrase(
         return "martial-arts adventure"
     if has_signal_value(signals, "memory and identity"):
         return "story about memory and identity"
+    if has_signal_value(signals, "mythic superhero mystery") and has_signal_value(
+        signals,
+        "identity conflict",
+        "mythology",
+    ):
+        return "mythic superhero mystery"
     if has_signal_value(signals, "superhero team story"):
         return "superhero team story"
     if has_signal_value(signals, "superhuman powers"):
@@ -1177,6 +1183,7 @@ def best_for_label(signal: dict[str, Any]) -> str:
     value = signal.get("value")
     value_overrides = {
         "World War II setting": "World War II dramas",
+        "World War II drama": "World War II dramas",
         "period setting": "Period dramas",
         "fantasy adventure": "Fantasy adventures",
         "magical world": "Magical fantasy stories",
@@ -1200,6 +1207,27 @@ def best_for_label(signal: dict[str, Any]) -> str:
         "memory and identity": "Stories about memory and identity",
         "comic-book adaptation": "Comic-book-based stories",
         "martial arts action": "Martial-arts stories",
+        "martial-arts action": "Martial-arts stories",
+        "emotional character drama": "Emotional character dramas",
+        "family drama": "Family dramas",
+        "historical drama": "Historical dramas",
+        "political drama": "Political dramas",
+        "crime drama": "Crime dramas",
+        "survival drama": "Survival dramas",
+        "workplace drama": "Workplace dramas",
+        "psychological drama": "Psychological dramas",
+        "romantic drama": "Romantic dramas",
+        "disaster drama": "Disaster dramas",
+        "war drama": "War dramas",
+        "post-apocalyptic survival drama": "Post-apocalyptic survival stories",
+        "space survival sci-fi": "Space survival sci-fi",
+        "animated family story": "Animated family stories",
+        "supernatural mystery": "Supernatural mysteries",
+        "mythic superhero mystery": "Superhero mysteries",
+        "political thriller": "Political thrillers",
+        "cartel crime drama": "Cartel crime dramas",
+        "organized-crime drama": "Organized-crime dramas",
+        "kitchen workplace drama": "Kitchen workplace dramas",
         "neo-noir crime": "Crime thrillers",
         "psychological thriller": "Psychological thrillers",
         "organized crime story": "Organized-crime dramas",

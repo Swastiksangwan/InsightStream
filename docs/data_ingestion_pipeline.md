@@ -765,6 +765,8 @@ The mapping audit is intentionally read-only and calibrated for practical QA:
 
 Source Signal Mapping Improvements v1 adds reusable keyword rules for slow-burn pacing, tension/suspense mood, survival/escape themes, absurd/dark-comedy tone, war/human-cost/duty themes, space-survival sci-fi, post-apocalyptic survival, kitchen workplace drama, investigation/spy/crime expectations, AI/technology-and-society themes, and future-society/mythic sci-fi cues. It also replaces weak public labels such as `Heavier watch`, `Bleak mood`, and `Complex story` with more specific product labels.
 
+Source Signal Mapping Improvements v2 tightens mapping-config hygiene and adds reusable rules for family/emotional character drama, coming-of-age/emotional-growth stories, workplace comedy/drama, supernatural mystery, political/crime/survival drama, historical/war context, nature documentary tone, romantic disaster drama, and mythology/identity-led superhero mystery. Config entries should keep declared `dimensions` aligned with their actual signal dimensions, avoid empty signal arrays, and avoid technical or viewer-style public labels.
+
 After editing `analytics/config/source_signal_keyword_mapping.json`, regenerate and verify the storage-backed quality layer:
 
 ```bash

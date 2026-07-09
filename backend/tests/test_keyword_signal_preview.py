@@ -45,7 +45,7 @@ def test_load_keyword_signal_mapping_config():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
 
-    assert mapping["mapping_version"] == "2026-07-08-v1"
+    assert mapping["mapping_version"] == "2026-07-09-v2"
     assert "serial killer" in mapping["keyword_mappings"]
     assert "psychological thriller" in mapping["keyword_mappings"]
     assert "dark fantasy" in mapping["keyword_mappings"]
@@ -60,6 +60,37 @@ def signal_values_for_dimension(item, dimension):
         signal["value"]
         for signal in item["signals"].get(dimension, [])
     }
+
+
+def test_mapping_config_dimensions_match_signal_dimensions():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+    valid_dimensions = set(mapping["dimensions"])
+
+    for keyword, entry in mapping["keyword_mappings"].items():
+        signals = entry.get("signals") or []
+        assert signals, f"{keyword} has no mapped signals"
+        actual_dimensions = {signal["dimension"] for signal in signals}
+        assert set(entry["dimensions"]) == actual_dimensions
+        assert actual_dimensions <= valid_dimensions
+
+
+def test_mapping_config_avoids_public_technical_or_viewer_labels():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+    blocked_fragments = {
+        "tmdb",
+        "keyword",
+        "source_names",
+        "mapping_version",
+        "provider",
+        "viewers",
+    }
+
+    for entry in mapping["keyword_mappings"].values():
+        for signal in entry.get("signals", []):
+            label = signal["display_label"].lower()
+            assert not any(fragment in label for fragment in blocked_fragments)
 
 
 def test_title_override_config_loads_safely():
@@ -413,6 +444,116 @@ def test_space_survival_keywords_add_space_survival_signals():
         "survival drama",
     } & signal_values_for_dimension(item, "audience_expectation")
     assert "tense" in signal_values_for_dimension(item, "mood")
+
+
+def test_family_emotional_keywords_produce_character_drama_identity():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["family vacation", "father daughter relationship", "bittersweet"],
+        ),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "emotional character drama" in signal_values_for_dimension(
+        item,
+        "audience_expectation",
+    )
+    assert "family relationship" in signal_values_for_dimension(item, "topic_theme")
+    assert "bittersweet" in signal_values_for_dimension(item, "mood")
+
+
+def test_workplace_keywords_produce_workplace_comedy_and_drama_context():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["office", "work", "boss"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "workplace story" in signal_values_for_dimension(item, "topic_theme")
+    assert "workplace comedy" in signal_values_for_dimension(item, "audience_expectation")
+    assert "character-focused" in signal_values_for_dimension(item, "mood")
+
+
+def test_supernatural_keywords_produce_mystery_identity():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["witch", "gothic", "macabre"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "supernatural mystery" in signal_values_for_dimension(
+        item,
+        "audience_expectation",
+    )
+    assert "supernatural story" in signal_values_for_dimension(item, "topic_theme")
+    assert "eerie" in signal_values_for_dimension(item, "mood")
+
+
+def test_political_crime_and_survival_drama_mappings_are_specific():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    political_item, _analysis = module.build_preview_item(
+        content_fixture(module, ["political thriller", "political crisis"]),
+        mapping,
+        include_debug=False,
+    )
+    crime_item, _analysis = module.build_preview_item(
+        content_fixture(module, ["cartel", "drug lord"]),
+        mapping,
+        include_debug=False,
+    )
+    survival_item, _analysis = module.build_preview_item(
+        content_fixture(module, ["airplane crash", "island"]),
+        mapping,
+        include_debug=False,
+    )
+
+    assert "political thriller" in signal_values_for_dimension(
+        political_item,
+        "audience_expectation",
+    )
+    assert "political survival" in signal_values_for_dimension(
+        political_item,
+        "topic_theme",
+    )
+    assert "cartel crime drama" in signal_values_for_dimension(
+        crime_item,
+        "audience_expectation",
+    )
+    assert "cartel crime story" in signal_values_for_dimension(crime_item, "topic_theme")
+    assert "survival mystery" in signal_values_for_dimension(
+        survival_item,
+        "audience_expectation",
+    )
+    assert "survival" in signal_values_for_dimension(survival_item, "topic_theme")
+
+
+def test_unrelated_future_or_fantasy_terms_do_not_gain_war_or_post_apocalyptic_signals():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, ["future", "fantasy world", "superhero"]),
+        mapping,
+        include_debug=False,
+    )
+    rendered_signals = json.dumps(item["signals"]).lower()
+
+    assert "war drama" not in rendered_signals
+    assert "world war" not in rendered_signals
+    assert "post-apocalyptic" not in rendered_signals
 
 
 def test_mapping_config_does_not_reintroduce_generic_weak_labels():
