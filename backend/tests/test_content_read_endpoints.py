@@ -1,11 +1,17 @@
+from datetime import date
 from urllib.parse import quote
 
 import pytest
 from sqlalchemy import text
 
+import app.services.content_service as content_service
 from app.services.content_service import (
+    HOME_MAX_LIMIT,
+    HOME_MIN_LIMIT,
     MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
     get_detail_ratings,
+    home_candidate_pool_size,
+    select_rotated_rows,
 )
 
 
@@ -98,6 +104,64 @@ def expected_discover_recent_titles(db_session, limit):
             """
         ),
         {"limit": limit},
+    ).mappings().all()
+    return [row["title"] for row in rows]
+
+
+def expected_home_recent_titles(db_session, limit):
+    rows = db_session.execute(
+        text(
+            """
+            WITH rating_summary AS (
+                SELECT
+                    cr.content_id,
+                    ROUND(
+                        SUM(
+                            CASE
+                                WHEN cr.normalized_score IS NOT NULL
+                                 AND COALESCE(rs.weight, 0) > 0
+                                 AND cr.vote_count IS NOT NULL
+                                 AND cr.vote_count >= :minimum_vote_count
+                                THEN cr.normalized_score * COALESCE(rs.weight, 0)
+                                ELSE 0
+                            END
+                        )
+                        / NULLIF(
+                            SUM(
+                                CASE
+                                    WHEN cr.normalized_score IS NOT NULL
+                                     AND COALESCE(rs.weight, 0) > 0
+                                     AND cr.vote_count IS NOT NULL
+                                     AND cr.vote_count >= :minimum_vote_count
+                                    THEN COALESCE(rs.weight, 0)
+                                    ELSE 0
+                                END
+                            ),
+                            0
+                        )
+                    )::INTEGER AS unified_score,
+                    COUNT(*) AS source_count
+                FROM content_ratings cr
+                JOIN rating_sources rs ON rs.id = cr.rating_source_id
+                WHERE rs.is_active = TRUE
+                GROUP BY cr.content_id
+            )
+            SELECT title
+            FROM content c
+            LEFT JOIN rating_summary ON rating_summary.content_id = c.id
+            WHERE c.release_date IS NOT NULL
+            ORDER BY
+                c.release_date DESC NULLS LAST,
+                rating_summary.unified_score DESC NULLS LAST,
+                rating_summary.source_count DESC NULLS LAST,
+                c.title ASC
+            LIMIT :limit;
+            """
+        ),
+        {
+            "limit": limit,
+            "minimum_vote_count": MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
+        },
     ).mappings().all()
     return [row["title"] for row in rows]
 
@@ -572,6 +636,268 @@ def first_content_without_watch_guidance(db_session):
             """
         )
     ).mappings().first()
+
+
+HOME_SECTION_ORDER = [
+    "weekly_picks",
+    "top_rated",
+    "recent_releases",
+    "mood_pace",
+    "platform_picks",
+    "binge_worthy_series",
+]
+
+HOME_TECHNICAL_FRAGMENTS = {
+    "tmdb_keywords",
+    "source_names",
+    "mapping_version",
+    "provider",
+    "frontend_ready",
+    "storage_ready",
+    "backend_display_fallback",
+    "drama viewers",
+    "story viewers",
+}
+
+
+def home_section(data, section_id):
+    return next(section for section in data["sections"] if section["section_id"] == section_id)
+
+
+def home_bucket(section, bucket_id):
+    return next(bucket for bucket in section["buckets"] if bucket["bucket_id"] == bucket_id)
+
+
+def section_item_ids(section):
+    return [item["id"] for item in section.get("items") or []]
+
+
+def assert_no_duplicate_ids(items):
+    ids = [item["id"] for item in items]
+    assert len(ids) == len(set(ids))
+
+
+def assert_home_card_public_quality(item):
+    assert item["poster_url"]
+    assert item["decision_reason"]
+    assert len(item["decision_reason"]) <= 120
+    assert item["chips"]
+    assert 2 <= len(item["chips"]) <= 4
+    rendered = f"{item['decision_reason']} {' '.join(item['chips'])}".lower()
+    assert not any(fragment in rendered for fragment in HOME_TECHNICAL_FRAGMENTS)
+
+
+def test_home_endpoint_returns_hero_and_expected_sections(client):
+    response = client.get("/content/home?limit_per_section=6")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["hero"]["title"] == "Find what to watch next"
+    assert data["hero"]["subtitle"]
+    assert [item["filter_key"] for item in data["hero"]["quick_filters"]] == [
+        "top_rated",
+        "fast_paced",
+        "dark_intense",
+        "light_comfort",
+    ]
+    assert [section["section_id"] for section in data["sections"]] == HOME_SECTION_ORDER
+    assert data["generated_for"]
+    assert data["refresh_note"]
+
+
+def test_home_simple_sections_have_cards_without_duplicates(client):
+    response = client.get("/content/home?limit_per_section=6")
+    data = response.json()
+
+    assert response.status_code == 200
+    for section_id in [
+        "weekly_picks",
+        "top_rated",
+        "recent_releases",
+        "binge_worthy_series",
+    ]:
+        section = home_section(data, section_id)
+        assert section["section_type"] == "poster_rail"
+        assert section["items"]
+        assert len(section["items"]) <= 6
+        assert_no_duplicate_ids(section["items"])
+        for item in section["items"]:
+            assert_home_card_public_quality(item)
+
+
+def test_home_bucketed_sections_have_expected_buckets_and_clean_cards(client):
+    response = client.get("/content/home?limit_per_section=6")
+    data = response.json()
+
+    assert response.status_code == 200
+    mood_section = home_section(data, "mood_pace")
+    assert mood_section["section_type"] == "bucketed_rail"
+    assert [bucket["bucket_id"] for bucket in mood_section["buckets"]] == [
+        "fast_paced",
+        "slow_burn_thoughtful",
+        "dark_intense",
+        "light_comfort",
+    ]
+    for bucket in mood_section["buckets"]:
+        assert bucket["items"]
+        assert len(bucket["items"]) <= 6
+        assert_no_duplicate_ids(bucket["items"])
+        for item in bucket["items"]:
+            assert_home_card_public_quality(item)
+
+    platform_section = home_section(data, "platform_picks")
+    assert platform_section["section_type"] == "bucketed_rail"
+    for bucket in platform_section["buckets"]:
+        assert bucket["label"]
+        assert len(bucket["items"]) <= 6
+        assert_no_duplicate_ids(bucket["items"])
+        for item in bucket["items"]:
+            assert_home_card_public_quality(item)
+
+
+def test_home_limit_per_section_clamps(client):
+    low_response = client.get("/content/home?limit_per_section=1")
+    high_response = client.get("/content/home?limit_per_section=100")
+
+    assert low_response.status_code == 200
+    assert high_response.status_code == 200
+
+    low_top = home_section(low_response.json(), "top_rated")
+    high_top = home_section(high_response.json(), "top_rated")
+
+    assert len(low_top["items"]) == HOME_MIN_LIMIT
+    assert len(high_top["items"]) <= HOME_MAX_LIMIT
+
+
+def test_home_top_rated_uses_high_scoring_ranked_candidates(client):
+    response = client.get("/content/home?limit_per_section=8")
+    data = response.json()
+    items = home_section(data, "top_rated")["items"]
+
+    assert response.status_code == 200
+    assert items
+    assert all(item["unified_score"] is not None for item in items)
+    assert all(item["unified_score"] >= content_service.HOME_HIGH_SCORE_FLOOR for item in items)
+    assert [item["unified_score"] for item in items] == sorted(
+        [item["unified_score"] for item in items],
+        reverse=True,
+    )
+
+
+def test_home_recent_releases_use_release_date_order(client, db_session):
+    limit = 8
+    response = client.get(f"/content/home?limit_per_section={limit}")
+    data = response.json()
+    items = home_section(data, "recent_releases")["items"]
+
+    assert response.status_code == 200
+    assert [item["title"] for item in items] == expected_home_recent_titles(
+        db_session,
+        limit=limit,
+    )
+    assert [item["release_date"] for item in items] == sorted(
+        [item["release_date"] for item in items],
+        reverse=True,
+    )
+
+
+def test_home_binge_worthy_series_returns_only_series(client):
+    response = client.get("/content/home?limit_per_section=8")
+    items = home_section(response.json(), "binge_worthy_series")["items"]
+
+    assert response.status_code == 200
+    assert items
+    assert all(item["content_type"] == "series" for item in items)
+
+
+def test_home_daily_sections_are_stable_for_same_date(client, monkeypatch):
+    monkeypatch.setattr(
+        content_service,
+        "get_home_reference_date",
+        lambda: date(2026, 7, 10),
+    )
+
+    first = client.get("/content/home?limit_per_section=6").json()
+    second = client.get("/content/home?limit_per_section=6").json()
+
+    assert first["generated_for"] == "2026-07-10"
+    assert second["generated_for"] == "2026-07-10"
+    assert section_item_ids(home_section(first, "weekly_picks")) == section_item_ids(
+        home_section(second, "weekly_picks")
+    )
+    assert section_item_ids(home_section(first, "top_rated")) == section_item_ids(
+        home_section(second, "top_rated")
+    )
+    assert section_item_ids(home_section(first, "binge_worthy_series")) == section_item_ids(
+        home_section(second, "binge_worthy_series")
+    )
+
+    first_mood = home_section(first, "mood_pace")
+    second_mood = home_section(second, "mood_pace")
+    for bucket_id in ["fast_paced", "slow_burn_thoughtful", "dark_intense", "light_comfort"]:
+        assert section_item_ids(home_bucket(first_mood, bucket_id)) == section_item_ids(
+            home_bucket(second_mood, bucket_id)
+        )
+
+    first_platform = home_section(first, "platform_picks")
+    second_platform = home_section(second, "platform_picks")
+    for first_bucket, second_bucket in zip(first_platform["buckets"], second_platform["buckets"]):
+        assert first_bucket["bucket_id"] == second_bucket["bucket_id"]
+        assert section_item_ids(first_bucket) == section_item_ids(second_bucket)
+
+
+def test_home_rotation_helpers_can_change_with_different_seeds():
+    rows = [
+        {
+            "id": index,
+            "title": f"Title {index}",
+            "unified_score": 90,
+            "scoring_source_count": 2,
+            "source_count": 2,
+            "year": 2020,
+        }
+        for index in range(1, 31)
+    ]
+
+    today = select_rotated_rows(rows, 8, "2026-07-10", "top_rated")
+    tomorrow = select_rotated_rows(rows, 8, "2026-07-11", "top_rated")
+    this_week = select_rotated_rows(rows, 8, "2026-W28", "weekly_picks", False)
+    next_week = select_rotated_rows(rows, 8, "2026-W29", "weekly_picks", False)
+
+    assert [row["id"] for row in today] != [row["id"] for row in tomorrow]
+    assert [row["id"] for row in this_week] != [row["id"] for row in next_week]
+
+
+def test_home_seed_helpers_are_stable_for_injected_dates():
+    reference_date = date(2026, 7, 10)
+
+    assert content_service.daily_seed(reference_date) == "2026-07-10"
+    assert content_service.daily_seed(reference_date) == content_service.daily_seed(
+        date(2026, 7, 10)
+    )
+    assert content_service.weekly_seed(reference_date) == "2026-W28"
+    assert content_service.weekly_seed(reference_date) == content_service.weekly_seed(
+        date(2026, 7, 11)
+    )
+
+
+def test_home_service_accepts_reference_date_override(db_session):
+    data = content_service.get_home_content_service(
+        db_session,
+        limit_per_section=6,
+        reference_date=date(2026, 7, 10),
+    )
+
+    assert data["generated_for"] == "2026-07-10"
+
+
+def test_home_candidate_pool_size_is_bounded():
+    assert home_candidate_pool_size(1) == 40
+    assert home_candidate_pool_size(8) == 40
+    assert home_candidate_pool_size(20) == 100
+    assert home_candidate_pool_size(100) == 100
+    assert home_candidate_pool_size(4) == 40
+    assert home_candidate_pool_size(20) == 100
 
 
 def test_get_content_returns_seed_or_larger_catalog(client):

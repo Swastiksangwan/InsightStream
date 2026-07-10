@@ -32,6 +32,7 @@ Completed:
 - Small TMDb attribution footer in the frontend.
 - TMDb keyword preview pipeline with retry/merge workflow for future source signals.
 - Source-signal decision layer in the content detail API, including compact, rule-cleaned `decision_layer.display` output while keeping raw keywords internal.
+- Backend-powered homepage sections API with deterministic weekly/daily rotation for future frontend rails.
 - Decision display quality audit script for catalog-wide QA of `decision_layer.display` scores, issues, and review candidates.
 - Source signal mapping quality audit script for stored signal richness, genre/subgenre gaps, calibrated fallback/caution diagnostics, and unmapped keyword opportunities.
 - Source signal mapping improvements v1 for reusable pacing, mood, survival, war, space-sci-fi, post-apocalyptic, kitchen-workplace, investigation, AI, and mythic/future-society signal quality.
@@ -119,11 +120,14 @@ Content:
 - `GET /content/{content_id}/details`
 - `GET /content/recent`
 - `GET /content/top-rated`
+- `GET /content/home`
 - `GET /content/discover`
 - `GET /content/by-genre/{genre_name}`
 - `GET /content/by-platform/{platform_name}`
 
 `GET /content/{content_id}/details` includes ratings, availability, Insight Summary, and a nullable source-signal `decision_layer` when stored watch guidance exists. `decision_layer.display` is the preferred compact frontend contract; older `watch_profile` and `decision_support` fields remain for compatibility. The backend ranks, dedupes, sanitizes, and applies deterministic dominant-identity rules before returning display labels, so raw TMDb keywords, weak platform/viewer labels, repeated investigation phrasing, and source-signal debug metadata are not exposed by default. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display`; the legacy `summary` object remains for backward compatibility.
+
+`GET /content/home` returns a backend-assembled homepage contract for future frontend use. It includes hero quick filters and, in order, `weekly_picks`, `top_rated`, `recent_releases`, `mood_pace`, `platform_picks`, and `binge_worthy_series`. Homepage cards are poster-led, so section candidate queries require poster-backed content. Weekly picks rotate by ISO week; top-rated, mood/pace, platform, and series rails rotate deterministically by the Asia/Kolkata calendar date; recent releases stay ordered by release date and do not rotate artificially. Existing `/content/top-rated`, `/content/recent`, and discovery endpoints remain available. The endpoint is recommendation-ready but not personalized yet.
 
 Metadata:
 

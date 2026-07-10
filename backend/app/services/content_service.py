@@ -1,13 +1,29 @@
+from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal, ROUND_HALF_UP
+from hashlib import sha256
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from sqlalchemy.orm import Session
-from sqlalchemy import text
+from sqlalchemy import bindparam, text
 
 from app.services.insight_summary_service import build_insight_summary
 from app.services.source_signal_service import get_content_decision_layer
 
 
 MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE = 50
+HOME_DEFAULT_LIMIT = 10
+HOME_MIN_LIMIT = 4
+HOME_MAX_LIMIT = 20
+HOME_CANDIDATE_POOL_CAP = 100
+HOME_HIGH_SCORE_FLOOR = 70
+HOME_MAX_PLATFORM_BUCKETS = 5
+HOME_REFRESH_TIMEZONE = "Asia/Kolkata"
+HOME_POSTER_REQUIRED_WHERE = "c.poster_url IS NOT NULL AND c.poster_url <> ''"
+
+try:
+    HOME_REFRESH_ZONE = ZoneInfo(HOME_REFRESH_TIMEZONE)
+except ZoneInfoNotFoundError:
+    HOME_REFRESH_ZONE = timezone(timedelta(hours=5, minutes=30))
 
 CONTENT_SELECT_FIELDS = """
     c.id,
@@ -353,6 +369,950 @@ def get_series_metadata(db: Session, content_id: int):
         return None
 
     return dict(series_row)
+
+
+def clamp_home_limit(limit_per_section: int = None) -> int:
+    if limit_per_section is None:
+        return HOME_DEFAULT_LIMIT
+    return max(HOME_MIN_LIMIT, min(HOME_MAX_LIMIT, int(limit_per_section)))
+
+
+def home_candidate_pool_size(limit_per_section: int) -> int:
+    return min(max(limit_per_section * 5, 40), HOME_CANDIDATE_POOL_CAP)
+
+
+def get_home_reference_date() -> date:
+    return datetime.now(HOME_REFRESH_ZONE).date()
+
+
+def daily_seed(reference_date: date) -> str:
+    return reference_date.isoformat()
+
+
+def weekly_seed(reference_date: date) -> str:
+    iso_year, iso_week, _weekday = reference_date.isocalendar()
+    return f"{iso_year}-W{iso_week:02d}"
+
+
+def deterministic_rotation_value(seed: str, rotation_key: str, content_id: int) -> int:
+    digest = sha256(f"{seed}:{rotation_key}:{content_id}".encode("utf-8")).hexdigest()
+    return int(digest[:16], 16)
+
+
+def quality_sort_key(row: dict):
+    return (
+        -(row.get("unified_score") or -1),
+        -(row.get("scoring_source_count") or 0),
+        -(row.get("source_count") or 0),
+        -(row.get("year") or 0),
+        row.get("title") or "",
+    )
+
+
+def select_rotated_rows(
+    rows: list[dict],
+    limit: int,
+    seed: str,
+    rotation_key: str,
+    preserve_quality_order: bool = True,
+) -> list[dict]:
+    decorated = sorted(
+        rows,
+        key=lambda row: (
+            deterministic_rotation_value(seed, rotation_key, row["id"]),
+            row["id"],
+        ),
+    )
+    selected = decorated[:limit]
+    if preserve_quality_order:
+        return sorted(selected, key=quality_sort_key)
+    return selected
+
+
+def balanced_content_type_mix(rows: list[dict], limit: int) -> list[dict]:
+    if len(rows) <= limit:
+        return rows
+
+    by_type = {
+        "movie": [row for row in rows if row.get("content_type") == "movie"],
+        "series": [row for row in rows if row.get("content_type") == "series"],
+    }
+    if not by_type["movie"] or not by_type["series"]:
+        return rows[:limit]
+
+    selected = []
+    used_ids = set()
+    type_counts = {"movie": 0, "series": 0}
+    max_one_type = max(1, limit - 2) if limit >= 4 else limit
+
+    for row in rows:
+        content_type = row.get("content_type")
+        if type_counts.get(content_type, 0) >= max_one_type:
+            continue
+        selected.append(row)
+        used_ids.add(row["id"])
+        type_counts[content_type] = type_counts.get(content_type, 0) + 1
+        if len(selected) >= limit:
+            break
+
+    for row in rows:
+        if len(selected) >= limit:
+            break
+        if row["id"] not in used_ids:
+            selected.append(row)
+            used_ids.add(row["id"])
+
+    return selected
+
+
+def sql_rows(result) -> list[dict]:
+    return [dict(row) for row in result.mappings().all()]
+
+
+def json_array(value) -> list:
+    return value if isinstance(value, list) else []
+
+
+def home_candidate_query(
+    where_clause: str,
+    order_by: str,
+    limit: int,
+    extra_select: str = "",
+) -> str:
+    return f"""
+        SELECT
+            {CONTENT_SELECT_FIELDS},
+            {CONTENT_SCORE_SELECT_FIELDS},
+            cwg.watch_feel,
+            cwg.chips,
+            cwg.best_for,
+            cwg.consider_first
+            {extra_select}
+        FROM content c
+        {CONTENT_RATING_SUMMARY_JOIN}
+        LEFT JOIN content_watch_guidance cwg ON cwg.content_id = c.id
+        WHERE {HOME_POSTER_REQUIRED_WHERE}
+          AND {where_clause}
+        {order_by}
+        LIMIT :pool_limit;
+    """
+
+
+def fetch_home_candidates(
+    db: Session,
+    *,
+    where_clause: str,
+    order_by: str,
+    pool_limit: int,
+    params: dict = None,
+    bindparams: list = None,
+) -> list[dict]:
+    query = text(home_candidate_query(where_clause, order_by, pool_limit))
+    for bind_param in bindparams or []:
+        query = query.bindparams(bind_param)
+
+    query_params = {"pool_limit": pool_limit}
+    query_params.update(params or {})
+    return sql_rows(db.execute(query, query_params))
+
+
+def signal_match_clause() -> str:
+    return """
+        EXISTS (
+            SELECT 1
+            FROM content_source_signals css
+            WHERE css.content_id = c.id
+              AND css.is_active = TRUE
+              AND css.dimension IN :signal_dimensions
+              AND (
+                  LOWER(css.value) IN :signal_terms
+                  OR LOWER(css.label) IN :signal_terms
+              )
+        )
+    """
+
+
+def fetch_signal_bucket_candidates(
+    db: Session,
+    *,
+    signal_terms: list[str],
+    signal_dimensions: list[str],
+    pool_limit: int,
+) -> list[dict]:
+    query = text(
+        home_candidate_query(
+            where_clause=f"""
+                {signal_match_clause()}
+                AND rating_summary.unified_score IS NOT NULL
+                AND cwg.content_id IS NOT NULL
+            """,
+            order_by="""
+                ORDER BY
+                    rating_summary.unified_score DESC NULLS LAST,
+                    rating_summary.scoring_source_count DESC NULLS LAST,
+                    rating_summary.source_count DESC NULLS LAST,
+                    c.year DESC NULLS LAST,
+                    c.title ASC
+            """,
+            limit=pool_limit,
+        )
+    ).bindparams(
+        bindparam("signal_terms", expanding=True),
+        bindparam("signal_dimensions", expanding=True),
+    )
+    return sql_rows(
+        db.execute(
+            query,
+            {
+                "signal_terms": [term.lower() for term in signal_terms],
+                "signal_dimensions": signal_dimensions,
+                "pool_limit": pool_limit,
+            },
+        )
+    )
+
+
+def normalize_platform_display_name(name: str) -> str:
+    normalized = (name or "").strip().lower()
+    if normalized in {"amazon prime video", "prime video"} or "amazon prime video" in normalized:
+        return "Prime Video"
+    if normalized in {"jiohotstar", "disney+ hotstar", "hotstar"}:
+        return "JioHotstar"
+    if normalized in {"apple tv", "apple tv+"}:
+        return "Apple TV+"
+    if normalized == "youtube":
+        return "YouTube"
+    if normalized == "netflix":
+        return "Netflix"
+    return name
+
+
+def platform_bucket_id(name: str) -> str:
+    return (
+        normalize_platform_display_name(name)
+        .lower()
+        .replace("+", "plus")
+        .replace("&", "and")
+        .replace(" ", "_")
+        .replace("-", "_")
+    )
+
+
+def fetch_home_platform_bucket_defs(db: Session) -> list[dict]:
+    rows = sql_rows(
+        db.execute(
+            text(
+                """
+                SELECT p.name, COUNT(DISTINCT ca.content_id) AS total_content
+                FROM content_availability ca
+                JOIN platforms p ON p.id = ca.platform_id
+                WHERE ca.region_code = :region
+                  AND ca.availability_type = 'streaming'
+                GROUP BY p.name
+                UNION ALL
+                SELECT p.name, COUNT(DISTINCT cp.content_id) AS total_content
+                FROM content_platforms cp
+                JOIN platforms p ON p.id = cp.platform_id
+                WHERE cp.availability_type = 'streaming'
+                  AND NOT EXISTS (
+                      SELECT 1
+                      FROM content_availability ca
+                      WHERE ca.content_id = cp.content_id
+                        AND ca.region_code = :region
+                  )
+                GROUP BY p.name;
+                """
+            ),
+            {"region": DEFAULT_AVAILABILITY_REGION},
+        )
+    )
+
+    grouped: dict[str, dict] = {}
+    for row in rows:
+        display_name = normalize_platform_display_name(row["name"])
+        bucket_id = platform_bucket_id(display_name)
+        bucket = grouped.setdefault(
+            bucket_id,
+            {
+                "bucket_id": bucket_id,
+                "label": display_name,
+                "platform_names": [],
+                "total_content": 0,
+            },
+        )
+        if row["name"] not in bucket["platform_names"]:
+            bucket["platform_names"].append(row["name"])
+        bucket["total_content"] += row["total_content"] or 0
+
+    preferred_order = {
+        "Netflix": 1,
+        "Prime Video": 2,
+        "JioHotstar": 3,
+        "Apple TV+": 4,
+        "YouTube": 5,
+    }
+    return sorted(
+        grouped.values(),
+        key=lambda item: (
+            preferred_order.get(item["label"], 99),
+            -(item["total_content"] or 0),
+            item["label"],
+        ),
+    )[:HOME_MAX_PLATFORM_BUCKETS]
+
+
+def fetch_platform_candidates(
+    db: Session,
+    *,
+    platform_names: list[str],
+    pool_limit: int,
+) -> list[dict]:
+    platform_condition = """
+        (
+            EXISTS (
+                SELECT 1
+                FROM content_availability ca
+                JOIN platforms p_av ON p_av.id = ca.platform_id
+                WHERE ca.content_id = c.id
+                  AND ca.region_code = :region
+                  AND ca.availability_type = 'streaming'
+                  AND p_av.name IN :platform_names
+            )
+            OR (
+                NOT EXISTS (
+                    SELECT 1
+                    FROM content_availability ca_existing
+                    WHERE ca_existing.content_id = c.id
+                      AND ca_existing.region_code = :region
+                )
+                AND EXISTS (
+                    SELECT 1
+                    FROM content_platforms cp
+                    JOIN platforms p_legacy ON p_legacy.id = cp.platform_id
+                    WHERE cp.content_id = c.id
+                      AND cp.availability_type = 'streaming'
+                      AND p_legacy.name IN :platform_names
+                )
+            )
+        )
+    """
+    query = text(
+        home_candidate_query(
+            where_clause=f"""
+                {platform_condition}
+                AND rating_summary.unified_score IS NOT NULL
+            """,
+            order_by=TOP_RATED_ORDER_BY,
+            limit=pool_limit,
+        )
+    ).bindparams(bindparam("platform_names", expanding=True))
+
+    return sql_rows(
+        db.execute(
+            query,
+            {
+                "platform_names": platform_names,
+                "region": DEFAULT_AVAILABILITY_REGION,
+                "pool_limit": pool_limit,
+            },
+        )
+    )
+
+
+def fetch_home_platforms_for_ids(db: Session, content_ids: set[int]) -> dict[int, list[str]]:
+    if not content_ids:
+        return {}
+
+    query = text(
+        """
+        SELECT
+            ca.content_id,
+            p.name,
+            ca.availability_type,
+            ca.display_priority,
+            CASE ca.availability_type
+                WHEN 'streaming' THEN 1
+                WHEN 'rent' THEN 2
+                WHEN 'buy' THEN 3
+                WHEN 'ads' THEN 4
+                WHEN 'free' THEN 5
+                ELSE 6
+            END AS availability_sort,
+            1 AS source_priority
+        FROM content_availability ca
+        JOIN platforms p ON p.id = ca.platform_id
+        WHERE ca.content_id IN :content_ids
+          AND ca.region_code = :region
+        UNION ALL
+        SELECT
+            cp.content_id,
+            p.name,
+            cp.availability_type,
+            NULL::INTEGER AS display_priority,
+            CASE cp.availability_type
+                WHEN 'streaming' THEN 1
+                WHEN 'rent' THEN 2
+                WHEN 'buy' THEN 3
+                WHEN 'ads' THEN 4
+                WHEN 'free' THEN 5
+                ELSE 6
+            END AS availability_sort,
+            2 AS source_priority
+        FROM content_platforms cp
+        JOIN platforms p ON p.id = cp.platform_id
+        WHERE cp.content_id IN :content_ids
+          AND NOT EXISTS (
+              SELECT 1
+              FROM content_availability ca_existing
+              WHERE ca_existing.content_id = cp.content_id
+                AND ca_existing.region_code = :region
+          )
+        ORDER BY
+            content_id,
+            source_priority,
+            availability_sort,
+            display_priority NULLS LAST,
+            name ASC;
+        """
+    ).bindparams(bindparam("content_ids", expanding=True))
+
+    platforms: dict[int, list[str]] = {}
+    seen: dict[int, set[str]] = {}
+    rows = sql_rows(
+        db.execute(
+            query,
+            {
+                "content_ids": sorted(content_ids),
+                "region": DEFAULT_AVAILABILITY_REGION,
+            },
+        )
+    )
+    for row in rows:
+        content_id = row["content_id"]
+        display_name = normalize_platform_display_name(row["name"])
+        key = display_name.lower()
+        seen.setdefault(content_id, set())
+        if key in seen[content_id]:
+            continue
+        platforms.setdefault(content_id, []).append(display_name)
+        seen[content_id].add(key)
+
+    return platforms
+
+
+def fetch_home_signal_labels_for_ids(db: Session, content_ids: set[int]) -> dict[int, list[str]]:
+    if not content_ids:
+        return {}
+
+    query = text(
+        """
+        SELECT
+            content_id,
+            label,
+            dimension
+        FROM content_source_signals
+        WHERE content_id IN :content_ids
+          AND is_active = TRUE
+        ORDER BY
+            content_id,
+            CASE dimension
+                WHEN 'audience_expectation' THEN 1
+                WHEN 'topic_theme' THEN 2
+                WHEN 'tone' THEN 3
+                WHEN 'mood' THEN 4
+                WHEN 'pacing' THEN 5
+                WHEN 'intensity' THEN 6
+                ELSE 7
+            END,
+            label ASC;
+        """
+    ).bindparams(bindparam("content_ids", expanding=True))
+
+    labels: dict[int, list[str]] = {}
+    for row in sql_rows(db.execute(query, {"content_ids": sorted(content_ids)})):
+        labels.setdefault(row["content_id"], []).append(row["label"])
+    return labels
+
+
+HOME_TECHNICAL_TERMS = (
+    "tmdb",
+    "keyword",
+    "source_names",
+    "mapping_version",
+    "provider",
+    "frontend_ready",
+    "storage_ready",
+    "backend_display_fallback",
+)
+HOME_WEAK_CHIPS = {
+    "content",
+    "drama viewers",
+    "story viewers",
+    "generic story",
+    "story",
+    "stories",
+}
+
+
+def clean_home_label(value):
+    if not isinstance(value, str) or not value.strip():
+        return None
+    cleaned = " ".join(value.strip().split())
+    lower_value = cleaned.lower()
+    if any(term in lower_value for term in HOME_TECHNICAL_TERMS):
+        return None
+    if lower_value.endswith(" viewers"):
+        return None
+    if lower_value in HOME_WEAK_CHIPS:
+        return None
+    return cleaned
+
+
+def content_type_label(content_type: str) -> str:
+    return "Series" if content_type == "series" else "Movie"
+
+
+def truncate_sentence(value: str, max_length: int = 120) -> str:
+    if len(value) <= max_length:
+        return value
+    trimmed = value[: max_length - 1].rsplit(" ", 1)[0].rstrip(" ,.;")
+    return f"{trimmed}."
+
+
+def lower_first_phrase(value: str) -> str:
+    if not value:
+        return value
+    return value[:1].lower() + value[1:]
+
+
+def build_home_chips(row: dict, signal_labels: list[str]) -> list[str]:
+    candidates = []
+    candidates.extend(json_array(row.get("chips")))
+    candidates.extend(signal_labels)
+
+    chips = []
+    seen = set()
+    for candidate in candidates:
+        label = clean_home_label(candidate)
+        if not label:
+            continue
+        key = label.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        chips.append(label)
+        if len(chips) >= 4:
+            break
+
+    if not chips and row.get("unified_score") is not None:
+        chips.append("High-scoring")
+    if len(chips) < 2:
+        type_chip = content_type_label(row.get("content_type"))
+        if type_chip.lower() not in {chip.lower() for chip in chips}:
+            chips.append(type_chip)
+
+    return chips[:4]
+
+
+def build_home_decision_reason(row: dict, chips: list[str], platforms: list[str]) -> str:
+    score = row.get("unified_score")
+    if chips:
+        primary = lower_first_phrase(chips[0])
+        if score is not None and score >= 85 and len(chips) >= 2:
+            return truncate_sentence(
+                f"High-scoring {primary} with {lower_first_phrase(chips[1])}."
+            )
+        if len(chips) >= 2:
+            return truncate_sentence(f"{chips[0]} with {lower_first_phrase(chips[1])}.")
+        if score is not None:
+            return truncate_sentence(f"High-scoring {primary}.")
+
+    watch_feel = clean_home_label(row.get("watch_feel"))
+    if watch_feel:
+        return truncate_sentence(watch_feel)
+
+    if platforms:
+        return truncate_sentence(f"Available on {platforms[0]}.")
+    return f"{content_type_label(row.get('content_type'))} from the catalog."
+
+
+def build_home_card(
+    row: dict,
+    platform_map: dict[int, list[str]],
+    signal_label_map: dict[int, list[str]],
+) -> dict:
+    platforms = platform_map.get(row["id"], [])
+    chips = build_home_chips(row, signal_label_map.get(row["id"], []))
+    decision_reason = build_home_decision_reason(row, chips, platforms)
+
+    return {
+        "id": row["id"],
+        "title": row["title"],
+        "content_type": row["content_type"],
+        "year": row["year"],
+        "poster_url": row["poster_url"],
+        "backdrop_url": row["backdrop_url"],
+        "runtime": row["runtime"],
+        "age_rating": row["age_rating"],
+        "release_date": row["release_date"],
+        "unified_score": row.get("unified_score"),
+        "source_count": row.get("source_count"),
+        "scoring_source_count": row.get("scoring_source_count"),
+        "primary_platform": platforms[0] if platforms else None,
+        "platforms": platforms[:3],
+        "decision_reason": decision_reason,
+        "chips": chips,
+    }
+
+
+def build_home_cards(
+    rows: list[dict],
+    platform_map: dict[int, list[str]],
+    signal_label_map: dict[int, list[str]],
+) -> list[dict]:
+    seen = set()
+    cards = []
+    for row in rows:
+        if row["id"] in seen:
+            continue
+        seen.add(row["id"])
+        cards.append(build_home_card(row, platform_map, signal_label_map))
+    return cards
+
+
+def collect_content_ids_from_sections(section_sources):
+    content_ids: set[int] = set()
+    for value in section_sources.values():
+        if isinstance(value, list):
+            for row in value:
+                content_ids.add(row["id"])
+        elif isinstance(value, dict):
+            for rows in value.values():
+                for row in rows:
+                    content_ids.add(row["id"])
+    return content_ids
+
+
+def get_home_content_service(
+    db: Session,
+    limit_per_section: int = None,
+    reference_date=None,
+) -> dict:
+    limit = clamp_home_limit(limit_per_section)
+    pool_limit = home_candidate_pool_size(limit)
+    reference_date = reference_date or get_home_reference_date()
+    day_seed = daily_seed(reference_date)
+    week_seed = weekly_seed(reference_date)
+
+    high_quality_where = """
+        rating_summary.unified_score IS NOT NULL
+        AND rating_summary.unified_score >= :high_score_floor
+        AND cwg.content_id IS NOT NULL
+    """
+    high_quality_params = {"high_score_floor": HOME_HIGH_SCORE_FLOOR}
+
+    weekly_pool = fetch_home_candidates(
+        db,
+        where_clause=high_quality_where,
+        order_by=TOP_RATED_ORDER_BY,
+        pool_limit=pool_limit,
+        params=high_quality_params,
+    )
+    weekly_rows = balanced_content_type_mix(
+        select_rotated_rows(
+            weekly_pool,
+            pool_limit,
+            week_seed,
+            "weekly_picks",
+            preserve_quality_order=False,
+        ),
+        limit,
+    )
+
+    top_pool = fetch_home_candidates(
+        db,
+        where_clause="""
+            rating_summary.unified_score IS NOT NULL
+            AND rating_summary.unified_score >= :high_score_floor
+        """,
+        order_by=TOP_RATED_ORDER_BY,
+        pool_limit=pool_limit,
+        params=high_quality_params,
+    )
+    top_rated_rows = select_rotated_rows(
+        top_pool,
+        limit,
+        day_seed,
+        "top_rated",
+        preserve_quality_order=True,
+    )
+
+    recent_rows = fetch_home_candidates(
+        db,
+        where_clause="c.release_date IS NOT NULL",
+        order_by="""
+            ORDER BY
+                c.release_date DESC NULLS LAST,
+                rating_summary.unified_score DESC NULLS LAST,
+                rating_summary.source_count DESC NULLS LAST,
+                c.title ASC
+        """,
+        pool_limit=limit,
+    )
+
+    mood_bucket_defs = [
+        {
+            "bucket_id": "fast_paced",
+            "label": "Fast-Paced",
+            "subtitle": "Momentum, missions, action, and plot-forward stories.",
+            "terms": [
+                "action-heavy",
+                "fast-moving",
+                "fast-paced",
+                "propulsive",
+                "mission-driven",
+                "plot-driven",
+                "survival-driven",
+                "chase",
+                "pursuit",
+                "action spectacle",
+                "adventure-driven",
+            ],
+            "dimensions": ["pacing", "intensity", "topic_theme"],
+        },
+        {
+            "bucket_id": "slow_burn_thoughtful",
+            "label": "Slow-Burn & Thoughtful",
+            "subtitle": "Reflective, layered, or puzzle-like watches.",
+            "terms": [
+                "slow-burn",
+                "meditative",
+                "contemplative",
+                "reflective",
+                "thoughtful",
+                "dialogue-heavy",
+                "puzzle-like",
+                "mind-bending",
+            ],
+            "dimensions": ["pacing", "tone", "mood"],
+        },
+        {
+            "bucket_id": "dark_intense",
+            "label": "Dark & Intense",
+            "subtitle": "Tense, suspenseful, gritty, or higher-stakes picks.",
+            "terms": [
+                "tense",
+                "suspenseful",
+                "dark",
+                "dark tone",
+                "high intensity",
+                "high-stakes",
+                "psychological thriller",
+                "horror",
+                "dystopian future",
+                "gritty",
+                "bleak",
+                "foreboding",
+            ],
+            "dimensions": ["mood", "tone", "intensity", "audience_expectation", "topic_theme"],
+        },
+        {
+            "bucket_id": "light_comfort",
+            "label": "Light Watch",
+            "subtitle": "Warmer, playful, gentle, or heartfelt choices.",
+            "terms": [
+                "warm",
+                "light",
+                "playful",
+                "heartfelt",
+                "uplifting",
+                "family-focused",
+                "family-focused story",
+                "workplace comedy",
+                "comedy",
+                "gentle",
+                "emotional",
+                "hopeful",
+            ],
+            "dimensions": ["mood", "tone", "audience_expectation", "topic_theme"],
+        },
+    ]
+
+    mood_rows_by_bucket = {}
+    for bucket in mood_bucket_defs:
+        pool = fetch_signal_bucket_candidates(
+            db,
+            signal_terms=bucket["terms"],
+            signal_dimensions=bucket["dimensions"],
+            pool_limit=pool_limit,
+        )
+        mood_rows_by_bucket[bucket["bucket_id"]] = select_rotated_rows(
+            pool,
+            limit,
+            day_seed,
+            f"mood_pace:{bucket['bucket_id']}",
+            preserve_quality_order=True,
+        )
+
+    platform_defs = fetch_home_platform_bucket_defs(db)
+    platform_rows_by_bucket = {}
+    for platform in platform_defs:
+        pool = fetch_platform_candidates(
+            db,
+            platform_names=platform["platform_names"],
+            pool_limit=pool_limit,
+        )
+        platform_rows_by_bucket[platform["bucket_id"]] = select_rotated_rows(
+            pool,
+            limit,
+            day_seed,
+            f"platform_picks:{platform['bucket_id']}",
+            preserve_quality_order=True,
+        )
+
+    series_pool = fetch_home_candidates(
+        db,
+        where_clause="""
+            c.content_type = 'series'
+            AND rating_summary.unified_score IS NOT NULL
+            AND cwg.content_id IS NOT NULL
+        """,
+        order_by="""
+            ORDER BY
+                rating_summary.unified_score DESC NULLS LAST,
+                rating_summary.source_count DESC NULLS LAST,
+                c.year DESC NULLS LAST,
+                c.title ASC
+        """,
+        pool_limit=pool_limit,
+    )
+    binge_rows = select_rotated_rows(
+        series_pool,
+        limit,
+        day_seed,
+        "binge_worthy_series",
+        preserve_quality_order=True,
+    )
+
+    section_sources = {
+        "weekly_picks": weekly_rows,
+        "top_rated": top_rated_rows,
+        "recent_releases": recent_rows,
+        "mood_pace": mood_rows_by_bucket,
+        "platform_picks": platform_rows_by_bucket,
+        "binge_worthy_series": binge_rows,
+    }
+    content_ids = collect_content_ids_from_sections(section_sources)
+    platform_map = fetch_home_platforms_for_ids(db, content_ids)
+    signal_label_map = fetch_home_signal_labels_for_ids(db, content_ids)
+
+    mood_buckets = []
+    for bucket in mood_bucket_defs:
+        bucket_id = bucket["bucket_id"]
+        mood_buckets.append(
+            {
+                "bucket_id": bucket_id,
+                "label": bucket["label"],
+                "subtitle": bucket["subtitle"],
+                "refresh_strategy": "daily_bucket_rotation",
+                "refresh_cadence": "daily",
+                "items": build_home_cards(
+                    mood_rows_by_bucket[bucket_id],
+                    platform_map,
+                    signal_label_map,
+                ),
+            }
+        )
+
+    platform_buckets = []
+    platform_lookup = {platform["bucket_id"]: platform for platform in platform_defs}
+    for bucket_id, rows in platform_rows_by_bucket.items():
+        platform = platform_lookup[bucket_id]
+        platform_buckets.append(
+            {
+                "bucket_id": bucket_id,
+                "label": platform["label"],
+                "subtitle": f"Strong picks streaming on {platform['label']}.",
+                "refresh_strategy": "daily_platform_rotation",
+                "refresh_cadence": "daily",
+                "items": build_home_cards(rows, platform_map, signal_label_map),
+            }
+        )
+
+    return {
+        "hero": {
+            "title": "Find what to watch next",
+            "subtitle": "Browse by rating, mood, platform, or watch style.",
+            "quick_filters": [
+                {"label": "Top Rated", "filter_key": "top_rated"},
+                {"label": "Fast-Paced", "filter_key": "fast_paced"},
+                {"label": "Dark & Intense", "filter_key": "dark_intense"},
+                {"label": "Light Watch", "filter_key": "light_comfort"},
+            ],
+        },
+        "sections": [
+            {
+                "section_id": "weekly_picks",
+                "title": "This Week’s Picks",
+                "subtitle": "A fresh weekly mix of strong movies and series.",
+                "section_type": "poster_rail",
+                "refresh_strategy": "weekly_rotation",
+                "refresh_cadence": "weekly",
+                "items": build_home_cards(weekly_rows, platform_map, signal_label_map),
+            },
+            {
+                "section_id": "top_rated",
+                "title": "Top Rated Picks",
+                "subtitle": "High-scoring titles from the catalog, refreshed daily for variety.",
+                "section_type": "poster_rail",
+                "refresh_strategy": "daily_rotation_from_ranked_pool",
+                "refresh_cadence": "daily",
+                "items": build_home_cards(top_rated_rows, platform_map, signal_label_map),
+            },
+            {
+                "section_id": "recent_releases",
+                "title": "Recent Releases",
+                "subtitle": "Newer movies and series from the catalog, ordered by release date.",
+                "section_type": "poster_rail",
+                "refresh_strategy": "release_date_order",
+                "refresh_cadence": "data_driven",
+                "items": build_home_cards(recent_rows, platform_map, signal_label_map),
+            },
+            {
+                "section_id": "mood_pace",
+                "title": "Watch by Mood & Pace",
+                "subtitle": "Pick something that matches how you want to watch.",
+                "section_type": "bucketed_rail",
+                "refresh_strategy": "daily_bucket_rotation",
+                "refresh_cadence": "daily",
+                "buckets": mood_buckets,
+            },
+            {
+                "section_id": "platform_picks",
+                "title": "Popular Platforms",
+                "subtitle": "Strong picks grouped by where they are available.",
+                "section_type": "bucketed_rail",
+                "refresh_strategy": "daily_platform_rotation",
+                "refresh_cadence": "daily",
+                "buckets": platform_buckets,
+            },
+            {
+                "section_id": "binge_worthy_series",
+                "title": "Binge-Worthy Series",
+                "subtitle": "Highly rated series worth starting.",
+                "section_type": "poster_rail",
+                "refresh_strategy": "daily_series_rotation",
+                "refresh_cadence": "daily",
+                "items": build_home_cards(binge_rows, platform_map, signal_label_map),
+            },
+        ],
+        "generated_for": reference_date.isoformat(),
+        "refresh_note": (
+            "Weekly picks refresh by ISO week. Top-rated, mood, platform, and "
+            "series sections rotate deterministically by day; recent releases "
+            "follow release-date order."
+        ),
+    }
 
 
 def get_all_content_service(

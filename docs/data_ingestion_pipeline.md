@@ -37,6 +37,7 @@ Future ingestion updates should go into this document.
 | Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
 | Source signal storage import | Implemented | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
 | Source signal decision layer API | Implemented | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output for frontend use. |
+| Homepage sections API | Implemented | `backend/app/services/content_service.py`, `GET /content/home` | No | Builds backend-powered homepage rails from local catalog data with bounded candidate pools and deterministic weekly/daily rotation. |
 | Decision display QA audit | Implemented | `analytics/scripts/audit_decision_display_quality.py` | No | Read-only catalog audit for compact display quality scores, issue codes, review candidates, and generated local JSON/CSV/summary reports. |
 | Source signal mapping QA audit | Implemented | `analytics/scripts/audit_source_signal_mapping_quality.py` | No | Read-only audit for stored signal richness, missing dimensions, generic genre/subgenre coverage, fallback dependency, and unmapped keyword opportunities. |
 | Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
@@ -662,6 +663,40 @@ Preferred display shape:
 `frontend_ready` remains a data-quality flag. It is returned so the future frontend can decide whether to show, hide, or label the section, but it does not block backend/dev integration.
 
 The legacy `summary` object may still appear in detail responses for backward compatibility. New frontend work should prefer `ratings`, `insight_summary`, `availability`, and `decision_layer.display` for decision-support UI.
+
+### Homepage Sections API
+
+`GET /content/home` provides the backend contract for the future homepage redesign. It is read-only and uses only local database data: catalog metadata, rating summaries, availability, source-signal labels, and stored watch guidance. It does not call external providers and does not use personalized recommendation logic yet.
+
+The response includes a hero block and exactly these sections, in order:
+
+1. `weekly_picks`
+2. `top_rated`
+3. `recent_releases`
+4. `mood_pace`
+5. `platform_picks`
+6. `binge_worthy_series`
+
+Refresh behavior is deterministic:
+
+- `weekly_picks` uses ISO year/week rotation from a bounded high-quality pool.
+- `top_rated`, `mood_pace`, `platform_picks`, and `binge_worthy_series` use daily deterministic rotation.
+- `recent_releases` does not rotate artificially; it orders by release date, then score/source strength, then title.
+
+The daily and weekly seeds use the Asia/Kolkata calendar date boundary, matching the current India-focused availability region. Tests can still inject a reference date so homepage refresh behavior remains deterministic and deployment-safe.
+
+Homepage cards are poster-led. Candidate queries for every homepage section require `poster_url` so future frontend rails do not receive posterless cards. Standalone endpoints such as `/content/top-rated`, `/content/recent`, and `/content/discover` keep their existing behavior.
+
+The endpoint is designed for catalog growth:
+
+- no `ORDER BY RANDOM()`;
+- no full-catalog Python filtering for section selection;
+- bounded candidate pools per section or bucket;
+- batched card enrichment for platforms and source-signal labels;
+- duplicate content IDs are prevented inside each simple section or bucket;
+- existing content, rating, availability, and source-signal indexes cover the current 1,000-title target without additional schema changes.
+
+Existing endpoints such as `/content/top-rated`, `/content/recent`, and `/content/discover` remain available. The homepage endpoint is recommendation-ready, but personalized recommendations and frontend rendering are future work.
 
 ### Decision Display Quality Audit
 
