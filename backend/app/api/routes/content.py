@@ -6,6 +6,7 @@ from app.schemas.content import (
     Content,
     ContentDetailsResponse,
     ContentCreditsResponse,
+    HomeResponse,
     PaginatedContentResponse,
     Genre,
     PlatformMetadata
@@ -19,6 +20,7 @@ from app.services.content_service import (
     get_content_by_genre_service,
     get_content_by_platform_service,
     get_discover_content_service,
+    get_home_content_service,
     get_content_by_id_service,
     get_content_details_service,
     get_content_credits_service
@@ -163,6 +165,17 @@ def discover_content(
         limit,
         offset
     )
+
+
+@router.get("/content/home", response_model=HomeResponse)
+def get_home_content(
+    limit_per_section: int = Query(
+        default=10,
+        description="Items per simple section or per bucket. Values are clamped to 4-20."
+    ),
+    db: Session = Depends(get_db)
+):
+    return get_home_content_service(db, limit_per_section)
 
 
 @router.get("/content/by-genre/{genre_name}", response_model=PaginatedContentResponse)

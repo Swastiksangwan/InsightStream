@@ -1,11 +1,17 @@
+from datetime import date
 from urllib.parse import quote
 
 import pytest
-from sqlalchemy import text
+from sqlalchemy import bindparam, text
 
+import app.services.content_service as content_service
 from app.services.content_service import (
+    HOME_MAX_LIMIT,
+    HOME_MIN_LIMIT,
     MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
     get_detail_ratings,
+    home_candidate_pool_size,
+    select_rotated_rows,
 )
 
 
@@ -99,6 +105,96 @@ def expected_discover_recent_titles(db_session, limit):
         ),
         {"limit": limit},
     ).mappings().all()
+    return [row["title"] for row in rows]
+
+
+def expected_home_recent_rows(db_session, limit):
+    rows = db_session.execute(
+        text(
+            """
+            WITH rating_summary AS (
+                SELECT
+                    cr.content_id,
+                    ROUND(
+                        SUM(
+                            CASE
+                                WHEN cr.normalized_score IS NOT NULL
+                                 AND COALESCE(rs.weight, 0) > 0
+                                 AND cr.vote_count IS NOT NULL
+                                 AND cr.vote_count >= :minimum_vote_count
+                                THEN cr.normalized_score * COALESCE(rs.weight, 0)
+                                ELSE 0
+                            END
+                        )
+                        / NULLIF(
+                            SUM(
+                                CASE
+                                    WHEN cr.normalized_score IS NOT NULL
+                                     AND COALESCE(rs.weight, 0) > 0
+                                     AND cr.vote_count IS NOT NULL
+                                     AND cr.vote_count >= :minimum_vote_count
+                                    THEN COALESCE(rs.weight, 0)
+                                    ELSE 0
+                                END
+                            ),
+                            0
+                        )
+                    )::INTEGER AS unified_score,
+                    COUNT(*) AS source_count
+                FROM content_ratings cr
+                JOIN rating_sources rs ON rs.id = cr.rating_source_id
+                WHERE rs.is_active = TRUE
+                GROUP BY cr.content_id
+            )
+            SELECT
+                c.title,
+                c.content_type,
+                c.release_date,
+                CASE
+                    WHEN c.content_type = 'series' THEN COALESCE(
+                        csm.next_episode_air_date,
+                        csm.last_episode_air_date,
+                        csm.last_air_date,
+                        c.latest_activity_date,
+                        c.release_date
+                    )
+                    ELSE COALESCE(c.release_date, c.latest_activity_date)
+                END AS homepage_freshness_date
+            FROM content c
+            LEFT JOIN rating_summary ON rating_summary.content_id = c.id
+            LEFT JOIN content_series_metadata csm ON csm.content_id = c.id
+            WHERE c.poster_url IS NOT NULL
+              AND c.poster_url <> ''
+              AND (
+                CASE
+                    WHEN c.content_type = 'series' THEN COALESCE(
+                        csm.next_episode_air_date,
+                        csm.last_episode_air_date,
+                        csm.last_air_date,
+                        c.latest_activity_date,
+                        c.release_date
+                    )
+                    ELSE COALESCE(c.release_date, c.latest_activity_date)
+                END
+              ) IS NOT NULL
+            ORDER BY
+                homepage_freshness_date DESC NULLS LAST,
+                rating_summary.unified_score DESC NULLS LAST,
+                rating_summary.source_count DESC NULLS LAST,
+                c.title ASC
+            LIMIT :limit;
+            """
+        ),
+        {
+            "limit": limit,
+            "minimum_vote_count": MINIMUM_VOTE_COUNT_FOR_UNIFIED_SCORE,
+        },
+    ).mappings().all()
+    return rows
+
+
+def expected_home_recent_titles(db_session, limit):
+    rows = expected_home_recent_rows(db_session, limit)
     return [row["title"] for row in rows]
 
 
@@ -572,6 +668,518 @@ def first_content_without_watch_guidance(db_session):
             """
         )
     ).mappings().first()
+
+
+HOME_SECTION_ORDER = [
+    "weekly_picks",
+    "top_rated",
+    "recent_releases",
+    "mood_pace",
+    "platform_picks",
+    "binge_worthy_series",
+]
+
+HOME_TECHNICAL_FRAGMENTS = {
+    "tmdb_keywords",
+    "source_names",
+    "mapping_version",
+    "provider",
+    "frontend_ready",
+    "storage_ready",
+    "backend_display_fallback",
+    "drama viewers",
+    "story viewers",
+}
+
+
+def home_section(data, section_id):
+    return next(section for section in data["sections"] if section["section_id"] == section_id)
+
+
+def home_bucket(section, bucket_id):
+    return next(bucket for bucket in section["buckets"] if bucket["bucket_id"] == bucket_id)
+
+
+def section_item_ids(section):
+    return [item["id"] for item in section.get("items") or []]
+
+
+def assert_no_duplicate_ids(items):
+    ids = [item["id"] for item in items]
+    assert len(ids) == len(set(ids))
+
+
+def assert_home_card_public_quality(item):
+    assert item["poster_url"]
+    assert item["decision_reason"]
+    assert len(item["decision_reason"]) <= 120
+    assert item["chips"]
+    assert 2 <= len(item["chips"]) <= 4
+    assert all(len(chip) <= content_service.HOME_CHIP_MAX_LENGTH for chip in item["chips"])
+    if item.get("primary_platform"):
+        assert len(item["primary_platform"]) <= content_service.HOME_CARD_PLATFORM_MAX_LENGTH
+        assert "movies and tv" not in item["primary_platform"].lower()
+    rendered = f"{item['decision_reason']} {' '.join(item['chips'])}".lower()
+    assert not any(fragment in rendered for fragment in HOME_TECHNICAL_FRAGMENTS)
+
+
+def source_signal_terms_for_items(db_session, items):
+    content_ids = [item["id"] for item in items]
+    if not content_ids:
+        return {}
+
+    query = text(
+        """
+        SELECT content_id, LOWER(value) AS value, LOWER(label) AS label
+        FROM content_source_signals
+        WHERE content_id IN :content_ids
+          AND is_active = TRUE;
+        """
+    ).bindparams(bindparam("content_ids", expanding=True))
+    rows = db_session.execute(query, {"content_ids": content_ids}).mappings().all()
+    terms = {content_id: set() for content_id in content_ids}
+    for row in rows:
+        terms.setdefault(row["content_id"], set()).update(
+            {row["value"], row["label"]}
+        )
+    return terms
+
+
+def assert_items_have_signal_terms(db_session, items, expected_terms):
+    terms_by_id = source_signal_terms_for_items(db_session, items)
+    expected = {term.lower() for term in expected_terms}
+    for item in items:
+        assert terms_by_id[item["id"]] & expected, item["title"]
+
+
+def assert_items_do_not_have_signal_terms(db_session, items, excluded_terms):
+    terms_by_id = source_signal_terms_for_items(db_session, items)
+    excluded = {term.lower() for term in excluded_terms}
+    for item in items:
+        assert not terms_by_id[item["id"]] & excluded, item["title"]
+
+
+@pytest.mark.parametrize(
+    ("raw_label", "expected_label"),
+    [
+        ("organized-crime drama", "Crime"),
+        ("cartel crime drama", "Crime"),
+        ("crime drama", "Crime"),
+        ("gangster crime", "Gangster"),
+        ("psychological drama", "Psychological"),
+        ("psychological thriller", "Psychological"),
+        ("fantasy adventure", "Fantasy"),
+        ("sci-fi adventure", "Sci-fi"),
+        ("superhero team story", "Superhero"),
+        ("family-focused story", "Family"),
+        ("martial-arts action", "Martial arts"),
+        ("dystopian future", "Dystopian"),
+        ("political drama", "Political"),
+        ("conspiracy thriller", "Conspiracy"),
+        ("survival drama", "Survival"),
+        ("dark tone", "Dark"),
+        ("light tone", "Light"),
+        ("slow-burn", "Slow-burn"),
+        ("puzzle-like", "Puzzle-like"),
+    ],
+)
+def test_home_chip_labels_are_compacted_for_card_display(raw_label, expected_label):
+    assert content_service.normalize_home_chip_label(raw_label) == expected_label
+
+
+def test_home_chips_filter_technical_and_overlong_labels():
+    row = {
+        "chips": [
+            "organized-crime drama",
+            "political drama",
+            "tmdb_keywords debug",
+            "Very long specialized taxonomy label",
+        ],
+        "unified_score": 88,
+        "content_type": "movie",
+    }
+    chips = content_service.build_home_chips(
+        row,
+        ["psychological thriller", "fantasy adventure", "Crime drama"],
+    )
+
+    assert chips == ["Crime", "Political", "Psychological", "Fantasy"]
+    assert all(len(chip) <= content_service.HOME_CHIP_MAX_LENGTH for chip in chips)
+
+
+def test_home_primary_platform_prefers_short_curated_labels():
+    assert content_service.home_primary_platform(["Amazon Prime Video"]) == "Prime Video"
+    assert content_service.home_primary_platform(["Disney+ Hotstar"]) == "JioHotstar"
+    assert content_service.home_primary_platform(["Apple TV"]) == "Apple TV+"
+    assert content_service.home_primary_platform(["Sony Pictures Animation"]) == "Sony Pictures"
+    assert content_service.home_primary_platform(["VI movies and tv"]) is None
+    assert (
+        content_service.home_primary_platform(["A Very Long Provider Display Name"])
+        is None
+    )
+
+
+def test_home_endpoint_returns_hero_and_expected_sections(client):
+    response = client.get("/content/home?limit_per_section=6")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["hero"]["title"] == "Find what to watch next"
+    assert data["hero"]["subtitle"]
+    assert [item["filter_key"] for item in data["hero"]["quick_filters"]] == [
+        "top_rated",
+        "fast_paced",
+        "dark_intense",
+        "light_comfort",
+    ]
+    assert [section["section_id"] for section in data["sections"]] == HOME_SECTION_ORDER
+    assert data["generated_for"]
+    assert data["refresh_note"]
+
+
+def test_home_simple_sections_have_cards_without_duplicates(client):
+    response = client.get("/content/home?limit_per_section=6")
+    data = response.json()
+
+    assert response.status_code == 200
+    for section_id in [
+        "weekly_picks",
+        "top_rated",
+        "recent_releases",
+        "binge_worthy_series",
+    ]:
+        section = home_section(data, section_id)
+        assert section["section_type"] == "poster_rail"
+        assert section["items"]
+        assert len(section["items"]) <= 6
+        assert_no_duplicate_ids(section["items"])
+        for item in section["items"]:
+            assert_home_card_public_quality(item)
+
+
+def test_home_bucketed_sections_have_expected_buckets_and_clean_cards(client):
+    response = client.get("/content/home?limit_per_section=6")
+    data = response.json()
+
+    assert response.status_code == 200
+    mood_section = home_section(data, "mood_pace")
+    assert mood_section["section_type"] == "bucketed_rail"
+    assert [bucket["bucket_id"] for bucket in mood_section["buckets"]] == [
+        "fast_paced",
+        "slow_burn_thoughtful",
+        "dark_intense",
+        "light_comfort",
+    ]
+    for bucket in mood_section["buckets"]:
+        assert bucket["items"]
+        assert len(bucket["items"]) <= 6
+        assert_no_duplicate_ids(bucket["items"])
+        for item in bucket["items"]:
+            assert_home_card_public_quality(item)
+
+    platform_section = home_section(data, "platform_picks")
+    assert platform_section["section_type"] == "bucketed_rail"
+    allowed_platform_labels = {"Netflix", "Prime Video", "JioHotstar", "Apple TV+", "YouTube"}
+    for bucket in platform_section["buckets"]:
+        assert bucket["label"] in allowed_platform_labels
+        assert len(bucket["items"]) <= 6
+        assert_no_duplicate_ids(bucket["items"])
+        for item in bucket["items"]:
+            assert_home_card_public_quality(item)
+
+
+def test_home_limit_per_section_clamps(client):
+    low_response = client.get("/content/home?limit_per_section=1")
+    high_response = client.get("/content/home?limit_per_section=100")
+
+    assert low_response.status_code == 200
+    assert high_response.status_code == 200
+
+    low_top = home_section(low_response.json(), "top_rated")
+    high_top = home_section(high_response.json(), "top_rated")
+
+    assert len(low_top["items"]) == HOME_MIN_LIMIT
+    assert len(high_top["items"]) <= HOME_MAX_LIMIT
+
+
+def test_home_top_rated_uses_high_scoring_ranked_candidates(client):
+    response = client.get("/content/home?limit_per_section=8")
+    data = response.json()
+    items = home_section(data, "top_rated")["items"]
+
+    assert response.status_code == 200
+    assert items
+    assert all(item["unified_score"] is not None for item in items)
+    assert all(item["unified_score"] >= content_service.HOME_HIGH_SCORE_FLOOR for item in items)
+    assert [item["unified_score"] for item in items] == sorted(
+        [item["unified_score"] for item in items],
+        reverse=True,
+    )
+
+
+def test_home_recent_releases_use_homepage_freshness_order(client, db_session):
+    limit = 8
+    response = client.get(f"/content/home?limit_per_section={limit}")
+    data = response.json()
+    items = home_section(data, "recent_releases")["items"]
+
+    assert response.status_code == 200
+    assert [item["title"] for item in items] == expected_home_recent_titles(
+        db_session,
+        limit=limit,
+    )
+    recent_section = home_section(data, "recent_releases")
+    assert recent_section["section_id"] == "recent_releases"
+    assert recent_section["title"] == "New & Recently Active"
+    assert recent_section["subtitle"] == (
+        "Newer movies and recently active series from the catalog."
+    )
+
+
+def test_home_recent_releases_can_include_recently_active_series(client, db_session):
+    expected_rows = expected_home_recent_rows(db_session, limit=20)
+    expected_series = next(
+        (row for row in expected_rows if row["content_type"] == "series"),
+        None,
+    )
+    if not expected_series:
+        pytest.skip("No recently active series appears in the homepage recent pool.")
+
+    response = client.get("/content/home?limit_per_section=20")
+    items = home_section(response.json(), "recent_releases")["items"]
+
+    assert response.status_code == 200
+    assert expected_series["title"] in {item["title"] for item in items}
+
+
+def test_home_mood_buckets_use_positive_and_exclusion_signals(client, db_session):
+    response = client.get("/content/home?limit_per_section=8")
+    mood_section = home_section(response.json(), "mood_pace")
+
+    fast = home_bucket(mood_section, "fast_paced")["items"]
+    slow = home_bucket(mood_section, "slow_burn_thoughtful")["items"]
+    dark = home_bucket(mood_section, "dark_intense")["items"]
+    light = home_bucket(mood_section, "light_comfort")["items"]
+
+    fast_positive = {
+        "action-heavy",
+        "fast-moving",
+        "fast-paced",
+        "propulsive",
+        "mission-driven",
+        "plot-driven",
+        "survival-driven",
+        "chase",
+        "pursuit",
+        "action spectacle",
+    }
+    fast_excluded = {
+        "slow-burn",
+        "meditative",
+        "contemplative",
+        "reflective",
+        "gentle",
+        "quiet",
+        "dialogue-heavy",
+        "cozy",
+        "comfort",
+    }
+    slow_positive = {
+        "slow-burn",
+        "meditative",
+        "contemplative",
+        "reflective",
+        "thoughtful",
+        "philosophical",
+        "dialogue-heavy",
+        "puzzle-like",
+        "mind-bending",
+    }
+    slow_excluded = {
+        "fast-paced",
+        "fast-moving",
+        "action-heavy",
+        "propulsive",
+        "mission-driven",
+        "plot-driven",
+        "chase",
+        "pursuit",
+        "action spectacle",
+        "survival-driven",
+        "heist story",
+        "high intensity",
+    }
+    dark_positive = {
+        "tense",
+        "suspenseful",
+        "dark",
+        "dark tone",
+        "high intensity",
+        "psychological thriller",
+        "horror",
+        "dystopian",
+        "dystopian future",
+        "gritty",
+        "bleak",
+        "foreboding",
+        "organized crime",
+        "crime drama",
+        "violent crime",
+        "brutal",
+        "morally grey",
+    }
+    light_excluded = {
+        "dark",
+        "dark tone",
+        "tense",
+        "suspenseful",
+        "high intensity",
+        "high-stakes",
+        "psychological thriller",
+        "psychological",
+        "horror",
+        "dystopian",
+        "dystopian future",
+        "gritty",
+        "bleak",
+        "foreboding",
+        "organized crime",
+        "crime drama",
+        "violent crime",
+        "brutal",
+        "morally grey",
+        "survival",
+        "survival drama",
+        "survival-driven",
+        "crisis",
+        "serious tone",
+        "disaster story",
+        "disaster drama",
+        "body horror",
+        "disaster",
+        "trauma",
+        "revenge",
+        "serial killer",
+        "murder",
+        "war",
+        "grief-heavy",
+        "melancholic",
+        "action-heavy",
+    }
+
+    assert response.status_code == 200
+    assert_items_have_signal_terms(db_session, fast, fast_positive)
+    assert_items_do_not_have_signal_terms(db_session, fast, fast_excluded)
+    assert_items_have_signal_terms(db_session, slow, slow_positive)
+    assert_items_do_not_have_signal_terms(db_session, slow, slow_excluded)
+    assert_items_have_signal_terms(db_session, dark, dark_positive)
+    assert_items_do_not_have_signal_terms(db_session, light, light_excluded)
+    light_titles = {item["title"] for item in light}
+    slow_titles = {item["title"] for item in slow}
+    assert "Dark" not in light_titles
+    assert "The Penguin" not in light_titles
+    assert "Society of the Snow" not in light_titles
+    assert "Eternal Sunshine of the Spotless Mind" not in light_titles
+    assert "Money Heist" not in slow_titles
+
+
+def test_home_binge_worthy_series_returns_only_series(client):
+    response = client.get("/content/home?limit_per_section=8")
+    items = home_section(response.json(), "binge_worthy_series")["items"]
+
+    assert response.status_code == 200
+    assert items
+    assert all(item["content_type"] == "series" for item in items)
+
+
+def test_home_daily_sections_are_stable_for_same_date(client, monkeypatch):
+    monkeypatch.setattr(
+        content_service,
+        "get_home_reference_date",
+        lambda: date(2026, 7, 10),
+    )
+
+    first = client.get("/content/home?limit_per_section=6").json()
+    second = client.get("/content/home?limit_per_section=6").json()
+
+    assert first["generated_for"] == "2026-07-10"
+    assert second["generated_for"] == "2026-07-10"
+    assert section_item_ids(home_section(first, "weekly_picks")) == section_item_ids(
+        home_section(second, "weekly_picks")
+    )
+    assert section_item_ids(home_section(first, "top_rated")) == section_item_ids(
+        home_section(second, "top_rated")
+    )
+    assert section_item_ids(home_section(first, "binge_worthy_series")) == section_item_ids(
+        home_section(second, "binge_worthy_series")
+    )
+
+    first_mood = home_section(first, "mood_pace")
+    second_mood = home_section(second, "mood_pace")
+    for bucket_id in ["fast_paced", "slow_burn_thoughtful", "dark_intense", "light_comfort"]:
+        assert section_item_ids(home_bucket(first_mood, bucket_id)) == section_item_ids(
+            home_bucket(second_mood, bucket_id)
+        )
+
+    first_platform = home_section(first, "platform_picks")
+    second_platform = home_section(second, "platform_picks")
+    for first_bucket, second_bucket in zip(first_platform["buckets"], second_platform["buckets"]):
+        assert first_bucket["bucket_id"] == second_bucket["bucket_id"]
+        assert section_item_ids(first_bucket) == section_item_ids(second_bucket)
+
+
+def test_home_rotation_helpers_can_change_with_different_seeds():
+    rows = [
+        {
+            "id": index,
+            "title": f"Title {index}",
+            "unified_score": 90,
+            "scoring_source_count": 2,
+            "source_count": 2,
+            "year": 2020,
+        }
+        for index in range(1, 31)
+    ]
+
+    today = select_rotated_rows(rows, 8, "2026-07-10", "top_rated")
+    tomorrow = select_rotated_rows(rows, 8, "2026-07-11", "top_rated")
+    this_week = select_rotated_rows(rows, 8, "2026-W28", "weekly_picks", False)
+    next_week = select_rotated_rows(rows, 8, "2026-W29", "weekly_picks", False)
+
+    assert [row["id"] for row in today] != [row["id"] for row in tomorrow]
+    assert [row["id"] for row in this_week] != [row["id"] for row in next_week]
+
+
+def test_home_seed_helpers_are_stable_for_injected_dates():
+    reference_date = date(2026, 7, 10)
+
+    assert content_service.daily_seed(reference_date) == "2026-07-10"
+    assert content_service.daily_seed(reference_date) == content_service.daily_seed(
+        date(2026, 7, 10)
+    )
+    assert content_service.weekly_seed(reference_date) == "2026-W28"
+    assert content_service.weekly_seed(reference_date) == content_service.weekly_seed(
+        date(2026, 7, 11)
+    )
+
+
+def test_home_service_accepts_reference_date_override(db_session):
+    data = content_service.get_home_content_service(
+        db_session,
+        limit_per_section=6,
+        reference_date=date(2026, 7, 10),
+    )
+
+    assert data["generated_for"] == "2026-07-10"
+
+
+def test_home_candidate_pool_size_is_bounded():
+    assert home_candidate_pool_size(1) == 40
+    assert home_candidate_pool_size(8) == 40
+    assert home_candidate_pool_size(20) == 100
+    assert home_candidate_pool_size(100) == 100
+    assert home_candidate_pool_size(4) == 40
+    assert home_candidate_pool_size(20) == 100
 
 
 def test_get_content_returns_seed_or_larger_catalog(client):

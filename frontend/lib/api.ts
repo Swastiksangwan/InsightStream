@@ -2,6 +2,7 @@ import type {
   ContentDetailsResponse,
   DiscoverContentParams,
   Genre,
+  HomeResponse,
   PaginatedContentResponse,
   PlatformMetadata,
   PlatformType,
@@ -91,6 +92,14 @@ export function getRecentContent(limit = 8) {
 export function getTopRatedContent(limit = 8) {
   return fetchFromApi<PaginatedContentResponse>(
     buildUrl("/content/top-rated", { limit: normalizeLimit(limit) }),
+  );
+}
+
+export function getHomeContent(limitPerSection = 8) {
+  return fetchFromApi<HomeResponse>(
+    buildUrl("/content/home", {
+      limit_per_section: Math.min(Math.max(Math.trunc(limitPerSection), 4), 20),
+    }),
   );
 }
 

@@ -20,6 +20,7 @@ Covered areas:
 - genre discovery
 - platform discovery
 - combined discovery
+- homepage sections API
 - content details
 - content credits endpoint, allowing empty arrays before credits import
 - person detail endpoint, conditional on imported people data
@@ -47,6 +48,7 @@ Covered areas:
 - source-signal decision-layer display grouping, deduplication, supporting facts, repeated-investigation cleanup, historical/war theme fallbacks, specific caution copy, `best_for` normalization, and public-output sanitization
 - decision display quality-audit helper behavior, including issue detection, scoring, grading, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
 - source-signal mapping quality-audit helper behavior, including signal richness scoring, missing dimension detection, calibrated caution-proxy diagnostics, backend-display fallback diagnostics, weak/generic labels, stricter subgenre opportunity detection, unmapped keyword opportunities, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
+- homepage sections API behavior, including section order, hero quick filters, poster-backed cards, explicit refresh-date handling, bounded deterministic rotation, movie/series freshness ordering, mood-bucket inclusion/exclusion rules, score quality, series-only rails, compact card copy, public-label sanitization, duplicate prevention, and limit clamping
 - source-signal ingestion health-check summary behavior
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
@@ -103,7 +105,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 
 - `backend/tests/conftest.py` — shared `TestClient` and database fixtures
 - `backend/tests/test_health.py` — root health endpoint
-- `backend/tests/test_content_read_endpoints.py` — content, discovery, and details read endpoints
+- `backend/tests/test_content_read_endpoints.py` — content, discovery, homepage sections, and details read endpoints
 - `backend/tests/test_content_credits_endpoints.py` — provider-neutral content credits endpoint
 - `backend/tests/test_people_endpoints.py` — provider-neutral person detail and person credits endpoints
 - `backend/tests/test_metadata_endpoints.py` — genre and platform metadata endpoints
@@ -143,4 +145,5 @@ Future test additions should include:
 - empty-state tests
 - database reset/test isolation later
 - recommendation tests when recommendations are added
+- richer homepage section tests when personalized recommendation rails are introduced
 - frontend/API integration tests later

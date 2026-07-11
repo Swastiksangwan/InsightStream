@@ -30,6 +30,63 @@ class PaginatedContentResponse(BaseModel):
     offset: int
 
 
+class HomeQuickFilter(BaseModel):
+    label: str
+    filter_key: str
+
+
+class HomeHero(BaseModel):
+    title: str
+    subtitle: str
+    quick_filters: List[HomeQuickFilter]
+
+
+class HomeContentCard(BaseModel):
+    id: int
+    title: str
+    content_type: str
+    year: Optional[int] = None
+    poster_url: Optional[str] = None
+    backdrop_url: Optional[str] = None
+    runtime: Optional[int] = None
+    age_rating: Optional[str] = None
+    release_date: Optional[date] = None
+    unified_score: Optional[int] = None
+    source_count: Optional[int] = None
+    scoring_source_count: Optional[int] = None
+    primary_platform: Optional[str] = None
+    platforms: List[str]
+    decision_reason: str
+    chips: List[str]
+
+
+class HomeBucket(BaseModel):
+    bucket_id: str
+    label: str
+    subtitle: str
+    refresh_strategy: Optional[str] = None
+    refresh_cadence: Optional[str] = None
+    items: List[HomeContentCard]
+
+
+class HomeSection(BaseModel):
+    section_id: str
+    title: str
+    subtitle: str
+    section_type: str
+    refresh_strategy: str
+    refresh_cadence: str
+    items: Optional[List[HomeContentCard]] = None
+    buckets: Optional[List[HomeBucket]] = None
+
+
+class HomeResponse(BaseModel):
+    hero: HomeHero
+    sections: List[HomeSection]
+    generated_for: Optional[str] = None
+    refresh_note: Optional[str] = None
+
+
 # Platform
 class Platform(BaseModel):
     name: str
