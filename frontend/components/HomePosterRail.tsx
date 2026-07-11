@@ -11,10 +11,12 @@ export function HomePosterRail({ items }: HomePosterRailProps) {
   }
 
   return (
-    <div className="home-poster-rail">
-      {items.map((item) => (
-        <HomeContentCard key={item.id} item={item} />
-      ))}
+    <div className="home-poster-rail-shell">
+      <div className="home-poster-rail">
+        {items.map((item) => (
+          <HomeContentCard key={item.id} item={item} />
+        ))}
+      </div>
     </div>
   );
 }
