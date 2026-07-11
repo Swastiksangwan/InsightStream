@@ -1,51 +1,126 @@
 import { Suspense } from "react";
-import { ContentSection } from "@/components/ContentSection";
+import { EmptyState } from "@/components/EmptyState";
 import { ErrorState } from "@/components/ErrorState";
+import { HomeBucketSection } from "@/components/HomeBucketSection";
+import { HomePosterRail } from "@/components/HomePosterRail";
 import { LoadingState } from "@/components/LoadingState";
-import { getRecentContent, getTopRatedContent } from "@/lib/api";
+import { getHomeContent } from "@/lib/api";
+import type { HomeQuickFilter, HomeSection } from "@/types/content";
+
+const HOME_SECTION_LIMIT = 8;
+
+function quickFilterHref(filter: HomeQuickFilter) {
+  if (filter.filter_key === "top_rated") {
+    return "#top_rated";
+  }
+
+  if (
+    filter.filter_key === "fast_paced" ||
+    filter.filter_key === "dark_intense" ||
+    filter.filter_key === "light_comfort"
+  ) {
+    return "#mood_pace";
+  }
+
+  return "#home-sections";
+}
+
+function formatGeneratedFor(value?: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+}
+
+function hasRenderableContent(section: HomeSection) {
+  if (section.section_type === "bucketed_rail") {
+    return (section.buckets ?? []).some((bucket) => bucket.items.length > 0);
+  }
+
+  return (section.items ?? []).length > 0;
+}
+
+function HomeSectionBlock({ section }: { section: HomeSection }) {
+  if (!hasRenderableContent(section)) {
+    return null;
+  }
+
+  return (
+    <section
+      className="home-section"
+      id={section.section_id}
+      aria-labelledby={`${section.section_id}-heading`}
+    >
+      <div className="home-section__header">
+        <div>
+          <h2 id={`${section.section_id}-heading`}>{section.title}</h2>
+        </div>
+        <p>{section.subtitle}</p>
+      </div>
+
+      {section.section_type === "bucketed_rail" ? (
+        <HomeBucketSection buckets={section.buckets ?? []} />
+      ) : (
+        <HomePosterRail items={section.items ?? []} />
+      )}
+    </section>
+  );
+}
 
 async function HomepageContent() {
   try {
-    const [recentContent, topRatedContent] = await Promise.all([
-      getRecentContent(8),
-      getTopRatedContent(8),
-    ]);
+    const home = await getHomeContent(HOME_SECTION_LIMIT);
+    const sections = home.sections.filter(hasRenderableContent);
+    const generatedFor = formatGeneratedFor(home.generated_for);
 
     return (
       <>
-        <section className="catalog-summary" aria-label="Catalog summary">
-          <div>
-            <span className="summary-label">Catalog</span>
-            <strong>{recentContent.total} titles</strong>
-            <span>movies and series ready for browsing</span>
+        <section className="home-hero" aria-label="Homepage decision hub">
+          <div className="home-hero__copy">
+            <div className="eyebrow">Movies and series decision support</div>
+            <h1>{home.hero.title}</h1>
+            <p>{home.hero.subtitle}</p>
+
+            {home.hero.quick_filters.length > 0 ? (
+              <div className="home-quick-filters" aria-label="Quick filters">
+                {home.hero.quick_filters.map((filter) => (
+                  <a key={filter.filter_key} href={quickFilterHref(filter)}>
+                    {filter.label}
+                  </a>
+                ))}
+              </div>
+            ) : null}
           </div>
-          <div>
-            <span className="summary-label">Browse</span>
-            <strong>Recent</strong>
-            <span>release-date discovery feed</span>
-          </div>
-          <div>
-            <span className="summary-label">Decision Signal</span>
-            <strong>Top Rated</strong>
-            <span>ranked by unified score</span>
+
+          <div className="home-hero__panel" aria-label="Refresh information">
+            <span>Homepage intelligence</span>
+            <strong>{generatedFor ? `Updated for ${generatedFor}` : "Updated daily"}</strong>
+            <p>Daily rails refresh automatically. Weekly picks refresh every week.</p>
           </div>
         </section>
 
-        <ContentSection
-          title="Recent Releases"
-          eyebrow="Fresh from the catalog"
-          description="Newer movies and series from the current canonical seed data."
-          items={recentContent.items}
-          emptyMessage="No recent content is available yet."
-        />
-
-        <ContentSection
-          title="Top Rated Picks"
-          eyebrow="Decision support"
-          description="High-scoring titles ordered by InsightStream's unified score."
-          items={topRatedContent.items}
-          emptyMessage="No top-rated content is available yet."
-        />
+        {sections.length > 0 ? (
+          <div className="home-sections" id="home-sections">
+            {sections.map((section) => (
+              <HomeSectionBlock key={section.section_id} section={section} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="No homepage picks yet"
+            message="Homepage sections will appear here once the backend has display-ready titles."
+          />
+        )}
       </>
     );
   } catch (error) {
@@ -56,7 +131,7 @@ async function HomepageContent() {
 
     return (
       <ErrorState
-        title="Could not load content"
+        title="Could not load homepage"
         message={`${message} Make sure the FastAPI backend is running at the configured API URL.`}
       />
     );
@@ -65,16 +140,7 @@ async function HomepageContent() {
 
 export default function HomePage() {
   return (
-    <main>
-      <section className="hero-section">
-        <div className="eyebrow">Movies and series decision support</div>
-        <h1>Decide what to watch next.</h1>
-        <p>
-          Browse recent releases and top-rated picks with a clean, data-first
-          view of entertainment signals.
-        </p>
-      </section>
-
+    <main className="home-page">
       <Suspense fallback={<LoadingState message="Loading InsightStream picks..." />}>
         <HomepageContent />
       </Suspense>

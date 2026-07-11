@@ -45,6 +45,63 @@ export type PaginatedContentResponse = {
   offset: number;
 };
 
+export type HomeQuickFilter = {
+  label: string;
+  filter_key: string;
+};
+
+export type HomeHero = {
+  title: string;
+  subtitle: string;
+  quick_filters: HomeQuickFilter[];
+};
+
+export type HomeContentCard = {
+  id: number;
+  title: string;
+  content_type: Content["type"];
+  year?: number | null;
+  poster_url?: string | null;
+  backdrop_url?: string | null;
+  runtime?: number | null;
+  age_rating?: string | null;
+  release_date?: string | null;
+  unified_score?: number | null;
+  source_count?: number | null;
+  scoring_source_count?: number | null;
+  primary_platform?: string | null;
+  platforms: string[];
+  decision_reason: string;
+  chips: string[];
+};
+
+export type HomeBucket = {
+  bucket_id: string;
+  label: string;
+  subtitle: string;
+  refresh_strategy?: string | null;
+  refresh_cadence?: string | null;
+  items: HomeContentCard[];
+};
+
+export type HomeSection = {
+  section_id: string;
+  title: string;
+  subtitle: string;
+  section_type: "poster_rail" | "bucketed_rail" | string;
+  refresh_strategy: string;
+  refresh_cadence: string;
+  items?: HomeContentCard[] | null;
+  buckets?: HomeBucket[] | null;
+};
+
+export type HomeResponse = {
+  hero: HomeHero;
+  sections: HomeSection[];
+  generated_for?: string | null;
+  refresh_note?: string | null;
+};
+
 export type Genre = {
   id: number;
   name: string;

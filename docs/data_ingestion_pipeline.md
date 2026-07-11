@@ -681,11 +681,11 @@ Refresh behavior is deterministic:
 
 - `weekly_picks` uses ISO year/week rotation from a bounded high-quality pool.
 - `top_rated`, `mood_pace`, `platform_picks`, and `binge_worthy_series` use daily deterministic rotation.
-- `recent_releases` does not rotate artificially; it orders by release date, then score/source strength, then title.
+- `recent_releases` does not rotate artificially; it orders movies by release date and series by available freshness metadata such as next/last episode or last-air dates, then score/source strength, then title.
 
 The daily and weekly seeds use the Asia/Kolkata calendar date boundary, matching the current India-focused availability region. Tests can still inject a reference date so homepage refresh behavior remains deterministic and deployment-safe.
 
-Homepage cards are poster-led. Candidate queries for every homepage section require `poster_url` so future frontend rails do not receive posterless cards. Standalone endpoints such as `/content/top-rated`, `/content/recent`, and `/content/discover` keep their existing behavior.
+Homepage cards are poster-led. Candidate queries for every homepage section require `poster_url` so future frontend rails do not receive posterless cards. Mood/pace buckets use positive source-signal matches plus conflict exclusions, with `light_comfort` intentionally strict so darker or intense titles do not leak into light-watch discovery. Platform buckets are curated to recognizable homepage labels such as Netflix, Prime Video, JioHotstar, Apple TV+, and YouTube when present in the local database. Standalone endpoints such as `/content/top-rated`, `/content/recent`, `/content/discover`, and `/platforms` keep their existing behavior.
 
 The endpoint is designed for catalog growth:
 

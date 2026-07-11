@@ -48,7 +48,7 @@ Covered areas:
 - source-signal decision-layer display grouping, deduplication, supporting facts, repeated-investigation cleanup, historical/war theme fallbacks, specific caution copy, `best_for` normalization, and public-output sanitization
 - decision display quality-audit helper behavior, including issue detection, scoring, grading, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
 - source-signal mapping quality-audit helper behavior, including signal richness scoring, missing dimension detection, calibrated caution-proxy diagnostics, backend-display fallback diagnostics, weak/generic labels, stricter subgenre opportunity detection, unmapped keyword opportunities, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
-- homepage sections API behavior, including section order, hero quick filters, poster-backed cards, explicit refresh-date handling, bounded deterministic rotation, recent-release ordering, bucket structure, score quality, series-only rails, compact card copy, public-label sanitization, duplicate prevention, and limit clamping
+- homepage sections API behavior, including section order, hero quick filters, poster-backed cards, explicit refresh-date handling, bounded deterministic rotation, movie/series freshness ordering, mood-bucket inclusion/exclusion rules, score quality, series-only rails, compact card copy, public-label sanitization, duplicate prevention, and limit clamping
 - source-signal ingestion health-check summary behavior
 
 `POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.

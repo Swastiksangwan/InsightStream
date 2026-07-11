@@ -19,6 +19,75 @@ HOME_HIGH_SCORE_FLOOR = 70
 HOME_MAX_PLATFORM_BUCKETS = 5
 HOME_REFRESH_TIMEZONE = "Asia/Kolkata"
 HOME_POSTER_REQUIRED_WHERE = "c.poster_url IS NOT NULL AND c.poster_url <> ''"
+HOME_PLATFORM_PREFERRED_ORDER = {
+    "Netflix": 1,
+    "Prime Video": 2,
+    "JioHotstar": 3,
+    "Apple TV+": 4,
+    "YouTube": 5,
+}
+HOME_CHIP_MAX_LENGTH = 18
+HOME_CARD_PLATFORM_MAX_LENGTH = 18
+HOME_CHIP_LABEL_MAP = {
+    "organized-crime drama": "Crime",
+    "organised-crime drama": "Crime",
+    "organized crime": "Crime",
+    "organised crime": "Crime",
+    "cartel crime drama": "Crime",
+    "crime drama": "Crime",
+    "gangster crime": "Gangster",
+    "gangster crime story": "Gangster",
+    "psychological drama": "Psychological",
+    "psychological thriller": "Psychological",
+    "fantasy adventure": "Fantasy",
+    "sci-fi adventure": "Sci-fi",
+    "space sci-fi": "Space sci-fi",
+    "space survival sci-fi": "Space sci-fi",
+    "superhero story": "Superhero",
+    "superhero team story": "Superhero",
+    "animated superhero drama": "Superhero",
+    "disaster drama": "Disaster",
+    "disaster survival": "Survival",
+    "martial-arts action": "Martial arts",
+    "family-focused story": "Family",
+    "family focused story": "Family",
+    "family drama": "Family",
+    "workplace comedy": "Comedy",
+    "workplace drama": "Workplace",
+    "kitchen workplace drama": "Kitchen",
+    "dystopian future": "Dystopian",
+    "political drama": "Political",
+    "political power drama": "Political",
+    "conspiracy thriller": "Conspiracy",
+    "creature threat": "Creature threat",
+    "creature thriller": "Creature",
+    "survival drama": "Survival",
+    "post-apocalyptic survival drama": "Survival",
+    "revenge drama": "Revenge",
+    "historical action epic": "Historical epic",
+    "historical drama": "Historical",
+    "character-driven drama": "Character-driven",
+    "serial-killer investigation": "Serial killer",
+    "memory and identity": "Identity",
+    "power struggle": "Power struggle",
+    "dark tone": "Dark",
+    "light tone": "Light",
+    "high intensity": "High intensity",
+    "slow-burn": "Slow-burn",
+    "puzzle-like": "Puzzle-like",
+}
+HOMEPAGE_FRESHNESS_DATE_EXPRESSION = """
+    CASE
+        WHEN c.content_type = 'series' THEN COALESCE(
+            csm.next_episode_air_date,
+            csm.last_episode_air_date,
+            csm.last_air_date,
+            c.latest_activity_date,
+            c.release_date
+        )
+        ELSE COALESCE(c.release_date, c.latest_activity_date)
+    END
+"""
 
 try:
     HOME_REFRESH_ZONE = ZoneInfo(HOME_REFRESH_TIMEZONE)
@@ -478,6 +547,7 @@ def home_candidate_query(
     order_by: str,
     limit: int,
     extra_select: str = "",
+    extra_join: str = "",
 ) -> str:
     return f"""
         SELECT
@@ -491,6 +561,7 @@ def home_candidate_query(
         FROM content c
         {CONTENT_RATING_SUMMARY_JOIN}
         LEFT JOIN content_watch_guidance cwg ON cwg.content_id = c.id
+        {extra_join}
         WHERE {HOME_POSTER_REQUIRED_WHERE}
           AND {where_clause}
         {order_by}
@@ -506,8 +577,18 @@ def fetch_home_candidates(
     pool_limit: int,
     params: dict = None,
     bindparams: list = None,
+    extra_select: str = "",
+    extra_join: str = "",
 ) -> list[dict]:
-    query = text(home_candidate_query(where_clause, order_by, pool_limit))
+    query = text(
+        home_candidate_query(
+            where_clause,
+            order_by,
+            pool_limit,
+            extra_select=extra_select,
+            extra_join=extra_join,
+        )
+    )
     for bind_param in bindparams or []:
         query = query.bindparams(bind_param)
 
@@ -532,17 +613,49 @@ def signal_match_clause() -> str:
     """
 
 
+def signal_exclusion_clause() -> str:
+    return """
+        NOT EXISTS (
+            SELECT 1
+            FROM content_source_signals css_ex
+            WHERE css_ex.content_id = c.id
+              AND css_ex.is_active = TRUE
+              AND (
+                  LOWER(css_ex.value) IN :excluded_signal_terms
+                  OR LOWER(css_ex.label) IN :excluded_signal_terms
+              )
+        )
+    """
+
+
 def fetch_signal_bucket_candidates(
     db: Session,
     *,
     signal_terms: list[str],
     signal_dimensions: list[str],
     pool_limit: int,
+    excluded_terms: list[str] = None,
 ) -> list[dict]:
+    exclusion_where = ""
+    bindparams = [
+        bindparam("signal_terms", expanding=True),
+        bindparam("signal_dimensions", expanding=True),
+    ]
+    params = {
+        "signal_terms": [term.lower() for term in signal_terms],
+        "signal_dimensions": signal_dimensions,
+        "pool_limit": pool_limit,
+    }
+    if excluded_terms:
+        exclusion_where = f"AND {signal_exclusion_clause()}"
+        bindparams.append(bindparam("excluded_signal_terms", expanding=True))
+        params["excluded_signal_terms"] = [term.lower() for term in excluded_terms]
+
     query = text(
         home_candidate_query(
             where_clause=f"""
                 {signal_match_clause()}
+                {exclusion_where}
                 AND rating_summary.unified_score IS NOT NULL
                 AND cwg.content_id IS NOT NULL
             """,
@@ -556,20 +669,8 @@ def fetch_signal_bucket_candidates(
             """,
             limit=pool_limit,
         )
-    ).bindparams(
-        bindparam("signal_terms", expanding=True),
-        bindparam("signal_dimensions", expanding=True),
-    )
-    return sql_rows(
-        db.execute(
-            query,
-            {
-                "signal_terms": [term.lower() for term in signal_terms],
-                "signal_dimensions": signal_dimensions,
-                "pool_limit": pool_limit,
-            },
-        )
-    )
+    ).bindparams(*bindparams)
+    return sql_rows(db.execute(query, params))
 
 
 def normalize_platform_display_name(name: str) -> str:
@@ -585,6 +686,58 @@ def normalize_platform_display_name(name: str) -> str:
     if normalized == "netflix":
         return "Netflix"
     return name
+
+
+def normalize_home_card_platform_label(name: str):
+    if not isinstance(name, str) or not name.strip():
+        return None
+
+    raw_name = " ".join(name.strip().split())
+    normalized = raw_name.lower()
+    if "sony pictures" in normalized:
+        return "Sony Pictures"
+    if "vi movies" in normalized or "movies and tv" in normalized:
+        return None
+
+    display_name = normalize_platform_display_name(raw_name)
+    if not display_name:
+        return None
+    if len(display_name) > HOME_CARD_PLATFORM_MAX_LENGTH:
+        return None
+    return display_name
+
+
+def home_display_platforms(platforms: list[str]) -> list[str]:
+    display_platforms = []
+    seen = set()
+    for platform in platforms:
+        display_name = normalize_home_card_platform_label(platform)
+        if not display_name:
+            continue
+        key = display_name.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        display_platforms.append(display_name)
+    return display_platforms
+
+
+def home_primary_platform(platforms: list[str]):
+    display_platforms = home_display_platforms(platforms)
+    if not display_platforms:
+        return None
+
+    preferred = [
+        platform
+        for platform in display_platforms
+        if platform in HOME_PLATFORM_PREFERRED_ORDER
+    ]
+    if preferred:
+        return sorted(
+            preferred,
+            key=lambda platform: HOME_PLATFORM_PREFERRED_ORDER[platform],
+        )[0]
+    return display_platforms[0]
 
 
 def platform_bucket_id(name: str) -> str:
@@ -644,17 +797,15 @@ def fetch_home_platform_bucket_defs(db: Session) -> list[dict]:
             bucket["platform_names"].append(row["name"])
         bucket["total_content"] += row["total_content"] or 0
 
-    preferred_order = {
-        "Netflix": 1,
-        "Prime Video": 2,
-        "JioHotstar": 3,
-        "Apple TV+": 4,
-        "YouTube": 5,
-    }
+    homepage_buckets = [
+        bucket
+        for bucket in grouped.values()
+        if bucket["label"] in HOME_PLATFORM_PREFERRED_ORDER
+    ]
     return sorted(
-        grouped.values(),
+        homepage_buckets,
         key=lambda item: (
-            preferred_order.get(item["label"], 99),
+            HOME_PLATFORM_PREFERRED_ORDER[item["label"]],
             -(item["total_content"] or 0),
             item["label"],
         ),
@@ -846,9 +997,15 @@ HOME_TECHNICAL_TERMS = (
 )
 HOME_WEAK_CHIPS = {
     "content",
+    "drama",
     "drama viewers",
     "story viewers",
     "generic story",
+    "complex story",
+    "heavier watch",
+    "bleak mood",
+    "dark story",
+    "serious story",
     "story",
     "stories",
 }
@@ -866,6 +1023,27 @@ def clean_home_label(value):
     if lower_value in HOME_WEAK_CHIPS:
         return None
     return cleaned
+
+
+def normalize_home_chip_label(label):
+    cleaned = clean_home_label(label)
+    if not cleaned:
+        return None
+
+    normalized_key = (
+        cleaned.lower()
+        .replace("–", "-")
+        .replace("—", "-")
+        .replace("‑", "-")
+    )
+    normalized_key = " ".join(normalized_key.split())
+    compact_label = HOME_CHIP_LABEL_MAP.get(normalized_key, cleaned)
+    compact_label = " ".join(compact_label.strip().split())
+    if not clean_home_label(compact_label):
+        return None
+    if len(compact_label) > HOME_CHIP_MAX_LENGTH:
+        return None
+    return compact_label
 
 
 def content_type_label(content_type: str) -> str:
@@ -893,7 +1071,7 @@ def build_home_chips(row: dict, signal_labels: list[str]) -> list[str]:
     chips = []
     seen = set()
     for candidate in candidates:
-        label = clean_home_label(candidate)
+        label = normalize_home_chip_label(candidate)
         if not label:
             continue
         key = label.lower()
@@ -941,7 +1119,7 @@ def build_home_card(
     platform_map: dict[int, list[str]],
     signal_label_map: dict[int, list[str]],
 ) -> dict:
-    platforms = platform_map.get(row["id"], [])
+    platforms = home_display_platforms(platform_map.get(row["id"], []))
     chips = build_home_chips(row, signal_label_map.get(row["id"], []))
     decision_reason = build_home_decision_reason(row, chips, platforms)
 
@@ -958,7 +1136,7 @@ def build_home_card(
         "unified_score": row.get("unified_score"),
         "source_count": row.get("source_count"),
         "scoring_source_count": row.get("scoring_source_count"),
-        "primary_platform": platforms[0] if platforms else None,
+        "primary_platform": home_primary_platform(platforms),
         "platforms": platforms[:3],
         "decision_reason": decision_reason,
         "chips": chips,
@@ -1049,15 +1227,17 @@ def get_home_content_service(
 
     recent_rows = fetch_home_candidates(
         db,
-        where_clause="c.release_date IS NOT NULL",
+        where_clause=f"({HOMEPAGE_FRESHNESS_DATE_EXPRESSION}) IS NOT NULL",
         order_by="""
             ORDER BY
-                c.release_date DESC NULLS LAST,
+                homepage_freshness_date DESC NULLS LAST,
                 rating_summary.unified_score DESC NULLS LAST,
                 rating_summary.source_count DESC NULLS LAST,
                 c.title ASC
         """,
         pool_limit=limit,
+        extra_select=f", {HOMEPAGE_FRESHNESS_DATE_EXPRESSION} AS homepage_freshness_date",
+        extra_join="LEFT JOIN content_series_metadata csm ON csm.content_id = c.id",
     )
 
     mood_bucket_defs = [
@@ -1076,9 +1256,19 @@ def get_home_content_service(
                 "chase",
                 "pursuit",
                 "action spectacle",
-                "adventure-driven",
             ],
             "dimensions": ["pacing", "intensity", "topic_theme"],
+            "excluded_terms": [
+                "slow-burn",
+                "meditative",
+                "contemplative",
+                "reflective",
+                "gentle",
+                "quiet",
+                "dialogue-heavy",
+                "cozy",
+                "comfort",
+            ],
         },
         {
             "bucket_id": "slow_burn_thoughtful",
@@ -1090,11 +1280,26 @@ def get_home_content_service(
                 "contemplative",
                 "reflective",
                 "thoughtful",
+                "philosophical",
                 "dialogue-heavy",
                 "puzzle-like",
                 "mind-bending",
             ],
             "dimensions": ["pacing", "tone", "mood"],
+            "excluded_terms": [
+                "fast-paced",
+                "fast-moving",
+                "action-heavy",
+                "propulsive",
+                "mission-driven",
+                "plot-driven",
+                "chase",
+                "pursuit",
+                "action spectacle",
+                "survival-driven",
+                "heist story",
+                "high intensity",
+            ],
         },
         {
             "bucket_id": "dark_intense",
@@ -1106,15 +1311,32 @@ def get_home_content_service(
                 "dark",
                 "dark tone",
                 "high intensity",
-                "high-stakes",
                 "psychological thriller",
                 "horror",
+                "dystopian",
                 "dystopian future",
                 "gritty",
                 "bleak",
                 "foreboding",
+                "organized crime",
+                "crime drama",
+                "violent crime",
+                "brutal",
+                "morally grey",
             ],
             "dimensions": ["mood", "tone", "intensity", "audience_expectation", "topic_theme"],
+            "excluded_terms": [
+                "warm",
+                "light",
+                "playful",
+                "gentle",
+                "uplifting",
+                "feel-good",
+                "comfort",
+                "cozy",
+                "family-focused",
+                "charming",
+            ],
         },
         {
             "bucket_id": "light_comfort",
@@ -1124,17 +1346,57 @@ def get_home_content_service(
                 "warm",
                 "light",
                 "playful",
-                "heartfelt",
                 "uplifting",
                 "family-focused",
                 "family-focused story",
                 "workplace comedy",
                 "comedy",
                 "gentle",
-                "emotional",
                 "hopeful",
+                "feel-good",
+                "comfort",
+                "cozy",
+                "charming",
             ],
             "dimensions": ["mood", "tone", "audience_expectation", "topic_theme"],
+            "excluded_terms": [
+                "dark",
+                "dark tone",
+                "tense",
+                "suspenseful",
+                "high intensity",
+                "high-stakes",
+                "psychological thriller",
+                "psychological",
+                "horror",
+                "dystopian",
+                "dystopian future",
+                "gritty",
+                "bleak",
+                "foreboding",
+                "organized crime",
+                "crime drama",
+                "violent crime",
+                "brutal",
+                "morally grey",
+                "survival",
+                "survival drama",
+                "survival-driven",
+                "crisis",
+                "serious tone",
+                "disaster story",
+                "disaster drama",
+                "body horror",
+                "disaster",
+                "trauma",
+                "revenge",
+                "serial killer",
+                "murder",
+                "war",
+                "grief-heavy",
+                "melancholic",
+                "action-heavy",
+            ],
         },
     ]
 
@@ -1145,6 +1407,7 @@ def get_home_content_service(
             signal_terms=bucket["terms"],
             signal_dimensions=bucket["dimensions"],
             pool_limit=pool_limit,
+            excluded_terms=bucket.get("excluded_terms"),
         )
         mood_rows_by_bucket[bucket["bucket_id"]] = select_rotated_rows(
             pool,
@@ -1271,10 +1534,10 @@ def get_home_content_service(
             },
             {
                 "section_id": "recent_releases",
-                "title": "Recent Releases",
-                "subtitle": "Newer movies and series from the catalog, ordered by release date.",
+                "title": "New & Recently Active",
+                "subtitle": "Newer movies and recently active series from the catalog.",
                 "section_type": "poster_rail",
-                "refresh_strategy": "release_date_order",
+                "refresh_strategy": "homepage_freshness_order",
                 "refresh_cadence": "data_driven",
                 "items": build_home_cards(recent_rows, platform_map, signal_label_map),
             },
@@ -1310,7 +1573,7 @@ def get_home_content_service(
         "refresh_note": (
             "Weekly picks refresh by ISO week. Top-rated, mood, platform, and "
             "series sections rotate deterministically by day; recent releases "
-            "follow release-date order."
+            "follow movie release dates and series freshness metadata."
         ),
     }
 
