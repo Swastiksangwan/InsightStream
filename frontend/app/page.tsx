@@ -9,6 +9,8 @@ import type { HomeQuickFilter, HomeSection } from "@/types/content";
 
 const HOME_SECTION_LIMIT = 8;
 
+export const dynamic = "force-dynamic";
+
 function quickFilterHref(filter: HomeQuickFilter) {
   if (filter.filter_key === "top_rated") {
     return "#top_rated";
