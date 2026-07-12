@@ -15,9 +15,21 @@ import type { PersonCreditsResponse, PersonDetail } from "@/types/people";
 import type { SearchResponse, SearchType } from "@/types/search";
 
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
+const HOME_REVALIDATE_SECONDS = 300;
+
+type ApiFetchOptions = RequestInit & {
+  next?: {
+    revalidate?: number | false;
+    tags?: string[];
+  };
+};
 
 function getApiBaseUrl() {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || DEFAULT_API_BASE_URL;
+  return (
+    process.env.API_BASE_URL ||
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    DEFAULT_API_BASE_URL
+  );
 }
 
 function buildUrl(
@@ -58,15 +70,20 @@ async function parseErrorMessage(response: Response) {
   }
 }
 
-async function fetchFromApi<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    cache: "no-store",
+async function fetchFromApi<T>(url: string, init?: ApiFetchOptions): Promise<T> {
+  const fetchOptions: ApiFetchOptions = {
     ...init,
     headers: {
       ...(init?.body ? { "Content-Type": "application/json" } : {}),
       ...init?.headers,
     },
-  });
+  };
+
+  if (!init?.cache && !init?.next) {
+    fetchOptions.cache = "no-store";
+  }
+
+  const response = await fetch(url, fetchOptions);
 
   if (!response.ok) {
     const message = await parseErrorMessage(response);
@@ -100,6 +117,9 @@ export function getHomeContent(limitPerSection = 8) {
     buildUrl("/content/home", {
       limit_per_section: Math.min(Math.max(Math.trunc(limitPerSection), 4), 20),
     }),
+    {
+      next: { revalidate: HOME_REVALIDATE_SECONDS },
+    },
   );
 }
 

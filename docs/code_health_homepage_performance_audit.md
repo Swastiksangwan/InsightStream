@@ -11,6 +11,35 @@ The visible loading state on hard reload is expected with the current architectu
 
 After clearing `.next`, I did not reproduce `ChunkLoadError` in dev or production mode. The earlier chunk errors are most consistent with stale Next dev chunks, browser cache, or HMR mismatch during active development rather than a production issue.
 
+## Implemented Follow-up
+
+Implemented after the initial audit:
+
+- `frontend/lib/api.ts` now supports per-request fetch cache options.
+- The default API behavior remains `cache: "no-store"` unless a call explicitly opts into caching.
+- `getHomeContent` now uses `next: { revalidate: 300 }` so public homepage data can be reused for five minutes.
+- User-specific and mutation-related API calls continue to use the no-store default.
+- Server-side API base URL resolution now prefers `API_BASE_URL`, then falls back to `NEXT_PUBLIC_API_BASE_URL`, then `http://127.0.0.1:8000`.
+- `frontend/app/page.tsx` stays request-rendered with `dynamic = "force-dynamic"` so a missing backend during build cannot bake an error homepage into the production artifact.
+- Removed the tracked empty `frontend/lib/types.ts` cleanup candidate.
+
+Verification after the follow-up:
+
+```text
+npm run typecheck  passed
+npm run build      passed
+npm run lint       not available in package.json
+```
+
+Production-like smoke check:
+
+- Started the backend on `127.0.0.1:8001`.
+- Started `next start` on `127.0.0.1:3001` with `API_BASE_URL` and `NEXT_PUBLIC_API_BASE_URL` pointing to the backend.
+- First homepage load showed the Suspense loading state while filling the cache.
+- Subsequent reloads rendered homepage content immediately at load.
+- Browser console showed no chunk errors.
+- Backend logs showed one `/content/home?limit_per_section=8` call across three browser loads.
+
 ## Runtime Reproduction
 
 ### Dev Mode
@@ -139,18 +168,7 @@ python3 -m pytest
 
 ## Recommended Next Task
 
-Make the homepage server fetch cache policy explicit.
-
-Suggested shape:
-
-1. Keep `frontend/app/page.tsx` as a Server Component.
-2. Keep `HomeBucketSection` as the client-only interactive piece.
-3. Add an optional fetch policy to `fetchFromApi`, for example `cache?: RequestCache` and `next?: NextFetchRequestConfig`.
-4. Use a homepage-specific policy in `getHomeContent`, such as short revalidation or daily-aware revalidation.
-5. Keep user-specific and mutation-related requests uncached.
-6. Consider a separate server-only `API_BASE_URL` for server fetches.
-
-This should reduce the reload loading flash without changing backend API behavior.
+The homepage server fetch cache policy is now explicit. The next useful task is to reduce homepage client JavaScript by splitting `HomeContentCard` into a server-renderable card plus a smaller client-only image fallback, or by replacing the image fallback state with a static poster fallback.
 
 ## Remaining Risks
 
@@ -160,4 +178,7 @@ This should reduce the reload loading flash without changing backend API behavio
 
 ## Low-Risk Fixes Applied
 
-No runtime code changes were applied. This audit only adds this report.
+- Added per-request API fetch cache options.
+- Applied five-minute revalidation only to `getHomeContent`.
+- Added server-side `API_BASE_URL` fallback support.
+- Removed the tracked empty `frontend/lib/types.ts` file.
