@@ -97,6 +97,7 @@ except ZoneInfoNotFoundError:
 CONTENT_SELECT_FIELDS = """
     c.id,
     c.title,
+    c.original_title,
     c.content_type,
     c.overview,
     c.poster_url,
@@ -105,8 +106,46 @@ CONTENT_SELECT_FIELDS = """
     c.year,
     c.runtime,
     c.language,
+    c.original_language,
     c.age_rating
 """
+LANGUAGE_DISPLAY_NAMES = {
+    "en": "English",
+    "hi": "Hindi",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "ml": "Malayalam",
+    "kn": "Kannada",
+    "bn": "Bengali",
+    "mr": "Marathi",
+    "pa": "Punjabi",
+    "gu": "Gujarati",
+    "ur": "Urdu",
+    "ko": "Korean",
+    "ja": "Japanese",
+    "zh": "Chinese",
+    "fr": "French",
+    "de": "German",
+    "es": "Spanish",
+    "it": "Italian",
+    "pt": "Portuguese",
+    "ru": "Russian",
+    "ar": "Arabic",
+    "tr": "Turkish",
+    "th": "Thai",
+    "vi": "Vietnamese",
+    "id": "Indonesian",
+    "pl": "Polish",
+    "nl": "Dutch",
+    "sv": "Swedish",
+    "da": "Danish",
+    "no": "Norwegian",
+    "fi": "Finnish",
+    "cs": "Czech",
+    "el": "Greek",
+    "he": "Hebrew",
+    "fa": "Persian",
+}
 
 CONTENT_RATING_SUMMARY_JOIN = f"""
     LEFT JOIN (
@@ -187,9 +226,13 @@ def row_value(row, key, default=None):
 
 
 def build_content_object(content_row):
+    original_language = row_value(content_row, "original_language")
+    language = content_row["language"]
+
     return {
         "id": content_row["id"],
         "title": content_row["title"],
+        "original_title": row_value(content_row, "original_title"),
         "type": content_row["content_type"],
         "overview": content_row["overview"],
         "poster": content_row["poster_url"],
@@ -197,12 +240,29 @@ def build_content_object(content_row):
         "release_date": content_row["release_date"],
         "year": content_row["year"],
         "runtime": content_row["runtime"],
-        "language": content_row["language"],
+        "language": language,
+        "original_language": original_language,
+        "original_language_name": display_language_name(original_language or language),
         "age_rating": content_row["age_rating"],
         "unified_score": row_value(content_row, "unified_score"),
         "source_count": row_value(content_row, "source_count"),
         "scoring_source_count": row_value(content_row, "scoring_source_count"),
     }
+
+
+def display_language_name(value: str = None) -> str:
+    if not value or not str(value).strip():
+        return None
+
+    language_value = str(value).strip()
+    normalized_code = language_value.lower()
+    if normalized_code in LANGUAGE_DISPLAY_NAMES:
+        return LANGUAGE_DISPLAY_NAMES[normalized_code]
+
+    if language_value.isalpha() and len(language_value) <= 3:
+        return language_value.upper()
+
+    return language_value
 
 
 def normalize_region_code(region_code: str = None) -> str:

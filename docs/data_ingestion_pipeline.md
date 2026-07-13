@@ -182,10 +182,21 @@ Important importer behavior:
 - Existing series `content.status` can update from valid TMDb refresh previews.
 - It does not blindly overwrite poster/backdrop conflicts.
 - It updates `latest_activity_date` for series from valid aired dates, not future next episode/season dates.
+- It stores provider-backed original title and original language when available:
+  - movies use TMDb `original_title`
+  - series use TMDb `original_name`
+  - both use TMDb `original_language`
+- The detail API/page uses original language for the language pill when present, falls back to legacy `language`, and does not infer dubbed-language availability.
 - It prints affected content and series metadata titles when rows would be inserted/updated in dry-run mode, and when rows are inserted/updated with `--apply`.
 - Use the row-level sections such as `Would update content rows`, `Updated content rows`, and `Updated series metadata rows` to verify which titles and fields changed before and after a metadata refresh.
 
 Processed previews are latest-run files. They are not always full-catalog snapshots. If a preview was generated with `--priority`, `--source-id`, or a target file, downstream preview builders may process only that subset.
+
+Existing local databases created before original-title/language support should run:
+
+```bash
+psql "$DATABASE_URL" -f backend/migrations/011_add_content_original_title_language.sql
+```
 
 ## 6. Credits and People Pipeline
 

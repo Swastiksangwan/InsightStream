@@ -1,6 +1,7 @@
 export type Content = {
   id: number;
   title: string;
+  original_title?: string | null;
   type: "movie" | "series";
   overview?: string | null;
   poster?: string | null;
@@ -9,6 +10,8 @@ export type Content = {
   year?: number | null;
   runtime?: number | null;
   language?: string | null;
+  original_language?: string | null;
+  original_language_name?: string | null;
   age_rating?: string | null;
   age_rating_region?: string | null;
   age_rating_source?: string | null;

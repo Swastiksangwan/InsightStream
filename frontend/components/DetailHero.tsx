@@ -76,6 +76,14 @@ function heroSeasonLabel(seriesMetadata?: SeriesMetadata | null) {
   }`;
 }
 
+function originalTitleLabel(content: Content) {
+  const originalTitle = content.original_title?.trim();
+  if (!originalTitle || originalTitle === content.title.trim()) {
+    return null;
+  }
+  return originalTitle;
+}
+
 export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps) {
   const [showBackdrop, setShowBackdrop] = useState(Boolean(content.backdrop));
   const [showPoster, setShowPoster] = useState(Boolean(content.poster));
@@ -90,13 +98,15 @@ export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps
       : null;
   const seasonLabel =
     content.type === "series" ? heroSeasonLabel(seriesMetadata) : null;
+  const languageLabel = content.original_language_name || content.language;
+  const originalTitle = originalTitleLabel(content);
   const metadata = [
     { label: formatType(content.type), title: "Content type" },
     content.year ? { label: String(content.year), title: "Release year" } : null,
     formatRuntime(content.runtime)
       ? { label: formatRuntime(content.runtime) || "", title: "Runtime" }
       : null,
-    content.language ? { label: content.language, title: "Language" } : null,
+    languageLabel ? { label: languageLabel, title: "Original language" } : null,
     content.age_rating
       ? {
           label: content.age_rating,
@@ -150,6 +160,11 @@ export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps
           <div className="detail-hero__content">
             <div className="eyebrow">Content details</div>
             <h1>{content.title}</h1>
+            {originalTitle ? (
+              <p className="detail-original-title">
+                Original title: <span>{originalTitle}</span>
+              </p>
+            ) : null}
 
             <div className="detail-metadata" aria-label="Content metadata">
               {metadata.map((item) => (
