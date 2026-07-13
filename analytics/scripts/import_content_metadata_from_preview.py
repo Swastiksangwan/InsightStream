@@ -142,6 +142,22 @@ SEASON_SUMMARY_FIELDS = {
     "has_announced_season",
     "season_summary_note",
 }
+MAX_ROW_REPORT_ITEMS = 50
+MAX_DISPLAY_VALUE_LENGTH = 120
+
+
+@dataclass(frozen=True)
+class FieldChange:
+    field_name: str
+    old_value: Any
+    new_value: Any
+
+
+@dataclass
+class RowChange:
+    content_id: Optional[int]
+    title: str
+    fields: List[FieldChange] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -177,6 +193,10 @@ class ImportStats:
     skipped_fields: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
     field_updates: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
     content_update_messages: List[str] = field(default_factory=list)
+    inserted_content_rows: List[RowChange] = field(default_factory=list)
+    updated_content_rows: List[RowChange] = field(default_factory=list)
+    inserted_series_metadata_rows: List[RowChange] = field(default_factory=list)
+    updated_series_metadata_rows: List[RowChange] = field(default_factory=list)
     warnings: List[str] = field(default_factory=list)
 
 
@@ -600,6 +620,90 @@ def format_update_value(value: Any) -> str:
     if is_empty(value):
         return "empty"
     return repr(db_value(value))
+
+
+def format_report_value(value: Any) -> str:
+    if is_empty(value):
+        return "empty"
+
+    display_value = str(db_value(value))
+    if len(display_value) > MAX_DISPLAY_VALUE_LENGTH:
+        return f"{display_value[:MAX_DISPLAY_VALUE_LENGTH - 1]}…"
+    return display_value
+
+
+def display_content_id(content_id: Optional[int]) -> str:
+    if content_id is None or content_id < 0:
+        return "pending"
+    return str(content_id)
+
+
+def field_changes_from_updates(
+    existing_values: Dict[str, Any],
+    updates: Dict[str, Any],
+) -> List[FieldChange]:
+    return [
+        FieldChange(
+            field_name=field_name,
+            old_value=existing_values.get(field_name),
+            new_value=new_value,
+        )
+        for field_name, new_value in updates.items()
+    ]
+
+
+def record_inserted_content_row(
+    stats: ImportStats,
+    content_id: Optional[int],
+    title: str,
+) -> None:
+    stats.inserted_content_rows.append(RowChange(content_id=content_id, title=title))
+
+
+def record_updated_content_row(
+    stats: ImportStats,
+    content_id: int,
+    title: str,
+    existing_values: Dict[str, Any],
+    updates: Dict[str, Any],
+) -> None:
+    if not updates:
+        return
+    stats.updated_content_rows.append(
+        RowChange(
+            content_id=content_id,
+            title=title,
+            fields=field_changes_from_updates(existing_values, updates),
+        )
+    )
+
+
+def record_inserted_series_metadata_row(
+    stats: ImportStats,
+    content_id: Optional[int],
+    title: str,
+) -> None:
+    stats.inserted_series_metadata_rows.append(
+        RowChange(content_id=content_id, title=title)
+    )
+
+
+def record_updated_series_metadata_row(
+    stats: ImportStats,
+    content_id: int,
+    title: str,
+    existing_values: Dict[str, Any],
+    updates: Dict[str, Any],
+) -> None:
+    if not updates:
+        return
+    stats.updated_series_metadata_rows.append(
+        RowChange(
+            content_id=content_id,
+            title=title,
+            fields=field_changes_from_updates(existing_values, updates),
+        )
+    )
 
 
 def add_content_update_message(
@@ -1053,6 +1157,11 @@ def ensure_series_metadata(
         if apply:
             insert_series_metadata(connection, content_id, record.series_metadata)
         stats.series_metadata_inserted += 1
+        record_inserted_series_metadata_row(
+            stats,
+            content_id if content_id > 0 else None,
+            record.title,
+        )
         return
 
     existing_values = dict(existing)
@@ -1066,6 +1175,13 @@ def ensure_series_metadata(
         if apply:
             update_series_metadata(connection, content_id, updates)
         stats.series_metadata_updated += 1
+        record_updated_series_metadata_row(
+            stats,
+            content_id,
+            record.title,
+            existing_values,
+            updates,
+        )
         if SEASON_SUMMARY_FIELDS.intersection(updates):
             stats.season_summary_updates += 1
         return
@@ -1138,6 +1254,13 @@ def process_preview(
                     if apply:
                         update_content_fields(connection, content_id, updates)
                     stats.content_fields_updated += len(updates)
+                    record_updated_content_row(
+                        stats,
+                        content_id,
+                        record.title,
+                        existing_content,
+                        updates,
+                    )
                     for field_name in updates:
                         stats.field_updates[field_name] += 1
                         if field_name == "latest_activity_date":
@@ -1148,6 +1271,11 @@ def process_preview(
                 else:
                     content_id = -record.tmdb_id
                 stats.content_inserted += 1
+                record_inserted_content_row(
+                    stats,
+                    content_id if apply else None,
+                    record.title,
+                )
 
             ensure_external_id(
                 connection,
@@ -1189,6 +1317,34 @@ def process_preview(
     return stats
 
 
+def print_row_change_section(
+    header: str,
+    rows: List[RowChange],
+    include_field_values: bool,
+) -> None:
+    if not rows:
+        return
+
+    print(f"\n{header}:")
+    visible_rows = rows[:MAX_ROW_REPORT_ITEMS]
+    for row in visible_rows:
+        fields = ", ".join(field.field_name for field in row.fields)
+        suffix = f": {fields}" if fields and not include_field_values else ""
+        print(f"- {row.title} [id={display_content_id(row.content_id)}]{suffix}")
+
+        if include_field_values:
+            for field in row.fields:
+                print(
+                    f"  - {field.field_name}: "
+                    f"{format_report_value(field.old_value)} -> "
+                    f"{format_report_value(field.new_value)}"
+                )
+
+    remaining = len(rows) - len(visible_rows)
+    if remaining > 0:
+        print(f"... and {remaining} more")
+
+
 def print_summary(stats: ImportStats) -> None:
     print("\nContent metadata import summary:")
     print(f"- Mode: {stats.mode}")
@@ -1208,12 +1364,35 @@ def print_summary(stats: ImportStats) -> None:
     print(f"- Latest activity date updates: {stats.latest_activity_date_updates}")
     print(f"- Conflicts preserved: {stats.conflicts_preserved}")
 
+    insert_prefix = "Would insert" if stats.mode == "DRY RUN" else "Inserted"
+    update_prefix = "Would update" if stats.mode == "DRY RUN" else "Updated"
+    print_row_change_section(
+        f"{insert_prefix} content rows",
+        stats.inserted_content_rows,
+        include_field_values=False,
+    )
+    print_row_change_section(
+        f"{update_prefix} content rows",
+        stats.updated_content_rows,
+        include_field_values=True,
+    )
+    print_row_change_section(
+        f"{insert_prefix} series metadata rows",
+        stats.inserted_series_metadata_rows,
+        include_field_values=False,
+    )
+    print_row_change_section(
+        f"{update_prefix} series metadata rows",
+        stats.updated_series_metadata_rows,
+        include_field_values=True,
+    )
+
     if stats.field_updates:
         print("\nField update counts:")
         for field_name, count in sorted(stats.field_updates.items()):
             print(f"- {field_name}: {count}")
 
-    if stats.content_update_messages:
+    if stats.content_update_messages and not stats.updated_content_rows:
         print("\nContent field update details:")
         for message in stats.content_update_messages:
             print(f"- {message}")
