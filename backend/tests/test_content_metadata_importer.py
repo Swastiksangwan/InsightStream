@@ -20,6 +20,16 @@ def load_importer_module():
     return module
 
 
+def load_fetch_module():
+    repo_root = Path(__file__).resolve().parents[2]
+    script_path = repo_root / "analytics" / "scripts" / "fetch_tmdb_sample.py"
+    spec = importlib.util.spec_from_file_location("fetch_tmdb_sample", script_path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["fetch_tmdb_sample"] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def preview_record(module, content_type="series", status="Ended"):
     return module.ContentPreviewRecord(
         title="The Bear",
@@ -34,6 +44,142 @@ def preview_record(module, content_type="series", status="Ended"):
         genres=[],
         series_metadata={} if content_type == "series" else None,
     )
+
+
+def test_preview_record_maps_original_title_and_language_code():
+    importer = load_importer_module()
+    stats = importer.ImportStats(
+        mode="DRY RUN",
+        preview_path="analytics/processed/tmdb/sample_mapping_preview.json",
+    )
+
+    record = importer.preview_record_from_item(
+        {
+            "title": "Parasite",
+            "content_type": "movie",
+            "tmdb_id": 496243,
+            "original_title": "기생충",
+            "original_language": "ko",
+            "status": "Released",
+        },
+        1,
+        stats,
+    )
+
+    assert record.content_values["original_title"] == "기생충"
+    assert record.content_values["original_language"] == "ko"
+    assert record.content_values["language"] == "Korean"
+
+
+def test_preview_record_maps_series_original_name_fallback():
+    importer = load_importer_module()
+    stats = importer.ImportStats(
+        mode="DRY RUN",
+        preview_path="analytics/processed/tmdb/sample_mapping_preview.json",
+    )
+
+    record = importer.preview_record_from_item(
+        {
+            "title": "Localized Series",
+            "content_type": "series",
+            "tmdb_id": 1234567,
+            "original_name": "原題シリーズ",
+            "original_language": "ja",
+            "status": "Ended",
+            "series_metadata": {},
+        },
+        1,
+        stats,
+    )
+
+    assert record.content_values["original_title"] == "原題シリーズ"
+    assert record.content_values["original_language"] == "ja"
+    assert record.content_values["language"] == "Japanese"
+
+
+def test_original_title_and_language_fill_empty_existing_values():
+    importer = load_importer_module()
+    stats = importer.ImportStats(
+        mode="DRY RUN",
+        preview_path="analytics/processed/tmdb/sample_mapping_preview.json",
+    )
+    record = preview_record(importer)
+    record.content_values["original_title"] = "Original Bear"
+    record.content_values["original_language"] = "en"
+
+    updates = importer.content_update_plan(
+        {"original_title": None, "original_language": None},
+        record,
+        stats,
+    )
+
+    assert updates["original_title"] == "Original Bear"
+    assert updates["original_language"] == "en"
+    assert stats.conflicts_preserved == 0
+
+
+def test_original_title_preserves_existing_conflict_behavior():
+    importer = load_importer_module()
+    stats = importer.ImportStats(
+        mode="DRY RUN",
+        preview_path="analytics/processed/tmdb/sample_mapping_preview.json",
+    )
+    record = preview_record(importer)
+    record.content_values["original_title"] = "Preview Original"
+
+    updates = importer.content_update_plan(
+        {"original_title": "Curated Original"},
+        record,
+        stats,
+    )
+
+    assert "original_title" not in updates
+    assert stats.conflicts_preserved == 1
+    assert any(
+        "existing content.original_title differs from preview; preserved existing value"
+        in warning
+        for warning in stats.warnings
+    )
+
+
+def test_fetch_preview_includes_original_movie_and_series_titles():
+    fetcher = load_fetch_module()
+    configuration = {"images": {"secure_base_url": "https://image.tmdb.org/t/p/"}}
+
+    movie_preview = fetcher.map_tmdb_movie_preview(
+        {
+            "id": 496243,
+            "title": "Parasite",
+            "original_title": "기생충",
+            "original_language": "ko",
+            "release_date": "2019-05-30",
+            "genres": [],
+        },
+        {},
+        {"cast": [], "crew": []},
+        configuration,
+        [],
+    )
+    series_preview = fetcher.map_tmdb_tv_preview(
+        {
+            "id": 123,
+            "name": "Localized Series",
+            "original_name": "原題シリーズ",
+            "original_language": "ja",
+            "first_air_date": "2024-01-01",
+            "episode_run_time": [],
+            "genres": [],
+        },
+        {},
+        {"cast": [], "crew": []},
+        configuration,
+        [],
+    )
+
+    assert movie_preview["original_title"] == "기생충"
+    assert movie_preview["original_language"] == "ko"
+    assert series_preview["original_title"] == "原題シリーズ"
+    assert series_preview["original_language"] == "ja"
 
 
 def test_existing_series_status_updates_from_valid_tmdb_preview_status():

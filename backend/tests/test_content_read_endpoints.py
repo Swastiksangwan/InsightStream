@@ -1719,6 +1719,9 @@ def test_get_content_details_for_seeded_title(client, content_id_by_title):
 
     assert response.status_code == 200
     assert data["content"]["title"] == "Interstellar"
+    assert data["content"]["original_title"] is None
+    assert data["content"]["original_language"] is None
+    assert data["content"]["original_language_name"] == "English"
     assert data["genres"]
     assert data["platforms"]
     assert data["ratings"]["source_count"] == len(data["ratings"]["sources"])
@@ -1731,6 +1734,73 @@ def test_get_content_details_for_seeded_title(client, content_id_by_title):
     assert "decision_layer" in data
     assert data["summary"] is not None
     assert data["series_metadata"] is None
+
+
+def test_content_details_include_original_title_and_language(client, db_session):
+    tmdb_id = 990000001
+    db_session.execute(text("DELETE FROM content WHERE tmdb_id = :tmdb_id;"), {"tmdb_id": tmdb_id})
+    db_session.commit()
+
+    row = db_session.execute(
+        text(
+            """
+            INSERT INTO content (
+                tmdb_id,
+                title,
+                original_title,
+                content_type,
+                overview,
+                release_date,
+                latest_activity_date,
+                year,
+                runtime,
+                language,
+                original_language,
+                status,
+                age_rating
+            )
+            VALUES (
+                :tmdb_id,
+                'Localized Test Title',
+                'オリジナルテスト',
+                'movie',
+                'A test title for original language display.',
+                '2024-01-01',
+                '2024-01-01',
+                2024,
+                100,
+                'Japanese',
+                'ja',
+                'Released',
+                'PG'
+            )
+            RETURNING id;
+            """
+        ),
+        {"tmdb_id": tmdb_id},
+    ).mappings().first()
+    db_session.commit()
+
+    try:
+        response = client.get(f"/content/{row['id']}/details")
+        content = response.json()["content"]
+
+        assert response.status_code == 200
+        assert content["title"] == "Localized Test Title"
+        assert content["original_title"] == "オリジナルテスト"
+        assert content["original_language"] == "ja"
+        assert content["original_language_name"] == "Japanese"
+    finally:
+        db_session.execute(text("DELETE FROM content WHERE tmdb_id = :tmdb_id;"), {"tmdb_id": tmdb_id})
+        db_session.commit()
+
+
+def test_language_display_name_normalization():
+    assert content_service.display_language_name("en") == "English"
+    assert content_service.display_language_name("ko") == "Korean"
+    assert content_service.display_language_name("ja") == "Japanese"
+    assert content_service.display_language_name("zz") == "ZZ"
+    assert content_service.display_language_name("English") == "English"
 
 
 def test_content_details_include_decision_layer_when_source_signals_exist(

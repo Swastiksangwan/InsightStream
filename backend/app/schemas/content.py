@@ -6,6 +6,7 @@ from datetime import date, datetime
 class Content(BaseModel):
     id: int
     title: str
+    original_title: Optional[str] = None
     type: str
     overview: Optional[str]
     poster: Optional[str]
@@ -14,6 +15,8 @@ class Content(BaseModel):
     year: Optional[int]
     runtime: Optional[int]
     language: Optional[str]
+    original_language: Optional[str] = None
+    original_language_name: Optional[str] = None
     age_rating: Optional[str]
     age_rating_region: Optional[str] = None
     age_rating_source: Optional[str] = None

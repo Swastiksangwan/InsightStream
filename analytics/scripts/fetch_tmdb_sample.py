@@ -725,6 +725,7 @@ def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[st
         "tmdb_id": sample.tmdb_id,
         "media_type": sample.media_type,
         "title": sample.title,
+        "original_title": None,
         "overview": None,
         "release_date": None,
         "latest_activity_date": None,
@@ -950,6 +951,7 @@ def map_tmdb_movie_preview(
     preview.update(
         {
             "title": details.get("title"),
+            "original_title": details.get("original_title"),
             "release_date": release_date,
             "latest_activity_date": release_date,
             "year": year_from_date(release_date),
@@ -1007,6 +1009,7 @@ def map_tmdb_tv_preview(
     preview.update(
         {
             "title": details.get("name"),
+            "original_title": details.get("original_name"),
             "release_date": release_date,
             "latest_activity_date": latest_tv_activity_date(details),
             "year": year_from_date(release_date),

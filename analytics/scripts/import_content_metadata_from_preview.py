@@ -44,8 +44,40 @@ MEDIA_TYPE_TO_CONTENT_TYPE = {
 }
 LANGUAGE_MAP = {
     "en": "English",
+    "hi": "Hindi",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "ml": "Malayalam",
+    "kn": "Kannada",
+    "bn": "Bengali",
+    "mr": "Marathi",
+    "pa": "Punjabi",
+    "gu": "Gujarati",
+    "ur": "Urdu",
     "ko": "Korean",
+    "ja": "Japanese",
+    "zh": "Chinese",
+    "fr": "French",
     "de": "German",
+    "es": "Spanish",
+    "it": "Italian",
+    "pt": "Portuguese",
+    "ru": "Russian",
+    "ar": "Arabic",
+    "tr": "Turkish",
+    "th": "Thai",
+    "vi": "Vietnamese",
+    "id": "Indonesian",
+    "pl": "Polish",
+    "nl": "Dutch",
+    "sv": "Swedish",
+    "da": "Danish",
+    "no": "Norwegian",
+    "fi": "Finnish",
+    "cs": "Czech",
+    "el": "Greek",
+    "he": "Hebrew",
+    "fa": "Persian",
 }
 STATUS_MAP = {
     "Released": "Released",
@@ -75,6 +107,7 @@ GENRE_MAP = {
 CONTENT_INSERT_COLUMNS = (
     "tmdb_id",
     "title",
+    "original_title",
     "content_type",
     "overview",
     "poster_url",
@@ -84,12 +117,14 @@ CONTENT_INSERT_COLUMNS = (
     "year",
     "runtime",
     "language",
+    "original_language",
     "status",
     "age_rating",
 )
 FILL_ONLY_FIELDS = (
     "tmdb_id",
     "title",
+    "original_title",
     "overview",
     "poster_url",
     "backdrop_url",
@@ -97,6 +132,7 @@ FILL_ONLY_FIELDS = (
     "year",
     "runtime",
     "language",
+    "original_language",
     "status",
     "age_rating",
 )
@@ -345,13 +381,21 @@ def normalize_language(value: Any, title: str, warnings: List[str]) -> Optional[
     code = clean_text(value)
     if not code:
         return None
-    if code in LANGUAGE_MAP:
-        return LANGUAGE_MAP[code]
+    normalized_code = code.lower()
+    if normalized_code in LANGUAGE_MAP:
+        return LANGUAGE_MAP[normalized_code]
 
     warnings.append(
-        f"{title}: unknown language code {code!r}; preserved in preview but not applied."
+        f"{title}: unknown language code {code!r}; preserved as original_language but not applied to legacy language."
     )
     return None
+
+
+def normalize_original_language(value: Any) -> Optional[str]:
+    code = clean_text(value)
+    if not code:
+        return None
+    return code.lower()
 
 
 def normalize_status(value: Any, title: str, warnings: List[str]) -> Optional[str]:
@@ -499,6 +543,8 @@ def preview_record_from_item(
     content_values: Dict[str, Any] = {
         "tmdb_id": tmdb_id,
         "title": clean_text(item.get("title")),
+        "original_title": clean_text(item.get("original_title"))
+        or clean_text(item.get("original_name")),
         "content_type": content_type,
         "overview": clean_text(item.get("overview")),
         "poster_url": clean_text(item.get("poster_url")),
@@ -508,6 +554,7 @@ def preview_record_from_item(
         "year": clean_int(item.get("year")),
         "runtime": clean_int(item.get("runtime")),
         "language": normalize_language(item.get("original_language"), title, local_warnings),
+        "original_language": normalize_original_language(item.get("original_language")),
         "status": normalize_status(item.get("status"), title, local_warnings),
         "age_rating": clean_text(item.get("age_rating")),
     }
@@ -576,6 +623,7 @@ def insert_content(connection, record: ContentPreviewRecord) -> int:
             INSERT INTO content (
                 tmdb_id,
                 title,
+                original_title,
                 content_type,
                 overview,
                 poster_url,
@@ -585,12 +633,14 @@ def insert_content(connection, record: ContentPreviewRecord) -> int:
                 year,
                 runtime,
                 language,
+                original_language,
                 status,
                 age_rating
             )
             VALUES (
                 :tmdb_id,
                 :title,
+                :original_title,
                 :content_type,
                 :overview,
                 :poster_url,
@@ -600,6 +650,7 @@ def insert_content(connection, record: ContentPreviewRecord) -> int:
                 :year,
                 :runtime,
                 :language,
+                :original_language,
                 :status,
                 :age_rating
             )

@@ -1670,6 +1670,18 @@ main {
   line-height: 0.98;
 }
 
+.detail-original-title {
+  margin: -4px 0 14px;
+  color: rgba(232, 237, 246, 0.68);
+  font-size: 0.94rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.detail-original-title span {
+  color: rgba(244, 247, 251, 0.86);
+}
+
 .detail-metadata,
 .genre-chip-list {
   display: flex;
