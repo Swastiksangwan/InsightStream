@@ -97,7 +97,6 @@ export function DecisionDisplayCard({ display }: DecisionDisplayCardProps) {
     <section className="detail-panel detail-panel--wide decision-display">
       {parts.primaryInsight ? (
         <div className="decision-display__lead">
-          <span className="section-label">Decision support</span>
           <h2>Why this stands out</h2>
           <p>{parts.primaryInsight}</p>
         </div>

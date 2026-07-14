@@ -130,7 +130,6 @@ export function RatingList({ ratings }: RatingListProps) {
     return (
       <section className="detail-panel">
         <div className="detail-panel__header">
-          <span className="section-label">Cross-platform signal</span>
           <h2>Ratings</h2>
         </div>
         <p className="detail-empty">Not enough rating data yet.</p>
@@ -141,7 +140,6 @@ export function RatingList({ ratings }: RatingListProps) {
   return (
     <section className="detail-panel">
       <div className="detail-panel__header">
-        <span className="section-label">Cross-platform signal</span>
         <h2>Ratings</h2>
       </div>
 

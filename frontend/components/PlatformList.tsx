@@ -9,7 +9,7 @@ const availabilityLabels: Record<string, string> = {
   streaming: "Streaming",
   rent: "Rent",
   buy: "Buy",
-  ads: "Ads",
+  ads: "Ad-supported",
   free: "Free",
 };
 
@@ -17,6 +17,23 @@ const regionLabels: Record<string, string> = {
   IN: "India",
   US: "US",
 };
+
+const platformDisplayLabels: Record<string, string> = {
+  "vi movies and tv": "VI Movies & TV",
+  "apple tv amazon channel": "Apple TV Channel",
+  "discovery+ amazon channel": "Discovery+ Channel",
+};
+
+function normalizePlatformDisplayName(name: string) {
+  const compactName = name.trim().replace(/\s+/g, " ");
+  const mappedName = platformDisplayLabels[compactName.toLowerCase()];
+
+  if (mappedName) {
+    return mappedName;
+  }
+
+  return compactName;
+}
 
 function normalizeDiscoverAvailabilityType(availabilityType?: string | null) {
   const normalized = availabilityType?.trim().toLowerCase();
@@ -55,6 +72,20 @@ function groupPlatforms(platforms: PlatformAvailability[]) {
   }, {});
 }
 
+function availabilityGroupLabel(type: string, items: PlatformAvailability[]) {
+  const normalizedTypes = new Set(
+    items
+      .map((item) => item.availability_type?.trim().toLowerCase())
+      .filter((value): value is string => Boolean(value)),
+  );
+
+  if (normalizedTypes.has("buy") && normalizedTypes.has("rent")) {
+    return "Buy / Rent";
+  }
+
+  return availabilityLabels[type] || type;
+}
+
 function availabilityRegionLabel(platforms: PlatformAvailability[]) {
   const regions = Array.from(
     new Set(
@@ -81,7 +112,6 @@ export function PlatformList({ platforms }: PlatformListProps) {
     return (
       <section className="detail-panel">
         <div className="detail-panel__header">
-          <span className="section-label">Where to watch</span>
           <h2>Availability</h2>
         </div>
         <p className="detail-empty">No platform availability is listed yet.</p>
@@ -95,7 +125,6 @@ export function PlatformList({ platforms }: PlatformListProps) {
   return (
     <section className="detail-panel">
       <div className="detail-panel__header">
-        <span className="section-label">Where to watch</span>
         <h2>Availability</h2>
         {regionLabel ? <p className="availability-region">{regionLabel}</p> : null}
       </div>
@@ -103,7 +132,7 @@ export function PlatformList({ platforms }: PlatformListProps) {
       <div className="availability-groups">
         {Object.entries(groupedPlatforms).map(([type, items]) => (
           <div className="availability-group" key={type}>
-            <h3>{availabilityLabels[type] || type}</h3>
+            <h3>{availabilityGroupLabel(type, items)}</h3>
             <div className="availability-list">
               {items.map((platform) => (
                 <Link
@@ -111,7 +140,7 @@ export function PlatformList({ platforms }: PlatformListProps) {
                   href={buildDiscoverHref(platform)}
                   key={`${platform.name}-${platform.availability_type}-${platform.region_code || "legacy"}`}
                 >
-                  {platform.name}
+                  {normalizePlatformDisplayName(platform.name)}
                 </Link>
               ))}
             </div>

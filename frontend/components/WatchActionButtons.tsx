@@ -130,14 +130,10 @@ export function WatchActionButtons({
   return (
     <section className="detail-panel watch-actions" aria-label="Personal watch actions">
       <div className="detail-panel__header">
-        <span className="section-label">Personal action</span>
         <h2>Watch Status</h2>
-      </div>
-
-      <div className="watch-actions__status">
-        <span>Status</span>
         <strong
           className={`watch-actions__status-chip watch-actions__status-chip--${status}`}
+          aria-live="polite"
         >
           {getStatusLabel(status)}
         </strong>

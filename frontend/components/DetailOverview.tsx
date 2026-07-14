@@ -15,7 +15,6 @@ export function DetailOverview({ content, genres }: DetailOverviewProps) {
   return (
     <section className="detail-overview" aria-labelledby="detail-overview-heading">
       <div className="detail-section-heading">
-        <span className="section-label">Story</span>
         <h2 id="detail-overview-heading">Overview</h2>
       </div>
 

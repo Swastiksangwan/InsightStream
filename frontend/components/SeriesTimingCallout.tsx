@@ -379,7 +379,7 @@ export function SeriesTimingCallout({
       className="series-timing-callout"
       aria-label="Series release timing"
     >
-      <span className="series-timing-callout__label">Series timing</span>
+      <span className="series-timing-callout__label">Update</span>
       <div>
         <h2>{mode.heading}</h2>
         <p className="series-timing-callout__primary">{mode.primaryLine}</p>
