@@ -111,7 +111,6 @@ export function SeriesInfoPanel({ seriesMetadata }: SeriesInfoPanelProps) {
   return (
     <section className="detail-panel series-info" aria-label="Series lifecycle metadata">
       <div className="detail-panel__header">
-        <span className="section-label">Series info</span>
         <h2>Lifecycle</h2>
       </div>
 

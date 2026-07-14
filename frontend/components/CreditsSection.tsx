@@ -158,7 +158,6 @@ export function CreditsSection({ credits }: CreditsSectionProps) {
   return (
     <section className="credits-section" aria-label="Cast and credits">
       <div className="credits-section__header">
-        <span className="section-label">People</span>
         <h2>Cast &amp; Crew</h2>
         <p>Key people behind this title.</p>
       </div>

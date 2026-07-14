@@ -1711,36 +1711,20 @@ def test_detail_ratings_empty_rows_return_stable_empty_shape():
     }
 
 
-def test_get_content_details_for_seeded_title(client, content_id_by_title):
-    content_id = content_id_by_title("Interstellar")
-
-    response = client.get(f"/content/{content_id}/details")
-    data = response.json()
-
-    assert response.status_code == 200
-    assert data["content"]["title"] == "Interstellar"
-    assert data["content"]["original_title"] is None
-    assert data["content"]["original_language"] is None
-    assert data["content"]["original_language_name"] == "English"
-    assert data["genres"]
-    assert data["platforms"]
-    assert data["ratings"]["source_count"] == len(data["ratings"]["sources"])
-    assert data["ratings"]["scoring_source_count"] <= data["ratings"]["source_count"]
-    assert "unified_score" in data["ratings"]
-    assert data["insight_summary"]["confidence"] in {"low", "medium", "high"}
-    assert isinstance(data["insight_summary"]["best_for"], list)
-    assert isinstance(data["insight_summary"]["key_signals"], list)
-    assert isinstance(data["insight_summary"]["generated_from"], list)
-    assert "decision_layer" in data
-    assert data["summary"] is not None
-    assert data["series_metadata"] is None
-
-
-def test_content_details_include_original_title_and_language(client, db_session):
-    tmdb_id = 990000001
-    db_session.execute(text("DELETE FROM content WHERE tmdb_id = :tmdb_id;"), {"tmdb_id": tmdb_id})
-    db_session.commit()
-
+def insert_content_metadata_case(
+    db_session,
+    *,
+    tmdb_id,
+    title,
+    original_title=None,
+    language=None,
+    original_language=None,
+    content_type="movie",
+):
+    db_session.execute(
+        text("DELETE FROM content WHERE tmdb_id = :tmdb_id;"),
+        {"tmdb_id": tmdb_id},
+    )
     row = db_session.execute(
         text(
             """
@@ -1761,38 +1745,149 @@ def test_content_details_include_original_title_and_language(client, db_session)
             )
             VALUES (
                 :tmdb_id,
-                'Localized Test Title',
-                'オリジナルテスト',
-                'movie',
-                'A test title for original language display.',
+                :title,
+                :original_title,
+                :content_type,
+                'A deterministic metadata behavior test title.',
                 '2024-01-01',
                 '2024-01-01',
                 2024,
                 100,
-                'Japanese',
-                'ja',
+                :language,
+                :original_language,
                 'Released',
                 'PG'
             )
             RETURNING id;
             """
         ),
-        {"tmdb_id": tmdb_id},
+        {
+            "tmdb_id": tmdb_id,
+            "title": title,
+            "original_title": original_title,
+            "content_type": content_type,
+            "language": language,
+            "original_language": original_language,
+        },
     ).mappings().first()
     db_session.commit()
+    return row["id"]
 
+
+def delete_content_metadata_case(db_session, tmdb_id):
+    db_session.execute(
+        text("DELETE FROM content WHERE tmdb_id = :tmdb_id;"),
+        {"tmdb_id": tmdb_id},
+    )
+    db_session.commit()
+
+
+def test_get_content_details_for_canonical_seeded_title(client, content_id_by_title):
+    content_id = content_id_by_title("Interstellar")
+
+    response = client.get(f"/content/{content_id}/details")
+    data = response.json()
+
+    assert response.status_code == 200
+    assert data["content"]["title"] == "Interstellar"
+    assert data["content"]["language"] == "English"
+    assert data["content"]["original_language_name"] == "English"
+    assert data["genres"]
+    assert data["platforms"]
+    assert data["ratings"]["source_count"] == len(data["ratings"]["sources"])
+    assert data["ratings"]["scoring_source_count"] <= data["ratings"]["source_count"]
+    assert "unified_score" in data["ratings"]
+    assert data["insight_summary"]["confidence"] in {"low", "medium", "high"}
+    assert isinstance(data["insight_summary"]["best_for"], list)
+    assert isinstance(data["insight_summary"]["key_signals"], list)
+    assert isinstance(data["insight_summary"]["generated_from"], list)
+    assert "decision_layer" in data
+    assert data["summary"] is not None
+    assert data["series_metadata"] is None
+
+
+@pytest.mark.parametrize(
+    (
+        "tmdb_id",
+        "title",
+        "original_title",
+        "language",
+        "original_language",
+        "expected_original_language_name",
+    ),
+    [
+        (
+            990000101,
+            "Same Title",
+            "Same Title",
+            "English",
+            "en",
+            "English",
+        ),
+        (
+            990000102,
+            "Localized Display Title",
+            "ローカライズ元タイトル",
+            "Japanese",
+            "ja",
+            "Japanese",
+        ),
+        (
+            990000103,
+            "Missing Original Metadata",
+            None,
+            None,
+            None,
+            None,
+        ),
+        (
+            990000104,
+            "Unknown Language Code",
+            "Unknown Language Original",
+            None,
+            "zz",
+            "ZZ",
+        ),
+        (
+            990000105,
+            "Legacy Language Fallback",
+            None,
+            "English",
+            None,
+            "English",
+        ),
+    ],
+)
+def test_content_details_original_metadata_behavior(
+    client,
+    db_session,
+    tmdb_id,
+    title,
+    original_title,
+    language,
+    original_language,
+    expected_original_language_name,
+):
+    content_id = insert_content_metadata_case(
+        db_session,
+        tmdb_id=tmdb_id,
+        title=title,
+        original_title=original_title,
+        language=language,
+        original_language=original_language,
+    )
     try:
-        response = client.get(f"/content/{row['id']}/details")
+        response = client.get(f"/content/{content_id}/details")
         content = response.json()["content"]
 
         assert response.status_code == 200
-        assert content["title"] == "Localized Test Title"
-        assert content["original_title"] == "オリジナルテスト"
-        assert content["original_language"] == "ja"
-        assert content["original_language_name"] == "Japanese"
+        assert content["title"] == title
+        assert content["original_title"] == original_title
+        assert content["language"] == language
+        assert content["original_language"] == original_language
+        assert content["original_language_name"] == expected_original_language_name
     finally:
-        db_session.execute(text("DELETE FROM content WHERE tmdb_id = :tmdb_id;"), {"tmdb_id": tmdb_id})
-        db_session.commit()
+        delete_content_metadata_case(db_session, tmdb_id)
 
 
 def test_language_display_name_normalization():

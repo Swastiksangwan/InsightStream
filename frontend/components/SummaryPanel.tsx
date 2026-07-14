@@ -27,7 +27,6 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
     return (
       <section className="detail-panel detail-panel--wide">
         <div className="detail-panel__header">
-          <span className="section-label">Decision support</span>
           <h2>Insight Summary</h2>
         </div>
         <p className="detail-empty">Not enough structured data to generate a summary yet.</p>
@@ -69,7 +68,6 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
     return (
       <section className="detail-panel detail-panel--wide">
         <div className="detail-panel__header">
-          <span className="section-label">Decision support</span>
           <h2>Insight Summary</h2>
         </div>
         <p className="detail-empty">Not enough structured data to generate a summary yet.</p>
@@ -80,7 +78,6 @@ export function SummaryPanel({ summary }: SummaryPanelProps) {
   return (
     <section className="detail-panel detail-panel--wide">
       <div className="detail-panel__header">
-        <span className="section-label">Decision support</span>
         <h2>Insight Summary</h2>
       </div>
 

@@ -11,7 +11,28 @@ type DateParts = {
   day: number;
 };
 
-const ACTIVE_SERIES_STATUSES = new Set(["ongoing", "upcoming"]);
+const ACTIVE_AIRING_LOOKBACK_DAYS = 45;
+const NEXT_EPISODE_SOON_DAYS = 21;
+
+const ACTIVE_SERIES_STATUSES = new Set([
+  "in production",
+  "ongoing",
+  "returning",
+  "returning series",
+  "upcoming",
+]);
+const INACTIVE_SERIES_STATUSES = new Set([
+  "canceled",
+  "cancelled",
+  "ended",
+  "finished",
+]);
+
+type SeriesTimingMode = {
+  heading: string;
+  primaryLine: string;
+  secondaryLine?: string | null;
+};
 
 function normalizeStatus(status?: string | null) {
   return status?.trim().toLowerCase() || null;
@@ -54,21 +75,40 @@ function formatDate(dateValue?: string | null) {
   }).format(dateFromParts(parts));
 }
 
-function dayDifferenceFromToday(dateValue?: string | null) {
+function dayDifferenceFromReference(
+  dateValue?: string | null,
+  referenceDate = new Date(),
+) {
   const parts = parseDateOnly(dateValue);
   if (!parts) {
     return null;
   }
 
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const today = new Date(
+    referenceDate.getFullYear(),
+    referenceDate.getMonth(),
+    referenceDate.getDate(),
+  );
   const target = dateFromParts(parts);
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
   return Math.round((target.getTime() - today.getTime()) / millisecondsPerDay);
 }
 
-function nextEpisodeLine(dateValue?: string | null) {
-  const difference = dayDifferenceFromToday(dateValue);
+function compareDateValues(
+  leftDateValue?: string | null,
+  rightDateValue?: string | null,
+) {
+  const leftParts = parseDateOnly(leftDateValue);
+  const rightParts = parseDateOnly(rightDateValue);
+  if (!leftParts || !rightParts) {
+    return null;
+  }
+
+  return dateFromParts(leftParts).getTime() - dateFromParts(rightParts).getTime();
+}
+
+function nextEpisodeLine(dateValue?: string | null, referenceDate = new Date()) {
+  const difference = dayDifferenceFromReference(dateValue, referenceDate);
   if (difference === null) {
     return null;
   }
@@ -90,12 +130,19 @@ function latestEpisodeLine(dateValue?: string | null) {
   return formatted ? `Latest episode aired ${formatted}.` : null;
 }
 
+function seasonPremiereLine(dateValue?: string | null) {
+  const formatted = formatDate(dateValue);
+  return formatted ? `Premieres ${formatted}.` : null;
+}
+
 function nextSeasonLine(seriesMetadata: SeriesMetadata) {
   const seasonNumber = seriesMetadata.next_season_number;
   const fullDate = formatDate(seriesMetadata.next_season_air_date);
+  const releasedSeasons = seriesMetadata.released_seasons_count;
+  const announcedSeasons = seriesMetadata.announced_seasons_count;
 
   if (seasonNumber && fullDate) {
-    return `Season ${seasonNumber} expected ${fullDate}.`;
+    return `Season ${seasonNumber} premieres ${fullDate}.`;
   }
 
   if (seasonNumber && seriesMetadata.next_season_year) {
@@ -103,29 +150,209 @@ function nextSeasonLine(seriesMetadata: SeriesMetadata) {
   }
 
   if (fullDate) {
-    return `Next season expected ${fullDate}.`;
+    return `Premieres ${fullDate}.`;
   }
 
   if (seasonNumber) {
     return `Season ${seasonNumber} announced.`;
   }
 
+  if (seriesMetadata.has_announced_season) {
+    return "Next season announced.";
+  }
+
+  if (
+    releasedSeasons !== null &&
+    releasedSeasons !== undefined &&
+    announcedSeasons !== null &&
+    announcedSeasons !== undefined &&
+    announcedSeasons > releasedSeasons
+  ) {
+    return "Next season announced.";
+  }
+
   return null;
 }
 
-function timingMode(seriesMetadata: SeriesMetadata) {
-  const episodeLine = nextEpisodeLine(seriesMetadata.next_episode_air_date);
-  if (episodeLine) {
+function hasAnnouncedSeasonSignal(seriesMetadata: SeriesMetadata) {
+  const releasedSeasons = seriesMetadata.released_seasons_count;
+  const announcedSeasons = seriesMetadata.announced_seasons_count;
+  const nextSeasonNumber = seriesMetadata.next_season_number;
+
+  return Boolean(
+    seriesMetadata.next_season_air_date ||
+      seriesMetadata.next_season_number ||
+      seriesMetadata.next_season_year ||
+      seriesMetadata.has_announced_season ||
+      (releasedSeasons !== null &&
+        releasedSeasons !== undefined &&
+        announcedSeasons !== null &&
+        announcedSeasons !== undefined &&
+        announcedSeasons > releasedSeasons) ||
+      (releasedSeasons !== null &&
+        releasedSeasons !== undefined &&
+        nextSeasonNumber !== null &&
+        nextSeasonNumber !== undefined &&
+        nextSeasonNumber > releasedSeasons),
+  );
+}
+
+function isInactiveStatus(status?: string | null) {
+  return Boolean(status && INACTIVE_SERIES_STATUSES.has(status));
+}
+
+export function getSeriesTimingMode(
+  seriesMetadata: SeriesMetadata,
+  referenceDate = new Date(),
+): SeriesTimingMode | null {
+  const status = normalizeStatus(
+    seriesMetadata.series_status_normalized || seriesMetadata.series_status,
+  );
+  const hasActiveStatus = Boolean(status && ACTIVE_SERIES_STATUSES.has(status));
+  const hasInactiveStatus = isInactiveStatus(status);
+  const lastEpisodeDate =
+    seriesMetadata.last_episode_air_date || seriesMetadata.last_air_date;
+  const nextEpisodeDifference = dayDifferenceFromReference(
+    seriesMetadata.next_episode_air_date,
+    referenceDate,
+  );
+  const lastEpisodeDifference = dayDifferenceFromReference(
+    lastEpisodeDate,
+    referenceDate,
+  );
+  const nextSeasonDifference = dayDifferenceFromReference(
+    seriesMetadata.next_season_air_date,
+    referenceDate,
+  );
+  const lastEpisodeSeasonComparison = compareDateValues(
+    lastEpisodeDate,
+    seriesMetadata.next_season_air_date,
+  );
+  const nextEpisodeSeasonComparison = compareDateValues(
+    seriesMetadata.next_episode_air_date,
+    seriesMetadata.next_season_air_date,
+  );
+  const lastEpisodeIsFromAnnouncedSeason =
+    lastEpisodeSeasonComparison !== null && lastEpisodeSeasonComparison >= 0;
+  const nextEpisodeIsSeasonPremiere = nextEpisodeSeasonComparison === 0;
+  const hasAnnouncedSeason = hasAnnouncedSeasonSignal(seriesMetadata);
+  const isNextEpisodeUpcoming =
+    nextEpisodeDifference !== null && nextEpisodeDifference >= 0;
+  const isNextSeasonUpcoming =
+    nextSeasonDifference !== null && nextSeasonDifference >= 0;
+  const isNextSeasonYearUpcoming =
+    seriesMetadata.next_season_year !== null &&
+    seriesMetadata.next_season_year !== undefined &&
+    seriesMetadata.next_season_year >= referenceDate.getFullYear();
+  const hasUndatedSeasonAnnouncement =
+    hasAnnouncedSeason && !seriesMetadata.next_season_air_date;
+  const hasUpcomingDate =
+    isNextEpisodeUpcoming ||
+    isNextSeasonUpcoming ||
+    isNextSeasonYearUpcoming ||
+    hasUndatedSeasonAnnouncement;
+  const isNextEpisodeSoon =
+    isNextEpisodeUpcoming &&
+    nextEpisodeDifference <= NEXT_EPISODE_SOON_DAYS;
+  const isLastEpisodeRecent =
+    lastEpisodeDifference !== null &&
+    lastEpisodeDifference <= 0 &&
+    Math.abs(lastEpisodeDifference) <= ACTIVE_AIRING_LOOKBACK_DAYS;
+
+  if (hasInactiveStatus && !hasUpcomingDate) {
+    return null;
+  }
+
+  if (
+    hasAnnouncedSeason &&
+    !lastEpisodeIsFromAnnouncedSeason &&
+    (nextSeasonDifference === null || isNextSeasonUpcoming)
+  ) {
+    const seasonLine =
+      seasonPremiereLine(seriesMetadata.next_season_air_date) ||
+      ((nextEpisodeIsSeasonPremiere ||
+        isNextEpisodeUpcoming)
+        ? seasonPremiereLine(seriesMetadata.next_episode_air_date)
+        : null) ||
+      nextSeasonLine(seriesMetadata);
+
+    return seasonLine
+      ? {
+          heading: seriesMetadata.next_season_air_date
+            ? "New season coming"
+            : "Next season",
+          primaryLine: seasonLine,
+        }
+      : null;
+  }
+
+  if (
+    hasAnnouncedSeason &&
+    !lastEpisodeIsFromAnnouncedSeason &&
+    nextSeasonDifference !== null &&
+    nextSeasonDifference < 0
+  ) {
+    return null;
+  }
+
+  if (
+    hasAnnouncedSeason &&
+    lastEpisodeIsFromAnnouncedSeason &&
+    !seriesMetadata.next_episode_air_date
+  ) {
+    return null;
+  }
+
+  if (
+    isNextEpisodeSoon &&
+    seriesMetadata.next_episode_air_date &&
+    !(nextEpisodeIsSeasonPremiere && !lastEpisodeIsFromAnnouncedSeason)
+  ) {
+    const episodeLine =
+      nextEpisodeLine(seriesMetadata.next_episode_air_date, referenceDate);
+
+    if (!episodeLine) {
+      return null;
+    }
+
     return {
       heading: "Airing now",
       primaryLine: episodeLine,
+      secondaryLine:
+        isNextEpisodeSoon && lastEpisodeDate
+          ? latestEpisodeLine(lastEpisodeDate)
+          : null,
     };
   }
 
-  const seasonLine = nextSeasonLine(seriesMetadata);
+  if (
+    !seriesMetadata.next_episode_air_date &&
+    isLastEpisodeRecent &&
+    !hasAnnouncedSeason &&
+    !hasInactiveStatus &&
+    hasActiveStatus
+  ) {
+    const recentLine = latestEpisodeLine(lastEpisodeDate);
+    return recentLine
+      ? {
+          heading: "Recently aired",
+          primaryLine: recentLine,
+        }
+      : null;
+  }
+
+  const seasonLine =
+    hasUndatedSeasonAnnouncement || isNextSeasonUpcoming || isNextEpisodeUpcoming
+      ? (hasUndatedSeasonAnnouncement || isNextSeasonUpcoming
+          ? nextSeasonLine(seriesMetadata)
+          : null) ||
+        (isNextEpisodeUpcoming
+          ? seasonPremiereLine(seriesMetadata.next_episode_air_date)
+          : null)
+      : null;
   if (seasonLine) {
     return {
-      heading: "Season update",
+      heading: hasActiveStatus ? "Next season" : "Season update",
       primaryLine: seasonLine,
     };
   }
@@ -141,15 +368,7 @@ export function SeriesTimingCallout({
     return null;
   }
 
-  const status = normalizeStatus(
-    seriesMetadata.series_status_normalized || seriesMetadata.series_status,
-  );
-  if (!status || !ACTIVE_SERIES_STATUSES.has(status)) {
-    return null;
-  }
-
-  const mode = timingMode(seriesMetadata);
-  const secondaryLine = latestEpisodeLine(seriesMetadata.last_episode_air_date);
+  const mode = getSeriesTimingMode(seriesMetadata);
 
   if (!mode) {
     return null;
@@ -160,12 +379,14 @@ export function SeriesTimingCallout({
       className="series-timing-callout"
       aria-label="Series release timing"
     >
-      <span className="series-timing-callout__label">Series timing</span>
+      <span className="series-timing-callout__label">Update</span>
       <div>
         <h2>{mode.heading}</h2>
         <p className="series-timing-callout__primary">{mode.primaryLine}</p>
-        {secondaryLine ? (
-          <p className="series-timing-callout__secondary">{secondaryLine}</p>
+        {mode.secondaryLine ? (
+          <p className="series-timing-callout__secondary">
+            {mode.secondaryLine}
+          </p>
         ) : null}
       </div>
     </section>

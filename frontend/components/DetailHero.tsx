@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import type { Content, SeriesMetadata } from "@/types/content";
 import type { ContentCreditsResponse, CreditCrewMember } from "@/types/credits";
@@ -137,10 +136,6 @@ export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps
       ) : null}
 
       <div className="detail-hero__overlay">
-        <Link className="detail-back-link" href="/">
-          Back to homepage
-        </Link>
-
         <div className="detail-hero__grid">
           <div className="detail-poster" aria-label={`${content.title} poster`}>
             <div className="detail-poster__fallback" aria-hidden={showPoster}>
@@ -158,7 +153,6 @@ export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps
           </div>
 
           <div className="detail-hero__content">
-            <div className="eyebrow">Content details</div>
             <h1>{content.title}</h1>
             {originalTitle ? (
               <p className="detail-original-title">
