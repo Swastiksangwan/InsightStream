@@ -77,6 +77,14 @@ Expected current seed state:
 
 If the database is stale, missing seed data, or still has duplicate old seed rows, tests may fail. Reset the local database and rerun the setup SQL files before debugging the tests themselves.
 
+Some metadata fields are intentionally enriched by later import scripts rather than by
+`sample_data.sql` itself. For example, original title/language values can be added by
+the TMDb metadata importer after the canonical seed has already created a title. Tests
+that validate the canonical seeded catalog should assert only seed-stable fields, while
+behavior tests for optional metadata should create controlled temporary rows and clean
+them up. This keeps manual metadata imports in a development database from changing
+the meaning of a backend test.
+
 ## 4. How to Run Tests
 
 From inside the backend folder:
