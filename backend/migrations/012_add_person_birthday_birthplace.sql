@@ -1,0 +1,5 @@
+ALTER TABLE people
+ADD COLUMN IF NOT EXISTS birthday DATE;
+
+ALTER TABLE people
+ADD COLUMN IF NOT EXISTS place_of_birth TEXT;

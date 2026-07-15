@@ -25,6 +25,8 @@ Covered areas:
 - content credits endpoint, allowing empty arrays before credits import
 - person detail endpoint, conditional on imported people data
 - person credits endpoint, conditional on imported people data
+- person birthday/place-of-birth response behavior using controlled temporary rows
+- person details importer helper behavior for birthday/place-of-birth preview mapping, safe missing-only updates, conflict preservation, and row-level update output
 - genre metadata
 - platform metadata
 - watched read endpoint
@@ -72,10 +74,15 @@ Expected current seed state:
 - external IDs: 15 `tmdb` rows and 15 verified `imdb` rows
 - verified IMDb IDs for all 15 seeded titles
 - people/cast/crew schema tables exist with 0 seeded rows until the local people/credits import script is applied
+- `people.birthday` and `people.place_of_birth` nullable display-metadata columns are present
 - `GET /content/{content_id}/credits` works with either empty credits or imported local credits
 - `GET /people/{person_id}` and `GET /people/{person_id}/credits` work when people data has been imported; existing-person tests are skipped when no local people rows exist
 
 If the database is stale, missing seed data, or still has duplicate old seed rows, tests may fail. Reset the local database and rerun the setup SQL files before debugging the tests themselves.
+
+Existing local databases created before person birthday/place-of-birth support
+should run `backend/migrations/012_add_person_birthday_birthplace.sql` before
+running person endpoint tests.
 
 Some metadata fields are intentionally enriched by later import scripts rather than by
 `sample_data.sql` itself. For example, original title/language values can be added by
@@ -116,6 +123,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_content_read_endpoints.py` — content, discovery, homepage sections, and details read endpoints
 - `backend/tests/test_content_credits_endpoints.py` — provider-neutral content credits endpoint
 - `backend/tests/test_people_endpoints.py` — provider-neutral person detail and person credits endpoints
+- `backend/tests/test_person_metadata_importer.py` — person details preview/import helper behavior
 - `backend/tests/test_metadata_endpoints.py` — genre and platform metadata endpoints
 - `backend/tests/test_user_content_read_endpoints.py` — watched/watch-later read endpoints for the seeded user
 - `backend/tests/test_external_ids_seed.py` — read-only external ID seed verification

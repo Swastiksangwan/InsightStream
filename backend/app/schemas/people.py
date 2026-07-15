@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import date
 from typing import List, Optional
 
 
@@ -8,6 +9,8 @@ class PersonDetailResponse(BaseModel):
     profile_url: Optional[str] = None
     known_for_department: Optional[str] = None
     biography: Optional[str] = None
+    birthday: Optional[date] = None
+    place_of_birth: Optional[str] = None
 
 
 class PersonCreditContentItem(BaseModel):

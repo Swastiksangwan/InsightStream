@@ -4,6 +4,8 @@ export type PersonDetail = {
   profile_url?: string | null;
   known_for_department?: string | null;
   biography?: string | null;
+  birthday?: string | null;
+  place_of_birth?: string | null;
 };
 
 export type PersonCreditItem = {

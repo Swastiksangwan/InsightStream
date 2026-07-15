@@ -27,7 +27,7 @@ Future ingestion updates should go into this document.
 | Metadata import | Implemented | `analytics/scripts/import_content_metadata_from_preview.py` | Only with `--apply` | Imports content rows, external IDs, genres, posters/backdrops, lifecycle metadata, season summaries, latest activity dates, and safe series status refreshes. |
 | Poster/backdrop update behavior | Implemented | `analytics/scripts/update_posters_from_tmdb_preview.py`, metadata importer | Only with `--apply` | Seed poster/backdrop values exist for base titles. Current scalable imports use metadata preview fields while preserving curated conflicts unless importer policy allows update. |
 | Credits/people preview/import | Implemented | `analytics/scripts/build_tmdb_credits_preview.py`, `analytics/scripts/import_people_credits_from_preview.py` | Import only with `--apply` | Builds and imports top cast plus unified key crew into `people`, `person_external_ids`, and `content_people`. |
-| Person details import | Implemented | `analytics/scripts/fetch_tmdb_person_details.py`, `analytics/scripts/import_person_details_from_preview.py` | Import only with `--apply` | Imports missing biography/profile fields for local people matched by provider IDs. |
+| Person details import | Implemented | `analytics/scripts/fetch_tmdb_person_details.py`, `analytics/scripts/import_person_details_from_preview.py` | Import only with `--apply` | Imports missing biography, profile, known-for department, birthday, and place-of-birth fields for local people matched by provider IDs. |
 | Availability/certification import | Implemented | `analytics/scripts/fetch_tmdb_availability_certification.py`, `analytics/scripts/import_availability_certification_from_preview.py` | Import only with `--apply` | Imports India-focused region-aware availability and certifications. |
 | Series refresh planner/fetch/import | Implemented | `analytics/scripts/plan_series_refresh.py`, `analytics/scripts/fetch_tmdb_sample.py`, `analytics/scripts/import_content_metadata_from_preview.py` | Planner/fetch no; import only with `--apply` | Plans refresh targets for active/recent series and refreshes dynamic lifecycle/status fields. |
 | TMDb ratings import | Implemented | `analytics/scripts/import_content_ratings_from_preview.py` | Only with `--apply` | Imports TMDb vote data from the processed metadata preview into provider-neutral ratings tables. |
@@ -198,6 +198,12 @@ Existing local databases created before original-title/language support should r
 psql "$DATABASE_URL" -f backend/migrations/011_add_content_original_title_language.sql
 ```
 
+Existing local databases created before person birthday/place-of-birth support should run:
+
+```bash
+psql "$DATABASE_URL" -f backend/migrations/012_add_person_birthday_birthplace.sql
+```
+
 ## 6. Credits and People Pipeline
 
 Build credits preview:
@@ -236,6 +242,12 @@ python3 analytics/scripts/import_person_details_from_preview.py
 python3 analytics/scripts/import_person_details_from_preview.py --apply
 python3 analytics/scripts/import_person_details_from_preview.py
 ```
+
+Person details use TMDb person fields `birthday` and `place_of_birth` when present.
+Both are imported only into empty local fields; existing non-empty values are
+preserved with conflict warnings. The detail API/page displays birthday and
+birthplace as optional profile facts, and InsightStream does not infer
+nationality from place of birth.
 
 Safety rules:
 
