@@ -236,14 +236,15 @@ Run scripts from the repository root.
 `analytics/scripts/fetch_tmdb_person_details.py`
 
 - Reads local `person_external_ids` where `source_name = 'tmdb'`.
-- Fetches TMDb person details and biographies.
+- Fetches TMDb person details, including biography, profile image, birthday, and place of birth.
 - Writes `analytics/processed/tmdb/person_details_preview.json`.
 - Makes no database writes.
 
 `analytics/scripts/import_person_details_from_preview.py`
 
-- Imports only missing safe person fields: `biography`, `profile_url`, and `known_for_department`.
+- Imports only missing safe person fields: `biography`, `profile_url`, `known_for_department`, `birthday`, and `place_of_birth`.
 - Never overwrites non-empty existing values.
+- Preserves place of birth as provider text and does not infer nationality.
 - Dry-run by default; requires `--apply` for database writes.
 
 Analysis/reporting scripts:

@@ -45,6 +45,8 @@ CREATE TABLE IF NOT EXISTS people (
     profile_url TEXT,
     known_for_department VARCHAR(100),
     biography TEXT,
+    birthday DATE,
+    place_of_birth TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -4,7 +4,8 @@ Dry-run or apply safe person detail updates from a processed preview.
 
 This script:
 - reads analytics/processed/tmdb/person_details_preview.json
-- fills only missing people.biography, people.profile_url, and people.known_for_department
+- fills only missing safe person fields such as biography, profile URL,
+  known-for department, birthday, and place of birth
 - never overwrites non-empty existing fields
 - does not create people, person external IDs, or content_people rows
 - does not call TMDb or any external API
@@ -23,6 +24,7 @@ import json
 import os
 import sys
 from dataclasses import dataclass, field
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -35,7 +37,16 @@ PREVIEW_PATH = (
     REPO_ROOT / "analytics" / "processed" / "tmdb" / "person_details_preview.json"
 )
 DATABASE_URL_ENV = "DATABASE_URL"
-SAFE_UPDATE_FIELDS = ("biography", "profile_url", "known_for_department")
+SAFE_UPDATE_FIELDS = (
+    "biography",
+    "profile_url",
+    "known_for_department",
+    "birthday",
+    "place_of_birth",
+)
+DATE_UPDATE_FIELDS = {"birthday"}
+MAX_ROW_REPORT_ITEMS = 50
+MAX_DISPLAY_VALUE_LENGTH = 120
 
 
 @dataclass
@@ -46,10 +57,13 @@ class ImportStats:
     biography_updates: int = 0
     profile_url_updates: int = 0
     known_for_department_updates: int = 0
+    birthday_updates: int = 0
+    place_of_birth_updates: int = 0
     skipped_missing_biography: int = 0
     skipped_mismatch: int = 0
     skipped_missing_person: int = 0
     warnings: List[str] = field(default_factory=list)
+    person_update_rows: List[Dict[str, Any]] = field(default_factory=list)
 
 
 class PersonDetailsImportError(RuntimeError):
@@ -83,6 +97,45 @@ def clean_text(value: Any) -> Optional[str]:
 
 def is_empty(value: Any) -> bool:
     return value is None or (isinstance(value, str) and not value.strip())
+
+
+def display_value(value: Any) -> str:
+    if value is None or value == "":
+        return "<empty>"
+    text = str(value)
+    if len(text) <= MAX_DISPLAY_VALUE_LENGTH:
+        return text
+    return f"{text[:MAX_DISPLAY_VALUE_LENGTH - 1]}…"
+
+
+def clean_date(value: Any) -> Optional[str]:
+    text_value = clean_text(value)
+    if not text_value:
+        return None
+    try:
+        return datetime.strptime(text_value, "%Y-%m-%d").date().isoformat()
+    except ValueError:
+        return None
+
+
+def clean_preview_field(
+    field_name: str,
+    value: Any,
+    warnings: List[str],
+    name: str,
+) -> Optional[str]:
+    if field_name in DATE_UPDATE_FIELDS:
+        cleaned = clean_date(value)
+        if clean_text(value) and cleaned is None:
+            warnings.append(f"{name}: preview {field_name} is not a valid YYYY-MM-DD date; skipped.")
+        return cleaned
+    return clean_text(value)
+
+
+def comparable_existing_value(field_name: str, value: Any) -> Any:
+    if field_name in DATE_UPDATE_FIELDS and value is not None:
+        return str(value)
+    return value
 
 
 def load_preview(path: Path) -> Dict[str, Any]:
@@ -147,6 +200,8 @@ def fetch_existing_person(connection, person_id: int, source_person_id: str):
                 p.biography,
                 p.profile_url,
                 p.known_for_department,
+                p.birthday,
+                p.place_of_birth,
                 pei.external_id AS source_person_id
             FROM people p
             JOIN person_external_ids pei ON pei.person_id = p.id
@@ -166,12 +221,17 @@ def planned_updates(existing_person, item: Dict[str, Any], warnings: List[str]) 
     name = clean_text(item.get("name")) or existing_person["name"]
 
     for field_name in SAFE_UPDATE_FIELDS:
-        preview_value = clean_text(item.get(field_name))
+        preview_value = clean_preview_field(field_name, item.get(field_name), warnings, name)
         existing_value = existing_person[field_name]
+        existing_comparable = comparable_existing_value(field_name, existing_value)
 
         if is_empty(existing_value) and preview_value:
             updates[field_name] = preview_value
-        elif not is_empty(existing_value) and preview_value and existing_value != preview_value:
+        elif (
+            not is_empty(existing_value)
+            and preview_value
+            and existing_comparable != preview_value
+        ):
             warnings.append(
                 f"{name}: existing {field_name} differs from preview; preserved existing value."
             )
@@ -209,6 +269,30 @@ def increment_update_counts(stats: ImportStats, updates: Dict[str, str]) -> None
         stats.profile_url_updates += 1
     if "known_for_department" in updates:
         stats.known_for_department_updates += 1
+    if "birthday" in updates:
+        stats.birthday_updates += 1
+    if "place_of_birth" in updates:
+        stats.place_of_birth_updates += 1
+
+
+def record_person_update_row(stats: ImportStats, existing_person, updates: Dict[str, str]) -> None:
+    if not updates:
+        return
+
+    stats.person_update_rows.append(
+        {
+            "person_id": existing_person["id"],
+            "name": existing_person["name"],
+            "fields": [
+                {
+                    "field_name": field_name,
+                    "old_value": existing_person[field_name],
+                    "new_value": updates[field_name],
+                }
+                for field_name in updates
+            ],
+        }
+    )
 
 
 def process_preview_offline(preview: Dict[str, Any]) -> ImportStats:
@@ -232,6 +316,10 @@ def process_preview_offline(preview: Dict[str, Any]) -> ImportStats:
             stats.profile_url_updates += 1
         if clean_text(valid_item.get("known_for_department")):
             stats.known_for_department_updates += 1
+        if clean_preview_field("birthday", valid_item.get("birthday"), stats.warnings, clean_text(valid_item.get("name")) or "person"):
+            stats.birthday_updates += 1
+        if clean_text(valid_item.get("place_of_birth")):
+            stats.place_of_birth_updates += 1
 
     return stats
 
@@ -282,6 +370,7 @@ def process_preview_db(
 
             updates = planned_updates(existing_person, item, stats.warnings)
             increment_update_counts(stats, updates)
+            record_person_update_row(stats, existing_person, updates)
 
             if apply and updates:
                 apply_updates(connection, person_id, updates)
@@ -300,9 +389,16 @@ def print_stats(stats: ImportStats) -> None:
         f"{'applied' if stats.mode == 'APPLY' else 'planned'}: "
         f"{stats.known_for_department_updates}"
     )
+    print(f"Birthday updates {'applied' if stats.mode == 'APPLY' else 'planned'}: {stats.birthday_updates}")
+    print(
+        "Place-of-birth updates "
+        f"{'applied' if stats.mode == 'APPLY' else 'planned'}: "
+        f"{stats.place_of_birth_updates}"
+    )
     print(f"Skipped due to missing biography: {stats.skipped_missing_biography}")
     print(f"Skipped due to mismatch: {stats.skipped_mismatch}")
     print(f"Skipped due to missing local person: {stats.skipped_missing_person}")
+    print_person_update_rows(stats)
     print(f"Warnings: {len(stats.warnings)}")
     for warning in stats.warnings:
         print(f"- {warning}")
@@ -313,6 +409,26 @@ def print_stats(stats: ImportStats) -> None:
         print("No database changes were made.")
 
     print("No frontend/backend/schema/sample_data files were mutated by this script.")
+
+
+def print_person_update_rows(stats: ImportStats) -> None:
+    if not stats.person_update_rows:
+        return
+
+    heading = "Updated person rows:" if stats.mode == "APPLY" else "Would update person rows:"
+    print(heading)
+
+    for row in stats.person_update_rows[:MAX_ROW_REPORT_ITEMS]:
+        print(f"- {row['name']} [id={row['person_id']}]")
+        for field in row["fields"]:
+            print(
+                f"  - {field['field_name']}: "
+                f"{display_value(field['old_value'])} -> {display_value(field['new_value'])}"
+            )
+
+    remaining = len(stats.person_update_rows) - MAX_ROW_REPORT_ITEMS
+    if remaining > 0:
+        print(f"... and {remaining} more")
 
 
 def main() -> int:

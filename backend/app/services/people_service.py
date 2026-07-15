@@ -9,6 +9,8 @@ def build_person_detail(row):
         "profile_url": row["profile_url"],
         "known_for_department": row["known_for_department"],
         "biography": row["biography"],
+        "birthday": row["birthday"],
+        "place_of_birth": row["place_of_birth"],
     }
 
 
@@ -33,7 +35,9 @@ def get_person_detail_service(person_id: int, db: Session):
             name,
             profile_url,
             known_for_department,
-            biography
+            biography,
+            birthday,
+            place_of_birth
         FROM people
         WHERE id = :person_id;
     """)

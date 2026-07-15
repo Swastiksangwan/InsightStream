@@ -63,6 +63,8 @@ class LocalPerson:
     biography: Optional[str]
     profile_url: Optional[str]
     known_for_department: Optional[str]
+    birthday: Optional[str]
+    place_of_birth: Optional[str]
 
 
 @dataclass
@@ -151,6 +153,14 @@ def clean_text(value: Any) -> Optional[str]:
     return None
 
 
+def clean_db_value(value: Any) -> Optional[str]:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return clean_text(value)
+    return str(value)
+
+
 def is_non_empty(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
@@ -160,6 +170,8 @@ def person_complete(person: LocalPerson) -> bool:
         is_non_empty(person.biography)
         and is_non_empty(person.profile_url)
         and is_non_empty(person.known_for_department)
+        and is_non_empty(person.birthday)
+        and is_non_empty(person.place_of_birth)
     )
 
 
@@ -197,6 +209,8 @@ def read_tmdb_people(database_url: str) -> List[LocalPerson]:
             p.biography,
             p.profile_url,
             p.known_for_department,
+            p.birthday,
+            p.place_of_birth,
             pei.external_id AS source_person_id
         FROM person_external_ids pei
         JOIN people p ON p.id = pei.person_id
@@ -225,6 +239,8 @@ def read_tmdb_people(database_url: str) -> List[LocalPerson]:
                 biography=clean_text(row["biography"]),
                 profile_url=clean_text(row["profile_url"]),
                 known_for_department=clean_text(row["known_for_department"]),
+                birthday=clean_db_value(row["birthday"]),
+                place_of_birth=clean_db_value(row["place_of_birth"]),
             )
         )
 
@@ -388,6 +404,8 @@ def map_person_preview(
     biography = clean_text(details.get("biography"))
     profile_path = clean_text(details.get("profile_path"))
     known_for_department = clean_text(details.get("known_for_department"))
+    birthday = clean_text(details.get("birthday"))
+    place_of_birth = clean_text(details.get("place_of_birth"))
 
     if tmdb_name and tmdb_name != local_person.name:
         warnings.append(
@@ -403,9 +421,9 @@ def map_person_preview(
         "profile_path": profile_path,
         "profile_url": build_profile_url(profile_path),
         "known_for_department": known_for_department,
-        "birthday": clean_text(details.get("birthday")),
+        "birthday": birthday,
         "deathday": clean_text(details.get("deathday")),
-        "place_of_birth": clean_text(details.get("place_of_birth")),
+        "place_of_birth": place_of_birth,
         "also_known_as": details.get("also_known_as")
         if isinstance(details.get("also_known_as"), list)
         else [],
@@ -419,6 +437,8 @@ def map_person_preview(
             "biography": bool(biography),
             "profile_url": bool(profile_path),
             "known_for_department": bool(known_for_department),
+            "birthday": bool(birthday),
+            "place_of_birth": bool(place_of_birth),
         },
         "warnings": warnings,
     }

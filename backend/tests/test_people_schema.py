@@ -45,6 +45,8 @@ def test_people_credit_tables_have_expected_columns(db_session):
         "profile_url",
         "known_for_department",
         "biography",
+        "birthday",
+        "place_of_birth",
         "created_at",
         "updated_at",
     } <= columns_by_table["people"]
