@@ -57,12 +57,12 @@ export function PersonFilmographyCard({
       </div>
 
       <div className="person-filmography-card__body">
+        <h3>{item.title}</h3>
         <div className="person-filmography-card__meta">
           {metaItems.map((meta) => (
             <span key={String(meta)}>{meta}</span>
           ))}
         </div>
-        <h3>{item.title}</h3>
         <p>{roleLabel}</p>
       </div>
     </Link>

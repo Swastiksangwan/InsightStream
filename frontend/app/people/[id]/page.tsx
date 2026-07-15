@@ -53,8 +53,8 @@ function crewRoleLabel(item: PersonCreditItem) {
 const filmographyGroups: FilmographyGroup[] = [
   {
     key: "cast",
-    title: "Known For / Cast",
-    description: "Acting credits connected to the current catalog.",
+    title: "Known For",
+    description: "Acting credits in the current catalog.",
     getRoleLabel: (item) => (item.character_name ? `as ${item.character_name}` : "Cast"),
   },
   {
@@ -106,18 +106,18 @@ export default async function PersonDetailPage({ params }: PersonDetailPageProps
 
     return (
       <main className="person-page">
+        <Link className="person-back-link" href="/discover">
+          Back to discovery
+        </Link>
+
         <section className="person-hero">
           <div className="person-hero__wash" aria-hidden="true" />
-          <Link className="detail-back-link" href="/discover">
-            Back to discovery
-          </Link>
           <PersonProfileHero person={person} />
         </section>
 
         <section className="person-page-stack" aria-label="Person details">
           <section className="person-panel person-biography">
-            <div className="detail-section-heading">
-              <span className="section-label">Profile</span>
+            <div className="person-section-heading">
               <h2>Biography</h2>
             </div>
             <PersonBiography biography={person.biography} />
@@ -126,7 +126,6 @@ export default async function PersonDetailPage({ params }: PersonDetailPageProps
           <section className="person-panel person-filmography">
             <div className="person-filmography__header">
               <div>
-                <span className="section-label">Credits</span>
                 <h2>Filmography</h2>
                 <p>Related titles currently available in InsightStream.</p>
               </div>
