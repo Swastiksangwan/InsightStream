@@ -16,7 +16,7 @@ Completed:
 
 - 15-title movie/series seed catalog.
 - Content listing, details, discovery, genres, platforms, and personal watch-state APIs.
-- Local catalog search for ingested content and imported people.
+- Local catalog search for ingested title/original-title matches and imported people names.
 - Real poster/backdrop URLs persisted in `backend/sample_data.sql`.
 - Provider-neutral `external_ids` table with TMDb and IMDb IDs.
 - Metadata normalization and reconciliation docs.
@@ -79,7 +79,7 @@ Analytics and ingestion:
 Content:
 
 - Content listing
-- Local search across ingested content titles, overviews, content types, and genres
+- Local search across ingested content titles, original titles, and imported people names
 - Content detail responses
 - Discovery filtering by type, genre, platform, availability, and sort mode
 - Genre and platform metadata
@@ -158,10 +158,15 @@ Backend API docs are available at:
 http://127.0.0.1:8000/docs
 ```
 
-Search uses the local PostgreSQL catalog only. It covers ingested content,
-imported people, and content connected to people through cast, crew, director,
-and creator credits. It does not call TMDb or any other live provider. Missing
-titles or people must first be added through the ingestion pipeline.
+Search uses the local PostgreSQL catalog only. Ordinary search is intentionally
+strict and predictable: title results match `content.title` or
+`content.original_title`, and people results match `people.name`. It does not
+match overview text, genres, biographies, departments, credits, platforms, or
+source-signal metadata for normal results. Results are ranked deterministically
+by exact match, starts-with match, word-start match, then contains match, with
+stable title/name ordering as a tie-breaker. It does not call TMDb or any other
+live provider. Richer description, genre, credit, or semantic search can be
+added later as an explicit advanced-search mode.
 
 ## 6. Database Setup
 

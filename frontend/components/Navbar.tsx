@@ -19,11 +19,14 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    if (pathname === "/search") {
+    if (pathname === "/search" && document.activeElement !== inputRef.current) {
       const searchParams = new URLSearchParams(window.location.search);
-      setSearchQuery(searchParams.get("q") || "");
+      const nextQuery = searchParams.get("q") || "";
+      setSearchQuery((currentQuery) =>
+        currentQuery === nextQuery ? currentQuery : nextQuery,
+      );
     }
-  }, [pathname]);
+  });
 
   function isActiveRoute(href: string) {
     if (href === "/") {

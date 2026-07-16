@@ -39,6 +39,7 @@ Covered areas:
 - people/cast/crew schema table verification
 - person external ID unique constraint verification
 - content-person role type constraint verification
+- strict search endpoint behavior, including title/original-title matching, people-name matching, ranking, count consistency, and exclusion of overview-only, genre-only, biography-only, department-only, and credit-only matches
 - TMDb keyword preview helper behavior
 - TMDb keyword retry/merge helper behavior
 - TMDb keyword storage schema verification
@@ -124,6 +125,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_content_credits_endpoints.py` — provider-neutral content credits endpoint
 - `backend/tests/test_people_endpoints.py` — provider-neutral person detail and person credits endpoints
 - `backend/tests/test_person_metadata_importer.py` — person details preview/import helper behavior
+- `backend/tests/test_search_endpoints.py` — strict local search behavior for title/original-title matches and people-name matches, including deterministic ranking, SQL-backed counts, pagination ordering, and exclusion of indirect overview/genre/biography/credit matches
 - `backend/tests/test_metadata_endpoints.py` — genre and platform metadata endpoints
 - `backend/tests/test_user_content_read_endpoints.py` — watched/watch-later read endpoints for the seeded user
 - `backend/tests/test_external_ids_seed.py` — read-only external ID seed verification
@@ -161,5 +163,6 @@ Future test additions should include:
 - empty-state tests
 - database reset/test isolation later
 - recommendation tests when recommendations are added
+- advanced-search tests if InsightStream later adds explicit overview, biography, genre, credit, or semantic search modes
 - richer homepage section tests when personalized recommendation rails are introduced
 - frontend/API integration tests later
