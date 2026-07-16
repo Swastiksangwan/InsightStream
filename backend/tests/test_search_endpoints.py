@@ -36,23 +36,278 @@ def first_person_by_name(db_session, name_part):
     return row
 
 
-def content_ids_linked_to_person_name(db_session, name_part):
-    rows = db_session.execute(
+STRICT_CONTENT_TMDB_MIN = 910000000
+STRICT_CONTENT_TMDB_MAX = 910000099
+STRICT_PEOPLE_NAMES = [
+    "David House",
+    "Strict Search Biography Only",
+    "Strict Search Credit Title Person",
+    "Strict Search Department Only",
+    "Rankperson",
+    "Rankperson Alpha",
+    "The Rankperson Beta",
+    "Prerankperson Gamma",
+]
+STRICT_GENRE_NAME = "Strict Search House Genre"
+
+
+def cleanup_strict_search_fixture(db_session):
+    params = {
+        "tmdb_min": STRICT_CONTENT_TMDB_MIN,
+        "tmdb_max": STRICT_CONTENT_TMDB_MAX,
+        "people_names": STRICT_PEOPLE_NAMES,
+        "genre_name": STRICT_GENRE_NAME,
+    }
+
+    db_session.execute(
         text("""
-            SELECT DISTINCT c.id, c.title
-            FROM content c
-            JOIN content_people cp ON cp.content_id = c.id
-            JOIN people p ON p.id = cp.person_id
-            WHERE p.name ILIKE :name
-            ORDER BY c.title ASC;
+            DELETE FROM content_people
+            WHERE content_id IN (
+                SELECT id FROM content
+                WHERE tmdb_id BETWEEN :tmdb_min AND :tmdb_max
+            )
+            OR person_id IN (
+                SELECT id FROM people
+                WHERE name = ANY(:people_names)
+            );
         """),
-        {"name": f"%{name_part}%"},
-    ).mappings().all()
+        params,
+    )
+    db_session.execute(
+        text("""
+            DELETE FROM content_genres
+            WHERE content_id IN (
+                SELECT id FROM content
+                WHERE tmdb_id BETWEEN :tmdb_min AND :tmdb_max
+            )
+            OR genre_id IN (
+                SELECT id FROM genres
+                WHERE name = :genre_name
+            );
+        """),
+        params,
+    )
+    db_session.execute(
+        text("""
+            DELETE FROM content
+            WHERE tmdb_id BETWEEN :tmdb_min AND :tmdb_max;
+        """),
+        params,
+    )
+    db_session.execute(
+        text("""
+            DELETE FROM people
+            WHERE name = ANY(:people_names);
+        """),
+        params,
+    )
+    db_session.execute(
+        text("""
+            DELETE FROM genres
+            WHERE name = :genre_name;
+        """),
+        params,
+    )
+    db_session.commit()
 
-    if not rows:
-        pytest.skip(f"No content linked to person matching {name_part!r} present.")
 
-    return rows
+def insert_content_fixture(
+    db_session,
+    *,
+    tmdb_id,
+    title,
+    original_title=None,
+    overview=None,
+):
+    return db_session.execute(
+        text("""
+            INSERT INTO content (
+                tmdb_id,
+                title,
+                original_title,
+                content_type,
+                overview,
+                release_date,
+                year,
+                age_rating
+            )
+            VALUES (
+                :tmdb_id,
+                :title,
+                :original_title,
+                'movie',
+                :overview,
+                DATE '2024-01-01',
+                2024,
+                'UA'
+            )
+            RETURNING id;
+        """),
+        {
+            "tmdb_id": tmdb_id,
+            "title": title,
+            "original_title": original_title,
+            "overview": overview,
+        },
+    ).scalar_one()
+
+
+def insert_person_fixture(
+    db_session,
+    *,
+    name,
+    biography=None,
+    known_for_department="Acting",
+):
+    return db_session.execute(
+        text("""
+            INSERT INTO people (
+                name,
+                biography,
+                known_for_department
+            )
+            VALUES (
+                :name,
+                :biography,
+                :known_for_department
+            )
+            RETURNING id;
+        """),
+        {
+            "name": name,
+            "biography": biography,
+            "known_for_department": known_for_department,
+        },
+    ).scalar_one()
+
+
+@pytest.fixture
+def strict_search_fixture(db_session):
+    cleanup_strict_search_fixture(db_session)
+
+    exact_content_id = insert_content_fixture(
+        db_session,
+        tmdb_id=910000001,
+        title="House",
+    )
+    title_contains_id = insert_content_fixture(
+        db_session,
+        tmdb_id=910000002,
+        title="House of the Dragon Test",
+    )
+    original_title_id = insert_content_fixture(
+        db_session,
+        tmdb_id=910000003,
+        title="Strict Search Localized Title",
+        original_title="Casa House",
+    )
+    overview_only_id = insert_content_fixture(
+        db_session,
+        tmdb_id=910000004,
+        title="Strict Search Overview Only",
+        overview="A quiet story about a house that should not match title search.",
+    )
+    genre_only_id = insert_content_fixture(
+        db_session,
+        tmdb_id=910000005,
+        title="Strict Search Genre Only",
+    )
+    credit_only_id = insert_content_fixture(
+        db_session,
+        tmdb_id=910000006,
+        title="Strict Search Credit Only",
+    )
+
+    for tmdb_id, title in (
+        (910000020, "Strictneedle"),
+        (910000021, "Strictneedle Alpha"),
+        (910000022, "Strictneedle Beta"),
+        (910000023, "The Strictneedle File"),
+        (910000024, "Prestrictneedle"),
+    ):
+        insert_content_fixture(db_session, tmdb_id=tmdb_id, title=title)
+
+    genre_id = db_session.execute(
+        text("""
+            INSERT INTO genres (name)
+            VALUES (:genre_name)
+            ON CONFLICT (name) DO UPDATE
+            SET name = EXCLUDED.name
+            RETURNING id;
+        """),
+        {"genre_name": STRICT_GENRE_NAME},
+    ).scalar_one()
+
+    db_session.execute(
+        text("""
+            INSERT INTO content_genres (content_id, genre_id)
+            VALUES (:content_id, :genre_id)
+            ON CONFLICT (content_id, genre_id) DO NOTHING;
+        """),
+        {"content_id": genre_only_id, "genre_id": genre_id},
+    )
+
+    name_match_id = insert_person_fixture(db_session, name="David House")
+    biography_only_id = insert_person_fixture(
+        db_session,
+        name="Strict Search Biography Only",
+        biography="This biography mentions house but should not match person search.",
+    )
+    credit_title_only_id = insert_person_fixture(
+        db_session,
+        name="Strict Search Credit Title Person",
+    )
+    department_only_id = insert_person_fixture(
+        db_session,
+        name="Strict Search Department Only",
+        known_for_department="House Department",
+    )
+
+    for name in (
+        "Rankperson",
+        "Rankperson Alpha",
+        "The Rankperson Beta",
+        "Prerankperson Gamma",
+    ):
+        insert_person_fixture(db_session, name=name)
+
+    db_session.execute(
+        text("""
+            INSERT INTO content_people (
+                content_id,
+                person_id,
+                role_type,
+                character_name,
+                display_order
+            )
+            VALUES
+                (:credit_only_id, :name_match_id, 'cast', 'Lead', 1),
+                (:title_contains_id, :credit_title_only_id, 'cast', 'Guest', 2);
+        """),
+        {
+            "credit_only_id": credit_only_id,
+            "title_contains_id": title_contains_id,
+            "name_match_id": name_match_id,
+            "credit_title_only_id": credit_title_only_id,
+        },
+    )
+    db_session.commit()
+
+    try:
+        yield {
+            "exact_content_id": exact_content_id,
+            "title_contains_id": title_contains_id,
+            "original_title_id": original_title_id,
+            "overview_only_id": overview_only_id,
+            "genre_only_id": genre_only_id,
+            "credit_only_id": credit_only_id,
+            "name_match_id": name_match_id,
+            "biography_only_id": biography_only_id,
+            "credit_title_only_id": credit_title_only_id,
+            "department_only_id": department_only_id,
+        }
+    finally:
+        cleanup_strict_search_fixture(db_session)
 
 
 def test_search_content_by_exact_title(client):
@@ -78,27 +333,6 @@ def test_search_content_by_partial_title(client):
     assert data["total_content_results"] >= 1
     assert "The Dark Knight" in titles or "Dark" in titles
     assert all(item["result_type"] == "content" for item in data["content_results"])
-
-
-def test_search_thing_ranks_stranger_things_above_internal_substrings_if_present(client):
-    response = client.get("/search?q=thing&type=content&limit=20")
-    data = response.json()
-    titles = [item["title"] for item in data["content_results"]]
-
-    assert response.status_code == 200
-
-    if "Stranger Things" not in titles:
-        pytest.skip("Stranger Things is not present in the current search result window.")
-
-    internal_substring_titles = [
-        title
-        for title in titles
-        if "thing" in title.lower() and title != "Stranger Things"
-    ]
-
-    assert not internal_substring_titles or titles.index("Stranger Things") < min(
-        titles.index(title) for title in internal_substring_titles
-    )
 
 
 def test_search_person_by_exact_name_if_people_exist(client, db_session):
@@ -131,33 +365,126 @@ def test_search_nolan_ranks_name_matches_for_people(client, db_session):
     }
 
 
-def test_search_nolan_returns_credit_connected_content_if_present(client, db_session):
-    linked_content = content_ids_linked_to_person_name(db_session, "Nolan")
-    linked_content_ids = {row["id"] for row in linked_content}
-
-    response = client.get("/search?q=Nolan&type=content&limit=20")
-    data = response.json()
-    result_ids = {item["id"] for item in data["content_results"]}
-
-    assert response.status_code == 200
-    assert result_ids & linked_content_ids
-    assert any(
-        item.get("match_reason", "").startswith("Matched ")
-        for item in data["content_results"]
-        if item["id"] in linked_content_ids
+def test_search_content_matches_only_title_identity_fields(
+    client,
+    strict_search_fixture,
+):
+    response = client.get(
+        "/search",
+        params={"q": "house", "type": "content", "limit": 30},
     )
-
-
-def test_search_pedro_returns_credit_connected_content_if_present(client, db_session):
-    linked_content = content_ids_linked_to_person_name(db_session, "Pedro")
-    linked_content_ids = {row["id"] for row in linked_content}
-
-    response = client.get("/search?q=Pedro&type=content&limit=20")
     data = response.json()
+    titles = [item["title"] for item in data["content_results"]]
     result_ids = {item["id"] for item in data["content_results"]}
 
     assert response.status_code == 200
-    assert result_ids & linked_content_ids
+    assert titles[0] == "House"
+    assert "House of the Dragon Test" in titles
+    assert "Strict Search Localized Title" in titles
+    assert strict_search_fixture["overview_only_id"] not in result_ids
+    assert strict_search_fixture["genre_only_id"] not in result_ids
+    assert strict_search_fixture["credit_only_id"] not in result_ids
+
+
+def test_search_people_matches_only_person_name(
+    client,
+    strict_search_fixture,
+):
+    response = client.get(
+        "/search",
+        params={"q": "house", "type": "person", "limit": 30},
+    )
+    data = response.json()
+    names = [item["name"] for item in data["person_results"]]
+    result_ids = {item["id"] for item in data["person_results"]}
+
+    assert response.status_code == 200
+    assert "David House" in names
+    assert strict_search_fixture["biography_only_id"] not in result_ids
+    assert strict_search_fixture["credit_title_only_id"] not in result_ids
+    assert strict_search_fixture["department_only_id"] not in result_ids
+
+
+def test_search_content_ranking_and_tie_order_is_deterministic(
+    client,
+    strict_search_fixture,
+):
+    response = client.get(
+        "/search",
+        params={"q": "strictneedle", "type": "content", "limit": 10},
+    )
+    data = response.json()
+    titles = [item["title"] for item in data["content_results"][:5]]
+
+    assert response.status_code == 200
+    assert titles == [
+        "Strictneedle",
+        "Strictneedle Alpha",
+        "Strictneedle Beta",
+        "The Strictneedle File",
+        "Prestrictneedle",
+    ]
+
+
+def test_search_people_ranking_is_deterministic(client, strict_search_fixture):
+    response = client.get(
+        "/search",
+        params={"q": "rankperson", "type": "person", "limit": 10},
+    )
+    data = response.json()
+    names = [item["name"] for item in data["person_results"][:4]]
+
+    assert response.status_code == 200
+    assert names == [
+        "Rankperson",
+        "Rankperson Alpha",
+        "The Rankperson Beta",
+        "Prerankperson Gamma",
+    ]
+
+
+def test_search_counts_use_same_strict_filters(client, strict_search_fixture):
+    all_response = client.get("/search", params={"q": "house", "limit": 10})
+    content_response = client.get(
+        "/search",
+        params={"q": "house", "type": "content", "limit": 10},
+    )
+    person_response = client.get(
+        "/search",
+        params={"q": "house", "type": "person", "limit": 10},
+    )
+    all_data = all_response.json()
+    content_data = content_response.json()
+    person_data = person_response.json()
+
+    assert all_response.status_code == 200
+    assert content_response.status_code == 200
+    assert person_response.status_code == 200
+    assert all_data["total_content_results"] == content_data["total_content_results"]
+    assert all_data["total_person_results"] == person_data["total_person_results"]
+
+
+def test_search_pagination_preserves_relevance_order(client, strict_search_fixture):
+    first_page = client.get(
+        "/search",
+        params={"q": "strictneedle", "type": "content", "limit": 2, "offset": 0},
+    ).json()
+    second_page = client.get(
+        "/search",
+        params={"q": "strictneedle", "type": "content", "limit": 2, "offset": 2},
+    ).json()
+
+    titles = [
+        item["title"]
+        for item in first_page["content_results"] + second_page["content_results"]
+    ]
+
+    assert titles == [
+        "Strictneedle",
+        "Strictneedle Alpha",
+        "Strictneedle Beta",
+        "The Strictneedle File",
+    ]
 
 
 def test_search_person_by_partial_name_if_people_exist(client, db_session):

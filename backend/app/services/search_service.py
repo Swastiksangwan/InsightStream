@@ -86,112 +86,14 @@ def search_content(db: Session, query: str, limit: int, offset: int):
     params = search_params(query, limit, offset)
 
     count_query = text("""
-        WITH credit_match_rows AS (
-            SELECT
-                cp.content_id,
-                CASE
-                    WHEN LOWER(p.name) = :query_lower THEN 5
-                    WHEN LOWER(p.name) LIKE :starts THEN 6
-                    WHEN p.name ~* :word_start_pattern THEN 6
-                    WHEN LOWER(p.name) LIKE :contains THEN 7
-                    ELSE 12
-                END AS credit_rank
-            FROM content_people cp
-            JOIN people p ON p.id = cp.person_id
-            WHERE LOWER(p.name) LIKE :contains
-               OR p.name ~* :word_start_pattern
-               OR LOWER(COALESCE(cp.role_type, '')) LIKE :contains
-               OR LOWER(COALESCE(cp.job, '')) LIKE :contains
-               OR LOWER(COALESCE(cp.department, '')) LIKE :contains
-        ),
-        credit_matches AS (
-            SELECT
-                content_id,
-                MIN(credit_rank) AS credit_rank
-            FROM credit_match_rows
-            GROUP BY content_id
-        ),
-        genre_matches AS (
-            SELECT
-                cg.content_id,
-                TRUE AS genre_match
-            FROM content_genres cg
-            JOIN genres g ON g.id = cg.genre_id
-            WHERE LOWER(g.name) LIKE :contains
-               OR g.name ~* :word_start_pattern
-            GROUP BY cg.content_id
-        )
         SELECT COUNT(*) AS total
         FROM content c
-        LEFT JOIN credit_matches cm ON cm.content_id = c.id
-        LEFT JOIN genre_matches gm ON gm.content_id = c.id
         WHERE LOWER(c.title) LIKE :contains
-           OR c.title ~* :word_start_pattern
-           OR LOWER(COALESCE(c.overview, '')) LIKE :contains
-           OR COALESCE(c.overview, '') ~* :word_pattern
-           OR LOWER(c.content_type) LIKE :contains
-           OR cm.credit_rank IS NOT NULL
-           OR gm.genre_match IS TRUE;
+           OR LOWER(COALESCE(c.original_title, '')) LIKE :contains;
     """)
 
     data_query = text("""
-        WITH credit_match_rows AS (
-            SELECT
-                cp.content_id,
-                p.name,
-                CASE cp.role_type
-                    WHEN 'cast' THEN 'cast'
-                    WHEN 'director' THEN 'director'
-                    WHEN 'creator' THEN 'creator'
-                    ELSE COALESCE(NULLIF(cp.job, ''), NULLIF(cp.department, ''), 'crew')
-                END AS match_role,
-                CASE cp.role_type
-                    WHEN 'director' THEN 1
-                    WHEN 'creator' THEN 2
-                    WHEN 'cast' THEN 3
-                    ELSE 4
-                END AS role_priority,
-                CASE
-                    WHEN LOWER(p.name) = :query_lower THEN 5
-                    WHEN LOWER(p.name) LIKE :starts THEN 6
-                    WHEN p.name ~* :word_start_pattern THEN 6
-                    WHEN LOWER(p.name) LIKE :contains THEN 7
-                    ELSE 12
-                END AS credit_rank
-            FROM content_people cp
-            JOIN people p ON p.id = cp.person_id
-            WHERE LOWER(p.name) LIKE :contains
-               OR p.name ~* :word_start_pattern
-               OR LOWER(COALESCE(cp.role_type, '')) LIKE :contains
-               OR LOWER(COALESCE(cp.job, '')) LIKE :contains
-               OR LOWER(COALESCE(cp.department, '')) LIKE :contains
-        ),
-        credit_matches AS (
-            SELECT
-                content_id,
-                MIN(credit_rank) AS credit_rank,
-                COALESCE(
-                    ARRAY_AGG(name ORDER BY credit_rank ASC, name ASC) FILTER (WHERE credit_rank <= 7),
-                    ARRAY[]::VARCHAR[]
-                ) AS matched_people,
-                (ARRAY_AGG(
-                    'Matched ' || match_role || ': ' || name
-                    ORDER BY credit_rank ASC, role_priority ASC, name ASC
-                ))[1] AS match_reason
-            FROM credit_match_rows
-            GROUP BY content_id
-        ),
-        genre_matches AS (
-            SELECT
-                cg.content_id,
-                TRUE AS genre_match
-            FROM content_genres cg
-            JOIN genres g ON g.id = cg.genre_id
-            WHERE LOWER(g.name) LIKE :contains
-               OR g.name ~* :word_start_pattern
-            GROUP BY cg.content_id
-        ),
-        matched_content AS (
+        WITH matched_content AS (
             SELECT
                 c.id,
                 c.title,
@@ -202,43 +104,32 @@ def search_content(db: Session, query: str, limit: int, offset: int):
                 c.release_date,
                 c.latest_activity_date,
                 c.age_rating,
-                COALESCE(cm.matched_people, ARRAY[]::VARCHAR[]) AS matched_people,
+                ARRAY[]::VARCHAR[] AS matched_people,
                 CASE
                     WHEN LOWER(c.title) = :query_lower THEN 1
                     WHEN LOWER(c.title) LIKE :starts THEN 2
                     WHEN c.title ~* :word_start_pattern THEN 3
                     WHEN LOWER(c.title) LIKE :contains THEN 4
-                    WHEN cm.credit_rank = 5 THEN 5
-                    WHEN cm.credit_rank = 6 THEN 6
-                    WHEN cm.credit_rank = 7 THEN 7
-                    WHEN gm.genre_match IS TRUE THEN 8
-                    WHEN COALESCE(c.overview, '') ~* :word_pattern THEN 9
-                    WHEN LOWER(COALESCE(c.overview, '')) LIKE :contains THEN 10
-                    WHEN LOWER(c.content_type) LIKE :contains THEN 11
-                    ELSE COALESCE(cm.credit_rank, 12)
+                    WHEN LOWER(COALESCE(c.original_title, '')) = :query_lower THEN 5
+                    WHEN LOWER(COALESCE(c.original_title, '')) LIKE :starts THEN 6
+                    WHEN COALESCE(c.original_title, '') ~* :word_start_pattern THEN 7
+                    WHEN LOWER(COALESCE(c.original_title, '')) LIKE :contains THEN 8
+                    ELSE 9
                 END AS search_rank,
                 CASE
                     WHEN LOWER(c.title) = :query_lower THEN 'Matched exact title'
                     WHEN LOWER(c.title) LIKE :starts THEN 'Matched title'
                     WHEN c.title ~* :word_start_pattern THEN 'Matched title'
                     WHEN LOWER(c.title) LIKE :contains THEN 'Matched title'
-                    WHEN cm.credit_rank IS NOT NULL THEN cm.match_reason
-                    WHEN gm.genre_match IS TRUE THEN 'Matched genre'
-                    WHEN COALESCE(c.overview, '') ~* :word_pattern THEN 'Matched overview'
-                    WHEN LOWER(COALESCE(c.overview, '')) LIKE :contains THEN 'Matched overview'
-                    WHEN LOWER(c.content_type) LIKE :contains THEN 'Matched content type'
+                    WHEN LOWER(COALESCE(c.original_title, '')) = :query_lower THEN 'Matched exact original title'
+                    WHEN LOWER(COALESCE(c.original_title, '')) LIKE :starts THEN 'Matched original title'
+                    WHEN COALESCE(c.original_title, '') ~* :word_start_pattern THEN 'Matched original title'
+                    WHEN LOWER(COALESCE(c.original_title, '')) LIKE :contains THEN 'Matched original title'
                     ELSE NULL
                 END AS match_reason
             FROM content c
-            LEFT JOIN credit_matches cm ON cm.content_id = c.id
-            LEFT JOIN genre_matches gm ON gm.content_id = c.id
             WHERE LOWER(c.title) LIKE :contains
-               OR c.title ~* :word_start_pattern
-               OR LOWER(COALESCE(c.overview, '')) LIKE :contains
-               OR COALESCE(c.overview, '') ~* :word_pattern
-               OR LOWER(c.content_type) LIKE :contains
-               OR cm.credit_rank IS NOT NULL
-               OR gm.genre_match IS TRUE
+               OR LOWER(COALESCE(c.original_title, '')) LIKE :contains
         )
         SELECT
             mc.id,
@@ -275,8 +166,8 @@ def search_content(db: Session, query: str, limit: int, offset: int):
             mc.match_reason
         ORDER BY
             mc.search_rank ASC,
-            COALESCE(mc.latest_activity_date, mc.release_date) DESC NULLS LAST,
-            mc.title ASC
+            mc.title ASC,
+            mc.id ASC
         LIMIT :limit OFFSET :offset;
     """)
 
@@ -295,12 +186,7 @@ def search_people(db: Session, query: str, limit: int, offset: int):
     count_query = text("""
         SELECT COUNT(*) AS total
         FROM people p
-        WHERE LOWER(p.name) LIKE :contains
-           OR p.name ~* :word_start_pattern
-           OR LOWER(COALESCE(p.known_for_department, '')) LIKE :contains
-           OR COALESCE(p.known_for_department, '') ~* :word_start_pattern
-           OR COALESCE(p.biography, '') ~* :word_pattern
-           OR LOWER(COALESCE(p.biography, '')) LIKE :contains;
+        WHERE LOWER(p.name) LIKE :contains;
     """)
 
     data_query = text("""
@@ -315,31 +201,21 @@ def search_people(db: Session, query: str, limit: int, offset: int):
                 WHEN LOWER(p.name) LIKE :starts THEN 2
                 WHEN p.name ~* :word_start_pattern THEN 3
                 WHEN LOWER(p.name) LIKE :contains THEN 4
-                WHEN LOWER(COALESCE(p.known_for_department, '')) LIKE :contains THEN 5
-                WHEN COALESCE(p.biography, '') ~* :word_pattern THEN 6
-                ELSE 7
+                ELSE 5
             END AS search_rank,
             CASE
                 WHEN LOWER(p.name) = :query_lower THEN 'Matched exact name'
                 WHEN LOWER(p.name) LIKE :starts THEN 'Matched name'
                 WHEN p.name ~* :word_start_pattern THEN 'Matched name'
                 WHEN LOWER(p.name) LIKE :contains THEN 'Matched name'
-                WHEN LOWER(COALESCE(p.known_for_department, '')) LIKE :contains THEN 'Matched department'
-                WHEN COALESCE(p.biography, '') ~* :word_pattern THEN 'Matched biography'
-                WHEN LOWER(COALESCE(p.biography, '')) LIKE :contains THEN 'Matched biography'
                 ELSE NULL
             END AS match_reason
         FROM people p
         WHERE LOWER(p.name) LIKE :contains
-           OR p.name ~* :word_start_pattern
-           OR LOWER(COALESCE(p.known_for_department, '')) LIKE :contains
-           OR COALESCE(p.known_for_department, '') ~* :word_start_pattern
-           OR COALESCE(p.biography, '') ~* :word_pattern
-           OR LOWER(COALESCE(p.biography, '')) LIKE :contains
         ORDER BY
             search_rank ASC,
-            p.id ASC,
-            p.name ASC
+            p.name ASC,
+            p.id ASC
         LIMIT :limit OFFSET :offset;
     """)
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EmptyState } from "@/components/EmptyState";
+import type { CSSProperties, ReactNode } from "react";
 import { ErrorState } from "@/components/ErrorState";
 import { searchCatalog } from "@/lib/api";
 import type {
@@ -9,7 +9,7 @@ import type {
   SearchType,
 } from "@/types/search";
 
-const SEARCH_LIMIT = 12;
+const SEARCH_LIMIT = 18;
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -28,22 +28,22 @@ function getSearchValue(params: SearchParams | undefined, key: string) {
 }
 
 function parseSearchType(value?: string): SearchType {
-  if (value === "content" || value === "person") {
-    return value;
-  }
-
-  return "all";
+  return value === "person" ? "person" : "content";
 }
 
 function buildSearchHref(query: string, searchType: SearchType) {
   const params = new URLSearchParams();
-  params.set("q", query);
 
-  if (searchType !== "all") {
+  if (query) {
+    params.set("q", query);
+  }
+
+  if (searchType === "person") {
     params.set("type", searchType);
   }
 
-  return `/search?${params.toString()}`;
+  const queryString = params.toString();
+  return queryString ? `/search?${queryString}` : "/search";
 }
 
 function formatContentType(contentType: string) {
@@ -54,7 +54,9 @@ function formatContentType(contentType: string) {
       : contentType;
 }
 
-function formatYear(value?: string | null) {
+function formatYear(item: ContentSearchResult) {
+  const value = item.release_date || item.latest_activity_date;
+
   if (!value) {
     return null;
   }
@@ -62,8 +64,8 @@ function formatYear(value?: string | null) {
   return value.slice(0, 4);
 }
 
-function getInitials(name: string) {
-  const initials = name
+function getInitials(value: string) {
+  const initials = value
     .split(/\s+/)
     .filter(Boolean)
     .slice(0, 2)
@@ -74,6 +76,30 @@ function getInitials(name: string) {
   return initials || "IS";
 }
 
+function getVisibleTotal(results: SearchResponse, searchType: SearchType) {
+  if (searchType === "person") {
+    return results.total_person_results;
+  }
+
+  return results.total_content_results;
+}
+
+function formatResultCount(count: number) {
+  return `${count} ${count === 1 ? "result" : "results"}`;
+}
+
+function getTitleMarqueeStyle(title: string): CSSProperties | undefined {
+  if (title.length <= 22) {
+    return undefined;
+  }
+
+  const titleSlideDistance = Math.min(190, Math.max(34, title.length * 7 - 160));
+
+  return {
+    "--home-title-slide-distance": `-${titleSlideDistance}px`,
+  } as CSSProperties;
+}
+
 function SearchTypeTabs({
   query,
   activeType,
@@ -82,8 +108,7 @@ function SearchTypeTabs({
   activeType: SearchType;
 }) {
   const tabs: Array<{ label: string; value: SearchType }> = [
-    { label: "All", value: "all" },
-    { label: "Content", value: "content" },
+    { label: "Titles", value: "content" },
     { label: "People", value: "person" },
   ];
 
@@ -103,41 +128,41 @@ function SearchTypeTabs({
 }
 
 function ContentResultCard({ item }: { item: ContentSearchResult }) {
-  const metaItems = [
-    formatYear(item.release_date),
-    formatContentType(item.content_type),
-    item.age_rating,
-  ].filter(Boolean);
+  const metaItems = [formatYear(item), formatContentType(item.content_type)].filter(
+    Boolean,
+  );
+  const titleStyle = getTitleMarqueeStyle(item.title);
+  const isLongTitle = Boolean(titleStyle);
 
   return (
     <Link
-      className="search-result-card search-result-card--content"
+      className="search-title-card"
       href={`/content/${item.id}`}
       aria-label={`View details for ${item.title}`}
     >
-      <div className="search-result-card__media search-result-card__media--poster">
+      <div className="search-title-card__poster">
         {item.poster_url ? (
           <img src={item.poster_url} alt={`${item.title} poster`} />
         ) : (
-          <span>{getInitials(item.title)}</span>
+          <div className="search-title-card__fallback" aria-hidden="true">
+            <span>{getInitials(item.title)}</span>
+          </div>
         )}
       </div>
 
-      <div className="search-result-card__body">
-        <div className="search-result-card__meta">
-          {metaItems.map((meta) => (
-            <span key={String(meta)}>{meta}</span>
-          ))}
-        </div>
-        <h3>{item.title}</h3>
-        {item.match_reason ? (
-          <span className="search-result-card__reason">{item.match_reason}</span>
-        ) : null}
-        <p>{item.overview_snippet || "No overview is available yet."}</p>
-        {item.genres.length > 0 ? (
-          <div className="search-result-card__tags">
-            {item.genres.slice(0, 4).map((genre) => (
-              <span key={genre}>{genre}</span>
+      <div className="search-title-card__body">
+        <h3 title={item.title}>
+          <span
+            className={isLongTitle ? "home-title-marquee" : undefined}
+            style={titleStyle}
+          >
+            {item.title}
+          </span>
+        </h3>
+        {metaItems.length > 0 ? (
+          <div className="search-title-card__meta">
+            {metaItems.map((meta) => (
+              <span key={String(meta)}>{meta}</span>
             ))}
           </div>
         ) : null}
@@ -149,29 +174,59 @@ function ContentResultCard({ item }: { item: ContentSearchResult }) {
 function PersonResultCard({ item }: { item: PersonSearchResult }) {
   return (
     <Link
-      className="search-result-card search-result-card--person"
+      className="search-person-card"
       href={`/people/${item.id}`}
       aria-label={`View person profile for ${item.name}`}
     >
-      <div className="search-result-card__media search-result-card__media--avatar">
+      <div className="search-person-card__avatar">
         {item.profile_url ? (
           <img src={item.profile_url} alt={`${item.name} profile`} />
         ) : (
           <span>{getInitials(item.name)}</span>
         )}
       </div>
-
-      <div className="search-result-card__body">
-        <div className="search-result-card__meta">
-          <span>{item.known_for_department || "Person"}</span>
-        </div>
+      <div className="search-person-card__copy">
         <h3>{item.name}</h3>
-        {item.match_reason ? (
-          <span className="search-result-card__reason">{item.match_reason}</span>
-        ) : null}
-        <p>{item.biography_snippet || "Biography not available yet."}</p>
+        {item.known_for_department ? <p>{item.known_for_department}</p> : null}
       </div>
     </Link>
+  );
+}
+
+function SearchEmpty({ query }: { query?: string }) {
+  return (
+    <section className="search-empty" aria-live="polite">
+      <h2>{query ? `No results for “${query}”` : "Search the catalog"}</h2>
+      <p>
+        {query
+          ? "Try another title or person name from the InsightStream catalog."
+          : "Use the search field above to find titles or people in InsightStream."}
+      </p>
+    </section>
+  );
+}
+
+function ResultSection({
+  title,
+  query,
+  count,
+  children,
+}: {
+  title: string;
+  query: string;
+  count: number;
+  children: ReactNode;
+}) {
+  return (
+    <section className="search-results-section" aria-labelledby={`search-${title}`}>
+      <div className="search-results-section__header">
+        <h1 id={`search-${title}`}>
+          {title} matching “{query}”
+        </h1>
+        <span>{formatResultCount(count)}</span>
+      </div>
+      {children}
+    </section>
   );
 }
 
@@ -182,64 +237,42 @@ function SearchResults({
   results: SearchResponse;
   searchType: SearchType;
 }) {
-  const showContent = searchType === "all" || searchType === "content";
-  const showPeople = searchType === "all" || searchType === "person";
-  const hasAnyResults =
-    results.content_results.length > 0 || results.person_results.length > 0;
+  const showContent = searchType === "content";
+  const showPeople = searchType === "person";
+  const visibleTotal = getVisibleTotal(results, searchType);
 
-  if (!hasAnyResults) {
-    return (
-      <EmptyState
-        title="No local matches"
-        message="No local matches found. Missing titles or people need to be added through ingestion first."
-      />
-    );
+  if (visibleTotal === 0) {
+    return <SearchEmpty query={results.query} />;
   }
 
   return (
     <div className="search-results-stack">
-      {showContent ? (
-        <section className="search-results-group" aria-labelledby="search-content-heading">
-          <div className="search-results-group__header">
-            <div>
-              <span className="section-label">Content</span>
-              <h2 id="search-content-heading">Movies and series</h2>
-            </div>
-            <span>{results.total_content_results} matches</span>
+      {showContent && results.content_results.length > 0 ? (
+        <ResultSection
+          title="Titles"
+          query={results.query}
+          count={results.total_content_results}
+        >
+          <div className="search-title-grid">
+            {results.content_results.map((item) => (
+              <ContentResultCard item={item} key={`content-${item.id}`} />
+            ))}
           </div>
-
-          {results.content_results.length > 0 ? (
-            <div className="search-results-list">
-              {results.content_results.map((item) => (
-                <ContentResultCard item={item} key={`content-${item.id}`} />
-              ))}
-            </div>
-          ) : (
-            <p className="search-results-empty">No content matches this query.</p>
-          )}
-        </section>
+        </ResultSection>
       ) : null}
 
-      {showPeople ? (
-        <section className="search-results-group" aria-labelledby="search-people-heading">
-          <div className="search-results-group__header">
-            <div>
-              <span className="section-label">People</span>
-              <h2 id="search-people-heading">Cast and crew</h2>
-            </div>
-            <span>{results.total_person_results} matches</span>
+      {showPeople && results.person_results.length > 0 ? (
+        <ResultSection
+          title="People"
+          query={results.query}
+          count={results.total_person_results}
+        >
+          <div className="search-people-grid">
+            {results.person_results.map((item) => (
+              <PersonResultCard item={item} key={`person-${item.id}`} />
+            ))}
           </div>
-
-          {results.person_results.length > 0 ? (
-            <div className="search-results-list">
-              {results.person_results.map((item) => (
-                <PersonResultCard item={item} key={`person-${item.id}`} />
-              ))}
-            </div>
-          ) : (
-            <p className="search-results-empty">No people match this query.</p>
-          )}
-        </section>
+        </ResultSection>
       ) : null}
     </div>
   );
@@ -253,19 +286,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   if (!query) {
     return (
       <main className="search-page">
-        <section className="search-hero">
-          <span className="eyebrow">Local Search</span>
-          <h1>Search the InsightStream catalog.</h1>
-          <p>
-            Find ingested movies, series, cast, directors, creators, and crew
-            from the local database.
-          </p>
+        <section className="search-panel">
+          <SearchTypeTabs query="" activeType={searchType} />
+          <SearchEmpty />
         </section>
-
-        <EmptyState
-          title="Start with a title or name"
-          message="Use the search box in the navigation bar to search local catalog metadata."
-        />
       </main>
     );
   }
@@ -275,18 +299,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
     return (
       <main className="search-page">
-        <section className="search-hero">
-          <span className="eyebrow">Local Search</span>
-          <h1>Results for “{results.query}”</h1>
-          <p>
-            Showing local database matches from the InsightStream catalog. Results
-            can match titles, genres, people, credits, and biographies. Missing
-            titles need to be added through ingestion first.
-          </p>
+        <section className="search-panel">
+          <SearchTypeTabs query={results.query} activeType={searchType} />
+          <SearchResults results={results} searchType={searchType} />
         </section>
-
-        <SearchTypeTabs query={results.query} activeType={searchType} />
-        <SearchResults results={results} searchType={searchType} />
       </main>
     );
   } catch (error) {
@@ -297,16 +313,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
     return (
       <main className="search-page">
-        <section className="search-hero">
-          <span className="eyebrow">Local Search</span>
-          <h1>Search results</h1>
-          <p>Search the local InsightStream catalog.</p>
+        <section className="search-panel">
+          <SearchTypeTabs query={query} activeType={searchType} />
+          <ErrorState title="Could not load search" message={message} />
         </section>
-
-        <ErrorState
-          title="Could not load search"
-          message={`${message} Make sure the FastAPI backend is running at the configured API URL.`}
-        />
       </main>
     );
   }

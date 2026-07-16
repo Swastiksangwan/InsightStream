@@ -34,6 +34,10 @@ ON content (content_type, latest_activity_date DESC);
 CREATE INDEX IF NOT EXISTS idx_content_title_lower
 ON content (LOWER(title));
 
+-- Speeds up case-insensitive original-title search for localized titles.
+CREATE INDEX IF NOT EXISTS idx_content_original_title_lower
+ON content (LOWER(original_title));
+
 -- Speeds up local catalog search over content type labels.
 CREATE INDEX IF NOT EXISTS idx_content_content_type_lower
 ON content (LOWER(content_type));
