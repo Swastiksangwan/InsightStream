@@ -23,8 +23,9 @@ Future ingestion updates should go into this document.
 
 | Area | Status | Main scripts | DB writes? | Notes |
 | ---- | ------ | ------------ | ---------- | ----- |
-| TMDb metadata/content fetch | Implemented | `analytics/scripts/fetch_tmdb_sample.py` | No | Fetches/reuses TMDb raw details, credits, external IDs, and writes `sample_mapping_preview.json`. |
+| TMDb metadata/content/video fetch | Implemented | `analytics/scripts/fetch_tmdb_sample.py` | No | Fetches/reuses TMDb raw details with appended videos, credits, external IDs, and writes `sample_mapping_preview.json`. |
 | Metadata import | Implemented | `analytics/scripts/import_content_metadata_from_preview.py` | Only with `--apply` | Imports content rows, external IDs, genres, posters/backdrops, lifecycle metadata, season summaries, latest activity dates, and safe series status refreshes. |
+| TMDb video import | Implemented | `analytics/scripts/import_content_videos_from_preview.py` | Only with `--apply` | Imports normalized video records, authoritative complete snapshots, deterministic primary selection, and per-title fetch state. |
 | Poster/backdrop update behavior | Implemented | `analytics/scripts/update_posters_from_tmdb_preview.py`, metadata importer | Only with `--apply` | Seed poster/backdrop values exist for base titles. Current scalable imports use metadata preview fields while preserving curated conflicts unless importer policy allows update. |
 | Credits/people preview/import | Implemented | `analytics/scripts/build_tmdb_credits_preview.py`, `analytics/scripts/import_people_credits_from_preview.py` | Import only with `--apply` | Builds and imports top cast plus unified key crew into `people`, `person_external_ids`, and `content_people`. |
 | Person details import | Implemented | `analytics/scripts/fetch_tmdb_person_details.py`, `analytics/scripts/import_person_details_from_preview.py` | Import only with `--apply` | Imports missing biography, profile, known-for department, birthday, and place-of-birth fields for local people matched by provider IDs. |
@@ -69,6 +70,8 @@ TMDb fetch scripts need the TMDb read token:
 
 ```bash
 export TMDB_READ_ACCESS_TOKEN=YOUR_TMDB_READ_ACCESS_TOKEN
+export TMDB_LANGUAGE=en-US
+export TMDB_VIDEO_LANGUAGES=en,null
 ```
 
 Local rating dataset paths:
@@ -105,25 +108,30 @@ python3 analytics/scripts/import_content_metadata_from_preview.py --apply
 # 4. Confirm metadata import idempotency.
 python3 analytics/scripts/import_content_metadata_from_preview.py
 
-# 5. Build and import credits/people.
+# 5. Review, apply, and confirm video import idempotency.
+python3 analytics/scripts/import_content_videos_from_preview.py
+python3 analytics/scripts/import_content_videos_from_preview.py --apply
+python3 analytics/scripts/import_content_videos_from_preview.py
+
+# 6. Build and import credits/people.
 python3 analytics/scripts/build_tmdb_credits_preview.py
 python3 analytics/scripts/import_people_credits_from_preview.py
 python3 analytics/scripts/import_people_credits_from_preview.py --apply
 python3 analytics/scripts/import_people_credits_from_preview.py
 
-# 6. Fetch and import person details.
+# 7. Fetch and import person details.
 python3 analytics/scripts/fetch_tmdb_person_details.py
 python3 analytics/scripts/import_person_details_from_preview.py
 python3 analytics/scripts/import_person_details_from_preview.py --apply
 python3 analytics/scripts/import_person_details_from_preview.py
 
-# 7. Fetch and import availability/certification.
+# 8. Fetch and import availability/certification.
 python3 analytics/scripts/fetch_tmdb_availability_certification.py
 python3 analytics/scripts/import_availability_certification_from_preview.py
 python3 analytics/scripts/import_availability_certification_from_preview.py --apply
 python3 analytics/scripts/import_availability_certification_from_preview.py
 
-# 8. Import ratings.
+# 9. Import ratings.
 python3 analytics/scripts/import_content_ratings_from_preview.py
 python3 analytics/scripts/import_content_ratings_from_preview.py --apply
 python3 analytics/scripts/import_content_ratings_from_preview.py
@@ -136,7 +144,7 @@ python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-am
 python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous --apply
 python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous
 
-# 9. Health check.
+# 10. Health check.
 python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
@@ -164,7 +172,70 @@ The fetch script writes:
 ```text
 analytics/processed/tmdb/sample_mapping_preview.json
 analytics/processed/tmdb/run_reports/content_fetch_run_report.json
+analytics/processed/tmdb/run_reports/content_video_retry_targets.json
+analytics/processed/tmdb/run_reports/content_video_review_targets.json
 ```
+
+Movie and TV detail requests use one source call per title:
+
+```text
+GET /movie/{tmdb_id}?append_to_response=videos&language={TMDB_LANGUAGE}&include_video_language={TMDB_VIDEO_LANGUAGES}
+GET /tv/{tmdb_id}?append_to_response=videos&language={TMDB_LANGUAGE}&include_video_language={TMDB_VIDEO_LANGUAGES}
+```
+
+Authentication uses `Authorization: Bearer ...`. Tokens and authorization headers are
+never written to previews or reports. Request controls are CLI-configurable:
+
+```bash
+python3 analytics/scripts/fetch_tmdb_sample.py \
+  --video-languages en,null \
+  --batch-size 25 \
+  --concurrency 3 \
+  --request-timeout 15 \
+  --max-retries 3
+```
+
+Timeouts, connection failures, HTTP 429, and HTTP 500/502/503/504 are retried with
+bounded exponential backoff and jitter. `Retry-After` is respected for 429 responses.
+HTTP 400/401/403/404 are not retried by default. Raw-file reuse plus per-target run
+reports make interrupted runs resumable; legacy cached detail payloads without an
+appended `videos` namespace are refetched when a token is available and otherwise
+marked incomplete. Only automatic retry classes (transient network failures, rate
+limits, and retryable provider server failures) are written to
+`content_video_retry_targets.json` in the same target format accepted by the fetcher:
+
+```bash
+python3 analytics/scripts/fetch_tmdb_sample.py \
+  --targets analytics/processed/tmdb/run_reports/content_video_retry_targets.json \
+  --refresh
+```
+
+An empty retry-target file is written after a clean run so an older failure list
+cannot be mistaken for current work. Permanent provider failures, incompatible cache
+without credentials, and normalization issues are written to
+`content_video_review_targets.json`; that artifact is for operator review and is not
+scheduled for repeated automatic retries.
+
+Every fetched raw response has a `.meta.json` sidecar containing the source-fetch
+time, request path, normalized response-affecting parameters, and a secret-free
+SHA-256 request signature. Cache reuse requires a matching signature. Reusing a
+matching cache preserves the original source-fetch time; preview generation does not
+make old source data look freshly fetched. Legacy parameterless cache files use file
+mtime with an explicit `legacy_file_mtime` origin. Parameterized legacy or incompatible
+detail caches must be refetched, or fail clearly when no bearer token is available.
+Sidecar `fetched_at` must be timezone-aware ISO 8601. A malformed value triggers a
+refetch when credentials are available; without credentials, cache reuse falls back
+conservatively to file mtime and labels the origin `legacy_file_mtime`.
+
+`TMDB_VIDEO_LANGUAGES` and `--video-languages` accept a maximum of eight deduplicated
+ISO 639-1 values plus the literal `null`. A target's original language is added when it
+is already known before the detail request. The pipeline never makes a second videos
+request to discover language metadata. The deterministic request order is configured
+detail-language base code, known original language, configured extras, then configured
+`null` fallback; lower-priority extras are dropped if the merge would exceed eight.
+The detail-language base code is persisted as `videos_preferred_language` and is used
+unchanged by preview and importer primary selection. Original language broadens the
+source request but never silently replaces the ranking preference.
 
 Import pattern:
 
@@ -188,6 +259,89 @@ Important importer behavior:
   - both use TMDb `original_language`
 - The detail API/page uses original language for the language pill when present, falls back to legacy `language`, and does not infer dubbed-language availability.
 - It prints affected content and series metadata titles when rows would be inserted/updated in dry-run mode, and when rows are inserted/updated with `--apply`.
+
+### 5.1 TMDb Video Metadata
+
+The metadata preview includes source video counts, normalized accepted records,
+ignored provider records, warnings, rejection reasons, snapshot completeness,
+stale-cleanup authority, retry disposition, source-fetch time, cache origin/signature,
+requested/preferred languages, and the selected primary key. Accepted
+fields are TMDb `key`, `site`, `type`, `name`, `official`, `iso_639_1`,
+`iso_3166_1`, `published_at`, and `size`. Empty keys and structurally unsafe identities
+are rejected. A malformed optional `published_at` becomes null with a warning and does
+not make the snapshot incomplete. Unsupported providers with a stable site/key identity
+are classified as intentionally ignored/non-playable rather than malformed; they do
+not by themselves disable stale cleanup.
+
+Storage uses:
+
+- `content_videos` for normalized provider rows, unique by content/source/site/key;
+- `content_primary_videos` for one primary selection per content item;
+- `content_video_fetch_state` for success, valid-empty, failed, and incomplete state.
+
+Run the importer from the repository root:
+
+```bash
+python3 analytics/scripts/import_content_videos_from_preview.py
+python3 analytics/scripts/import_content_videos_from_preview.py --apply
+python3 analytics/scripts/import_content_videos_from_preview.py
+```
+
+A valid empty source snapshot and a fully normalized non-empty snapshot are
+authoritative: stale TMDb rows are removed. A non-empty all-rejected snapshot is
+incomplete. A mixed accepted/rejected snapshot may upsert accepted records but cannot
+delete unmatched rows. Harmless duplicate source identities do not make an otherwise
+complete snapshot unsafe. Failed, malformed, incomplete, count-inconsistent, or
+unfingerprinted snapshots never remove existing videos. During an unsafe update the
+current primary is retained while it still exists; if none exists, selection uses the
+safe union of existing and accepted rows. Rows from another source are preserved.
+Each title is applied in its own transaction and output names the affected
+title/content/TMDb IDs. Repeated apply runs do not create duplicate rows or rewrite
+unchanged video metadata.
+
+Primary selection is deterministic and trust-first: official YouTube trailer,
+official YouTube teaser, unofficial YouTube trailer, then unofficial YouTube teaser.
+Within a class, preferred/neutral/other language, official/main/final naming, recent
+publication, and a stable source key refine the order. Clips, featurettes, unsupported
+sites, and arbitrary row order cannot become primary.
+
+Language is ranking metadata, not a validation requirement. Valid returned trailers
+and teasers in Hindi, Korean, Japanese, Tamil, Telugu, or any other language are stored
+and remain eligible. Trust/type class precedes language, so an official non-English
+trailer outranks an unofficial English trailer. When candidates are otherwise equal,
+the configured display/detail language wins; neutral and other returned languages are
+deterministic fallbacks. Every accepted language variant remains available in `videos`.
+
+The primary pointer is protected by a composite database foreign key, so a video from
+one content item cannot be selected for another. The source-identity unique index also
+serves current per-content and per-content/source lookups; redundant prefix and
+status-only indexes are intentionally omitted.
+
+Storage retains the complete accepted source snapshot, including trailers, teasers,
+clips, featurettes, behind-the-scenes media, bloopers, and opening credits. The current
+details API deliberately exposes only Trailer and Teaser rows through `videos`, plus
+the optional `primary_video`, in one PostgreSQL-backed response. Other stored types are
+reserved for possible future extras functionality and are not deleted or hidden from
+the ingestion snapshot.
+
+Within the public trailer/teaser list, primary is first, followed by official trailers,
+official teasers, unofficial trailers, and unofficial teasers, then publication date
+and stable source/row tie-breakers. Every returned item includes source identity,
+normalized metadata, `is_primary`, `is_playable`, and safe derived URLs. A future
+frontend can derive related trailers/teasers with
+`videos.filter(video => !video.is_primary)` without another request. YouTube watch
+URLs use `youtube.com/watch`, embeds use `youtube-nocookie.com/embed`, and both are
+derived only from validated keys. No raw HTML or source payload is returned.
+
+Fetch state stores processing-attempt time separately from the last successful source
+fetch. Failed/incomplete attempts update status/error and `last_attempted_at` while
+preserving the prior `last_fetched_at`. The valid-empty flag is database-constrained to
+the `empty` status.
+
+Recommended future refresh cadence (not scheduled in Phase 1): upcoming titles daily;
+new releases/currently airing titles every 1-3 days; announced future seasons weekly;
+older or ended titles monthly or on demand. A frontend trailer player remains a
+separate Phase 2 task.
 - Use the row-level sections such as `Would update content rows`, `Updated content rows`, and `Updated series metadata rows` to verify which titles and fields changed before and after a metadata refresh.
 
 Processed previews are latest-run files. They are not always full-catalog snapshots. If a preview was generated with `--priority`, `--source-id`, or a target file, downstream preview builders may process only that subset.

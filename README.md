@@ -195,12 +195,19 @@ Required depending on task:
 ```env
 DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<db_name>
 TMDB_READ_ACCESS_TOKEN=<tmdb_read_access_token>
+TMDB_LANGUAGE=en-US
+TMDB_VIDEO_LANGUAGES=en,null
 ```
 
 Notes:
 
 - `DATABASE_URL` is required by the backend and database import scripts.
 - `TMDB_READ_ACCESS_TOKEN` is required only when fetching provider data from TMDb.
+- `TMDB_LANGUAGE` controls localized TMDb detail/video metadata and defaults to `en-US`.
+- `TMDB_VIDEO_LANGUAGES` controls appended video-language fallbacks. It accepts a
+  bounded, comma-separated list of ISO 639-1 codes plus TMDb's `null` token. The
+  configured detail-language base code remains the primary-video ranking preference;
+  a known title original language expands the request but does not replace it.
 - Do not commit API keys, tokens, or local `.env` files.
 - The frontend can optionally use `NEXT_PUBLIC_API_BASE_URL`; otherwise it defaults to `http://127.0.0.1:8000`.
 
@@ -210,9 +217,16 @@ Run scripts from the repository root.
 
 `analytics/scripts/fetch_tmdb_sample.py`
 
-- Fetches TMDb metadata for the 15 seeded titles.
+- Fetches TMDb metadata and appended video records for configured titles.
 - Writes raw ignored JSON under `analytics/raw/tmdb/`.
 - Writes processed preview data to `analytics/processed/tmdb/sample_mapping_preview.json`.
+- Writes transient video failures to a bounded retry artifact and permanent
+  source/normalization issues to a separate manual-review artifact under the ignored
+  TMDb run-report directory.
+- Uses one movie/TV detail request with `append_to_response=videos`; it does not make a separate videos request.
+- Sends `include_video_language` from `TMDB_VIDEO_LANGUAGES` and fingerprints
+  response-affecting request parameters before reusing a raw cache entry.
+- Uses bounded batches/concurrency and bounded retries for transient failures.
 - Fetches TV aggregate credits for series where available.
 - Makes no database writes.
 
@@ -251,6 +265,18 @@ Run scripts from the repository root.
 - Never overwrites non-empty existing values.
 - Preserves place of birth as provider text and does not infer nationality.
 - Dry-run by default; requires `--apply` for database writes.
+
+`analytics/scripts/import_content_videos_from_preview.py`
+
+- Imports normalized TMDb video rows from the content metadata preview.
+- Dry-run by default; requires `--apply` for database writes.
+- Recomputes one deterministic primary video per title and removes stale TMDb rows only after a complete successful snapshot.
+- Preserves video rows from other sources and records failed/empty fetch state separately.
+- Uses the preview's explicit preferred-language field during apply, so preview and
+  importer primary selection cannot diverge based on content original language.
+- Stores the complete accepted TMDb video snapshot. The title-details API currently
+  exposes only Trailer and Teaser rows; clips, featurettes, and other extras remain
+  stored for possible future media features.
 
 Analysis/reporting scripts:
 
@@ -294,6 +320,8 @@ If regenerating provider data:
 
 ```bash
 python3 analytics/scripts/fetch_tmdb_sample.py
+python3 analytics/scripts/import_content_videos_from_preview.py
+python3 analytics/scripts/import_content_videos_from_preview.py --apply
 python3 analytics/scripts/build_tmdb_credits_preview.py
 python3 analytics/scripts/import_people_credits_from_preview.py --apply
 python3 analytics/scripts/fetch_tmdb_person_details.py
