@@ -301,9 +301,13 @@ unchanged video metadata.
 
 Primary selection is deterministic and trust-first: official YouTube trailer,
 official YouTube teaser, unofficial YouTube trailer, then unofficial YouTube teaser.
-Within a class, preferred/neutral/other language, official/main/final naming, recent
-publication, and a stable source key refine the order. Clips, featurettes, unsupported
-sites, and arbitrary row order cannot become primary.
+Within a class, preferred/neutral/other language is followed by a small preference for
+the standard trailer over explicitly audio-described or sign-language variants, then
+official/main/final naming, recent publication, and stable provider identity. These
+accessibility variants remain accepted, stored, and available as related videos; they
+remain eligible as primary when no stronger standard candidate exists, and official/type
+quality still outranks this penalty. Clips, featurettes, unsupported sites, and arbitrary
+row order cannot become primary.
 
 Language is ranking metadata, not a validation requirement. Valid returned trailers
 and teasers in Hindi, Korean, Japanese, Tamil, Telugu, or any other language are stored

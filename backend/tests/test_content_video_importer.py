@@ -162,6 +162,55 @@ def test_importer_primary_selection_uses_site_and_source_id_identity():
     ] == [("YouTube", "12345678")]
 
 
+def test_preview_and_importer_prefer_same_standard_trailer_over_accessibility_variant():
+    importer = load_importer()
+    from tmdb_video_metadata import normalize_video_snapshot
+
+    snapshot = normalize_video_snapshot(
+        {
+            "videos": {
+                "results": [
+                    {
+                        "key": "standard4",
+                        "site": "YouTube",
+                        "type": "Trailer",
+                        "name": "Official Trailer",
+                        "official": True,
+                        "iso_639_1": "en",
+                        "published_at": "2025-01-01T00:00:00Z",
+                    },
+                    {
+                        "key": "described3",
+                        "site": "YouTube",
+                        "type": "Trailer",
+                        "name": "Official Trailer [Audio Described]",
+                        "official": True,
+                        "iso_639_1": "en",
+                        "published_at": "2025-02-01T00:00:00Z",
+                    },
+                ]
+            }
+        },
+        preferred_language="en",
+    )
+    item = preview_item("999999011", snapshot.videos)
+    item.update(snapshot.as_preview_fields())
+
+    normalized, warnings, safe = importer.normalize_preview_videos(item, "en")
+    plan = importer.build_video_plan([], normalized, None, preferred_language="en")
+
+    assert warnings == []
+    assert safe is True
+    preview_primary = (snapshot.primary_site, snapshot.primary_source_video_id)
+    assert preview_primary == ("YouTube", "standard4")
+    assert plan.selected_identity == preview_primary
+    assert len(plan.inserts) == 2
+    assert {video["source_video_id"] for video in normalized} == {
+        "standard4",
+        "described3",
+    }
+
+
 def test_import_timestamp_requires_explicit_timezone():
     importer = load_importer()
 
