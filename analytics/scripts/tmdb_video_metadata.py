@@ -18,6 +18,17 @@ YOUTUBE_KEY_PATTERN = re.compile(r"^[A-Za-z0-9_-]{6,64}$")
 VIMEO_KEY_PATTERN = re.compile(r"^[0-9]{4,32}$")
 GENERIC_SITE_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 ._+-]{0,49}$")
 GENERIC_KEY_PATTERN = re.compile(r"^[A-Za-z0-9_-]{4,255}$")
+ACCESSIBILITY_VARIANT_PATTERN = re.compile(
+    r"\b(?:"
+    r"audio[\s-]+described|"
+    r"audio[\s-]+description|"
+    r"descriptive[\s-]+audio|"
+    r"signed[\s-]+trailer|"
+    r"(?:american[\s-]+)?sign[\s-]+language|"
+    r"asl[\s-]+(?:trailer|version)"
+    r")\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -220,6 +231,11 @@ def _name_rank(video: dict[str, Any]) -> int:
     return 6
 
 
+def is_accessibility_specific_variant(video_name: Any) -> bool:
+    name = clean_optional_text(video_name)
+    return bool(name and ACCESSIBILITY_VARIANT_PATTERN.search(name))
+
+
 def primary_video_rank(
     video: dict[str, Any],
     preferred_language: str | None = "en",
@@ -246,8 +262,10 @@ def primary_video_rank(
     return (
         class_rank,
         language_rank,
+        int(is_accessibility_specific_variant(video.get("name"))),
         _name_rank(video),
         _published_sort_value(video.get("published_at")),
+        str(video.get("site") or ""),
         str(video.get("source_video_id") or ""),
     )
 

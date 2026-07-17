@@ -15,6 +15,7 @@ if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
 from tmdb_video_metadata import (
+    is_accessibility_specific_variant,
     normalize_tmdb_video,
     normalize_tmdb_video_record,
     normalize_video_snapshot,
@@ -422,6 +423,118 @@ def test_primary_identity_includes_provider_when_source_keys_collide():
         for video in snapshot.videos
         if video["is_primary"]
     ] == [("YouTube", "12345678")]
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "Official Trailer [Audio Described]",
+        "Trailer with Audio Description",
+        "Descriptive Audio Trailer",
+        "Signed Trailer",
+        "Sign Language Trailer",
+        "American Sign Language Trailer",
+        "ASL Trailer",
+        "ASL Version",
+        "official trailer [AUDIO DESCRIBED]",
+    ],
+)
+def test_accessibility_specific_variant_detection_is_phrase_aware(name):
+    assert is_accessibility_specific_variant(name) is True
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "Official Trailer [Subtitled]",
+        "Official Dubbed Trailer",
+        "International Trailer",
+        "Final Trailer",
+        "IMAX Trailer",
+        "25th Anniversary Trailer",
+        "Re-release Trailer",
+        "Theatrical Trailer",
+        "Signed",
+    ],
+)
+def test_general_trailer_labels_are_not_accessibility_specific(name):
+    assert is_accessibility_specific_variant(name) is False
+
+
+def test_standard_primary_wins_but_accessibility_variant_remains_related():
+    snapshot = normalize_video_snapshot(
+        {
+            "videos": {
+                "results": [
+                    raw_video(
+                        key="standard1",
+                        name="25th Anniversary Trailer",
+                        published_at="2023-01-01T00:00:00Z",
+                    ),
+                    raw_video(
+                        key="described1",
+                        name="25th Anniversary UK Trailer [Audio Described]",
+                        published_at="2023-02-01T00:00:00Z",
+                    ),
+                ]
+            }
+        }
+    )
+
+    assert snapshot.accepted_count == 2
+    assert snapshot.primary_source_video_id == "standard1"
+    assert [
+        video["source_video_id"]
+        for video in snapshot.videos
+        if video["is_primary"]
+    ] == ["standard1"]
+    related = next(
+        video for video in snapshot.videos if video["source_video_id"] == "described1"
+    )
+    assert related["is_primary"] is False
+    assert related["name"].endswith("[Audio Described]")
+
+
+def test_quality_class_outranks_accessibility_penalty_and_variant_can_be_primary():
+    official_described = normalized_video(
+        "described2",
+        "Trailer",
+        True,
+        name="Official Trailer [Audio Description]",
+    )
+    unofficial_standard = normalized_video(
+        "standard2", "Trailer", False, name="Trailer"
+    )
+
+    assert select_primary_video(
+        [unofficial_standard, official_described], "en"
+    ) == ("YouTube", "described2")
+    assert select_primary_video([official_described], "en") == (
+        "YouTube",
+        "described2",
+    )
+
+
+def test_subtitled_trailer_is_not_penalized_and_newer_candidate_wins():
+    standard = normalized_video(
+        "standard3",
+        "Trailer",
+        True,
+        name="Official Trailer",
+        published_at="2024-01-01T00:00:00Z",
+    )
+    subtitled = normalized_video(
+        "subtitle1",
+        "Trailer",
+        True,
+        name="Official Trailer [Subtitled]",
+        published_at="2024-02-01T00:00:00Z",
+    )
+
+    assert select_primary_video([standard, subtitled], "en") == (
+        "YouTube",
+        "subtitle1",
+    )
 
 
 def test_video_languages_are_normalized_deduped_and_validated():
