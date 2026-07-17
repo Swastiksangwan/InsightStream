@@ -22,6 +22,7 @@ Covered areas:
 - combined discovery
 - homepage sections API
 - content details
+- content details additive `videos`/`primary_video` behavior and safe derived URLs
 - content credits endpoint, allowing empty arrays before credits import
 - person detail endpoint, conditional on imported people data
 - person credits endpoint, conditional on imported people data
@@ -85,6 +86,12 @@ Existing local databases created before person birthday/place-of-birth support
 should run `backend/migrations/012_add_person_birthday_birthplace.sql` before
 running person endpoint tests.
 
+Existing local databases created before title video support should run
+`backend/migrations/014_add_content_video_metadata.sql` before video importer or
+content-details tests. The migration is additive and idempotent, including the
+hardening path for an earlier local draft: separate attempt/source timestamps,
+primary-video ownership, fetch-state consistency, and redundant-index removal.
+
 Some metadata fields are intentionally enriched by later import scripts rather than by
 `sample_data.sql` itself. For example, original title/language values can be added by
 the TMDb metadata importer after the canonical seed has already created a title. Tests
@@ -122,6 +129,9 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/conftest.py` — shared `TestClient` and database fixtures
 - `backend/tests/test_health.py` — root health endpoint
 - `backend/tests/test_content_read_endpoints.py` — content, discovery, homepage sections, and details read endpoints
+- `backend/tests/test_content_video_endpoints.py` — stored video ordering, optional primary video, safe URL derivation, and no-video response behavior
+- `backend/tests/test_content_video_importer.py` — video upsert idempotency, stale-row semantics, other-source preservation, explicit preview/import language-policy consistency, empty snapshots, and affected-title reporting
+- `backend/tests/test_tmdb_video_metadata.py` — appended-video request strategy, bounded language merging, cache-sidecar validation, retry/review disposition, worker isolation, multilingual normalization/selection, bounded retries, and URL safety without live TMDb calls
 - `backend/tests/test_content_credits_endpoints.py` — provider-neutral content credits endpoint
 - `backend/tests/test_people_endpoints.py` — provider-neutral person detail and person credits endpoints
 - `backend/tests/test_person_metadata_importer.py` — person details preview/import helper behavior

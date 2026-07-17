@@ -138,6 +138,55 @@ CREATE TABLE IF NOT EXISTS content_certifications (
         UNIQUE (content_id, country_code, rating_system, source_name)
 );
 
+CREATE TABLE IF NOT EXISTS content_videos (
+    id BIGSERIAL PRIMARY KEY,
+    content_id INTEGER NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+    source VARCHAR(50) NOT NULL DEFAULT 'tmdb',
+    source_video_id VARCHAR(255) NOT NULL,
+    site VARCHAR(50) NOT NULL,
+    video_type VARCHAR(50),
+    name TEXT,
+    official BOOLEAN,
+    language_code VARCHAR(16),
+    country_code VARCHAR(16),
+    published_at TIMESTAMPTZ,
+    size INTEGER,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT uq_content_videos_source_identity
+        UNIQUE (content_id, source, site, source_video_id),
+    CONSTRAINT uq_content_videos_content_id_id UNIQUE (content_id, id),
+    CONSTRAINT chk_content_videos_size CHECK (size IS NULL OR size >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS content_primary_videos (
+    content_id INTEGER PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
+    content_video_id BIGINT NOT NULL UNIQUE,
+    selected_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT fk_content_primary_videos_owned_video
+        FOREIGN KEY (content_id, content_video_id)
+        REFERENCES content_videos(content_id, id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS content_video_fetch_state (
+    content_id INTEGER NOT NULL REFERENCES content(id) ON DELETE CASCADE,
+    source VARCHAR(50) NOT NULL,
+    last_attempted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    last_fetched_at TIMESTAMPTZ,
+    last_fetch_status VARCHAR(20) NOT NULL CHECK (
+        last_fetch_status IN ('success', 'empty', 'failed', 'incomplete')
+    ),
+    last_fetch_error TEXT,
+    source_snapshot_empty BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (content_id, source),
+    CONSTRAINT chk_content_video_fetch_state_empty_status CHECK (
+        (last_fetch_status = 'empty' AND source_snapshot_empty)
+        OR (last_fetch_status <> 'empty' AND NOT source_snapshot_empty)
+    )
+);
+
 CREATE TABLE IF NOT EXISTS content_series_metadata (
     content_id INTEGER PRIMARY KEY REFERENCES content(id) ON DELETE CASCADE,
     number_of_seasons INTEGER,

@@ -254,13 +254,33 @@ class ContentCreditsResponse(BaseModel):
     creators: List[CrewCredit]
     crew: List[CrewCredit]
 
-    
+
+class ContentVideo(BaseModel):
+    id: int
+    source: str
+    source_video_id: str
+    site: str
+    type: Optional[str] = None
+    name: Optional[str] = None
+    official: Optional[bool] = None
+    language_code: Optional[str] = None
+    country_code: Optional[str] = None
+    published_at: Optional[datetime] = None
+    size: Optional[int] = None
+    is_primary: bool
+    watch_url: Optional[str] = None
+    embed_url: Optional[str] = None
+    is_playable: bool
+
+
 # Final Response Model
 class ContentDetailsResponse(BaseModel):
     content: Content
     genres: List[str]
     platforms: List[Platform]
     ratings: RatingsResponse
+    videos: List[ContentVideo]
+    primary_video: Optional[ContentVideo] = None
     series_metadata: Optional[SeriesMetadata] = None
     insight_summary: InsightSummary
     decision_layer: Optional[ContentDecisionLayerSchema] = None

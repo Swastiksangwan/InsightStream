@@ -15,14 +15,18 @@ Inspection-only TMDb sample fetch script.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
+import random
 import re
 import sys
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 try:
     import requests
@@ -34,14 +38,33 @@ except ImportError:  # pragma: no cover - helpful when dependencies are not inst
         pass
 
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+from tmdb_video_metadata import normalize_video_snapshot
+
+
 API_BASE_URL = "https://api.themoviedb.org/3"
 TOKEN_ENV_VAR = "TMDB_READ_ACCESS_TOKEN"
+LANGUAGE_ENV_VAR = "TMDB_LANGUAGE"
+VIDEO_LANGUAGES_ENV_VAR = "TMDB_VIDEO_LANGUAGES"
+DEFAULT_LANGUAGE = "en-US"
+DEFAULT_VIDEO_LANGUAGES = "en,null"
+MAX_VIDEO_LANGUAGES = 8
+DEFAULT_REQUEST_TIMEOUT = 15.0
+DEFAULT_MAX_RETRIES = 3
+DEFAULT_BATCH_SIZE = 25
+DEFAULT_CONCURRENCY = 3
+RETRYABLE_STATUS_CODES = {429, 500, 502, 503, 504}
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RAW_OUTPUT_DIR = REPO_ROOT / "analytics" / "raw" / "tmdb"
 PROCESSED_OUTPUT_DIR = REPO_ROOT / "analytics" / "processed" / "tmdb"
 PREVIEW_OUTPUT_PATH = PROCESSED_OUTPUT_DIR / "sample_mapping_preview.json"
 RUN_REPORT_DIR = PROCESSED_OUTPUT_DIR / "run_reports"
 RUN_REPORT_OUTPUT_PATH = RUN_REPORT_DIR / "content_fetch_run_report.json"
+VIDEO_RETRY_OUTPUT_PATH = RUN_REPORT_DIR / "content_video_retry_targets.json"
+VIDEO_REVIEW_OUTPUT_PATH = RUN_REPORT_DIR / "content_video_review_targets.json"
 DEFAULT_TARGETS_PATH = REPO_ROOT / "analytics" / "config" / "content_ingestion_targets.json"
 CONTENT_TYPE_TO_MEDIA_TYPE = {
     "movie": "movie",
@@ -65,6 +88,7 @@ class SampleTitle:
     priority: str | None = None
     ingestion_status: str | None = None
     notes: str | None = None
+    original_language: str | None = None
 
 
 @dataclass(frozen=True)
@@ -76,8 +100,27 @@ class TargetLoadResult:
     samples: list[SampleTitle]
 
 
+@dataclass(frozen=True)
+class RequestPolicy:
+    timeout_seconds: float = DEFAULT_REQUEST_TIMEOUT
+    max_retries: int = DEFAULT_MAX_RETRIES
+    backoff_base_seconds: float = 0.5
+    backoff_cap_seconds: float = 30.0
+
+
 class TmdbFetchError(RuntimeError):
-    pass
+    def __init__(
+        self,
+        message: str,
+        *,
+        status_code: int | None = None,
+        retryable: bool = False,
+        failure_class: str = "normalization_review",
+    ) -> None:
+        super().__init__(message)
+        self.status_code = status_code
+        self.retryable = retryable
+        self.failure_class = failure_class
 
 
 class TargetConfigError(RuntimeError):
@@ -92,6 +135,94 @@ def positive_int(value: str) -> int:
     if parsed <= 0:
         raise argparse.ArgumentTypeError("--limit must be a positive integer")
     return parsed
+
+
+def non_negative_int(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("value must be a non-negative integer") from exc
+    if parsed < 0:
+        raise argparse.ArgumentTypeError("value must be a non-negative integer")
+    return parsed
+
+
+def positive_float(value: str) -> float:
+    try:
+        parsed = float(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("value must be a positive number") from exc
+    if parsed <= 0:
+        raise argparse.ArgumentTypeError("value must be a positive number")
+    return parsed
+
+
+def normalize_video_languages(value: str | list[str] | tuple[str, ...]) -> tuple[str, ...]:
+    raw_values = value.split(",") if isinstance(value, str) else list(value)
+    normalized: list[str] = []
+    for raw_value in raw_values:
+        language = str(raw_value).strip().casefold()
+        if not language:
+            continue
+        if language != "null" and not re.fullmatch(r"[a-z]{2}", language):
+            raise ValueError(
+                "video languages must be ISO 639-1 codes or TMDb's null token"
+            )
+        if language not in normalized:
+            normalized.append(language)
+    if not normalized:
+        raise ValueError("at least one video language is required")
+    if len(normalized) > MAX_VIDEO_LANGUAGES:
+        raise ValueError(f"at most {MAX_VIDEO_LANGUAGES} video languages are allowed")
+    return tuple(normalized)
+
+
+def normalize_language_code(value: str | None, *, field_name: str) -> str | None:
+    if value is None or not str(value).strip():
+        return None
+    language = str(value).strip().casefold().split("-", 1)[0]
+    if not re.fullmatch(r"[a-z]{2}", language):
+        raise ValueError(f"{field_name} must start with an ISO 639-1 language code")
+    return language
+
+
+def merge_video_languages(
+    detail_language: str,
+    original_language: str | None,
+    configured_languages: str | list[str] | tuple[str, ...],
+) -> tuple[str, ...]:
+    """Merge request languages by product priority without exceeding TMDb's cap."""
+    display_language = normalize_language_code(
+        detail_language or DEFAULT_LANGUAGE,
+        field_name="detail language",
+    )
+    original = normalize_language_code(
+        original_language,
+        field_name="original language",
+    )
+    configured = normalize_video_languages(configured_languages)
+    include_null = "null" in configured
+
+    merged: list[str] = []
+    for language in (display_language, original):
+        if language and language not in merged:
+            merged.append(language)
+    for language in configured:
+        if language != "null" and language not in merged:
+            merged.append(language)
+
+    available_slots = MAX_VIDEO_LANGUAGES - (1 if include_null else 0)
+    merged = merged[:available_slots]
+    if include_null:
+        merged.append("null")
+    return tuple(merged)
+
+
+def video_languages_arg(value: str) -> tuple[str, ...]:
+    try:
+        return normalize_video_languages(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(str(exc)) from exc
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -127,6 +258,44 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--refresh",
         action="store_true",
         help="Refetch raw files even when cached raw files already exist.",
+    )
+    parser.add_argument(
+        "--language",
+        default=os.getenv(LANGUAGE_ENV_VAR, DEFAULT_LANGUAGE),
+        help=f"TMDb response language (default: {DEFAULT_LANGUAGE}).",
+    )
+    parser.add_argument(
+        "--video-languages",
+        type=video_languages_arg,
+        default=os.getenv(VIDEO_LANGUAGES_ENV_VAR, DEFAULT_VIDEO_LANGUAGES),
+        help=(
+            "Comma-separated ISO 639-1 video languages plus optional null "
+            f"(default: {DEFAULT_VIDEO_LANGUAGES})."
+        ),
+    )
+    parser.add_argument(
+        "--request-timeout",
+        type=positive_float,
+        default=DEFAULT_REQUEST_TIMEOUT,
+        help=f"Per-request timeout in seconds (default: {DEFAULT_REQUEST_TIMEOUT:g}).",
+    )
+    parser.add_argument(
+        "--max-retries",
+        type=non_negative_int,
+        default=DEFAULT_MAX_RETRIES,
+        help=f"Retries for transient failures (default: {DEFAULT_MAX_RETRIES}).",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=positive_int,
+        default=DEFAULT_BATCH_SIZE,
+        help=f"Maximum targets held in a processing batch (default: {DEFAULT_BATCH_SIZE}).",
+    )
+    parser.add_argument(
+        "--concurrency",
+        type=positive_int,
+        default=DEFAULT_CONCURRENCY,
+        help=f"Maximum concurrent title fetches (default: {DEFAULT_CONCURRENCY}).",
     )
     return parser.parse_args(argv)
 
@@ -213,6 +382,7 @@ def load_targets(path: Path) -> TargetLoadResult:
         priority = config_text(target.get("priority"))
         ingestion_status = config_text(target.get("ingestion_status"))
         notes = config_text(target.get("notes"))
+        original_language = config_text(target.get("original_language"))
         label = title or f"target #{index}"
 
         if (ingestion_status or "").lower() == "skip":
@@ -229,6 +399,10 @@ def load_targets(path: Path) -> TargetLoadResult:
             validation_errors.append("source_name must be tmdb")
         if not source_id:
             validation_errors.append("missing source_id")
+        if original_language and not re.fullmatch(
+            r"[a-z]{2}", original_language.casefold()
+        ):
+            validation_errors.append("original_language must be an ISO 639-1 code")
 
         tmdb_id = parse_source_id(source_id)
         if source_id and tmdb_id is None:
@@ -253,6 +427,9 @@ def load_targets(path: Path) -> TargetLoadResult:
                 priority=priority,
                 ingestion_status=ingestion_status,
                 notes=notes,
+                original_language=(
+                    original_language.casefold() if original_language else None
+                ),
             )
         )
 
@@ -269,40 +446,96 @@ def fetch_tmdb_json(
     path: str,
     token: str,
     params: dict[str, Any] | None = None,
+    request_policy: RequestPolicy | None = None,
+    sleep_fn: Callable[[float], None] = time.sleep,
+    jitter_fn: Callable[[float, float], float] = random.uniform,
 ) -> dict[str, Any]:
     if requests is None:
         raise TmdbFetchError(
             "Missing dependency 'requests'. Run `pip install -r backend/requirements.txt`."
         )
 
+    policy = request_policy or RequestPolicy()
     url = f"{API_BASE_URL}{path}"
     headers = {
         "Authorization": f"Bearer {token}",
         "accept": "application/json",
     }
 
-    try:
-        response = requests.get(url, headers=headers, params=params, timeout=20)
-    except RequestException as exc:
-        raise TmdbFetchError(f"Request failed for {path}: {exc}") from exc
+    response = None
+    for attempt in range(policy.max_retries + 1):
+        try:
+            response = requests.get(
+                url,
+                headers=headers,
+                params=params,
+                timeout=policy.timeout_seconds,
+            )
+        except RequestException as exc:
+            if attempt >= policy.max_retries:
+                raise TmdbFetchError(
+                    f"Request failed for {path} after {attempt + 1} attempts: {exc}",
+                    retryable=True,
+                    failure_class="network_transient",
+                ) from exc
+            delay = min(
+                policy.backoff_cap_seconds,
+                policy.backoff_base_seconds * (2**attempt),
+            )
+            sleep_fn(delay + jitter_fn(0, min(0.5, delay)))
+            continue
 
-    if response.status_code == 429:
-        raise TmdbFetchError(
-            f"TMDb rate limit hit for {path}. Wait and try again."
-        )
+        if response.ok:
+            break
 
-    if not response.ok:
-        raise TmdbFetchError(
-            f"TMDb request failed for {path}: HTTP {response.status_code} - {response.text[:300]}"
-        )
+        retryable = response.status_code in RETRYABLE_STATUS_CODES
+        if not retryable or attempt >= policy.max_retries:
+            if response.status_code == 429:
+                failure_class = "rate_limited"
+            elif response.status_code in {500, 502, 503, 504}:
+                failure_class = "provider_server_error"
+            elif response.status_code == 404:
+                failure_class = "source_not_found"
+            else:
+                failure_class = "provider_request_error"
+            raise TmdbFetchError(
+                f"TMDb request failed for {path}: HTTP {response.status_code} - "
+                f"{response.text[:300]}",
+                status_code=response.status_code,
+                retryable=retryable,
+                failure_class=failure_class,
+            )
+
+        retry_after = response.headers.get("Retry-After")
+        delay = None
+        if response.status_code == 429 and retry_after:
+            try:
+                delay = max(0.0, float(retry_after))
+            except ValueError:
+                delay = None
+        if delay is None:
+            delay = min(
+                policy.backoff_cap_seconds,
+                policy.backoff_base_seconds * (2**attempt),
+            ) + jitter_fn(0, 0.5)
+        sleep_fn(min(delay, policy.backoff_cap_seconds))
+
+    if response is None:  # pragma: no cover - the loop returns or raises.
+        raise TmdbFetchError(f"TMDb request failed for {path}")
 
     try:
         data = response.json()
     except ValueError as exc:
-        raise TmdbFetchError(f"TMDb returned malformed JSON for {path}") from exc
+        raise TmdbFetchError(
+            f"TMDb returned malformed JSON for {path}",
+            failure_class="normalization_review",
+        ) from exc
 
     if not isinstance(data, dict):
-        raise TmdbFetchError(f"TMDb returned unexpected JSON shape for {path}")
+        raise TmdbFetchError(
+            f"TMDb returned unexpected JSON shape for {path}",
+            failure_class="normalization_review",
+        )
 
     return data
 
@@ -312,6 +545,110 @@ def save_json(path: Path, data: Any) -> None:
     path.write_text(
         json.dumps(data, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
         encoding="utf-8",
+    )
+
+
+def cache_metadata_path(raw_path: Path) -> Path:
+    return raw_path.with_suffix(".meta.json")
+
+
+def normalized_request_params(params: dict[str, Any] | None) -> dict[str, Any]:
+    normalized: dict[str, Any] = {}
+    for key, value in sorted((params or {}).items()):
+        if value is None:
+            continue
+        if isinstance(value, (str, int, float, bool)):
+            normalized[str(key)] = value
+            continue
+        raise ValueError(f"Unsupported request parameter type for {key!r}")
+    return normalized
+
+
+def build_request_signature(api_path: str, params: dict[str, Any] | None) -> str:
+    fingerprint_payload = {
+        "source": "tmdb",
+        "api_path": api_path,
+        "params": normalized_request_params(params),
+    }
+    serialized = json.dumps(
+        fingerprint_payload,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+    )
+    return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+
+
+def utc_timestamp_from_mtime(path: Path) -> str:
+    return datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc).isoformat()
+
+
+def normalize_aware_iso_timestamp(value: Any) -> str | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        return None
+    return parsed.astimezone(timezone.utc).isoformat()
+
+
+def load_cache_metadata(raw_path: Path) -> dict[str, Any]:
+    metadata_path = cache_metadata_path(raw_path)
+    if not metadata_path.exists():
+        return {
+            "source_fetched_at": utc_timestamp_from_mtime(raw_path),
+            "timestamp_origin": "legacy_file_mtime",
+            "request_signature": None,
+            "metadata_path": relative_path(metadata_path),
+            "timestamp_valid": False,
+        }
+    try:
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise TmdbFetchError(
+            f"Malformed cache metadata in {relative_path(metadata_path)}: {exc}"
+        ) from exc
+    if not isinstance(metadata, dict):
+        raise TmdbFetchError(
+            f"Cache metadata has unexpected shape: {relative_path(metadata_path)}"
+        )
+    fetched_at = normalize_aware_iso_timestamp(metadata.get("fetched_at"))
+    if fetched_at is None:
+        fetched_at = utc_timestamp_from_mtime(raw_path)
+        timestamp_origin = "legacy_file_mtime"
+        timestamp_valid = False
+    else:
+        timestamp_origin = "sidecar"
+        timestamp_valid = True
+    return {
+        "source_fetched_at": fetched_at,
+        "timestamp_origin": timestamp_origin,
+        "request_signature": metadata.get("request_signature"),
+        "metadata_path": relative_path(metadata_path),
+        "timestamp_valid": timestamp_valid,
+    }
+
+
+def save_cache_metadata(
+    raw_path: Path,
+    api_path: str,
+    params: dict[str, Any] | None,
+    request_signature: str,
+    fetched_at: str,
+) -> None:
+    save_json(
+        cache_metadata_path(raw_path),
+        {
+            "source": "tmdb",
+            "fetched_at": fetched_at,
+            "request_path": api_path,
+            "request_parameters": normalized_request_params(params),
+            "request_signature": request_signature,
+            "response_status": 200,
+        },
     )
 
 
@@ -339,23 +676,65 @@ def fetch_or_reuse_json(
     token: str | None,
     refresh: bool,
     params: dict[str, Any] | None = None,
-) -> tuple[dict[str, Any], dict[str, str]]:
+    request_policy: RequestPolicy | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    expected_signature = build_request_signature(api_path, params)
     if raw_path.exists() and not refresh:
-        return load_cached_json(raw_path), {
-            "path": relative_path(raw_path),
-            "status": "reused",
-        }
+        try:
+            cache_metadata = load_cache_metadata(raw_path)
+        except TmdbFetchError:
+            if not token:
+                raise
+            cache_metadata = None
+        if cache_metadata is not None:
+            if token and cache_metadata.get("timestamp_valid") is not True:
+                cache_metadata = None
+        if cache_metadata is not None:
+            cached_signature = cache_metadata.get("request_signature")
+            signature_matches = cached_signature == expected_signature
+            legacy_parameterless_cache = cached_signature is None and not params
+            if signature_matches or legacy_parameterless_cache:
+                return load_cached_json(raw_path), {
+                    "path": relative_path(raw_path),
+                    "status": "reused",
+                    **cache_metadata,
+                }
+        if not token:
+            raise TmdbFetchError(
+                "Cached raw response is incompatible with the current request "
+                f"parameters for {api_path}; set {TOKEN_ENV_VAR} to refetch it.",
+                failure_class="cache_incompatible",
+            )
 
     if not token:
         raise TmdbFetchError(
-            f"Missing {TOKEN_ENV_VAR}; cannot fetch {api_path} for {relative_path(raw_path)}."
+            f"Missing {TOKEN_ENV_VAR}; cannot fetch {api_path} for {relative_path(raw_path)}.",
+            failure_class="cache_incompatible",
         )
 
-    data = fetch_tmdb_json(api_path, token, params=params)
+    data = fetch_tmdb_json(
+        api_path,
+        token,
+        params=params,
+        request_policy=request_policy,
+    )
+    fetched_at = datetime.now(timezone.utc).isoformat()
     save_json(raw_path, data)
+    save_cache_metadata(
+        raw_path,
+        api_path,
+        params,
+        expected_signature,
+        fetched_at,
+    )
     return data, {
         "path": relative_path(raw_path),
         "status": "fetched",
+        "source_fetched_at": fetched_at,
+        "timestamp_origin": "network",
+        "request_signature": expected_signature,
+        "metadata_path": relative_path(cache_metadata_path(raw_path)),
+        "timestamp_valid": True,
     }
 
 
@@ -650,6 +1029,7 @@ def build_tmdb_image_url(
 def find_first_reasonable_search_result(
     sample: SampleTitle,
     token: str,
+    request_policy: RequestPolicy | None = None,
 ) -> tuple[int | None, str | None]:
     search_path = "/search/movie" if sample.media_type == "movie" else "/search/tv"
     params: dict[str, Any] = {
@@ -664,7 +1044,12 @@ def find_first_reasonable_search_result(
             params["first_air_date_year"] = sample.year
 
     try:
-        data = fetch_tmdb_json(search_path, token, params=params)
+        data = fetch_tmdb_json(
+            search_path,
+            token,
+            params=params,
+            request_policy=request_policy,
+        )
     except TmdbFetchError as exc:
         return None, f"Fallback search failed: {exc}"
 
@@ -711,6 +1096,43 @@ def target_metadata(sample: SampleTitle) -> dict[str, Any]:
     }
 
 
+def build_video_retry_target(
+    sample: SampleTitle,
+    reason: str,
+) -> dict[str, Any]:
+    target = {
+        "title": sample.title,
+        "content_type": sample.content_type
+        or content_type_from_media_type(sample.media_type),
+        "source_name": sample.source_name,
+        "source_id": sample.source_id
+        or (str(sample.tmdb_id) if sample.tmdb_id is not None else None),
+        "priority": sample.priority,
+        "ingestion_status": "retry",
+        "notes": reason,
+    }
+    if sample.original_language:
+        target["original_language"] = sample.original_language
+    return target
+
+
+def build_video_review_target(
+    sample: SampleTitle,
+    reason: str,
+    failure_class: str,
+) -> dict[str, Any]:
+    target = build_video_retry_target(sample, reason)
+    target["ingestion_status"] = "review"
+    target["videos_failure_class"] = failure_class
+    return target
+
+
+def video_failure_disposition(mapped: dict[str, Any]) -> str | None:
+    if mapped.get("videos_snapshot_complete") is True:
+        return None
+    return "retry" if mapped.get("videos_retryable") is True else "review"
+
+
 def attach_target_metadata(
     item: dict[str, Any],
     sample: SampleTitle,
@@ -719,7 +1141,15 @@ def attach_target_metadata(
     return item
 
 
-def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[str, Any]:
+def build_error_preview_item(
+    sample: SampleTitle,
+    error_message: str,
+    *,
+    preferred_language: str | None = None,
+    requested_languages: tuple[str, ...] = (),
+    retryable: bool = False,
+    failure_class: str = "normalization_review",
+) -> dict[str, Any]:
     return attach_target_metadata({
         "source_provider": "tmdb",
         "tmdb_id": sample.tmdb_id,
@@ -746,6 +1176,28 @@ def build_error_preview_item(sample: SampleTitle, error_message: str) -> dict[st
         "top_cast_names": [],
         "director_or_creator_names": [],
         "series_metadata": None,
+        "videos_fetch_status": "failed",
+        "videos_snapshot_complete": False,
+        "videos_stale_cleanup_safe": False,
+        "videos_fetch_error": error_message,
+        "videos_fetch_origin": "failed",
+        "videos_source_fetched_at": None,
+        "videos_timestamp_origin": None,
+        "videos_request_signature": None,
+        "videos_preferred_language": preferred_language,
+        "videos_requested_languages": list(requested_languages),
+        "videos_raw_count": 0,
+        "videos_accepted_count": 0,
+        "videos_rejected_count": 0,
+        "videos_rejected": [],
+        "videos_ignored_count": 0,
+        "videos_ignored": [],
+        "videos_warnings": [],
+        "videos_retryable": retryable,
+        "videos_failure_class": failure_class,
+        "videos": [],
+        "primary_video_site": None,
+        "primary_video_source_id": None,
         "mapping_notes": [error_message],
     }, sample)
 
@@ -754,6 +1206,9 @@ def fetch_title_payloads(
     sample: SampleTitle,
     token: str | None,
     refresh: bool,
+    language: str = DEFAULT_LANGUAGE,
+    video_languages: tuple[str, ...] = ("en", "null"),
+    request_policy: RequestPolicy | None = None,
 ) -> tuple[
     int,
     dict[str, Any],
@@ -761,10 +1216,10 @@ def fetch_title_payloads(
     dict[str, Any],
     dict[str, Any] | None,
     list[str],
-    list[dict[str, str]],
+    list[dict[str, Any]],
 ]:
     notes: list[str] = []
-    raw_file_results: list[dict[str, str]] = []
+    raw_file_results: list[dict[str, Any]] = []
     tmdb_id = sample.tmdb_id
 
     if sample.media_type not in {"movie", "tv"}:
@@ -796,11 +1251,23 @@ def fetch_title_payloads(
         "aggregate_credits",
     )
 
+    requested_video_languages = merge_video_languages(
+        language,
+        sample.original_language,
+        video_languages,
+    )
+    detail_params = {
+        "append_to_response": "videos",
+        "language": language,
+        "include_video_language": ",".join(requested_video_languages),
+    }
     details, file_result = fetch_or_reuse_json(
         details_path,
         raw_details_path,
         token,
         refresh,
+        params=detail_params,
+        request_policy=request_policy,
     )
     raw_file_results.append(file_result)
     actual_title = get_details_title(details, sample.media_type)
@@ -823,6 +1290,7 @@ def fetch_title_payloads(
         raw_external_ids_path,
         token,
         refresh,
+        request_policy=request_policy,
     )
     raw_file_results.append(file_result)
     credits, file_result = fetch_or_reuse_json(
@@ -830,6 +1298,7 @@ def fetch_title_payloads(
         raw_credits_path,
         token,
         refresh,
+        request_policy=request_policy,
     )
     raw_file_results.append(file_result)
     aggregate_credits = None
@@ -841,6 +1310,7 @@ def fetch_title_payloads(
                 raw_aggregate_credits_path,
                 token,
                 refresh,
+                request_policy=request_policy,
             )
             raw_file_results.append(file_result)
         except TmdbFetchError as exc:
@@ -889,6 +1359,7 @@ def map_common_preview_fields(
     configuration: dict[str, Any],
     media_type: str,
     notes: list[str],
+    preferred_video_language: str | None = "en",
 ) -> dict[str, Any]:
     poster_path = details.get("poster_path")
     backdrop_path = details.get("backdrop_path")
@@ -907,7 +1378,15 @@ def map_common_preview_fields(
     if not external_ids.get("imdb_id"):
         notes.append("No imdb_id returned.")
 
-    return {
+    video_snapshot = normalize_video_snapshot(details, preferred_video_language)
+    if not video_snapshot.is_complete:
+        notes.append(video_snapshot.error or "Video snapshot is incomplete.")
+    elif video_snapshot.rejected_count:
+        notes.append(
+            f"Rejected {video_snapshot.rejected_count} malformed or duplicate video records."
+        )
+
+    preview = {
         "source_provider": "tmdb",
         "tmdb_id": details.get("id"),
         "media_type": media_type,
@@ -930,6 +1409,8 @@ def map_common_preview_fields(
         "director_or_creator_names": [],
         "mapping_notes": notes,
     }
+    preview.update(video_snapshot.as_preview_fields())
+    return preview
 
 
 def map_tmdb_movie_preview(
@@ -938,6 +1419,7 @@ def map_tmdb_movie_preview(
     credits: dict[str, Any],
     configuration: dict[str, Any],
     notes: list[str],
+    preferred_video_language: str | None = "en",
 ) -> dict[str, Any]:
     release_date = details.get("release_date")
     preview = map_common_preview_fields(
@@ -947,6 +1429,7 @@ def map_tmdb_movie_preview(
         configuration,
         "movie",
         notes,
+        preferred_video_language,
     )
     preview.update(
         {
@@ -975,6 +1458,7 @@ def map_tmdb_tv_preview(
     credits: dict[str, Any],
     configuration: dict[str, Any],
     notes: list[str],
+    preferred_video_language: str | None = "en",
 ) -> dict[str, Any]:
     release_date = details.get("first_air_date")
     episode_run_time = details.get("episode_run_time")
@@ -1005,6 +1489,7 @@ def map_tmdb_tv_preview(
         configuration,
         "tv",
         notes,
+        preferred_video_language,
     )
     preview.update(
         {
@@ -1064,7 +1549,178 @@ def filters_used(args: argparse.Namespace) -> dict[str, Any]:
         "title": args.title,
         "limit": args.limit,
         "refresh": args.refresh,
+        "language": args.language,
+        "video_languages": list(args.video_languages),
+        "request_timeout": args.request_timeout,
+        "max_retries": args.max_retries,
+        "batch_size": args.batch_size,
+        "concurrency": args.concurrency,
     }
+
+
+def process_sample(
+    sample: SampleTitle,
+    token: str | None,
+    refresh: bool,
+    configuration: dict[str, Any],
+    language: str,
+    video_languages: tuple[str, ...],
+    request_policy: RequestPolicy,
+) -> dict[str, Any]:
+    try:
+        preferred_language = normalize_language_code(
+            language or DEFAULT_LANGUAGE,
+            field_name="detail language",
+        )
+        requested_video_languages = merge_video_languages(
+            language or DEFAULT_LANGUAGE,
+            sample.original_language,
+            video_languages,
+        )
+    except ValueError as exc:
+        error = f"Invalid video language policy for {sample.title}: {exc}"
+        return {
+            "sample": sample,
+            "error": error,
+            "mapped": build_error_preview_item(
+                sample,
+                error,
+                failure_class="normalization_review",
+            ),
+            "notes": [error],
+            "raw_file_results": [],
+        }
+
+    try:
+        (
+            _tmdb_id,
+            details,
+            external_ids,
+            credits,
+            _aggregate_credits,
+            notes,
+            raw_file_results,
+        ) = fetch_title_payloads(
+            sample,
+            token,
+            refresh,
+            language,
+            video_languages,
+            request_policy,
+        )
+    except TmdbFetchError as exc:
+        return {
+            "sample": sample,
+            "error": str(exc),
+            "mapped": build_error_preview_item(
+                sample,
+                str(exc),
+                preferred_language=preferred_language,
+                requested_languages=requested_video_languages,
+                retryable=exc.retryable,
+                failure_class=exc.failure_class,
+            ),
+            "notes": [str(exc)],
+            "raw_file_results": [],
+        }
+
+    if sample.media_type == "movie":
+        mapped = map_tmdb_movie_preview(
+            details,
+            external_ids,
+            credits,
+            configuration,
+            notes,
+            preferred_language,
+        )
+    else:
+        mapped = map_tmdb_tv_preview(
+            details,
+            external_ids,
+            credits,
+            configuration,
+            notes,
+            preferred_language,
+        )
+
+    details_file_result = raw_file_results[0]
+    mapped.update(
+        {
+            "videos_fetch_origin": details_file_result["status"],
+            "videos_source_fetched_at": details_file_result.get(
+                "source_fetched_at"
+            ),
+            "videos_timestamp_origin": details_file_result.get(
+                "timestamp_origin"
+            ),
+            "videos_request_signature": details_file_result.get(
+                "request_signature"
+            ),
+            "videos_preferred_language": preferred_language,
+            "videos_requested_languages": list(requested_video_languages),
+        }
+    )
+
+    return {
+        "sample": sample,
+        "error": None,
+        "mapped": attach_target_metadata(mapped, sample),
+        "notes": notes,
+        "raw_file_results": raw_file_results,
+    }
+
+
+def build_worker_failure_result(
+    sample: SampleTitle,
+    error: Exception,
+    language: str,
+    video_languages: tuple[str, ...],
+) -> dict[str, Any]:
+    try:
+        preferred_language = normalize_language_code(
+            language or DEFAULT_LANGUAGE,
+            field_name="detail language",
+        )
+        requested_languages = merge_video_languages(
+            language or DEFAULT_LANGUAGE,
+            sample.original_language,
+            video_languages,
+        )
+    except ValueError:
+        preferred_language = None
+        requested_languages = ()
+    message = f"Unexpected worker failure: {error}"
+    return {
+        "sample": sample,
+        "error": message,
+        "mapped": build_error_preview_item(
+            sample,
+            message,
+            preferred_language=preferred_language,
+            requested_languages=requested_languages,
+            retryable=False,
+            failure_class="normalization_review",
+        ),
+        "notes": [message],
+        "raw_file_results": [],
+    }
+
+
+def resolve_worker_future(
+    future: Any,
+    sample: SampleTitle,
+    language: str,
+    video_languages: tuple[str, ...],
+) -> dict[str, Any]:
+    try:
+        return future.result()
+    except Exception as exc:  # A single target must not terminate a bounded batch.
+        return build_worker_failure_result(
+            sample,
+            exc,
+            language,
+            video_languages,
+        )
 
 
 def print_preview_table(items: list[dict[str, Any]]) -> None:
@@ -1115,6 +1771,10 @@ def print_preview_totals(
     total_with_backdrop = sum(1 for item in items if item.get("backdrop_url"))
     total_with_imdb = sum(1 for item in items if item.get("imdb_id"))
     total_with_tmdb_rating = sum(1 for item in items if item.get("ratings"))
+    total_with_videos = sum(1 for item in items if item.get("videos"))
+    total_with_primary_video = sum(
+        1 for item in items if item.get("primary_video_source_id")
+    )
     total_with_notes = sum(1 for item in items if item.get("mapping_notes"))
 
     print("\nPreview totals:")
@@ -1126,6 +1786,8 @@ def print_preview_totals(
     print(f"- Total with backdrop_url: {total_with_backdrop}")
     print(f"- Total with imdb_id: {total_with_imdb}")
     print(f"- Total with TMDb rating preview: {total_with_tmdb_rating}")
+    print(f"- Total with accepted videos: {total_with_videos}")
+    print(f"- Total with a primary video: {total_with_primary_video}")
     print(f"- Total with warnings/mapping_notes: {total_with_notes}")
 
 
@@ -1174,6 +1836,10 @@ def main(argv: list[str] | None = None) -> int:
     RAW_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     PROCESSED_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     RUN_REPORT_DIR.mkdir(parents=True, exist_ok=True)
+    request_policy = RequestPolicy(
+        timeout_seconds=args.request_timeout,
+        max_retries=args.max_retries,
+    )
 
     try:
         configuration, configuration_file_result = fetch_or_reuse_json(
@@ -1181,6 +1847,7 @@ def main(argv: list[str] | None = None) -> int:
             RAW_OUTPUT_DIR / "configuration.json",
             token,
             args.refresh,
+            request_policy=request_policy,
         )
     except TmdbFetchError as exc:
         print(f"Could not load TMDb configuration: {exc}")
@@ -1191,6 +1858,8 @@ def main(argv: list[str] | None = None) -> int:
     raw_files_fetched: list[str] = []
     raw_files_reused: list[str] = []
     per_target_statuses: list[dict[str, Any]] = []
+    video_retry_targets: list[dict[str, Any]] = []
+    video_review_targets: list[dict[str, Any]] = []
     errors: list[str] = []
     run_warnings = target_result.warnings.copy()
 
@@ -1203,24 +1872,12 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Targets selected: {len(selected_samples)}")
     print(f"Targets not selected: {len(target_result.samples) - len(selected_samples)}")
 
-    for sample in selected_samples:
+    def record_processed_result(result: dict[str, Any]) -> None:
+        sample = result["sample"]
         print(f"Processing {sample.title} ({sample.media_type})...")
-        try:
-            (
-                tmdb_id,
-                details,
-                external_ids,
-                credits,
-                aggregate_credits,
-                notes,
-                raw_file_results,
-            ) = fetch_title_payloads(
-                sample,
-                token,
-                args.refresh,
-            )
-        except TmdbFetchError as exc:
-            message = f"{sample.title}: {exc}"
+        error = result["error"]
+        if error:
+            message = f"{sample.title}: {error}"
             print(f"  Error: {message}")
             errors.append(message)
             per_target_statuses.append(
@@ -1232,39 +1889,58 @@ def main(argv: list[str] | None = None) -> int:
                     "priority": sample.priority,
                     "status": "failed",
                     "raw_files": [],
-                    "warnings": [str(exc)],
+                    "warnings": [error],
                 }
             )
-            mapped_items.append(build_error_preview_item(sample, str(exc)))
-            continue
-
-        for result in raw_file_results:
-            if result["status"] == "fetched":
-                raw_files_fetched.append(result["path"])
+            mapped_items.append(result["mapped"])
+            if video_failure_disposition(result["mapped"]) == "retry":
+                video_retry_targets.append(build_video_retry_target(sample, error))
             else:
-                raw_files_reused.append(result["path"])
+                video_review_targets.append(
+                    build_video_review_target(
+                        sample,
+                        error,
+                        str(
+                            result["mapped"].get("videos_failure_class")
+                            or "normalization_review"
+                        ),
+                    )
+                )
+            return
 
-        if sample.media_type == "movie":
-            mapped = map_tmdb_movie_preview(
-                details,
-                external_ids,
-                credits,
-                configuration,
-                notes,
+        notes = result["notes"]
+        raw_file_results = result["raw_file_results"]
+        for file_result in raw_file_results:
+            if file_result["status"] == "fetched":
+                raw_files_fetched.append(file_result["path"])
+            else:
+                raw_files_reused.append(file_result["path"])
+
+        mapped_items.append(result["mapped"])
+        if not result["mapped"].get("videos_snapshot_complete"):
+            disposition_reason = (
+                result["mapped"].get("videos_fetch_error")
+                or "The appended videos snapshot was incomplete."
             )
-        else:
-            mapped = map_tmdb_tv_preview(
-                details,
-                external_ids,
-                credits,
-                configuration,
-                notes,
-            )
-        mapped_items.append(attach_target_metadata(mapped, sample))
+            if video_failure_disposition(result["mapped"]) == "retry":
+                video_retry_targets.append(
+                    build_video_retry_target(sample, disposition_reason)
+                )
+            else:
+                video_review_targets.append(
+                    build_video_review_target(
+                        sample,
+                        disposition_reason,
+                        str(
+                            result["mapped"].get("videos_failure_class")
+                            or "normalization_review"
+                        ),
+                    )
+                )
         run_warnings.extend(f"{sample.title}: {note}" for note in notes)
         target_status = (
             "fetched"
-            if any(result["status"] == "fetched" for result in raw_file_results)
+            if any(file_result["status"] == "fetched" for file_result in raw_file_results)
             else "reused"
         )
         per_target_statuses.append(
@@ -1279,6 +1955,36 @@ def main(argv: list[str] | None = None) -> int:
                 "warnings": notes,
             }
         )
+
+    max_workers = min(args.concurrency, args.batch_size)
+    for batch_start in range(0, len(selected_samples), args.batch_size):
+        batch = selected_samples[batch_start : batch_start + args.batch_size]
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = {
+                executor.submit(
+                    process_sample,
+                    sample,
+                    token,
+                    args.refresh,
+                    configuration,
+                    args.language,
+                    args.video_languages,
+                    request_policy,
+                ): (index, sample)
+                for index, sample in enumerate(batch)
+            }
+            ordered: list[dict[str, Any] | None] = [None] * len(batch)
+            for future in as_completed(futures):
+                index, sample = futures[future]
+                ordered[index] = resolve_worker_future(
+                    future,
+                    sample,
+                    args.language,
+                    args.video_languages,
+                )
+            for result in ordered:
+                if result is not None:
+                    record_processed_result(result)
 
     if not mapped_items:
         print("No titles were mapped. Check the token, network, and TMDb IDs.")
@@ -1297,6 +2003,27 @@ def main(argv: list[str] | None = None) -> int:
         "items": mapped_items,
     }
     save_json(PREVIEW_OUTPUT_PATH, preview_payload)
+    retry_payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "source_run_report": relative_path(RUN_REPORT_OUTPUT_PATH),
+        "description": (
+            "Titles whose appended TMDb videos request failed with an automatic "
+            "retry disposition. This file can be passed back to --targets for a "
+            "bounded retry run."
+        ),
+        "targets": video_retry_targets,
+    }
+    save_json(VIDEO_RETRY_OUTPUT_PATH, retry_payload)
+    review_payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "source_run_report": relative_path(RUN_REPORT_OUTPUT_PATH),
+        "description": (
+            "Titles requiring manual source or normalization review. These targets "
+            "are not scheduled for automatic retry."
+        ),
+        "targets": video_review_targets,
+    }
+    save_json(VIDEO_REVIEW_OUTPUT_PATH, review_payload)
 
     targets_fetched = sum(
         1 for status in per_target_statuses if status.get("status") == "fetched"
@@ -1317,6 +2044,14 @@ def main(argv: list[str] | None = None) -> int:
         "targets_processed": targets_processed,
         "targets_skipped": total_skipped,
         "ratings_preview_count": sum(1 for item in mapped_items if item.get("ratings")),
+        "videos_preview_count": sum(1 for item in mapped_items if item.get("videos")),
+        "primary_video_count": sum(
+            1 for item in mapped_items if item.get("primary_video_source_id")
+        ),
+        "video_retry_target_count": len(video_retry_targets),
+        "video_retry_target_path": relative_path(VIDEO_RETRY_OUTPUT_PATH),
+        "video_review_target_count": len(video_review_targets),
+        "video_review_target_path": relative_path(VIDEO_REVIEW_OUTPUT_PATH),
         "raw_files_fetched": raw_files_fetched,
         "raw_files_reused": raw_files_reused,
         "warnings": run_warnings,
@@ -1340,6 +2075,16 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"\nProcessed preview saved: {PREVIEW_OUTPUT_PATH.relative_to(REPO_ROOT)}")
     print(f"Run report saved: {RUN_REPORT_OUTPUT_PATH.relative_to(REPO_ROOT)}")
+    print(
+        "Video retry targets saved: "
+        f"{VIDEO_RETRY_OUTPUT_PATH.relative_to(REPO_ROOT)} "
+        f"({len(video_retry_targets)} targets)"
+    )
+    print(
+        "Video review targets saved: "
+        f"{VIDEO_REVIEW_OUTPUT_PATH.relative_to(REPO_ROOT)} "
+        f"({len(video_review_targets)} targets)"
+    )
     print_preview_table(mapped_items)
     print_preview_totals(
         mapped_items,
@@ -1370,6 +2115,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"- Reused count: {targets_reused}")
     print(f"- Skipped count: {total_skipped}")
     print(f"- Failure count: {len(errors)}")
+    print(f"- Video retry target count: {len(video_retry_targets)}")
+    print(f"- Video review target count: {len(video_review_targets)}")
     print(f"- Report path: {RUN_REPORT_OUTPUT_PATH.relative_to(REPO_ROOT)}")
     print("\nNo database changes were made.")
     return 0 if targets_processed else 1

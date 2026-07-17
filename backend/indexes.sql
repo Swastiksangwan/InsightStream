@@ -173,7 +173,6 @@ ON content_certifications (country_code);
 CREATE INDEX IF NOT EXISTS idx_content_certifications_source_name
 ON content_certifications (source_name);
 
-
 -- ------------------------------------------------------------
 -- Series lifecycle metadata indexes
 -- ------------------------------------------------------------

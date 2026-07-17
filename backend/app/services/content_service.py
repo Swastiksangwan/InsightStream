@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import bindparam, text
 
 from app.services.insight_summary_service import build_insight_summary
+from app.services.content_video_service import get_content_videos
 from app.services.source_signal_service import get_content_decision_layer
 
 
@@ -2338,6 +2339,7 @@ def get_content_details_service(content_id: int, db: Session):
     platforms = get_detail_platforms(db, content_id)
 
     ratings = get_detail_ratings(db, content_id)
+    video_metadata = get_content_videos(db, content_id)
     credits = get_content_credits_service(content_id, db)
     decision_layer = get_content_decision_layer(
         db,
@@ -2396,6 +2398,8 @@ def get_content_details_service(content_id: int, db: Session):
         "genres": genres,
         "platforms": platforms,
         "ratings": ratings,
+        "videos": video_metadata["videos"],
+        "primary_video": video_metadata["primary_video"],
         "series_metadata": series_metadata,
         "insight_summary": insight_summary,
         "decision_layer": decision_layer,
