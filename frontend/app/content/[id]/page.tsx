@@ -10,6 +10,10 @@ import { ErrorState } from "@/components/ErrorState";
 import { SeriesTimingCallout } from "@/components/SeriesTimingCallout";
 import { SummaryPanel } from "@/components/SummaryPanel";
 import {
+  TrailerExperience,
+  TrailersAndTeasersSection,
+} from "@/components/TrailerExperience";
+import {
   getContentCredits,
   getContentDetails,
   getWatched,
@@ -107,38 +111,45 @@ export default async function ContentDetailPage({ params }: ContentDetailPagePro
 
     return (
       <main className="detail-page-shell">
-        <DetailHero
-          content={details.content}
-          credits={credits}
-          seriesMetadata={details.series_metadata}
-        />
-
-        <section className="detail-content-grid" aria-label="Content detail sections">
-          <div className="detail-main-column detail-main-column--overview">
-            <SeriesTimingCallout
-              contentType={details.content.type}
-              seriesMetadata={details.series_metadata}
-            />
-            <DetailOverview content={details.content} genres={details.genres} />
-          </div>
-
-          <DetailSidebar
-            contentId={details.content.id}
-            initialStatus={initialWatchState.status}
-            initialMessage={initialWatchState.message}
-            platforms={details.platforms}
-            ratings={details.ratings}
+        <TrailerExperience
+          contentTitle={details.content.title}
+          primaryVideo={details.primary_video}
+          videos={details.videos}
+        >
+          <DetailHero
+            content={details.content}
+            credits={credits}
             seriesMetadata={details.series_metadata}
           />
 
-          <div className="detail-main-column detail-main-column--supporting">
-            <DecisionDisplayCard display={details.decision_layer?.display} />
-            {!hasDecisionDisplay(details.decision_layer?.display) ? (
-              <SummaryPanel summary={details.insight_summary} />
-            ) : null}
-            <CreditsSection credits={credits} />
-          </div>
-        </section>
+          <section className="detail-content-grid" aria-label="Content detail sections">
+            <div className="detail-main-column detail-main-column--overview">
+              <SeriesTimingCallout
+                contentType={details.content.type}
+                seriesMetadata={details.series_metadata}
+              />
+              <DetailOverview content={details.content} genres={details.genres} />
+            </div>
+
+            <DetailSidebar
+              contentId={details.content.id}
+              initialStatus={initialWatchState.status}
+              initialMessage={initialWatchState.message}
+              platforms={details.platforms}
+              ratings={details.ratings}
+              seriesMetadata={details.series_metadata}
+            />
+
+            <div className="detail-main-column detail-main-column--supporting">
+              <DecisionDisplayCard display={details.decision_layer?.display} />
+              {!hasDecisionDisplay(details.decision_layer?.display) ? (
+                <SummaryPanel summary={details.insight_summary} />
+              ) : null}
+              <TrailersAndTeasersSection />
+              <CreditsSection credits={credits} />
+            </div>
+          </section>
+        </TrailerExperience>
       </main>
     );
   } catch (error) {

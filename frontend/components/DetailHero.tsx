@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TrailerHeroAction } from "@/components/TrailerExperience";
 import type { Content, SeriesMetadata } from "@/types/content";
 import type { ContentCreditsResponse, CreditCrewMember } from "@/types/credits";
 
@@ -166,6 +167,7 @@ export function DetailHero({ content, credits, seriesMetadata }: DetailHeroProps
                   {item.label}
                 </span>
               ))}
+              <TrailerHeroAction />
             </div>
 
             {primaryPeople.length > 0 ? (

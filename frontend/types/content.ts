@@ -159,6 +159,24 @@ export type RatingsResponse = {
   sources: RatingSourceItem[];
 };
 
+export type ContentVideo = {
+  id: number;
+  source: string;
+  source_video_id: string;
+  site: string;
+  type: string | null;
+  name: string | null;
+  official: boolean | null;
+  language_code: string | null;
+  country_code: string | null;
+  published_at: string | null;
+  size: number | null;
+  is_primary: boolean;
+  watch_url: string | null;
+  embed_url: string | null;
+  is_playable: boolean;
+};
+
 export type Summary = {
   unified_score?: number | null;
   critic_score?: number | null;
@@ -216,6 +234,8 @@ export type ContentDetailsResponse = {
   genres: string[];
   platforms: PlatformAvailability[];
   ratings: RatingsResponse;
+  videos: ContentVideo[];
+  primary_video: ContentVideo | null;
   series_metadata?: SeriesMetadata | null;
   insight_summary: InsightSummary;
   decision_layer?: DecisionLayer | null;
