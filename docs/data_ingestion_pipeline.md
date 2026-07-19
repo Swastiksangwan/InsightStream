@@ -344,8 +344,18 @@ the `empty` status.
 
 Recommended future refresh cadence (not scheduled in Phase 1): upcoming titles daily;
 new releases/currently airing titles every 1-3 days; announced future seasons weekly;
-older or ended titles monthly or on demand. A frontend trailer player remains a
-separate Phase 2 task.
+older or ended titles monthly or on demand.
+
+The title-detail frontend consumes `primary_video` for its compact hero Trailer/Teaser
+action and builds the primary-first `Trailers & More` rail from the same response's
+`videos` array, so it makes no second video request. A single safe video omits the
+redundant rail while keeping the hero action. Playable items are revalidated against the
+exact YouTube no-cookie embed host and validated source key in the browser. The single
+modal iframe is mounted only after a deliberate click and unmounted on close; thumbnail
+URLs use only `i.ytimg.com`. Non-playable records are omitted from the interface, while
+non-English, subtitled, and accessibility-specific trailer variants remain eligible
+and visible when safely playable. Other accepted source video types remain backend-only
+for possible future extras support.
 - Use the row-level sections such as `Would update content rows`, `Updated content rows`, and `Updated series metadata rows` to verify which titles and fields changed before and after a metadata refresh.
 
 Processed previews are latest-run files. They are not always full-catalog snapshots. If a preview was generated with `--priority`, `--source-id`, or a target file, downstream preview builders may process only that subset.
