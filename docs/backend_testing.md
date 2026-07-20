@@ -132,6 +132,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_content_video_endpoints.py` — stored video ordering, optional primary video, safe URL derivation, and no-video response behavior
 - `backend/tests/test_content_video_importer.py` — video upsert idempotency, stale-row semantics, other-source preservation, explicit preview/import language-policy consistency, empty snapshots, and affected-title reporting
 - `backend/tests/test_tmdb_video_metadata.py` — appended-video request strategy, bounded language merging, cache-sidecar validation, retry/review disposition, worker isolation, multilingual normalization/selection, bounded retries, and URL safety without live TMDb calls
+- `backend/tests/test_content_refresh_orchestration.py` — shared planner cadence, legacy series-selection parity, scope filtering, one-request combined refresh, persisted failure disposition, bounded retry, database-level domain isolation, exit codes, and independent domain outcomes
 - `backend/tests/test_content_credits_endpoints.py` — provider-neutral content credits endpoint
 - `backend/tests/test_people_endpoints.py` — provider-neutral person detail and person credits endpoints
 - `backend/tests/test_person_metadata_importer.py` — person details preview/import helper behavior

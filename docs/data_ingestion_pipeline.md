@@ -465,6 +465,74 @@ Current behavior:
 
 ## 8. Series Refresh Workflow
 
+### Shared content refresh orchestration
+
+The DB-backed shared planner adds video refresh readiness without replacing the
+established series rules. It paginates canonical local content/TMDb identities,
+keeps series and video reasons/timestamps separate, and writes ignored artifacts to
+`analytics/processed/tmdb/`.
+
+```bash
+# Plan all due series/video work. No provider requests or database writes.
+python3 analytics/scripts/run_content_refresh.py --plan-only --scope all
+
+# Fetch and compare one domain without writing PostgreSQL.
+python3 analytics/scripts/run_content_refresh.py --dry-run --scope series_metadata
+python3 analytics/scripts/run_content_refresh.py --dry-run --scope videos
+
+# Explicit writes. Movies receive video work only.
+python3 analytics/scripts/run_content_refresh.py --apply --scope series_metadata
+python3 analytics/scripts/run_content_refresh.py --apply --scope videos
+python3 analytics/scripts/run_content_refresh.py --apply --scope all
+
+# A canonical local TMDb target is forced even when not due.
+python3 analytics/scripts/run_content_refresh.py --dry-run --scope all --source-id 94997
+
+# Equivalent focused video entry point.
+python3 analytics/scripts/refresh_content_videos.py --dry-run --source-id 94997
+```
+
+`--plan-only` only queries PostgreSQL and writes the ignored plan. `--dry-run` may
+fetch/reuse raw TMDb details and write ignored previews/reports, but runs both existing
+importers without writes. `--apply` is the only mode that writes PostgreSQL. The modes
+are mutually exclusive.
+
+Video cadence defaults are lifecycle-aware: upcoming titles daily, recent releases
+and currently airing series every two days, announced future seasons weekly, and
+older movies/ended series every 30 days. Valid empty snapshots use the same cadence.
+Transient failures back off for one day and then two days. On the third consecutive
+failure, the target and current run report move to manual review. Permanent failures
+and incomplete normalization are never automatically retried; an explicit target can
+still force a reviewed retry. Successful and valid-empty snapshots reset the failure
+counter.
+Series selection continues to call the legacy `evaluate_refresh_status` rules below
+unchanged.
+
+Apply-mode request failures are persisted in `content_video_fetch_state`: they
+advance `last_attempted_at`, preserve the previous successful `last_fetched_at`, and
+record a sanitized error, retryability, failure class, and consecutive failure
+count. Dry runs remain write-free. Operational runs exit non-zero when any requested
+domain is failed or incomplete; a valid empty video snapshot is successful and does
+not fail the run.
+
+Video-only work issues one movie/TV details request with appended videos and never
+requests credits, aggregate credits, external IDs, keywords, or availability. A
+series selected for both domains also uses one details-plus-videos response, then
+passes that response independently through the existing series normalizer/importer
+and video normalizer/importer. One domain may therefore succeed while the other is
+reported incomplete or failed. Series-metadata-only work keeps the legacy appended
+details request/cache shape but does not normalize, import, or update video state.
+No scheduler is installed; these commands are ready
+for a future external scheduler.
+
+Generated files:
+
+- `analytics/processed/tmdb/content_refresh_plan.json`
+- `analytics/processed/tmdb/content_refresh_previews/`
+- `analytics/processed/tmdb/run_reports/content_refresh_run_report.json`
+
+The legacy workflow remains supported unchanged:
+
 Use the series refresh planner for existing series already in the catalog:
 
 ```bash
