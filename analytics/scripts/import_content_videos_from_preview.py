@@ -31,6 +31,7 @@ DEFAULT_PREVIEW_PATH = (
 )
 DATABASE_URL_ENV = "DATABASE_URL"
 MAX_ROW_REPORT_ITEMS = 50
+MAX_STORED_ERROR_LENGTH = 1000
 VIDEO_COMPARE_FIELDS = (
     "video_type",
     "name",
@@ -417,16 +418,22 @@ def update_fetch_state(
     error: str | None,
     attempted_at: datetime,
     source_fetched_at: datetime | None,
+    *,
+    retryable: bool = False,
+    failure_class: str | None = None,
 ) -> bool:
+    stored_error = sanitize_fetch_error(error)
+    stored_failure_class = normalize_failure_class(failure_class, status)
     result = connection.execute(
         text(
             """
             INSERT INTO content_video_fetch_state (
                 content_id, source, last_attempted_at, last_fetched_at, last_fetch_status,
-                last_fetch_error, source_snapshot_empty, created_at, updated_at
+                last_fetch_error, last_fetch_retryable, last_failure_class,
+                consecutive_failure_count, source_snapshot_empty, created_at, updated_at
             ) VALUES (
                 :content_id, 'tmdb', :attempted_at, :source_fetched_at, :status, :error,
-                :snapshot_empty, NOW(), NOW()
+                :retryable, :failure_class, :failure_count, :snapshot_empty, NOW(), NOW()
             )
             ON CONFLICT (content_id, source) DO UPDATE
             SET last_attempted_at = EXCLUDED.last_attempted_at,
@@ -437,6 +444,12 @@ def update_fetch_state(
                 END,
                 last_fetch_status = EXCLUDED.last_fetch_status,
                 last_fetch_error = EXCLUDED.last_fetch_error,
+                last_fetch_retryable = EXCLUDED.last_fetch_retryable,
+                last_failure_class = EXCLUDED.last_failure_class,
+                consecutive_failure_count = CASE
+                    WHEN EXCLUDED.last_fetch_status IN ('success', 'empty') THEN 0
+                    ELSE content_video_fetch_state.consecutive_failure_count + 1
+                END,
                 source_snapshot_empty = EXCLUDED.source_snapshot_empty,
                 updated_at = NOW()
             RETURNING 1
@@ -447,11 +460,42 @@ def update_fetch_state(
             "attempted_at": attempted_at,
             "source_fetched_at": source_fetched_at,
             "status": status,
-            "error": error,
+            "error": stored_error,
+            "retryable": bool(retryable) if status in {"failed", "incomplete"} else False,
+            "failure_class": stored_failure_class,
+            "failure_count": 1 if status in {"failed", "incomplete"} else 0,
             "snapshot_empty": status == "empty",
         },
     )
     return result.scalar_one_or_none() == 1
+
+
+def sanitize_fetch_error(value: str | None) -> str | None:
+    if not value:
+        return None
+    sanitized = re.sub(
+        r"(?i)\b(bearer\s+)[A-Za-z0-9._~+/=-]+",
+        r"\1[REDACTED]",
+        str(value),
+    )
+    sanitized = re.sub(
+        r"(?i)(api[_-]?key|access[_-]?token|authorization)(\s*[=:]\s*)[^\s,;]+",
+        r"\1\2[REDACTED]",
+        sanitized,
+    )
+    sanitized = " ".join(sanitized.split())
+    return sanitized[:MAX_STORED_ERROR_LENGTH] or None
+
+
+def normalize_failure_class(value: str | None, status: str) -> str | None:
+    if status in {"success", "empty"}:
+        return None
+    normalized = re.sub(
+        r"[^a-z0-9_]+",
+        "_",
+        str(value or "unclassified_failure").casefold(),
+    )
+    return normalized.strip("_")[:50] or "unclassified_failure"
 
 
 def apply_video_snapshot(
@@ -556,6 +600,8 @@ def process_item(
     error_messages = [str(item["videos_fetch_error"])] if item.get(
         "videos_fetch_error"
     ) else []
+    retryable = item.get("videos_retryable") is True
+    failure_class = str(item.get("videos_failure_class") or "unclassified_failure")
 
     preferred_language_value = item.get("videos_preferred_language")
     preferred_language = (
@@ -647,6 +693,8 @@ def process_item(
             "; ".join(dict.fromkeys(error_messages)) or None,
             attempted_at,
             source_fetched_at if effective_status in {"success", "empty"} else None,
+            retryable=retryable if effective_status in {"failed", "incomplete"} else False,
+            failure_class=failure_class,
         )
         stats.fetch_states_updated += int(state_changed)
 
@@ -696,6 +744,31 @@ def print_report(stats: ImportStats) -> None:
             print(f"- {warning}")
 
 
+def process_preview_items(
+    items: list[dict[str, Any]],
+    database_url: str,
+    apply: bool,
+    *,
+    attempted_at: datetime | None = None,
+) -> ImportStats:
+    """Run the established video importer for an in-memory preview item list."""
+    stats = ImportStats(mode="APPLY" if apply else "DRY RUN")
+    attempt_time = attempted_at or datetime.now(timezone.utc)
+    engine = create_engine(normalize_database_url(database_url), future=True)
+
+    try:
+        for item in items:
+            if apply:
+                with engine.begin() as connection:
+                    process_item(connection, item, attempt_time, True, stats)
+            else:
+                with engine.connect() as connection:
+                    process_item(connection, item, attempt_time, False, stats)
+    finally:
+        engine.dispose()
+    return stats
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     preview_path = resolve_path(args.preview)
@@ -719,35 +792,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.limit:
         items = items[: args.limit]
 
-    stats = ImportStats(mode="APPLY" if args.apply else "DRY RUN")
-    attempted_at = datetime.now(timezone.utc)
-    engine = create_engine(normalize_database_url(database_url), future=True)
-
     try:
-        for item in items:
-            if args.apply:
-                with engine.begin() as connection:
-                    process_item(
-                        connection,
-                        item,
-                        attempted_at,
-                        True,
-                        stats,
-                    )
-            else:
-                with engine.connect() as connection:
-                    process_item(
-                        connection,
-                        item,
-                        attempted_at,
-                        False,
-                        stats,
-                    )
+        stats = process_preview_items(items, database_url, args.apply)
     except SQLAlchemyError as exc:
         print(f"Database operation failed: {exc}")
         return 1
-    finally:
-        engine.dispose()
 
     print_report(stats)
     if not args.apply:

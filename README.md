@@ -230,6 +230,21 @@ Run scripts from the repository root.
 - Fetches TV aggregate credits for series where available.
 - Makes no database writes.
 
+`analytics/scripts/build_content_refresh_plan.py`
+
+- Builds the ignored, PostgreSQL-backed refresh plan for `series_metadata`, `videos`,
+  or both scopes without provider requests or database writes.
+- Reuses the existing series planner decision function and existing video fetch state.
+
+`analytics/scripts/run_content_refresh.py`
+
+- Supports mutually exclusive `--plan-only`, `--dry-run`, and `--apply` modes.
+- Uses one details-plus-videos request when a series needs both domains, while keeping
+  normalization, import transactions, state, and reporting independent per domain.
+- Video-only mode does not request credits, aggregate credits, external IDs, keywords,
+  or availability. `refresh_content_videos.py` is a focused wrapper for that scope.
+- Does not install a scheduler; orchestration remains an explicit operator command.
+
 `analytics/scripts/update_posters_from_tmdb_preview.py`
 
 - Reads the processed TMDb title preview.

@@ -177,6 +177,11 @@ CREATE TABLE IF NOT EXISTS content_video_fetch_state (
         last_fetch_status IN ('success', 'empty', 'failed', 'incomplete')
     ),
     last_fetch_error TEXT,
+    last_fetch_retryable BOOLEAN NOT NULL DEFAULT FALSE,
+    last_failure_class VARCHAR(50),
+    consecutive_failure_count INTEGER NOT NULL DEFAULT 0 CHECK (
+        consecutive_failure_count >= 0
+    ),
     source_snapshot_empty BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -184,6 +189,19 @@ CREATE TABLE IF NOT EXISTS content_video_fetch_state (
     CONSTRAINT chk_content_video_fetch_state_empty_status CHECK (
         (last_fetch_status = 'empty' AND source_snapshot_empty)
         OR (last_fetch_status <> 'empty' AND NOT source_snapshot_empty)
+    ),
+    CONSTRAINT chk_content_video_fetch_state_failure_details CHECK (
+        (
+            last_fetch_status IN ('success', 'empty')
+            AND NOT last_fetch_retryable
+            AND last_failure_class IS NULL
+            AND consecutive_failure_count = 0
+        )
+        OR (
+            last_fetch_status IN ('failed', 'incomplete')
+            AND last_failure_class IS NOT NULL
+            AND consecutive_failure_count >= 1
+        )
     )
 );
 

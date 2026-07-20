@@ -690,7 +690,8 @@ def test_failed_attempt_preserves_previous_successful_fetch_time(db_session):
             text(
                 """
                 SELECT last_attempted_at, last_fetched_at, last_fetch_status,
-                       source_snapshot_empty
+                       source_snapshot_empty, last_fetch_retryable,
+                       last_failure_class, consecutive_failure_count
                 FROM content_video_fetch_state
                 WHERE content_id = :content_id AND source = 'tmdb'
                 """
@@ -701,6 +702,9 @@ def test_failed_attempt_preserves_previous_successful_fetch_time(db_session):
         assert row.last_fetched_at == datetime(2026, 1, 1, 10, tzinfo=timezone.utc)
         assert row.last_fetch_status == "failed"
         assert row.source_snapshot_empty is False
+        assert row.last_fetch_retryable is False
+        assert row.last_failure_class == "normalization_review"
+        assert row.consecutive_failure_count == 1
     finally:
         db_session.execute(text("DELETE FROM content WHERE id = :id"), {"id": content_id})
         db_session.commit()

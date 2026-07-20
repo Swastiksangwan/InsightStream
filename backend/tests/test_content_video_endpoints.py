@@ -205,13 +205,14 @@ def test_content_details_without_videos_returns_empty_additive_shape(client, db_
 
 
 def test_video_hardening_migration_is_idempotent_and_schema_matches(db_session):
-    migration_sql = (
-        REPO_ROOT / "backend" / "migrations" / "014_add_content_video_metadata.sql"
-    ).read_text(encoding="utf-8")
-    db_session.connection().exec_driver_sql(migration_sql)
-    db_session.commit()
-    db_session.connection().exec_driver_sql(migration_sql)
-    db_session.commit()
+    migration_paths = [
+        REPO_ROOT / "backend" / "migrations" / "014_add_content_video_metadata.sql",
+        REPO_ROOT / "backend" / "migrations" / "015_add_video_fetch_failure_state.sql",
+    ]
+    for _ in range(2):
+        for path in migration_paths:
+            db_session.connection().exec_driver_sql(path.read_text(encoding="utf-8"))
+            db_session.commit()
 
     columns = set(
         db_session.execute(
@@ -252,10 +253,17 @@ def test_video_hardening_migration_is_idempotent_and_schema_matches(db_session):
             )
         ).scalars()
     )
-    assert {"last_attempted_at", "last_fetched_at"} <= columns
+    assert {
+        "last_attempted_at",
+        "last_fetched_at",
+        "last_fetch_retryable",
+        "last_failure_class",
+        "consecutive_failure_count",
+    } <= columns
     assert "fk_content_primary_videos_owned_video" in constraints
     assert "uq_content_videos_content_id_id" in constraints
     assert "chk_content_video_fetch_state_empty_status" in constraints
+    assert "chk_content_video_fetch_state_failure_details" in constraints
     assert "idx_content_videos_content_id" not in indexes
     assert "idx_content_videos_content_source" not in indexes
     assert "idx_content_video_fetch_state_status" not in indexes
@@ -323,3 +331,5 @@ def test_schema_rebuild_declares_final_video_integrity_rules():
     assert "fk_content_primary_videos_owned_video" in schema_sql
     assert "REFERENCES content_videos(content_id, id) ON DELETE CASCADE" in schema_sql
     assert "chk_content_video_fetch_state_empty_status" in schema_sql
+    assert "chk_content_video_fetch_state_failure_details" in schema_sql
+    assert "consecutive_failure_count INTEGER NOT NULL DEFAULT 0" in schema_sql
