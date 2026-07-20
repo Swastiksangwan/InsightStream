@@ -35,7 +35,8 @@
       "source_id": "496243",
       "priority": "seed",
       "ingestion_status": "verified",
-      "notes": "Current canonical seed title."
+      "notes": "Current canonical seed title.",
+      "original_language": "ko"
     },
     {
       "title": "Dune: Part Two",
@@ -125,7 +126,8 @@
       "source_id": "70523",
       "priority": "seed",
       "ingestion_status": "verified",
-      "notes": "Current canonical seed title."
+      "notes": "Current canonical seed title.",
+      "original_language": "de"
     },
     {
       "title": "The Witcher",
@@ -503,7 +505,8 @@
       "source_id": "129",
       "priority": "batch_test_3",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "ja"
     },
     {
       "title": "The Departed",
@@ -755,7 +758,8 @@
       "source_id": "372058",
       "priority": "batch_test_4",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "ja"
     },
     {
       "title": "City of God",
@@ -764,7 +768,8 @@
       "source_id": "598",
       "priority": "batch_test_4",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "pt"
     },
     {
       "title": "Pan's Labyrinth",
@@ -773,7 +778,8 @@
       "source_id": "1417",
       "priority": "batch_test_4",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "es"
     },
     {
       "title": "Lost",
@@ -836,7 +842,8 @@
       "source_id": "30991",
       "priority": "batch_test_4",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "ja"
     },
     {
       "title": "Death Note",
@@ -845,7 +852,8 @@
       "source_id": "13916",
       "priority": "batch_test_4",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "ja"
     },
     {
       "title": "Attack on Titan",
@@ -854,7 +862,8 @@
       "source_id": "1429",
       "priority": "batch_test_4",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "ja"
     },
     {
       "title": "Money Heist",
@@ -863,7 +872,8 @@
       "source_id": "71446",
       "priority": "batch_test_4",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "es"
     },
     {
       "title": "Squid Game",
@@ -872,7 +882,8 @@
       "source_id": "93405",
       "priority": "batch_test_4",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "ko"
     },
     {
       "title": "The Haunting of Hill House",
@@ -1007,7 +1018,8 @@
       "source_id": "915935",
       "priority": "batch_test_5",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "fr"
     },
     {
       "title": "Past Lives",
@@ -1025,7 +1037,8 @@
       "source_id": "940721",
       "priority": "batch_test_5",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "ja"
     },
     {
       "title": "The Zone of Interest",
@@ -1043,7 +1056,8 @@
       "source_id": "906126",
       "priority": "batch_test_5",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "es"
     },
     {
       "title": "RRR",
@@ -1052,7 +1066,8 @@
       "source_id": "579974",
       "priority": "batch_test_5",
       "ingestion_status": "verified",
-      "notes": "Verified batch-2 scalable ingestion target."
+      "notes": "Verified batch-2 scalable ingestion target.",
+      "original_language": "te"
     },
     {
       "title": "Spider-Man: No Way Home",
