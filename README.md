@@ -35,6 +35,7 @@ Completed:
 - Backend-powered homepage sections API with deterministic weekly/daily rotation and a frontend homepage that consumes it directly.
 - Decision display quality audit script for catalog-wide QA of `decision_layer.display` scores, issues, and review candidates.
 - Source signal mapping quality audit script for stored signal richness, genre/subgenre gaps, calibrated fallback/caution diagnostics, and unmapped keyword opportunities.
+- Read-only catalog expansion-readiness audit for composition, metadata, keyword/signal quality, refresh health, recommendation candidate density, discovery coverage, expansion gaps, and optional query-plan baselines.
 - Source signal mapping improvements v1 for reusable pacing, mood, survival, war, space-sci-fi, post-apocalyptic, kitchen-workplace, investigation, AI, and mythic/future-society signal quality.
 - Source signal mapping improvements v2 for config hygiene plus family/emotional, workplace, supernatural, political/crime/survival, historical/war, nature-documentary, and mythology/identity signal coverage.
 - Source signal mapping improvements v2.1 for targeted remaining-candidate cleanup and stricter subgenre false-positive protection.
@@ -434,6 +435,7 @@ Useful current docs:
 - `docs/ratings_foundation_plan.md`
 - `docs/insight_summary_foundation_plan.md`
 - `docs/source_signal_research_findings.md`
+- `docs/catalog_expansion_readiness.md`
 
 ## MVP Boundary
 

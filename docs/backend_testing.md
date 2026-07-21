@@ -152,6 +152,12 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization, chip priority, watch profile, compact `decision_layer.display`, supporting facts, global display-quality cleanup, dominant identity selection, overview-assisted theme fallback, repeated-investigation cleanup, historical/war fallback themes, `best_for` normalization, identity/theme/feel dedupe, specific caution wording, and product-friendly decision-copy tests without live DB/API calls
 - `backend/tests/test_decision_display_quality_audit.py` — decision display quality-audit helper tests for clean/missing displays, technical leaks, platform-viewer leaks, generic labels, scoring, CSV rows, summary aggregation, and fail flags without DB writes
 - `backend/tests/test_source_signal_mapping_quality_audit.py` — source-signal mapping quality-audit helper tests for rich records, missing signals, missing dimensions, calibrated caution-proxy behavior, backend-display fallback diagnostics, common-vs-weak labels, stricter genre/subgenre opportunities, unmapped keyword opportunities, CSV rows, summary aggregation, and fail flags without DB writes
+- `backend/tests/test_catalog_expansion_readiness_audit.py` — controlled catalog fixtures for composition, metadata/lifecycle gaps, video refresh health, keyword mapping, source-signal quality, recommendation candidate density, gap planning, report output, strict mode, and read-only/no-network contracts
+
+The catalog expansion audit itself can be run against the prepared local catalog
+with `python3 analytics/scripts/audit_catalog_expansion_readiness.py`. Its
+database transaction is explicitly read-only. Generated JSON/Markdown gap
+reports are ignored by Git and are not test fixtures.
 
 ## 6. Important Bug Caught by Tests
 

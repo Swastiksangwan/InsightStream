@@ -29,6 +29,12 @@ from sqlalchemy.exc import SQLAlchemyError
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+from source_signal_keyword_normalization import normalize_keyword_name  # noqa: E402
+
 DATABASE_URL_ENV = "DATABASE_URL"
 DEFAULT_MAPPING_PATH = (
     REPO_ROOT / "analytics" / "config" / "source_signal_keyword_mapping.json"
@@ -271,16 +277,6 @@ def clean_text(value: Any) -> str | None:
         return None
     stripped = str(value).strip()
     return stripped or None
-
-
-def normalize_keyword_name(value: Any) -> str:
-    text_value = clean_text(value)
-    if not text_value:
-        return ""
-    text_value = text_value.lower().replace("&", " and ")
-    text_value = re.sub(r"[-_/]+", " ", text_value)
-    text_value = re.sub(r"[^\w\s]", "", text_value)
-    return re.sub(r"\s+", " ", text_value).strip()
 
 
 def json_safe(value: Any) -> Any:
