@@ -1210,3 +1210,25 @@ These are future tasks, not implemented:
 4. Improve frontend Insight Summary presentation from source signals.
 6. Later add review-derived signals after source/legal policy is clear.
 7. Later add LLM-assisted summaries from approved stored signals.
+
+## 15. Catalog Expansion Baseline
+
+Before selecting or importing an expansion wave, run the database-only baseline:
+
+```bash
+python3 analytics/scripts/audit_catalog_expansion_readiness.py
+```
+
+The audit reuses current video and series refresh decision functions but never
+executes a refresh. It measures canonical metadata, raw keywords, mapped source
+signals, videos/fetch state, discovery-filter coverage, and deterministic
+recommendation candidate density. Reports are generated beneath the ignored
+`analytics/processed/catalog_audits/` directory. See
+`docs/catalog_expansion_readiness.md` for metric definitions, strict-mode
+behavior, and the distinction between real-catalog performance observations and
+future synthetic load testing.
+
+Catalog and source-signal audits reuse the same versioned keyword-normalization
+helper as the keyword-to-signal preview. Stored provider names, stored normalized
+names, mapping keys, exclusions, and spoiler-unsafe terms therefore receive the
+same punctuation and separator normalization before coverage is calculated.

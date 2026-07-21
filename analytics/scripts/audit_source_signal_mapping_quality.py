@@ -34,11 +34,15 @@ except ImportError:  # pragma: no cover - optional convenience dependency
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
 BACKEND_DIR = REPO_ROOT / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 from app.services.content_service import get_content_details_service  # noqa: E402
+from source_signal_keyword_normalization import normalize_keyword_name  # noqa: E402
 
 
 DATABASE_URL_ENV = "DATABASE_URL"
@@ -380,13 +384,6 @@ def lower_text(value: Any) -> str:
 
 def pipe_join(values: list[Any]) -> str:
     return " | ".join(clean_text(value) for value in values or [] if clean_text(value))
-
-
-def normalize_keyword_name(value: Any) -> str:
-    text_value = lower_text(value).replace("&", " and ")
-    text_value = re.sub(r"[-_/]+", " ", text_value)
-    text_value = re.sub(r"[^\w\s]", "", text_value)
-    return re.sub(r"\s+", " ", text_value).strip()
 
 
 def json_value(value: Any, default: Any) -> Any:
