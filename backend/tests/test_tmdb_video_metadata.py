@@ -1,20 +1,12 @@
-import importlib.util
+import importlib
 import json
 import os
-import sys
 from datetime import datetime, timezone
-from pathlib import Path
 
 import pytest
 import requests
 
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-SCRIPTS_DIR = REPO_ROOT / "analytics" / "scripts"
-if str(SCRIPTS_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS_DIR))
-
-from tmdb_video_metadata import (
+from analytics.scripts.providers.tmdb.tmdb_video_metadata import (
     is_accessibility_specific_variant,
     normalize_tmdb_video,
     normalize_tmdb_video_record,
@@ -23,14 +15,8 @@ from tmdb_video_metadata import (
     select_primary_video,
 )
 
-
 def load_fetcher():
-    path = SCRIPTS_DIR / "fetch_tmdb_sample.py"
-    spec = importlib.util.spec_from_file_location("video_fetch_tmdb_sample", path)
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module
+    return importlib.import_module("analytics.scripts.ingestion.fetch_tmdb_sample")
 
 
 def raw_video(

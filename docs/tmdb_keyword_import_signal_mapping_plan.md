@@ -49,8 +49,8 @@ Current status:
   - `analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_report.json`
 - Coverage is strong across the current catalog after retry merge.
 - The preview workflow remains DB-write-free.
-- Normalized keyword storage/import is implemented through `backend/migrations/009_add_tmdb_keyword_storage.sql` and `analytics/scripts/import_tmdb_keywords_from_preview.py`.
-- Keyword-to-signal mapping preview is implemented through `analytics/config/source_signal_keyword_mapping.json` and `analytics/scripts/build_keyword_signal_preview.py`.
+- Normalized keyword storage/import is implemented through `backend/migrations/009_add_tmdb_keyword_storage.sql` and `analytics/scripts/ingestion/import_tmdb_keywords_from_preview.py`.
+- Keyword-to-signal mapping preview is implemented through `analytics/config/source_signal_keyword_mapping.json` and `analytics/scripts/source_signals/build_keyword_signal_preview.py`.
 - Mapping config `2026-07-02-v3.1` expands high-value crime/thriller, fantasy, period, horror, political, sci-fi, comedy, and disaster mappings, while keeping noisy/spoiler-unsafe keywords out of public guidance.
 - Curated title overrides live in `analytics/config/source_signal_title_overrides.json` and correct known weak/misleading keyword-only previews without deleting raw keywords.
 - Override config `2026-07-02-v3.1` adds v3.2.1 targeted semantic corrections for high-value titles where keyword-only output was too generic or slightly misleading.
@@ -59,7 +59,7 @@ Current status:
 - The preview report now includes source counts, count-plus-detail fields for fallback/override/keyword-only title groups, low-signal rows, one-signal rows, missing watch-feel rows, bad primary identities, semantic QA rows for generic/conflicting watch guidance, override candidates, and high-value unmapped candidates.
 - The preview report includes `preview_generator_version` and `semantic_qa_version`, currently `2026-07-02-v3.2.1`.
 - Partial/debug source-signal preview runs must pass explicit `--output` and `--report-output` paths so they do not overwrite the full-catalog preview/report.
-- Source-signal DB storage is implemented through `backend/migrations/010_add_source_signal_storage.sql` and `analytics/scripts/import_source_signals_from_preview.py`.
+- Source-signal DB storage is implemented through `backend/migrations/010_add_source_signal_storage.sql` and `analytics/scripts/source_signals/import_source_signals_from_preview.py`.
 - The storage importer is dry-run by default, writes only with `--write`, preserves provenance/version fields, blocks semantic-QA issues unless explicitly allowed, and marks stored guidance as `storage_ready = true` / `frontend_ready = false`.
 - The content-detail API now exposes a sanitized `decision_layer` built from stored guidance/signals. Raw keywords, mapping versions, source names, and provider payloads are not exposed by default.
 - Decision-layer output prioritizes stronger identity/theme/mood chips, filters mechanical platform/viewer labels, and returns product-friendly reasons rather than keyword-analysis phrasing.
@@ -243,7 +243,7 @@ Use normalized keyword tables first. Later derive `source_signals` from stored k
 Implemented script:
 
 ```text
-analytics/scripts/import_tmdb_keywords_from_preview.py
+analytics/scripts/ingestion/import_tmdb_keywords_from_preview.py
 ```
 
 Input:

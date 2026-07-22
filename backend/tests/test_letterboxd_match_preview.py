@@ -7,7 +7,7 @@ from pathlib import Path
 def load_letterboxd_preview_module():
     repo_root = Path(__file__).resolve().parents[2]
     script_path = (
-        repo_root / "analytics" / "scripts" / "preview_letterboxd_ratings_match.py"
+        repo_root / "analytics" / "scripts" / "ingestion" / "preview_letterboxd_ratings_match.py"
     )
     spec = importlib.util.spec_from_file_location(
         "preview_letterboxd_ratings_match",
@@ -183,7 +183,7 @@ def test_letterboxd_preview_output_contains_no_review_text(tmp_path):
 def test_letterboxd_preview_script_has_no_database_write_sql():
     repo_root = Path(__file__).resolve().parents[2]
     script_text = (
-        repo_root / "analytics" / "scripts" / "preview_letterboxd_ratings_match.py"
+        repo_root / "analytics" / "scripts" / "ingestion" / "preview_letterboxd_ratings_match.py"
     ).read_text(encoding="utf-8")
     upper_script = script_text.upper()
 

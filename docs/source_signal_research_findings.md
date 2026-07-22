@@ -505,13 +505,13 @@ How this should be used:
 Preview script:
 
 ```text
-analytics/scripts/build_tmdb_keywords_preview.py
+analytics/scripts/ingestion/build_tmdb_keywords_preview.py
 ```
 
 Retry merge helper:
 
 ```text
-analytics/scripts/merge_tmdb_keywords_retry_preview.py
+analytics/scripts/ingestion/merge_tmdb_keywords_retry_preview.py
 ```
 
 Input:
@@ -590,10 +590,10 @@ The canonical operational workflow now lives in `docs/data_ingestion_pipeline.md
 
 Current status:
 
-- `analytics/scripts/build_tmdb_keywords_preview.py` exists and remains preview-only.
+- `analytics/scripts/ingestion/build_tmdb_keywords_preview.py` exists and remains preview-only.
 - The preview workflow is DB-write-free and does not create frontend/API behavior.
 - The preview script supports request-level transient retries and failed-title retry target generation.
-- `analytics/scripts/merge_tmdb_keywords_retry_preview.py` merges successful retry rows into the main preview/report and can clean temporary retry/backup artifacts after a clean merge.
+- `analytics/scripts/ingestion/merge_tmdb_keywords_retry_preview.py` merges successful retry rows into the main preview/report and can clean temporary retry/backup artifacts after a clean merge.
 - Final main artifacts are `analytics/processed/tmdb_keywords/tmdb_keywords_preview.json` and `analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_report.json`.
 - Retry targets, retry previews, retry reports, and before-merge backups are temporary and should be cleaned after a successful merge.
 - TMDb keyword database import is implemented through the normalized keyword storage/import layer.

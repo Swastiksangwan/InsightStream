@@ -5,7 +5,7 @@ from pathlib import Path
 
 def load_tmdb_keywords_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "build_tmdb_keywords_preview.py"
+    script_path = repo_root / "analytics" / "scripts" / "ingestion" / "build_tmdb_keywords_preview.py"
     spec = importlib.util.spec_from_file_location(
         "build_tmdb_keywords_preview",
         script_path,

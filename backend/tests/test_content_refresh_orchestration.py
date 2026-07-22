@@ -1,24 +1,13 @@
 import argparse
-import importlib
 import json
-import sys
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
 
 from sqlalchemy import text
 
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-SCRIPTS_DIR = REPO_ROOT / "analytics" / "scripts"
-if str(SCRIPTS_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS_DIR))
-
-
-planner = importlib.import_module("content_refresh_planner")
-executor = importlib.import_module("content_refresh_executor")
-legacy = importlib.import_module("plan_series_refresh")
-runner = importlib.import_module("run_content_refresh")
-
+from analytics.scripts.refresh import content_refresh_executor as executor
+from analytics.scripts.refresh import content_refresh_planner as planner
+from analytics.scripts.refresh import plan_series_refresh as legacy
+from analytics.scripts.refresh import run_content_refresh as runner
 
 NOW = datetime(2026, 7, 20, 12, 0, tzinfo=timezone.utc)
 

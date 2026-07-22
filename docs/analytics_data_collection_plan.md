@@ -131,7 +131,7 @@ Later, create scripts under `analytics/scripts/` or carefully scoped backend uti
 
 These scripts should be separate from FastAPI route logic. API routes should serve application data; collection scripts should gather and prepare data.
 
-Current status: TMDb sample fetch inspection has started through `analytics/scripts/fetch_tmdb_sample.py`. Raw provider output should remain local and ignored unless there is a clear reason to commit sanitized processed data. The processed preview can help plan mapping, image updates, external IDs, and future cast/crew schema.
+Current status: TMDb sample fetch inspection has started through `analytics/scripts/ingestion/fetch_tmdb_sample.py`. Raw provider output should remain local and ignored unless there is a clear reason to commit sanitized processed data. The processed preview can help plan mapping, image updates, external IDs, and future cast/crew schema.
 
 TMDb data must be used according to TMDb terms and should not be treated as permanently owned project data.
 

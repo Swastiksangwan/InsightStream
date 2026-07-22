@@ -155,7 +155,7 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_catalog_expansion_readiness_audit.py` — controlled catalog fixtures for composition, metadata/lifecycle gaps, video refresh health, keyword mapping, source-signal quality, recommendation candidate density, gap planning, report output, strict mode, and read-only/no-network contracts
 
 The catalog expansion audit itself can be run against the prepared local catalog
-with `python3 analytics/scripts/audit_catalog_expansion_readiness.py`. Its
+with `python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness`. Its
 database transaction is explicitly read-only. Generated JSON/Markdown gap
 reports are ignored by Git and are not test fixtures.
 

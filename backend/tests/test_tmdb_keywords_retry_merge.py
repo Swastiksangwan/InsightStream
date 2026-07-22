@@ -5,7 +5,7 @@ from pathlib import Path
 
 def load_merge_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "merge_tmdb_keywords_retry_preview.py"
+    script_path = repo_root / "analytics" / "scripts" / "ingestion" / "merge_tmdb_keywords_retry_preview.py"
     spec = importlib.util.spec_from_file_location(
         "merge_tmdb_keywords_retry_preview",
         script_path,

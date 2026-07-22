@@ -7,7 +7,7 @@ from pathlib import Path
 def load_letterboxd_importer_module():
     repo_root = Path(__file__).resolve().parents[2]
     script_path = (
-        repo_root / "analytics" / "scripts" / "import_letterboxd_ratings_from_preview.py"
+        repo_root / "analytics" / "scripts" / "ingestion" / "import_letterboxd_ratings_from_preview.py"
     )
     spec = importlib.util.spec_from_file_location(
         "import_letterboxd_ratings_from_preview",

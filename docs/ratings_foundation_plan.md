@@ -38,9 +38,9 @@ The implemented path is:
 - `rating_sources`
 - `content_ratings`
 - TMDb `vote_average` / `vote_count` in `sample_mapping_preview.json`
-- `analytics/scripts/import_content_ratings_from_preview.py`
-- `analytics/scripts/import_imdb_ratings.py`
-- `analytics/scripts/import_letterboxd_ratings_from_preview.py`
+- `analytics/scripts/ingestion/import_content_ratings_from_preview.py`
+- `analytics/scripts/ingestion/import_imdb_ratings.py`
+- `analytics/scripts/ingestion/import_letterboxd_ratings_from_preview.py`
 - content detail API ratings object
 - frontend Ratings card with InsightStream Score and source breakdown
 

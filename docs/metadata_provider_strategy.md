@@ -10,9 +10,9 @@ TMDb is the first prototype metadata provider, but it should remain replaceable.
 
 Current state:
 
-- `analytics/scripts/fetch_tmdb_sample.py` exists for inspection-only TMDb sample fetching.
+- `analytics/scripts/ingestion/fetch_tmdb_sample.py` exists for inspection-only TMDb sample fetching.
 - `analytics/processed/tmdb/sample_mapping_preview.json` exists as a processed TMDb preview.
-- `analytics/scripts/update_posters_from_tmdb_preview.py` exists for local poster/backdrop updates from the processed preview.
+- `analytics/scripts/ingestion/update_posters_from_tmdb_preview.py` exists for local poster/backdrop updates from the processed preview.
 - 5 local PostgreSQL rows were updated for poster/backdrop validation.
 - The frontend now proves provider data can flow through local DB -> backend API -> frontend.
 - No full ingestion pipeline exists yet.

@@ -13,19 +13,19 @@ TMDb remains a replaceable metadata provider. Frontend pages continue to read no
 ```bash
 export DATABASE_URL="..."
 export TMDB_READ_ACCESS_TOKEN="..."
-python3 analytics/scripts/fetch_tmdb_person_details.py
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details
 ```
 
 2. Dry-run safe imports:
 
 ```bash
-python3 analytics/scripts/import_person_details_from_preview.py
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview
 ```
 
 3. Apply only after reviewing the preview and dry run:
 
 ```bash
-python3 analytics/scripts/import_person_details_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
 ```
 
 ## Import Scope

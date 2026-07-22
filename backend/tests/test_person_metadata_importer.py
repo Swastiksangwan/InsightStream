@@ -6,7 +6,7 @@ from pathlib import Path
 def load_importer_module():
     repo_root = Path(__file__).resolve().parents[2]
     script_path = (
-        repo_root / "analytics" / "scripts" / "import_person_details_from_preview.py"
+        repo_root / "analytics" / "scripts" / "ingestion" / "import_person_details_from_preview.py"
     )
     spec = importlib.util.spec_from_file_location(
         "import_person_details_from_preview",
@@ -20,7 +20,7 @@ def load_importer_module():
 
 def load_fetch_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "fetch_tmdb_person_details.py"
+    script_path = repo_root / "analytics" / "scripts" / "ingestion" / "fetch_tmdb_person_details.py"
     spec = importlib.util.spec_from_file_location("fetch_tmdb_person_details", script_path)
     module = importlib.util.module_from_spec(spec)
     sys.modules["fetch_tmdb_person_details"] = module

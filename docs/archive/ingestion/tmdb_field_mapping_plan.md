@@ -202,7 +202,7 @@ External IDs should also help keep providers replaceable. TMDb IDs are useful, b
 
 ## 12. First TMDb Fetch Script Output
 
-Implementation note: the first inspection-only script now exists at `analytics/scripts/fetch_tmdb_sample.py`. It saves raw JSON under `analytics/raw/tmdb/`, writes a mapped preview to `analytics/processed/tmdb/sample_mapping_preview.json`, and does not insert anything into PostgreSQL.
+Implementation note: the first inspection-only script now exists at `analytics/scripts/ingestion/fetch_tmdb_sample.py`. It saves raw JSON under `analytics/raw/tmdb/`, writes a mapped preview to `analytics/processed/tmdb/sample_mapping_preview.json`, and does not insert anything into PostgreSQL.
 
 First script should:
 
@@ -266,7 +266,7 @@ Needs expansion:
 
 ## 16. Sample Fetch Result
 
-The inspection-only TMDb fetch script was created at `analytics/scripts/fetch_tmdb_sample.py`.
+The inspection-only TMDb fetch script was created at `analytics/scripts/ingestion/fetch_tmdb_sample.py`.
 
 Current output behavior:
 

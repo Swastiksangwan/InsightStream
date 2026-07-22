@@ -9,17 +9,17 @@ provider titles, call external services, or modify catalog data.
 Run it from the repository root:
 
 ```bash
-python3 analytics/scripts/audit_catalog_expansion_readiness.py
+python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness
 ```
 
 Useful scoped runs:
 
 ```bash
-python3 analytics/scripts/audit_catalog_expansion_readiness.py --content-type movie
-python3 analytics/scripts/audit_catalog_expansion_readiness.py --content-type series
-python3 analytics/scripts/audit_catalog_expansion_readiness.py --reference-date 2026-07-21
-python3 analytics/scripts/audit_catalog_expansion_readiness.py --performance-check --explain
-python3 analytics/scripts/audit_catalog_expansion_readiness.py --strict
+python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness --content-type movie
+python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness --content-type series
+python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness --reference-date 2026-07-21
+python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness --performance-check --explain
+python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness --strict
 ```
 
 `DATABASE_URL` is read from `backend/.env`/the environment, or can be supplied
@@ -56,7 +56,7 @@ Technical duplicate normalization is reported separately and is not counted as
 additional mapping success.
 
 Keyword identities use the shared `source-signal-keyword-v1` normalization
-contract from `analytics/scripts/source_signal_keyword_normalization.py`:
+contract from `analytics/scripts/source_signals/source_signal_keyword_normalization.py`:
 lowercase, replace `&` with `and`, convert hyphen/slash/underscore runs to
 spaces, remove remaining punctuation, and collapse whitespace. The JSON report
 records both the normalization version and strategy so baselines created under

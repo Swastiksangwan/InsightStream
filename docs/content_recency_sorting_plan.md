@@ -100,7 +100,7 @@ Recommended implementation sequence:
 
 1. Update `backend/schema.sql` to add `latest_activity_date DATE` to `content`.
 2. Update `backend/sample_data.sql` to seed `latest_activity_date` for the current 15 titles.
-3. Update `analytics/scripts/fetch_tmdb_sample.py` and processed preview mapping so series produce a normalized `latest_activity_date`.
+3. Update `analytics/scripts/ingestion/fetch_tmdb_sample.py` and processed preview mapping so series produce a normalized `latest_activity_date`.
 4. Update backend Recent sorting:
    - `GET /content/recent`
    - discovery `sort_by=recent`

@@ -14,13 +14,13 @@ The current flow is controlled but still manual:
 
 1. Manually decide which titles belong in the catalog.
 2. Hardcode or update the seeded title list.
-3. Run `analytics/scripts/fetch_tmdb_sample.py` to fetch TMDb metadata for known titles.
+3. Run `analytics/scripts/ingestion/fetch_tmdb_sample.py` to fetch TMDb metadata for known titles.
 4. Generate `analytics/processed/tmdb/sample_mapping_preview.json`.
 5. Update or persist poster/backdrop data.
-6. Run `analytics/scripts/build_tmdb_credits_preview.py`.
-7. Run `analytics/scripts/import_people_credits_from_preview.py`.
-8. Run `analytics/scripts/fetch_tmdb_person_details.py`.
-9. Run `analytics/scripts/import_person_details_from_preview.py`.
+6. Run `analytics/scripts/ingestion/build_tmdb_credits_preview.py`.
+7. Run `analytics/scripts/ingestion/import_people_credits_from_preview.py`.
+8. Run `analytics/scripts/ingestion/fetch_tmdb_person_details.py`.
+9. Run `analytics/scripts/ingestion/import_person_details_from_preview.py`.
 10. Verify backend APIs and frontend pages.
 
 This works for the current 15-title foundation because every title can be inspected manually. It does not scale because target selection, provider matching, validation, import decisions, warning review, and recovery from partial failures are not yet organized around batches.
@@ -246,7 +246,7 @@ Do not:
 ## 13. Recommended Implementation Roadmap
 
 1. Create ingestion target file format.
-2. Refactor `analytics/scripts/fetch_tmdb_sample.py` to read targets instead of a hardcoded list.
+2. Refactor `analytics/scripts/ingestion/fetch_tmdb_sample.py` to read targets instead of a hardcoded list.
 3. Create reusable provider fetch helpers.
 4. Create normalized processed preview for content metadata.
 5. Create content metadata import script with dry-run/apply.
