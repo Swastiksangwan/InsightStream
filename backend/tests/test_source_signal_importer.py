@@ -6,7 +6,7 @@ from pathlib import Path
 def load_source_signal_importer_module():
     repo_root = Path(__file__).resolve().parents[2]
     script_path = (
-        repo_root / "analytics" / "scripts" / "import_source_signals_from_preview.py"
+        repo_root / "analytics" / "scripts" / "source_signals" / "import_source_signals_from_preview.py"
     )
     spec = importlib.util.spec_from_file_location(
         "import_source_signals_from_preview",

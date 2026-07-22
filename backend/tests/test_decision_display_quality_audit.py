@@ -6,7 +6,7 @@ from pathlib import Path
 
 def load_audit_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "audit_decision_display_quality.py"
+    script_path = repo_root / "analytics" / "scripts" / "audits" / "audit_decision_display_quality.py"
     spec = importlib.util.spec_from_file_location(
         "audit_decision_display_quality",
         script_path,

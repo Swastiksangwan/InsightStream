@@ -8,7 +8,7 @@ from pathlib import Path
 def load_audit_module():
     repo_root = Path(__file__).resolve().parents[2]
     script_path = (
-        repo_root / "analytics" / "scripts" / "audit_source_signal_mapping_quality.py"
+        repo_root / "analytics" / "scripts" / "audits" / "audit_source_signal_mapping_quality.py"
     )
     spec = importlib.util.spec_from_file_location(
         "audit_source_signal_mapping_quality",

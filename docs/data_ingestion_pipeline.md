@@ -23,25 +23,25 @@ Future ingestion updates should go into this document.
 
 | Area | Status | Main scripts | DB writes? | Notes |
 | ---- | ------ | ------------ | ---------- | ----- |
-| TMDb metadata/content/video fetch | Implemented | `analytics/scripts/fetch_tmdb_sample.py` | No | Fetches/reuses TMDb raw details with appended videos, credits, external IDs, and writes `sample_mapping_preview.json`. |
-| Metadata import | Implemented | `analytics/scripts/import_content_metadata_from_preview.py` | Only with `--apply` | Imports content rows, external IDs, genres, posters/backdrops, lifecycle metadata, season summaries, latest activity dates, and safe series status refreshes. |
-| TMDb video import | Implemented | `analytics/scripts/import_content_videos_from_preview.py` | Only with `--apply` | Imports normalized video records, authoritative complete snapshots, deterministic primary selection, and per-title fetch state. |
-| Poster/backdrop update behavior | Implemented | `analytics/scripts/update_posters_from_tmdb_preview.py`, metadata importer | Only with `--apply` | Seed poster/backdrop values exist for base titles. Current scalable imports use metadata preview fields while preserving curated conflicts unless importer policy allows update. |
-| Credits/people preview/import | Implemented | `analytics/scripts/build_tmdb_credits_preview.py`, `analytics/scripts/import_people_credits_from_preview.py` | Import only with `--apply` | Builds and imports top cast plus unified key crew into `people`, `person_external_ids`, and `content_people`. |
-| Person details import | Implemented | `analytics/scripts/fetch_tmdb_person_details.py`, `analytics/scripts/import_person_details_from_preview.py` | Import only with `--apply` | Imports missing biography, profile, known-for department, birthday, and place-of-birth fields for local people matched by provider IDs. |
-| Availability/certification import | Implemented | `analytics/scripts/fetch_tmdb_availability_certification.py`, `analytics/scripts/import_availability_certification_from_preview.py` | Import only with `--apply` | Imports India-focused region-aware availability and certifications. |
-| Series refresh planner/fetch/import | Implemented | `analytics/scripts/plan_series_refresh.py`, `analytics/scripts/fetch_tmdb_sample.py`, `analytics/scripts/import_content_metadata_from_preview.py` | Planner/fetch no; import only with `--apply` | Plans refresh targets for active/recent series and refreshes dynamic lifecycle/status fields. |
-| TMDb ratings import | Implemented | `analytics/scripts/import_content_ratings_from_preview.py` | Only with `--apply` | Imports TMDb vote data from the processed metadata preview into provider-neutral ratings tables. |
-| IMDb ratings import | Implemented | `analytics/scripts/import_imdb_ratings.py` | Only with `--apply` | Uses local official IMDb non-commercial `title.ratings.tsv`; matches only through stored IMDb external IDs. |
-| Letterboxd ratings preview/import | Implemented | `analytics/scripts/preview_letterboxd_ratings_match.py`, `analytics/scripts/import_letterboxd_ratings_from_preview.py` | Import only with `--apply` | Uses reviewed local dataset preview. Review text is ignored. Letterboxd is displayed as a dataset snapshot and excluded from InsightStream Score v1. |
-| TMDb keywords preview/import | Implemented | `analytics/scripts/build_tmdb_keywords_preview.py`, `analytics/scripts/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
-| Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
-| Source signal storage import | Implemented | `analytics/scripts/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
+| TMDb metadata/content/video fetch | Implemented | `analytics/scripts/ingestion/fetch_tmdb_sample.py` | No | Fetches/reuses TMDb raw details with appended videos, credits, external IDs, and writes `sample_mapping_preview.json`. |
+| Metadata import | Implemented | `analytics/scripts/ingestion/import_content_metadata_from_preview.py` | Only with `--apply` | Imports content rows, external IDs, genres, posters/backdrops, lifecycle metadata, season summaries, latest activity dates, and safe series status refreshes. |
+| TMDb video import | Implemented | `analytics/scripts/ingestion/import_content_videos_from_preview.py` | Only with `--apply` | Imports normalized video records, authoritative complete snapshots, deterministic primary selection, and per-title fetch state. |
+| Poster/backdrop update behavior | Implemented | `analytics/scripts/ingestion/update_posters_from_tmdb_preview.py`, metadata importer | Only with `--apply` | Seed poster/backdrop values exist for base titles. Current scalable imports use metadata preview fields while preserving curated conflicts unless importer policy allows update. |
+| Credits/people preview/import | Implemented | `analytics/scripts/ingestion/build_tmdb_credits_preview.py`, `analytics/scripts/ingestion/import_people_credits_from_preview.py` | Import only with `--apply` | Builds and imports top cast plus unified key crew into `people`, `person_external_ids`, and `content_people`. |
+| Person details import | Implemented | `analytics/scripts/ingestion/fetch_tmdb_person_details.py`, `analytics/scripts/ingestion/import_person_details_from_preview.py` | Import only with `--apply` | Imports missing biography, profile, known-for department, birthday, and place-of-birth fields for local people matched by provider IDs. |
+| Availability/certification import | Implemented | `analytics/scripts/ingestion/fetch_tmdb_availability_certification.py`, `analytics/scripts/ingestion/import_availability_certification_from_preview.py` | Import only with `--apply` | Imports India-focused region-aware availability and certifications. |
+| Series refresh planner/fetch/import | Implemented | `analytics/scripts/refresh/plan_series_refresh.py`, `analytics/scripts/ingestion/fetch_tmdb_sample.py`, `analytics/scripts/ingestion/import_content_metadata_from_preview.py` | Planner/fetch no; import only with `--apply` | Plans refresh targets for active/recent series and refreshes dynamic lifecycle/status fields. |
+| TMDb ratings import | Implemented | `analytics/scripts/ingestion/import_content_ratings_from_preview.py` | Only with `--apply` | Imports TMDb vote data from the processed metadata preview into provider-neutral ratings tables. |
+| IMDb ratings import | Implemented | `analytics/scripts/ingestion/import_imdb_ratings.py` | Only with `--apply` | Uses local official IMDb non-commercial `title.ratings.tsv`; matches only through stored IMDb external IDs. |
+| Letterboxd ratings preview/import | Implemented | `analytics/scripts/ingestion/preview_letterboxd_ratings_match.py`, `analytics/scripts/ingestion/import_letterboxd_ratings_from_preview.py` | Import only with `--apply` | Uses reviewed local dataset preview. Review text is ignored. Letterboxd is displayed as a dataset snapshot and excluded from InsightStream Score v1. |
+| TMDb keywords preview/import | Implemented | `analytics/scripts/ingestion/build_tmdb_keywords_preview.py`, `analytics/scripts/ingestion/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/ingestion/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
+| Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/source_signals/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
+| Source signal storage import | Implemented | `analytics/scripts/source_signals/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
 | Source signal decision layer API | Implemented | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output for frontend use. |
 | Homepage sections API | Implemented | `backend/app/services/content_service.py`, `GET /content/home` | No | Builds backend-powered homepage rails from local catalog data with bounded candidate pools and deterministic weekly/daily rotation. |
-| Decision display QA audit | Implemented | `analytics/scripts/audit_decision_display_quality.py` | No | Read-only catalog audit for compact display quality scores, issue codes, review candidates, and generated local JSON/CSV/summary reports. |
-| Source signal mapping QA audit | Implemented | `analytics/scripts/audit_source_signal_mapping_quality.py` | No | Read-only audit for stored signal richness, missing dimensions, generic genre/subgenre coverage, fallback dependency, and unmapped keyword opportunities. |
-| Ingestion health check | Implemented | `analytics/scripts/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
+| Decision display QA audit | Implemented | `analytics/scripts/audits/audit_decision_display_quality.py` | No | Read-only catalog audit for compact display quality scores, issue codes, review candidates, and generated local JSON/CSV/summary reports. |
+| Source signal mapping QA audit | Implemented | `analytics/scripts/audits/audit_source_signal_mapping_quality.py` | No | Read-only audit for stored signal richness, missing dimensions, generic genre/subgenre coverage, fallback dependency, and unmapped keyword opportunities. |
+| Ingestion health check | Implemented | `analytics/scripts/audits/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
 Not implemented yet:
 
@@ -97,55 +97,55 @@ Then run ingestion in this broad order:
 
 ```bash
 # 1. Fetch/build TMDb content preview.
-python3 analytics/scripts/fetch_tmdb_sample.py
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample
 
 # 2. Review metadata import.
-python3 analytics/scripts/import_content_metadata_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview
 
 # 3. Apply metadata import.
-python3 analytics/scripts/import_content_metadata_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview --apply
 
 # 4. Confirm metadata import idempotency.
-python3 analytics/scripts/import_content_metadata_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview
 
 # 5. Review, apply, and confirm video import idempotency.
-python3 analytics/scripts/import_content_videos_from_preview.py
-python3 analytics/scripts/import_content_videos_from_preview.py --apply
-python3 analytics/scripts/import_content_videos_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_videos_from_preview
+python3 -m analytics.scripts.ingestion.import_content_videos_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_content_videos_from_preview
 
 # 6. Build and import credits/people.
-python3 analytics/scripts/build_tmdb_credits_preview.py
-python3 analytics/scripts/import_people_credits_from_preview.py
-python3 analytics/scripts/import_people_credits_from_preview.py --apply
-python3 analytics/scripts/import_people_credits_from_preview.py
+python3 -m analytics.scripts.ingestion.build_tmdb_credits_preview
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview
 
 # 7. Fetch and import person details.
-python3 analytics/scripts/fetch_tmdb_person_details.py
-python3 analytics/scripts/import_person_details_from_preview.py
-python3 analytics/scripts/import_person_details_from_preview.py --apply
-python3 analytics/scripts/import_person_details_from_preview.py
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview
 
 # 8. Fetch and import availability/certification.
-python3 analytics/scripts/fetch_tmdb_availability_certification.py
-python3 analytics/scripts/import_availability_certification_from_preview.py
-python3 analytics/scripts/import_availability_certification_from_preview.py --apply
-python3 analytics/scripts/import_availability_certification_from_preview.py
+python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview
 
 # 9. Import ratings.
-python3 analytics/scripts/import_content_ratings_from_preview.py
-python3 analytics/scripts/import_content_ratings_from_preview.py --apply
-python3 analytics/scripts/import_content_ratings_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_ratings_from_preview
+python3 -m analytics.scripts.ingestion.import_content_ratings_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_content_ratings_from_preview
 
-python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv
-python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv --apply
-python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv
+python3 -m analytics.scripts.ingestion.import_imdb_ratings --ratings-file analytics/datasets/imdb/title.ratings.tsv
+python3 -m analytics.scripts.ingestion.import_imdb_ratings --ratings-file analytics/datasets/imdb/title.ratings.tsv --apply
+python3 -m analytics.scripts.ingestion.import_imdb_ratings --ratings-file analytics/datasets/imdb/title.ratings.tsv
 
-python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous
-python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous --apply
-python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous
+python3 -m analytics.scripts.ingestion.import_letterboxd_ratings_from_preview --include-ambiguous
+python3 -m analytics.scripts.ingestion.import_letterboxd_ratings_from_preview --include-ambiguous --apply
+python3 -m analytics.scripts.ingestion.import_letterboxd_ratings_from_preview --include-ambiguous
 
 # 10. Health check.
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
+python3 -m analytics.scripts.audits.check_ingestion_health --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
 The first run of every import script should be reviewed before applying. The dry-run after apply should be clean or show only intentional unchanged rows.
@@ -155,16 +155,16 @@ The first run of every import script should be reviewed before applying. The dry
 Fetch or rebuild the processed metadata preview:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_sample.py
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample
 ```
 
 Useful selection examples:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_sample.py --priority batch_test_5
-python3 analytics/scripts/fetch_tmdb_sample.py --source-id 603
-python3 analytics/scripts/fetch_tmdb_sample.py --targets analytics/config/series_refresh_targets.json --refresh
-python3 analytics/scripts/fetch_tmdb_sample.py --priority batch_test_5 --limit 5
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --priority batch_test_5
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --source-id 603
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --targets analytics/config/series_refresh_targets.json --refresh
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --priority batch_test_5 --limit 5
 ```
 
 The fetch script writes:
@@ -187,7 +187,7 @@ Authentication uses `Authorization: Bearer ...`. Tokens and authorization header
 never written to previews or reports. Request controls are CLI-configurable:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_sample.py \
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample \
   --video-languages en,null \
   --batch-size 25 \
   --concurrency 3 \
@@ -205,7 +205,7 @@ limits, and retryable provider server failures) are written to
 `content_video_retry_targets.json` in the same target format accepted by the fetcher:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_sample.py \
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample \
   --targets analytics/processed/tmdb/run_reports/content_video_retry_targets.json \
   --refresh
 ```
@@ -240,9 +240,9 @@ source request but never silently replaces the ranking preference.
 Import pattern:
 
 ```bash
-python3 analytics/scripts/import_content_metadata_from_preview.py
-python3 analytics/scripts/import_content_metadata_from_preview.py --apply
-python3 analytics/scripts/import_content_metadata_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview
 ```
 
 Important importer behavior:
@@ -282,9 +282,9 @@ Storage uses:
 Run the importer from the repository root:
 
 ```bash
-python3 analytics/scripts/import_content_videos_from_preview.py
-python3 analytics/scripts/import_content_videos_from_preview.py --apply
-python3 analytics/scripts/import_content_videos_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_videos_from_preview
+python3 -m analytics.scripts.ingestion.import_content_videos_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_content_videos_from_preview
 ```
 
 A valid empty source snapshot and a fully normalized non-empty snapshot are
@@ -377,38 +377,38 @@ psql "$DATABASE_URL" -f backend/migrations/012_add_person_birthday_birthplace.sq
 Build credits preview:
 
 ```bash
-python3 analytics/scripts/build_tmdb_credits_preview.py
+python3 -m analytics.scripts.ingestion.build_tmdb_credits_preview
 ```
 
 Import people and credits:
 
 ```bash
-python3 analytics/scripts/import_people_credits_from_preview.py
-python3 analytics/scripts/import_people_credits_from_preview.py --apply
-python3 analytics/scripts/import_people_credits_from_preview.py
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview
 ```
 
 Fetch person details:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_person_details.py
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details
 ```
 
 Useful person detail options:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_person_details.py --missing-only --limit 20
-python3 analytics/scripts/fetch_tmdb_person_details.py --all --limit 10
-python3 analytics/scripts/fetch_tmdb_person_details.py --source-person-id 525 --refresh
-python3 analytics/scripts/fetch_tmdb_person_details.py --name "Christopher Nolan" --refresh
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details --missing-only --limit 20
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details --all --limit 10
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details --source-person-id 525 --refresh
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details --name "Christopher Nolan" --refresh
 ```
 
 Import person details:
 
 ```bash
-python3 analytics/scripts/import_person_details_from_preview.py
-python3 analytics/scripts/import_person_details_from_preview.py --apply
-python3 analytics/scripts/import_person_details_from_preview.py
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview
 ```
 
 Person details use TMDb person fields `birthday` and `place_of_birth` when present.
@@ -433,24 +433,24 @@ Safety rules:
 Fetch availability/certification preview:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_availability_certification.py
+python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification
 ```
 
 Useful selection examples:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_availability_certification.py --priority batch_test_5
-python3 analytics/scripts/fetch_tmdb_availability_certification.py --source-id 603
-python3 analytics/scripts/fetch_tmdb_availability_certification.py --all
-python3 analytics/scripts/fetch_tmdb_availability_certification.py --refresh
+python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification --priority batch_test_5
+python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification --source-id 603
+python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification --all
+python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification --refresh
 ```
 
 Import availability/certification:
 
 ```bash
-python3 analytics/scripts/import_availability_certification_from_preview.py
-python3 analytics/scripts/import_availability_certification_from_preview.py --apply
-python3 analytics/scripts/import_availability_certification_from_preview.py
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview
 ```
 
 Current behavior:
@@ -474,22 +474,22 @@ keeps series and video reasons/timestamps separate, and writes ignored artifacts
 
 ```bash
 # Plan all due series/video work. No provider requests or database writes.
-python3 analytics/scripts/run_content_refresh.py --plan-only --scope all
+python3 -m analytics.scripts.refresh.run_content_refresh --plan-only --scope all
 
 # Fetch and compare one domain without writing PostgreSQL.
-python3 analytics/scripts/run_content_refresh.py --dry-run --scope series_metadata
-python3 analytics/scripts/run_content_refresh.py --dry-run --scope videos
+python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope series_metadata
+python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope videos
 
 # Explicit writes. Movies receive video work only.
-python3 analytics/scripts/run_content_refresh.py --apply --scope series_metadata
-python3 analytics/scripts/run_content_refresh.py --apply --scope videos
-python3 analytics/scripts/run_content_refresh.py --apply --scope all
+python3 -m analytics.scripts.refresh.run_content_refresh --apply --scope series_metadata
+python3 -m analytics.scripts.refresh.run_content_refresh --apply --scope videos
+python3 -m analytics.scripts.refresh.run_content_refresh --apply --scope all
 
 # A canonical local TMDb target is forced even when not due.
-python3 analytics/scripts/run_content_refresh.py --dry-run --scope all --source-id 94997
+python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope all --source-id 94997
 
 # Equivalent focused video entry point.
-python3 analytics/scripts/refresh_content_videos.py --dry-run --source-id 94997
+python3 -m analytics.scripts.refresh.refresh_content_videos --dry-run --source-id 94997
 ```
 
 `--plan-only` only queries PostgreSQL and writes the ignored plan. `--dry-run` may
@@ -536,19 +536,19 @@ The legacy workflow remains supported unchanged:
 Use the series refresh planner for existing series already in the catalog:
 
 ```bash
-python3 analytics/scripts/plan_series_refresh.py
+python3 -m analytics.scripts.refresh.plan_series_refresh
 
-python3 analytics/scripts/fetch_tmdb_sample.py \
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample \
   --targets analytics/config/series_refresh_targets.json \
   --refresh
 
-python3 analytics/scripts/import_content_metadata_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview
 
-python3 analytics/scripts/import_content_metadata_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview --apply
 
-python3 analytics/scripts/import_content_metadata_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview
 
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
+python3 -m analytics.scripts.audits.check_ingestion_health --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
 Planner behavior:
@@ -564,9 +564,9 @@ Planner behavior:
 Useful planner options:
 
 ```bash
-python3 analytics/scripts/plan_series_refresh.py --all
-python3 analytics/scripts/plan_series_refresh.py --status ongoing
-python3 analytics/scripts/plan_series_refresh.py --include-ended --limit 20
+python3 -m analytics.scripts.refresh.plan_series_refresh --all
+python3 -m analytics.scripts.refresh.plan_series_refresh --status ongoing
+python3 -m analytics.scripts.refresh.plan_series_refresh --include-ended --limit 20
 ```
 
 Refresh import behavior:
@@ -582,25 +582,25 @@ Refresh import behavior:
 TMDb ratings:
 
 ```bash
-python3 analytics/scripts/import_content_ratings_from_preview.py
-python3 analytics/scripts/import_content_ratings_from_preview.py --apply
-python3 analytics/scripts/import_content_ratings_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_ratings_from_preview
+python3 -m analytics.scripts.ingestion.import_content_ratings_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_content_ratings_from_preview
 ```
 
 IMDb ratings from the official non-commercial dataset:
 
 ```bash
-python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv
-python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv --apply
-python3 analytics/scripts/import_imdb_ratings.py --ratings-file analytics/datasets/imdb/title.ratings.tsv
+python3 -m analytics.scripts.ingestion.import_imdb_ratings --ratings-file analytics/datasets/imdb/title.ratings.tsv
+python3 -m analytics.scripts.ingestion.import_imdb_ratings --ratings-file analytics/datasets/imdb/title.ratings.tsv --apply
+python3 -m analytics.scripts.ingestion.import_imdb_ratings --ratings-file analytics/datasets/imdb/title.ratings.tsv
 ```
 
 Letterboxd ratings from reviewed preview:
 
 ```bash
-python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous
-python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous --apply
-python3 analytics/scripts/import_letterboxd_ratings_from_preview.py --include-ambiguous
+python3 -m analytics.scripts.ingestion.import_letterboxd_ratings_from_preview --include-ambiguous
+python3 -m analytics.scripts.ingestion.import_letterboxd_ratings_from_preview --include-ambiguous --apply
+python3 -m analytics.scripts.ingestion.import_letterboxd_ratings_from_preview --include-ambiguous
 ```
 
 Rating rules:
@@ -617,10 +617,10 @@ Rating rules:
 Health check flags:
 
 ```bash
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb
-python3 analytics/scripts/check_ingestion_health.py --expect-letterboxd
-python3 analytics/scripts/check_ingestion_health.py --expect-tmdb-keywords
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords
+python3 -m analytics.scripts.audits.check_ingestion_health --expect-imdb
+python3 -m analytics.scripts.audits.check_ingestion_health --expect-letterboxd
+python3 -m analytics.scripts.audits.check_ingestion_health --expect-tmdb-keywords
+python3 -m analytics.scripts.audits.check_ingestion_health --expect-imdb --expect-letterboxd --expect-tmdb-keywords
 ```
 
 ## 10. TMDb Keywords Preview and Import Workflow
@@ -632,7 +632,7 @@ Keyword presence is weak evidence, not proof. Missing keywords are not proof tha
 ### Full Preview With Retry Target Generation
 
 ```bash
-python3 analytics/scripts/build_tmdb_keywords_preview.py \
+python3 -m analytics.scripts.ingestion.build_tmdb_keywords_preview \
   --write-retry-targets analytics/config/tmdb_keywords_retry_targets.json
 ```
 
@@ -648,7 +648,7 @@ Request retries are enabled by default. `--max-retries 2` means one initial atte
 ### Retry Failed Titles Only
 
 ```bash
-python3 analytics/scripts/build_tmdb_keywords_preview.py \
+python3 -m analytics.scripts.ingestion.build_tmdb_keywords_preview \
   --target-file analytics/config/tmdb_keywords_retry_targets.json \
   --output analytics/processed/tmdb_keywords/tmdb_keywords_retry_preview.json \
   --report-output analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_retry_report.json
@@ -657,7 +657,7 @@ python3 analytics/scripts/build_tmdb_keywords_preview.py \
 ### Merge Retry Results Into Main Preview/Report
 
 ```bash
-python3 analytics/scripts/merge_tmdb_keywords_retry_preview.py \
+python3 -m analytics.scripts.ingestion.merge_tmdb_keywords_retry_preview \
   --main-preview analytics/processed/tmdb_keywords/tmdb_keywords_preview.json \
   --main-report analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_report.json \
   --retry-preview analytics/processed/tmdb_keywords/tmdb_keywords_retry_preview.json \
@@ -733,27 +733,27 @@ errors: []
 Review the keyword import dry-run first:
 
 ```bash
-python3 analytics/scripts/import_tmdb_keywords_from_preview.py
+python3 -m analytics.scripts.ingestion.import_tmdb_keywords_from_preview
 ```
 
 Apply the import only after reviewing the dry-run:
 
 ```bash
-python3 analytics/scripts/import_tmdb_keywords_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.import_tmdb_keywords_from_preview --apply
 ```
 
 Run one more dry-run after apply to confirm idempotency:
 
 ```bash
-python3 analytics/scripts/import_tmdb_keywords_from_preview.py
+python3 -m analytics.scripts.ingestion.import_tmdb_keywords_from_preview
 ```
 
 Useful batch-safe options:
 
 ```bash
-python3 analytics/scripts/import_tmdb_keywords_from_preview.py --content-type movie
-python3 analytics/scripts/import_tmdb_keywords_from_preview.py --content-id 123
-python3 analytics/scripts/import_tmdb_keywords_from_preview.py --only-content-ids-file analytics/config/some_content_ids.json
+python3 -m analytics.scripts.ingestion.import_tmdb_keywords_from_preview --content-type movie
+python3 -m analytics.scripts.ingestion.import_tmdb_keywords_from_preview --content-id 123
+python3 -m analytics.scripts.ingestion.import_tmdb_keywords_from_preview --only-content-ids-file analytics/config/some_content_ids.json
 ```
 
 Importer behavior:
@@ -781,13 +781,13 @@ The keyword-to-signal preview layer converts imported raw TMDb keywords into loc
 Default preview:
 
 ```bash
-python3 analytics/scripts/build_keyword_signal_preview.py
+python3 -m analytics.scripts.source_signals.build_keyword_signal_preview
 ```
 
 Include internal keyword/evidence debug details:
 
 ```bash
-python3 analytics/scripts/build_keyword_signal_preview.py \
+python3 -m analytics.scripts.source_signals.build_keyword_signal_preview \
   --include-debug \
   --output analytics/processed/source_signals/debug/source_signal_preview_debug.json \
   --report-output analytics/processed/source_signals/debug/source_signal_preview_debug_report.json
@@ -796,7 +796,7 @@ python3 analytics/scripts/build_keyword_signal_preview.py \
 Preview a small movie sample:
 
 ```bash
-python3 analytics/scripts/build_keyword_signal_preview.py \
+python3 -m analytics.scripts.source_signals.build_keyword_signal_preview \
   --content-type movie \
   --limit 20 \
   --output analytics/processed/source_signals/debug/source_signal_preview_movie_limit_20.json \
@@ -846,20 +846,20 @@ The source-signal storage importer reads the generated preview/report and writes
 Dry-run:
 
 ```bash
-python3 analytics/scripts/import_source_signals_from_preview.py
+python3 -m analytics.scripts.source_signals.import_source_signals_from_preview
 ```
 
 Write:
 
 ```bash
-python3 analytics/scripts/import_source_signals_from_preview.py --write
+python3 -m analytics.scripts.source_signals.import_source_signals_from_preview --write
 ```
 
 Idempotency check:
 
 ```bash
-python3 analytics/scripts/import_source_signals_from_preview.py
-python3 analytics/scripts/import_source_signals_from_preview.py --write
+python3 -m analytics.scripts.source_signals.import_source_signals_from_preview
+python3 -m analytics.scripts.source_signals.import_source_signals_from_preview --write
 ```
 
 Importer behavior:
@@ -966,20 +966,20 @@ The decision display audit checks catalog-wide `decision_layer.display` quality 
 Run the full catalog audit:
 
 ```bash
-python3 analytics/scripts/audit_decision_display_quality.py
+python3 -m analytics.scripts.audits.audit_decision_display_quality
 ```
 
 Audit one title or a batch:
 
 ```bash
-python3 analytics/scripts/audit_decision_display_quality.py --content-id 6
-python3 analytics/scripts/audit_decision_display_quality.py --content-type movie --limit 50 --offset 0
+python3 -m analytics.scripts.audits.audit_decision_display_quality --content-id 6
+python3 -m analytics.scripts.audits.audit_decision_display_quality --content-type movie --limit 50 --offset 0
 ```
 
 Useful failure gates for CI-like local checks:
 
 ```bash
-python3 analytics/scripts/audit_decision_display_quality.py \
+python3 -m analytics.scripts.audits.audit_decision_display_quality \
   --fail-on-critical \
   --fail-under-score 80
 ```
@@ -1019,20 +1019,20 @@ The source signal mapping audit checks the deeper data layer behind `decision_la
 Run the full catalog audit:
 
 ```bash
-python3 analytics/scripts/audit_source_signal_mapping_quality.py
+python3 -m analytics.scripts.audits.audit_source_signal_mapping_quality
 ```
 
 Audit one title or a batch:
 
 ```bash
-python3 analytics/scripts/audit_source_signal_mapping_quality.py --content-id 6
-python3 analytics/scripts/audit_source_signal_mapping_quality.py --content-type movie --limit 50 --offset 0
+python3 -m analytics.scripts.audits.audit_source_signal_mapping_quality --content-id 6
+python3 -m analytics.scripts.audits.audit_source_signal_mapping_quality --content-type movie --limit 50 --offset 0
 ```
 
 Useful failure gates for CI-like local checks:
 
 ```bash
-python3 analytics/scripts/audit_source_signal_mapping_quality.py \
+python3 -m analytics.scripts.audits.audit_source_signal_mapping_quality \
   --fail-on-critical \
   --fail-under-score 80
 ```
@@ -1068,11 +1068,11 @@ Source Signal Mapping Improvements v2.1 is a targeted cleanup for the remaining 
 After editing `analytics/config/source_signal_keyword_mapping.json`, regenerate and verify the storage-backed quality layer:
 
 ```bash
-python3 analytics/scripts/build_keyword_signal_preview.py
-python3 analytics/scripts/import_source_signals_from_preview.py --write
-python3 analytics/scripts/check_ingestion_health.py --expect-imdb --expect-letterboxd --expect-tmdb-keywords --expect-source-signals
-python3 analytics/scripts/audit_source_signal_mapping_quality.py
-python3 analytics/scripts/audit_decision_display_quality.py
+python3 -m analytics.scripts.source_signals.build_keyword_signal_preview
+python3 -m analytics.scripts.source_signals.import_source_signals_from_preview --write
+python3 -m analytics.scripts.audits.check_ingestion_health --expect-imdb --expect-letterboxd --expect-tmdb-keywords --expect-source-signals
+python3 -m analytics.scripts.audits.audit_source_signal_mapping_quality
+python3 -m analytics.scripts.audits.audit_decision_display_quality
 ```
 
 Generated mapping-quality reports remain local-only and should not be committed. Use them to prioritize mapping-config updates, genre enrichment, curated title overrides, raw keyword coverage, backend display rules, or metadata enrichment.
@@ -1110,7 +1110,7 @@ Do not commit API keys, tokens, downloaded provider datasets, or raw review text
 Read-only ingestion health check:
 
 ```bash
-python3 analytics/scripts/check_ingestion_health.py \
+python3 -m analytics.scripts.audits.check_ingestion_health \
   --expect-imdb \
   --expect-letterboxd \
   --expect-tmdb-keywords \
@@ -1120,7 +1120,7 @@ python3 analytics/scripts/check_ingestion_health.py \
 Strict mode:
 
 ```bash
-python3 analytics/scripts/check_ingestion_health.py \
+python3 -m analytics.scripts.audits.check_ingestion_health \
   --strict \
   --expect-imdb \
   --expect-letterboxd \
@@ -1216,7 +1216,7 @@ These are future tasks, not implemented:
 Before selecting or importing an expansion wave, run the database-only baseline:
 
 ```bash
-python3 analytics/scripts/audit_catalog_expansion_readiness.py
+python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness
 ```
 
 The audit reuses current video and series refresh decision functions but never

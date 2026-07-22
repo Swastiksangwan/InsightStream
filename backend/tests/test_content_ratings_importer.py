@@ -9,8 +9,7 @@ def load_ratings_importer_module():
     script_path = (
         repo_root
         / "analytics"
-        / "scripts"
-        / "import_content_ratings_from_preview.py"
+        / "scripts" / "ingestion" / "import_content_ratings_from_preview.py"
     )
     spec = importlib.util.spec_from_file_location(
         "import_content_ratings_from_preview",

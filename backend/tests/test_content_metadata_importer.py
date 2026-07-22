@@ -8,7 +8,7 @@ import pytest
 def load_importer_module():
     repo_root = Path(__file__).resolve().parents[2]
     script_path = (
-        repo_root / "analytics" / "scripts" / "import_content_metadata_from_preview.py"
+        repo_root / "analytics" / "scripts" / "ingestion" / "import_content_metadata_from_preview.py"
     )
     spec = importlib.util.spec_from_file_location(
         "import_content_metadata_from_preview",
@@ -22,7 +22,7 @@ def load_importer_module():
 
 def load_fetch_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "fetch_tmdb_sample.py"
+    script_path = repo_root / "analytics" / "scripts" / "ingestion" / "fetch_tmdb_sample.py"
     spec = importlib.util.spec_from_file_location("fetch_tmdb_sample", script_path)
     module = importlib.util.module_from_spec(spec)
     sys.modules["fetch_tmdb_sample"] = module

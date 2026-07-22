@@ -6,7 +6,7 @@ from pathlib import Path
 
 def load_planner_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "plan_series_refresh.py"
+    script_path = repo_root / "analytics" / "scripts" / "refresh" / "plan_series_refresh.py"
     spec = importlib.util.spec_from_file_location("plan_series_refresh", script_path)
     module = importlib.util.module_from_spec(spec)
     sys.modules["plan_series_refresh"] = module

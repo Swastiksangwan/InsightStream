@@ -276,8 +276,8 @@ Availability and certification import scripts should follow the established inge
 Recommended scripts:
 
 ```text
-analytics/scripts/fetch_tmdb_availability_certification.py
-analytics/scripts/import_availability_certification_from_preview.py
+analytics/scripts/ingestion/fetch_tmdb_availability_certification.py
+analytics/scripts/ingestion/import_availability_certification_from_preview.py
 ```
 
 Import should match content through `external_ids`, not title alone.

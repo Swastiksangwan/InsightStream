@@ -216,7 +216,7 @@ Notes:
 
 Run scripts from the repository root.
 
-`analytics/scripts/fetch_tmdb_sample.py`
+`analytics/scripts/ingestion/fetch_tmdb_sample.py`
 
 - Fetches TMDb metadata and appended video records for configured titles.
 - Writes raw ignored JSON under `analytics/raw/tmdb/`.
@@ -231,13 +231,13 @@ Run scripts from the repository root.
 - Fetches TV aggregate credits for series where available.
 - Makes no database writes.
 
-`analytics/scripts/build_content_refresh_plan.py`
+`analytics/scripts/refresh/build_content_refresh_plan.py`
 
 - Builds the ignored, PostgreSQL-backed refresh plan for `series_metadata`, `videos`,
   or both scopes without provider requests or database writes.
 - Reuses the existing series planner decision function and existing video fetch state.
 
-`analytics/scripts/run_content_refresh.py`
+`analytics/scripts/refresh/run_content_refresh.py`
 
 - Supports mutually exclusive `--plan-only`, `--dry-run`, and `--apply` modes.
 - Uses one details-plus-videos request when a series needs both domains, while keeping
@@ -246,14 +246,14 @@ Run scripts from the repository root.
   or availability. `refresh_content_videos.py` is a focused wrapper for that scope.
 - Does not install a scheduler; orchestration remains an explicit operator command.
 
-`analytics/scripts/update_posters_from_tmdb_preview.py`
+`analytics/scripts/ingestion/update_posters_from_tmdb_preview.py`
 
 - Reads the processed TMDb title preview.
 - Updates only `poster_url` and `backdrop_url`.
 - Dry-run by default; requires `--apply` for database writes.
 - Mostly useful now for refresh, repair, or new titles because current seed data already has verified poster/backdrop URLs.
 
-`analytics/scripts/build_tmdb_credits_preview.py`
+`analytics/scripts/ingestion/build_tmdb_credits_preview.py`
 
 - Builds a provider-neutral credits preview at `analytics/processed/tmdb/credits_preview.json`.
 - Reads existing raw TMDb files.
@@ -261,28 +261,28 @@ Run scripts from the repository root.
 - Keeps regular TV credits as fallback.
 - Makes no database writes.
 
-`analytics/scripts/import_people_credits_from_preview.py`
+`analytics/scripts/ingestion/import_people_credits_from_preview.py`
 
 - Imports `people`, `person_external_ids`, and `content_people`.
 - Reads `analytics/processed/tmdb/credits_preview.json`.
 - Dry-run by default; requires `--apply` for database writes.
 - Reuses existing people by provider external ID and avoids duplicate relationships.
 
-`analytics/scripts/fetch_tmdb_person_details.py`
+`analytics/scripts/ingestion/fetch_tmdb_person_details.py`
 
 - Reads local `person_external_ids` where `source_name = 'tmdb'`.
 - Fetches TMDb person details, including biography, profile image, birthday, and place of birth.
 - Writes `analytics/processed/tmdb/person_details_preview.json`.
 - Makes no database writes.
 
-`analytics/scripts/import_person_details_from_preview.py`
+`analytics/scripts/ingestion/import_person_details_from_preview.py`
 
 - Imports only missing safe person fields: `biography`, `profile_url`, `known_for_department`, `birthday`, and `place_of_birth`.
 - Never overwrites non-empty existing values.
 - Preserves place of birth as provider text and does not infer nationality.
 - Dry-run by default; requires `--apply` for database writes.
 
-`analytics/scripts/import_content_videos_from_preview.py`
+`analytics/scripts/ingestion/import_content_videos_from_preview.py`
 
 - Imports normalized TMDb video rows from the content metadata preview.
 - Dry-run by default; requires `--apply` for database writes.
@@ -296,8 +296,8 @@ Run scripts from the repository root.
 
 Analysis/reporting scripts:
 
-- `analytics/scripts/analyze_tmdb_metadata_gap.py`
-- `analytics/scripts/reconcile_basic_metadata.py`
+- `analytics/scripts/audits/analyze_tmdb_metadata_gap.py`
+- `analytics/scripts/audits/reconcile_basic_metadata.py`
 
 These compare seed data with processed provider previews and generate reports. They do not update PostgreSQL.
 
@@ -328,20 +328,20 @@ export TMDB_READ_ACCESS_TOKEN="..."
 If processed files already exist:
 
 ```bash
-python3 analytics/scripts/import_people_credits_from_preview.py --apply
-python3 analytics/scripts/import_person_details_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
 ```
 
 If regenerating provider data:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_sample.py
-python3 analytics/scripts/import_content_videos_from_preview.py
-python3 analytics/scripts/import_content_videos_from_preview.py --apply
-python3 analytics/scripts/build_tmdb_credits_preview.py
-python3 analytics/scripts/import_people_credits_from_preview.py --apply
-python3 analytics/scripts/fetch_tmdb_person_details.py
-python3 analytics/scripts/import_person_details_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample
+python3 -m analytics.scripts.ingestion.import_content_videos_from_preview
+python3 -m analytics.scripts.ingestion.import_content_videos_from_preview --apply
+python3 -m analytics.scripts.ingestion.build_tmdb_credits_preview
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
 ```
 
 Poster/backdrop URLs are already restored by `backend/sample_data.sql` for the current 15 titles. Use `update_posters_from_tmdb_preview.py` only for refresh, repair, or new title work.

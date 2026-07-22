@@ -5,7 +5,7 @@ from pathlib import Path
 
 def load_health_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "check_ingestion_health.py"
+    script_path = repo_root / "analytics" / "scripts" / "audits" / "check_ingestion_health.py"
     spec = importlib.util.spec_from_file_location("check_ingestion_health", script_path)
     module = importlib.util.module_from_spec(spec)
     sys.modules["check_ingestion_health"] = module

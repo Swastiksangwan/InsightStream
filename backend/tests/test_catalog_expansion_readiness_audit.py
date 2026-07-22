@@ -9,7 +9,7 @@ import pytest
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SCRIPT_PATH = REPO_ROOT / "analytics" / "scripts" / "audit_catalog_expansion_readiness.py"
+SCRIPT_PATH = REPO_ROOT / "analytics" / "scripts" / "audits" / "audit_catalog_expansion_readiness.py"
 SPEC = importlib.util.spec_from_file_location("catalog_expansion_audit", SCRIPT_PATH)
 assert SPEC and SPEC.loader
 audit = importlib.util.module_from_spec(SPEC)

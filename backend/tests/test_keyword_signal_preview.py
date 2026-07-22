@@ -6,7 +6,7 @@ from pathlib import Path
 
 def load_keyword_signal_preview_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "build_keyword_signal_preview.py"
+    script_path = repo_root / "analytics" / "scripts" / "source_signals" / "build_keyword_signal_preview.py"
     spec = importlib.util.spec_from_file_location(
         "build_keyword_signal_preview",
         script_path,

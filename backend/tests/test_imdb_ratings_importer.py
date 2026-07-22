@@ -7,7 +7,7 @@ from pathlib import Path
 
 def load_imdb_importer_module():
     repo_root = Path(__file__).resolve().parents[2]
-    script_path = repo_root / "analytics" / "scripts" / "import_imdb_ratings.py"
+    script_path = repo_root / "analytics" / "scripts" / "ingestion" / "import_imdb_ratings.py"
     spec = importlib.util.spec_from_file_location("import_imdb_ratings", script_path)
     module = importlib.util.module_from_spec(spec)
     sys.modules["import_imdb_ratings"] = module

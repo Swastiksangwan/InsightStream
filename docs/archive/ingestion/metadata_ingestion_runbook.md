@@ -61,17 +61,17 @@ Run reports:
 
 Fetch/build scripts that do not write to PostgreSQL:
 
-- `analytics/scripts/fetch_tmdb_sample.py`: fetches content metadata, external IDs, details, credits, and TV aggregate credits.
-- `analytics/scripts/build_tmdb_credits_preview.py`: builds structured credits preview from raw TMDb files.
-- `analytics/scripts/fetch_tmdb_person_details.py`: fetches person details and biography preview for imported people.
-- `analytics/scripts/fetch_tmdb_availability_certification.py`: fetches watch-provider and certification preview data.
+- `analytics/scripts/ingestion/fetch_tmdb_sample.py`: fetches content metadata, external IDs, details, credits, and TV aggregate credits.
+- `analytics/scripts/ingestion/build_tmdb_credits_preview.py`: builds structured credits preview from raw TMDb files.
+- `analytics/scripts/ingestion/fetch_tmdb_person_details.py`: fetches person details and biography preview for imported people.
+- `analytics/scripts/ingestion/fetch_tmdb_availability_certification.py`: fetches watch-provider and certification preview data.
 
 Import scripts that write only with `--apply`:
 
-- `analytics/scripts/import_content_metadata_from_preview.py`: imports content metadata, external IDs, genres, posters/backdrops, and latest activity dates.
-- `analytics/scripts/import_people_credits_from_preview.py`: imports `people`, `person_external_ids`, and `content_people`.
-- `analytics/scripts/import_person_details_from_preview.py`: imports missing safe person fields such as biography, profile URL, and known-for department.
-- `analytics/scripts/import_availability_certification_from_preview.py`: imports region-aware availability, certifications, and safe compact age rating values.
+- `analytics/scripts/ingestion/import_content_metadata_from_preview.py`: imports content metadata, external IDs, genres, posters/backdrops, and latest activity dates.
+- `analytics/scripts/ingestion/import_people_credits_from_preview.py`: imports `people`, `person_external_ids`, and `content_people`.
+- `analytics/scripts/ingestion/import_person_details_from_preview.py`: imports missing safe person fields such as biography, profile URL, and known-for department.
+- `analytics/scripts/ingestion/import_availability_certification_from_preview.py`: imports region-aware availability, certifications, and safe compact age rating values.
 
 ## 4. Environment Variables
 
@@ -118,10 +118,10 @@ After running `schema.sql`, `sample_data.sql`, and `indexes.sql`, run from the p
 ```bash
 export DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/insightstream_db
 
-python3 analytics/scripts/import_content_metadata_from_preview.py --apply
-python3 analytics/scripts/import_people_credits_from_preview.py --apply
-python3 analytics/scripts/import_person_details_from_preview.py --apply
-python3 analytics/scripts/import_availability_certification_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview --apply
 ```
 
 What each import restores:
@@ -150,17 +150,17 @@ export TMDB_READ_ACCESS_TOKEN=YOUR_TOKEN
 Run in this order:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_sample.py
-python3 analytics/scripts/import_content_metadata_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview --apply
 
-python3 analytics/scripts/build_tmdb_credits_preview.py
-python3 analytics/scripts/import_people_credits_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.build_tmdb_credits_preview
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
 
-python3 analytics/scripts/fetch_tmdb_person_details.py
-python3 analytics/scripts/import_person_details_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
 
-python3 analytics/scripts/fetch_tmdb_availability_certification.py --all
-python3 analytics/scripts/import_availability_certification_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification --all
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview --apply
 ```
 
 Fetch scripts do not write to PostgreSQL. Import scripts write only with `--apply`.
@@ -168,10 +168,10 @@ Fetch scripts do not write to PostgreSQL. Import scripts write only with `--appl
 When changing the target list or reviewing a fresh batch, run each import script once without `--apply` before applying:
 
 ```bash
-python3 analytics/scripts/import_content_metadata_from_preview.py
-python3 analytics/scripts/import_people_credits_from_preview.py
-python3 analytics/scripts/import_person_details_from_preview.py
-python3 analytics/scripts/import_availability_certification_from_preview.py
+python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview
+python3 -m analytics.scripts.ingestion.import_person_details_from_preview
+python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview
 ```
 
 The target config controls which titles are fetched.
@@ -180,19 +180,19 @@ Batch fetch examples:
 
 ```bash
 # Fetch/rebuild preview for one TMDb source ID.
-python3 analytics/scripts/fetch_tmdb_sample.py --source-id 603
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --source-id 603
 
 # Fetch/rebuild preview for one configured priority batch.
-python3 analytics/scripts/fetch_tmdb_sample.py --priority batch_test_1
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --priority batch_test_1
 
 # Fetch only the first N selected targets from a larger batch.
-python3 analytics/scripts/fetch_tmdb_sample.py --priority batch_test_1 --limit 2
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --priority batch_test_1 --limit 2
 
 # Fetch availability/certification preview for one configured priority batch.
-python3 analytics/scripts/fetch_tmdb_availability_certification.py --priority batch_test_1
+python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification --priority batch_test_1
 
 # Force provider refetch instead of reusing existing raw files.
-python3 analytics/scripts/fetch_tmdb_sample.py --priority batch_test_1 --refresh
+python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --priority batch_test_1 --refresh
 ```
 
 Without `--refresh`, fetch scripts reuse existing raw files when all required raw files for a selected target are already present. They still rebuild the processed preview and write a run report. Inspect run reports under:
@@ -209,7 +209,7 @@ Before adding a larger provider-backed batch to the main target config:
 2. Run the candidate validator:
 
 ```bash
-python3 analytics/scripts/validate_ingestion_candidates.py --candidates analytics/config/content_ingestion_candidates_batch_2.json
+python3 -m analytics.scripts.ingestion.validate_ingestion_candidates --candidates analytics/config/content_ingestion_candidates_batch_2.json
 ```
 
 3. Review the validation report:
@@ -222,12 +222,12 @@ analytics/processed/tmdb/run_reports/batch_2_target_validation_report.json
 5. Only after review, merge verified candidates into `analytics/config/content_ingestion_targets.json`.
 
 ```bash
-python3 analytics/scripts/merge_ingestion_candidates.py \
+python3 -m analytics.scripts.ingestion.merge_ingestion_candidates \
   --candidates analytics/config/content_ingestion_candidates_batch_2.json \
   --targets analytics/config/content_ingestion_targets.json \
   --priority batch_test_2
 
-python3 analytics/scripts/merge_ingestion_candidates.py \
+python3 -m analytics.scripts.ingestion.merge_ingestion_candidates \
   --candidates analytics/config/content_ingestion_candidates_batch_2.json \
   --targets analytics/config/content_ingestion_targets.json \
   --priority batch_test_2 \
@@ -245,35 +245,35 @@ Candidate validation does not fetch ingestion payloads, does not import data, an
 Standard flow for adding new provider-backed titles:
 
 1. Add the title to `analytics/config/content_ingestion_targets.json`.
-2. Run `python3 analytics/scripts/fetch_tmdb_sample.py --source-id <TMDB_ID>` or `python3 analytics/scripts/fetch_tmdb_sample.py --priority <BATCH_PRIORITY>`.
+2. Run `python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --source-id <TMDB_ID>` or `python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --priority <BATCH_PRIORITY>`.
 3. Review `analytics/processed/tmdb/sample_mapping_preview.json`.
-4. Run `python3 analytics/scripts/import_content_metadata_from_preview.py`.
-5. Run `python3 analytics/scripts/import_content_metadata_from_preview.py --apply`.
-6. Run `python3 analytics/scripts/build_tmdb_credits_preview.py`.
-7. Run `python3 analytics/scripts/import_people_credits_from_preview.py`.
-8. Run `python3 analytics/scripts/import_people_credits_from_preview.py --apply`.
-9. Run `python3 analytics/scripts/fetch_tmdb_person_details.py`.
-10. Run `python3 analytics/scripts/import_person_details_from_preview.py`.
-11. Run `python3 analytics/scripts/import_person_details_from_preview.py --apply`.
-12. Run `python3 analytics/scripts/fetch_tmdb_availability_certification.py --source-id <TMDB_ID>`, `--priority <BATCH_PRIORITY>`, or `--all`.
-13. Run `python3 analytics/scripts/import_availability_certification_from_preview.py`.
-14. Run `python3 analytics/scripts/import_availability_certification_from_preview.py --apply`.
+4. Run `python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview`.
+5. Run `python3 -m analytics.scripts.ingestion.import_content_metadata_from_preview --apply`.
+6. Run `python3 -m analytics.scripts.ingestion.build_tmdb_credits_preview`.
+7. Run `python3 -m analytics.scripts.ingestion.import_people_credits_from_preview`.
+8. Run `python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply`.
+9. Run `python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details`.
+10. Run `python3 -m analytics.scripts.ingestion.import_person_details_from_preview`.
+11. Run `python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply`.
+12. Run `python3 -m analytics.scripts.ingestion.fetch_tmdb_availability_certification --source-id <TMDB_ID>`, `--priority <BATCH_PRIORITY>`, or `--all`.
+13. Run `python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview`.
+14. Run `python3 -m analytics.scripts.ingestion.import_availability_certification_from_preview --apply`.
 15. Run backend tests.
 16. Run the frontend build.
 17. Manually verify frontend detail pages.
 
 Person detail fetch notes:
 
-- `python3 analytics/scripts/fetch_tmdb_person_details.py` defaults to missing-only mode and skips people that already have non-empty `biography`, `profile_url`, and `known_for_department` values.
+- `python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details` defaults to missing-only mode and skips people that already have non-empty `biography`, `profile_url`, and `known_for_department` values.
 - Use `--all --refresh` only when intentionally rebuilding every person detail payload from TMDb.
 - Raw person detail payloads are cached under `analytics/raw/tmdb/person_{source_person_id}_details.json`.
 - The latest person detail fetch report is written to `analytics/processed/tmdb/run_reports/person_details_fetch_run_report.json`.
 - Useful targeted examples:
 
 ```bash
-python3 analytics/scripts/fetch_tmdb_person_details.py --missing-only --limit 20
-python3 analytics/scripts/fetch_tmdb_person_details.py --source-person-id 525 --refresh
-python3 analytics/scripts/fetch_tmdb_person_details.py --all --limit 10
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details --missing-only --limit 20
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details --source-person-id 525 --refresh
+python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details --all --limit 10
 ```
 
 Series lifecycle metadata notes:
@@ -283,7 +283,7 @@ Series lifecycle metadata notes:
 - It supports seasons, episodes, normalized lifecycle status, first/last aired dates, last episode date, next episode date, and a season summary for released versus announced/upcoming seasons.
 - It does not infer future seasons in the frontend; it displays stored provider-derived season summary fields.
 - It does not create episode-level or season-level pages.
-- For targeted refreshes, run `python3 analytics/scripts/fetch_tmdb_sample.py --source-id TMDB_SERIES_ID --refresh`, then dry-run/apply the content metadata importer.
+- For targeted refreshes, run `python3 -m analytics.scripts.ingestion.fetch_tmdb_sample --source-id TMDB_SERIES_ID --refresh`, then dry-run/apply the content metadata importer.
 
 ## 10. Verification SQL
 
@@ -418,8 +418,8 @@ Expected duplicate check result: no rows.
 Automated ingestion health check:
 
 ```bash
-python3 analytics/scripts/check_ingestion_health.py
-python3 analytics/scripts/check_ingestion_health.py --priority batch_test_2
+python3 -m analytics.scripts.audits.check_ingestion_health
+python3 -m analytics.scripts.audits.check_ingestion_health --priority batch_test_2
 ```
 
 The health check is read-only and writes `analytics/processed/tmdb/run_reports/ingestion_health_report.json`.

@@ -1,24 +1,12 @@
-import importlib.util
-import sys
+import importlib
 from datetime import datetime, timezone
-from pathlib import Path
 
 from sqlalchemy import text
 
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-SCRIPTS_DIR = REPO_ROOT / "analytics" / "scripts"
-if str(SCRIPTS_DIR) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS_DIR))
-
-
 def load_importer():
-    path = SCRIPTS_DIR / "import_content_videos_from_preview.py"
-    spec = importlib.util.spec_from_file_location("content_video_importer", path)
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module
+    return importlib.import_module(
+        "analytics.scripts.ingestion.import_content_videos_from_preview"
+    )
 
 
 def video(key, name="Official Trailer", video_type="Trailer"):
@@ -75,7 +63,9 @@ def preview_item(
 
 def test_preview_and_importer_use_the_same_explicit_primary_language_policy():
     importer = load_importer()
-    from tmdb_video_metadata import normalize_video_snapshot
+    from analytics.scripts.providers.tmdb.tmdb_video_metadata import (
+        normalize_video_snapshot,
+    )
 
     for index, original_language in enumerate(("ja", "ko"), start=1):
         source_records = [
@@ -124,7 +114,9 @@ def test_preview_and_importer_use_the_same_explicit_primary_language_policy():
 
 def test_importer_primary_selection_uses_site_and_source_id_identity():
     importer = load_importer()
-    from tmdb_video_metadata import normalize_video_snapshot
+    from analytics.scripts.providers.tmdb.tmdb_video_metadata import (
+        normalize_video_snapshot,
+    )
 
     snapshot = normalize_video_snapshot(
         {
@@ -164,7 +156,9 @@ def test_importer_primary_selection_uses_site_and_source_id_identity():
 
 def test_preview_and_importer_prefer_same_standard_trailer_over_accessibility_variant():
     importer = load_importer()
-    from tmdb_video_metadata import normalize_video_snapshot
+    from analytics.scripts.providers.tmdb.tmdb_video_metadata import (
+        normalize_video_snapshot,
+    )
 
     snapshot = normalize_video_snapshot(
         {

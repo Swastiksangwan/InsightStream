@@ -147,12 +147,12 @@ Recommended next coding task:
 
 Create an inspection-first poster/backdrop update script.
 
-Implementation note: this script now exists at `analytics/scripts/update_posters_from_tmdb_preview.py`.
+Implementation note: this script now exists at `analytics/scripts/ingestion/update_posters_from_tmdb_preview.py`.
 
 Suggested file:
 
 ```text
-analytics/scripts/update_posters_from_tmdb_preview.py
+analytics/scripts/ingestion/update_posters_from_tmdb_preview.py
 ```
 
 This script should:
@@ -183,7 +183,7 @@ Do not:
 
 ## Local Update Result
 
-`analytics/scripts/update_posters_from_tmdb_preview.py` was created to read `analytics/processed/tmdb/sample_mapping_preview.json`. It does not fetch TMDb directly, supports dry-run by default, and requires `--apply` before writing to the database.
+`analytics/scripts/ingestion/update_posters_from_tmdb_preview.py` was created to read `analytics/processed/tmdb/sample_mapping_preview.json`. It does not fetch TMDb directly, supports dry-run by default, and requires `--apply` before writing to the database.
 
 The script was run successfully with `--apply`:
 

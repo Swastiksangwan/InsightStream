@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`analytics/scripts/import_people_credits_from_preview.py` imports normalized people and credit relationships from `analytics/processed/tmdb/credits_preview.json`.
+`analytics/scripts/ingestion/import_people_credits_from_preview.py` imports normalized people and credit relationships from `analytics/processed/tmdb/credits_preview.json`.
 
 It is a local metadata-foundation script. It does not call TMDb, read raw provider JSON, change backend APIs, change frontend code, or modify seed SQL files.
 
@@ -23,13 +23,13 @@ Destination tables:
 Dry run is the default:
 
 ```bash
-python3 analytics/scripts/import_people_credits_from_preview.py
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview
 ```
 
 Apply requires explicit confirmation:
 
 ```bash
-python3 analytics/scripts/import_people_credits_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
 ```
 
 `--apply` requires `DATABASE_URL` and runs inside a transaction. If any database write fails, the transaction rolls back.

@@ -287,7 +287,7 @@ These person endpoints require imported people rows. Unknown person IDs return `
 Optional local import after setup:
 
 ```bash
-python3 analytics/scripts/import_people_credits_from_preview.py --apply
+python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
 ```
 
 This imports from `analytics/processed/tmdb/credits_preview.json` into `people`, `person_external_ids`, and `content_people`.
