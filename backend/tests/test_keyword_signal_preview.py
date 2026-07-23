@@ -3,6 +3,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 
 def load_keyword_signal_preview_module():
     repo_root = Path(__file__).resolve().parents[2]
@@ -45,7 +47,7 @@ def test_load_keyword_signal_mapping_config():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
 
-    assert mapping["mapping_version"] == "2026-07-09-v2.1"
+    assert mapping["mapping_version"] == "2026-07-22-v2.3"
     assert "serial killer" in mapping["keyword_mappings"]
     assert "psychological thriller" in mapping["keyword_mappings"]
     assert "dark fantasy" in mapping["keyword_mappings"]
@@ -53,6 +55,89 @@ def test_load_keyword_signal_mapping_config():
     assert "aftercreditsstinger" in mapping["excluded_keywords"]
     assert "plot twist" in mapping["spoiler_unsafe_keywords"]
     assert "violence" in mapping["spoiler_unsafe_keywords"]
+
+
+@pytest.mark.parametrize(
+    ("keyword", "dimension", "value"),
+    [
+        ("tragedy", "mood", "tragic"),
+        ("introspective", "mood", "thoughtful"),
+        ("family relationships", "topic_theme", "family relationship"),
+        ("dark", "tone", "dark"),
+        ("android", "topic_theme", "robotics"),
+        ("murder investigation", "pacing", "investigation-led"),
+        ("police procedural", "pacing", "investigation-led"),
+        ("surrealism", "mood", "surreal"),
+        ("cyberpunk", "audience_expectation", "cyberpunk"),
+    ],
+)
+def test_reviewed_keyword_mappings_reuse_expected_canonical_values(
+    keyword, dimension, value
+):
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    entry = mapping["keyword_mappings"][keyword]
+
+    assert any(
+        signal["dimension"] == dimension and signal["value"] == value
+        for signal in entry["signals"]
+    )
+
+
+@pytest.mark.parametrize(
+    "keyword",
+    [
+        "miniseries",
+        "new york city",
+        "marvel cinematic universe mcu",
+        "oscar winner",
+        "prequel",
+        "female protagonist",
+    ],
+)
+def test_reviewed_non_signal_keywords_are_explicitly_excluded(keyword):
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    assert keyword in mapping["excluded_keywords"]
+
+
+@pytest.mark.parametrize("keyword", ["loss of loved one", "fall from grace"])
+def test_reviewed_spoiler_terms_are_not_rendered_as_signals(keyword):
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    assert keyword in mapping["spoiler_unsafe_keywords"]
+    item, _analysis = module.build_preview_item(
+        content_fixture(module, [keyword]), mapping, include_debug=False
+    )
+    assert not any(item["signals"].values())
+
+
+def test_corrected_relationship_and_theme_mappings_do_not_over_infer():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    expected = {
+        "husband wife relationship": [
+            ("topic_theme", "family relationship")
+        ],
+        "manipulation": [("topic_theme", "manipulation")],
+        "obsession": [("topic_theme", "obsession")],
+        "historical": [("topic_theme", "period setting")],
+        "inspirational": [("mood", "inspiring")],
+    }
+    for keyword, expected_signals in expected.items():
+        actual = [
+            (signal["dimension"], signal["value"])
+            for signal in mapping["keyword_mappings"][keyword]["signals"]
+        ]
+        assert actual == expected_signals
+
+    assert "bounty hunter" not in mapping["keyword_mappings"]
+    assert "bounty hunter" not in mapping["excluded_keywords"]
+    assert "bounty hunter" not in mapping["spoiler_unsafe_keywords"]
 
 
 def signal_values_for_dimension(item, dimension):

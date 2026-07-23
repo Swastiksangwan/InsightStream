@@ -58,6 +58,7 @@ from the repository root during this refactor.
 | `update_posters_from_tmdb_preview.py` | `python3 -m analytics.scripts.ingestion.update_posters_from_tmdb_preview` | Controlled poster/backdrop backfill | Mutates with `--apply` | Read/write | No | Console/run result |
 | `validate_ingestion_candidates.py` | `python3 -m analytics.scripts.ingestion.validate_ingestion_candidates` | Validate proposed TMDb ingestion targets | Artifact write | No | Yes | `analytics/processed/tmdb/` validation report |
 | `build_keyword_signal_preview.py` | `python3 -m analytics.scripts.source_signals.build_keyword_signal_preview` | Apply curated keyword-to-signal mappings | Artifact write | Read | No | `analytics/processed/source_signals/` |
+| `build_unmapped_keyword_review.py` | `python3 -m analytics.scripts.source_signals.build_unmapped_keyword_review` | Validate curated decisions and build a deterministic review of high-impact keywords; accepts `--baseline-mapping-file` for before/after status | Artifact write | Read-only transaction | No | `analytics/processed/source_signal_reviews/` |
 | `import_source_signals_from_preview.py` | `python3 -m analytics.scripts.source_signals.import_source_signals_from_preview` | Import reviewed source signals and guidance | Mutates with `--write` | Read/write | No | `analytics/processed/source_signals/` import report |
 
 ## Implementation Modules
@@ -78,3 +79,18 @@ from the repository root during this refactor.
 
 Git history preserves both placeholders. No non-empty or uncertain legacy script
 was removed.
+
+## Source-Signal Mapping Ownership
+
+- `analytics/config/source_signal_keyword_mapping.json` is the runtime source of truth used by preview and import code.
+- `analytics/config/source_signal_keyword_review_decisions.json` is the tracked human-curation record. It stores rationale, confidence, intended action, exact proposed mappings, and the supported runtime mapping version. The review CLI fails when these decisions drift from runtime configuration.
+- `analytics/processed/source_signal_reviews/source_signal_unmapped_keyword_review.json` is a generated, ignored report combining database frequency/title samples with runtime status and curated decisions. It is not a configuration input.
+
+The review command opens PostgreSQL in an explicit read-only transaction. To compare a candidate with a retained baseline configuration, run:
+
+```bash
+python3 -m analytics.scripts.source_signals.build_unmapped_keyword_review \
+  --baseline-mapping-file /path/to/baseline-source-signal-mapping.json
+```
+
+Without a baseline file, before-state fields are reported as not evaluated rather than inferred. Semantic decisions remain human-authored; the script only validates and renders them.

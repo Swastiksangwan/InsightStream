@@ -51,7 +51,9 @@ Current status:
 - The preview workflow remains DB-write-free.
 - Normalized keyword storage/import is implemented through `backend/migrations/009_add_tmdb_keyword_storage.sql` and `analytics/scripts/ingestion/import_tmdb_keywords_from_preview.py`.
 - Keyword-to-signal mapping preview is implemented through `analytics/config/source_signal_keyword_mapping.json` and `analytics/scripts/source_signals/build_keyword_signal_preview.py`.
-- Mapping config `2026-07-02-v3.1` expands high-value crime/thriller, fantasy, period, horror, political, sci-fi, comedy, and disaster mappings, while keeping noisy/spoiler-unsafe keywords out of public guidance.
+- Mapping config `2026-07-22-v2.3` adds reviewed high-impact aliases while keeping canonical metadata, locations, franchises, awards, lifecycle markers, ambiguous terms, and spoiler-sensitive keywords out of public guidance.
+- `analytics/config/source_signal_keyword_mapping.json` remains the runtime source of truth; `analytics/config/source_signal_keyword_review_decisions.json` is the tracked human-curation/provenance record; the generated review remains ignored evidence.
+- `python3 -m analytics.scripts.source_signals.build_unmapped_keyword_review` validates decision/config parity and generates the ignored, title-sampled review dataset. `--baseline-mapping-file` enables explicit before/after status reporting.
 - Curated title overrides live in `analytics/config/source_signal_title_overrides.json` and correct known weak/misleading keyword-only previews without deleting raw keywords.
 - Override config `2026-07-02-v3.1` adds v3.2.1 targeted semantic corrections for high-value titles where keyword-only output was too generic or slightly misleading.
 - Metadata fallback uses local genre metadata only when keyword-derived signals are weak; fallback signals are marked `metadata_fallback`.
@@ -840,7 +842,7 @@ Recommended order:
 4. Import keywords from final preview. Manual apply step.
 5. Add keyword ingestion health checks. Done.
 6. Build keyword filtering/mapping config and preview script. Done.
-7. Review v3 preview quality and continue refining mapping, fallback rules, and title overrides. Done for v3.2.1.
+7. Review preview quality and continue refining mapping, fallback rules, and title overrides. Mapping `2026-07-22-v2.3` raises assignment coverage from 39.28% to 44.81% while correcting broad semantic inferences and preserving stored signal/display quality.
 8. Implement Source Signals v1 storage/importer. Done.
 9. Product-copy polish pass before public display.
 10. Expose a sanitized source-signal decision layer in content detail API. Done.

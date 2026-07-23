@@ -656,3 +656,11 @@ Open questions:
 - Should MovieLens/MPST only inform taxonomy, or can they seed initial mappings?
 - What is the minimum coverage threshold to justify building Watch Profile UI?
 - What is the final commercial licensing path for TMDb/IMDb?
+
+## 18. Mapping Breadth Review (2026-07-22)
+
+The current mapping review uses the shared `source-signal-keyword-v1` normalization contract and a generated, ignored review dataset. A term is mapped only when its meaning is stable across affected titles and it fits an existing viewer-facing dimension. Canonical metadata, locations, franchise membership, awards, lifecycle/format markers, and provider artifacts are classified but not forced into source signals. Ambiguous terms remain queued for manual review rather than being excluded to improve the metric.
+
+Mapping version `2026-07-22-v2.3` improves assignment coverage from **39.28%** to **44.81%** and reduces titles with at least eight keywords but under 50% mapping coverage from **88** to **76**. The slight change from the earlier v2.2 candidate (**44.90%**) reflects deliberate semantic corrections: broad relationship, manipulation, obsession, historical, and inspirational keywords no longer imply stronger mood/tone/audience claims, while `bounty hunter` remains unresolved manual review rather than being excluded to inflate coverage.
+
+The runtime mapping, tracked human decisions, and generated ignored review have distinct roles. Exact mapping/action parity and supported-version parity are validated before review generation. Stored signal and display audits remain unchanged until a separately reviewed importer apply is run: mapping-quality average **95.8**, critical issues **0**; decision-display average **98.4**, critical failures **0**. Source-signal readiness correctly remains `fail`, reflecting genuine remaining breadth gaps.

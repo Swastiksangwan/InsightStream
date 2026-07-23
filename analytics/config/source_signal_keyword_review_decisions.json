@@ -1,0 +1,687 @@
+{
+  "review_version": "2026-07-22-v1.1",
+  "supports_mapping_version": "2026-07-22-v2.3",
+  "normalization_contract": "source-signal-keyword-v1",
+  "description": "Human-curated keyword decisions supporting source-signal mapping version 2026-07-22-v2.3.",
+  "decisions": {
+    "1920s": {
+      "classification": "useful_product_signal",
+      "action": "leave_unmapped",
+      "rationale": "Potentially useful period metadata, but held for manual review because adding it displaced stronger title themes under the current per-dimension limit.",
+      "confidence": "medium",
+      "human_review_required": true
+    },
+    "1960s": {
+      "classification": "useful_product_signal",
+      "action": "leave_unmapped",
+      "rationale": "Potentially useful period metadata, but held for manual review because adding it displaced stronger title themes under the current per-dimension limit.",
+      "confidence": "medium",
+      "human_review_required": true
+    },
+    "1970s": {
+      "classification": "useful_product_signal",
+      "action": "leave_unmapped",
+      "rationale": "Potentially useful period metadata, but held for manual review because adding it displaced stronger title themes under the current per-dimension limit.",
+      "confidence": "medium",
+      "human_review_required": true
+    },
+    "19th century": {
+      "classification": "useful_product_signal",
+      "action": "leave_unmapped",
+      "rationale": "Potentially useful period metadata, but held for manual review because adding it displaced stronger title themes under the current per-dimension limit.",
+      "confidence": "medium",
+      "human_review_required": true
+    },
+    "action": {
+      "classification": "canonical_metadata",
+      "action": "exclude",
+      "rationale": "Action is already represented by canonical genre metadata and is too broad to infer pacing by itself.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "android": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The reviewed titles use android consistently as a robotics and technology-story cue.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "robotics",
+          "display_label": "Robotics",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "tech-driven sci-fi",
+          "display_label": "Tech-driven sci-fi",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "angry": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The keyword does not distinguish character emotion from the overall viewing mood reliably.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "anthology": {
+      "classification": "lifecycle_or_format",
+      "action": "exclude",
+      "rationale": "Anthology describes series format rather than viewing tone or theme.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "anxious": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Across the reviewed titles it is a stable tense-mood cue.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "tense",
+          "display_label": "Tense",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "audacious": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A conservative alias of the existing bold tone.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "tone",
+          "value": "bold",
+          "display_label": "Bold",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "awestruck": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The affected titles do not support one stable mood interpretation across the catalog.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "based on video game": {
+      "classification": "canonical_metadata",
+      "action": "exclude",
+      "rationale": "Adaptation provenance is factual metadata, not a viewing signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "best picture nominee": {
+      "classification": "award_or_marketing",
+      "action": "exclude",
+      "rationale": "Award status is marketing/provenance metadata and not a viewing signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "biography": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The provider keyword spans crime, historical and adjacent works and does not safely imply one existing audience value.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "boston massachusetts": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "A geographic setting must not be forced into topic or mood.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "bounty hunter": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "A stable story archetype across several titles that may later support a character-archetype or story-premise taxonomy; no suitable current dimension exists.",
+      "confidence": "medium",
+      "human_review_required": true
+    },
+    "cerebral": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The broad cue crowded more specific tone and mood signals in the reviewed titles.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "cyberpunk": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable multi-title subgenre with clear discovery value.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "technology and society",
+          "display_label": "Technology and society",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "cyberpunk",
+          "display_label": "Cyberpunk",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "dark": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A direct and stable alias of the existing dark tone.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "tone",
+          "value": "dark",
+          "display_label": "Dark tone",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "depressing": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable bleak-mood cue in the reviewed title set.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "bleak",
+          "display_label": "Bleak",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "disturbed": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable unsettling-mood cue in the reviewed title set.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "unsettling",
+          "display_label": "Unsettling",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "dreary": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable bleak-mood alias.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "bleak",
+          "display_label": "Bleak",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "england": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "A geographic setting must not be forced into topic or mood.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "fall from grace": {
+      "classification": "spoiler_unsafe",
+      "action": "spoiler_unsafe",
+      "rationale": "The phrase may reveal a major character arc outcome.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "family relationships": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable family-dynamics cue using established family and character-drama values.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "family relationship",
+          "display_label": "Family relationship",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "female protagonist": {
+      "classification": "canonical_metadata",
+      "action": "exclude",
+      "rationale": "A protagonist attribute is factual role metadata and does not imply one viewing signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "gloomy": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The cue conflicted with stronger existing moods in the reviewed title set.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "hero": {
+      "classification": "irrelevant_or_too_generic",
+      "action": "exclude",
+      "rationale": "The broad character-role noun does not produce a stable viewer-facing signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "historical": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The broad keyword supports only a low-confidence period-setting cue, not historical drama.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "period setting",
+          "display_label": "Period setting",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "hopeless": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable bleak-mood cue in the reviewed title set.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "bleak",
+          "display_label": "Bleak",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "husband wife relationship": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A marital relationship is a neutral family relationship cue and does not imply strain.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "family relationship",
+          "display_label": "Family relationship",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "inspirational": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The keyword supports an inspiring mood but does not guarantee an uplifting tone.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "inspiring",
+          "display_label": "Inspiring",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "introspective": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable contemplative and thoughtful viewing cue.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "thoughtful",
+          "display_label": "Thoughtful",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "lgbt": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "Identity representation should not be collapsed into conflict, mood or a generic audience expectation.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "london england": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "A geographic setting must not be forced into topic or mood.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "los angeles california": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "A geographic setting must not be forced into topic or mood.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "loss of loved one": {
+      "classification": "spoiler_unsafe",
+      "action": "spoiler_unsafe",
+      "rationale": "The phrase may reveal a consequential death or loss.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "manipulation": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The keyword directly supports an explicit manipulation theme but not an inferred mood.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "manipulation",
+          "display_label": "Manipulation",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "marvel cinematic universe mcu": {
+      "classification": "franchise_or_universe",
+      "action": "exclude",
+      "rationale": "Franchise membership is not an audience-expectation signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "melancholy": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A direct canonical mood cue.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "melancholy",
+          "display_label": "Melancholy",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "miniseries": {
+      "classification": "lifecycle_or_format",
+      "action": "exclude",
+      "rationale": "Series format belongs to canonical lifecycle metadata.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "mother son relationship": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable family-dynamics cue using established values.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "family relationship",
+          "display_label": "Family relationship",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "murder investigation": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A direct alias of the established investigation-led concept.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "investigation-led story",
+          "display_label": "Investigation-led",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "investigation-led mystery",
+          "display_label": "Investigation-led mystery",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "investigation-led",
+          "display_label": "Investigation-led",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "new mexico": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "A geographic setting must not be forced into topic or mood.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "new york city": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "A geographic setting must not be forced into topic or mood.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "obsession": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The keyword directly supports an obsession theme but does not imply an intense mood.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "obsession",
+          "display_label": "Obsession",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "oscar winner": {
+      "classification": "award_or_marketing",
+      "action": "exclude",
+      "rationale": "Award status is marketing/provenance metadata and not a viewing signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "parent child relationship": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable family-dynamics cue using established values.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "family relationship",
+          "display_label": "Family relationship",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "philosophical": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The broad cue displaced more specific title tone signals and needs a future taxonomy-capacity review.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "philosophy": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The broad cue displaced more specific title tone signals and needs a future taxonomy-capacity review.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "police procedural": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable investigation-led story pattern using established values.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "pacing",
+          "value": "investigation-led",
+          "display_label": "Investigation-led",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "prequel": {
+      "classification": "lifecycle_or_format",
+      "action": "exclude",
+      "rationale": "Franchise chronology does not describe viewing tone, mood or theme.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "rescue": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A direct alias of the existing rescue-mission concept.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "rescue mission",
+          "display_label": "Rescue mission",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "surrealism": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A stable surreal and reality-bending viewing cue.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "surreal",
+          "display_label": "Surreal",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "audience_expectation",
+          "value": "reality-bending story",
+          "display_label": "Reality-bending story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "thoughtful": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The provider adjective is broad and crowded more specific title moods under current display limits.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "tragedy": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "A direct alias of the existing tragic mood.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "tragic",
+          "display_label": "Tragic",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "villain": {
+      "classification": "irrelevant_or_too_generic",
+      "action": "exclude",
+      "rationale": "The broad character-role noun does not produce a stable viewer-facing signal.",
+      "confidence": "high",
+      "human_review_required": false
+    }
+  }
+}
