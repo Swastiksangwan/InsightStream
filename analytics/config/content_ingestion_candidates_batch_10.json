@@ -1,0 +1,230 @@
+{
+  "description": "Candidate InsightStream content targets for the tenth controlled catalog expansion batch. Review and validate before merging into content_ingestion_targets.json.",
+  "targets": [
+    {
+      "title": "Memories of Murder",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "11423",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Korean crime procedural; improves non-English investigative and psychological coverage."
+    },
+    {
+      "title": "Run Lola Run",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "104",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "German kinetic thriller; strengthens non-English and fast-paced genre coverage."
+    },
+    {
+      "title": "The Assassination of Jesse James by the Coward Robert Ford",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "4512",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Revisionist Western; strengthens sparse Western and historical character-drama coverage."
+    },
+    {
+      "title": "The Babadook",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "242224",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Australian psychological horror; improves sparse Horror and grief-theme coverage."
+    },
+    {
+      "title": "The Gorge",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "950396",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Recent science-fiction survival thriller; improves current genre and romance coverage."
+    },
+    {
+      "title": "The Lives of Others",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "582",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "German political thriller; strengthens non-English, History and surveillance themes."
+    },
+    {
+      "title": "The Phoenician Scheme",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1137350",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Recent independent comedy-drama candidate; broadens current auteur and espionage coverage."
+    },
+    {
+      "title": "The Searchers",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "3114",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Classic Western; strengthens sparse Western and older-film representation."
+    },
+    {
+      "title": "The Secret in Their Eyes",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "25376",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Argentine crime drama; improves Spanish-language and political-history coverage."
+    },
+    {
+      "title": "The Shining",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "694",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "1980s psychological horror; improves decade and sparse Horror subgenre density."
+    },
+    {
+      "title": "The Thing",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1091",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "1980s science-fiction horror; strengthens decade, survival and Horror coverage."
+    },
+    {
+      "title": "The Witch",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "310131",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Folk-horror period drama; strengthens supernatural, historical and Horror density."
+    },
+    {
+      "title": "The Worst Person in the World",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "660120",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Norwegian romantic dramedy; improves non-English and contemporary coming-of-age coverage."
+    },
+    {
+      "title": "Unforgiven",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "33",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Revisionist Western; strengthens sparse Western and 1990s representation."
+    },
+    {
+      "title": "Daredevil: Born Again",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "202555",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Recent returning crime-action series; improves current mainstream lifecycle coverage."
+    },
+    {
+      "title": "Frieren: Beyond Journey's End",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "209867",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Japanese returning fantasy anime; strengthens non-English animation and reflective adventure."
+    },
+    {
+      "title": "Rome",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1891",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Ended historical drama; improves War & Politics and completed-series coverage."
+    },
+    {
+      "title": "Sintonia",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "91162",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Brazilian coming-of-age crime series; improves Portuguese-language and lifecycle diversity."
+    },
+    {
+      "title": "Spiral",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "11261",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Ended French crime procedural; strengthens non-English and long-running lifecycle coverage."
+    },
+    {
+      "title": "Suzhal: The Vortex",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "135003",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Tamil mystery thriller; improves Indian-language and investigative-series density."
+    },
+    {
+      "title": "The Pacific",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "16997",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Completed war miniseries; strengthens War, History and limited-series coverage."
+    },
+    {
+      "title": "The Paper",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "253941",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Recent workplace comedy series; improves current comedy and returning-series coverage."
+    },
+    {
+      "title": "The West Wing",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "688",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Ended political drama; strengthens War & Politics and older completed-series density."
+    },
+    {
+      "title": "Unorthodox",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "99509",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "German and Yiddish limited series; improves multilingual and completed short-form coverage."
+    },
+    {
+      "title": "Vinland Saga",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "88803",
+      "priority": "batch_test_10",
+      "ingestion_status": "candidate",
+      "notes": "Japanese historical anime; strengthens non-English animation, War and period coverage."
+    }
+  ]
+}

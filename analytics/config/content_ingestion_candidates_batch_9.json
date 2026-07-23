@@ -1,0 +1,230 @@
+{
+  "description": "Candidate InsightStream content targets for the ninth controlled catalog expansion batch. Review and validate before merging into content_ingestion_targets.json.",
+  "targets": [
+    {
+      "title": "A Separation",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "60243",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Iranian family drama; strengthens Persian-language and international relationship coverage."
+    },
+    {
+      "title": "Decision to Leave",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "705996",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Korean romantic mystery; improves non-English psychological-thriller coverage."
+    },
+    {
+      "title": "Mickey 17",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "696506",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Recent science-fiction satire; improves current space and speculative coverage."
+    },
+    {
+      "title": "Once Upon a Time in the West",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "335",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Classic Italian Western; strengthens sparse Western and older non-English coverage."
+    },
+    {
+      "title": "Shoah",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "42044",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "1980s French documentary; strengthens Documentary, History and War coverage."
+    },
+    {
+      "title": "Sirāt",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1151272",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Recent Spanish-language survival drama; improves non-English and independent coverage."
+    },
+    {
+      "title": "Suspiria",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "11906",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "1970s Italian supernatural horror; improves decade, non-English and Horror density."
+    },
+    {
+      "title": "The Act of Killing",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "123678",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Indonesian historical documentary; strengthens Documentary, History and international coverage."
+    },
+    {
+      "title": "The Battle of Algiers",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "17295",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Political war drama; strengthens older international, History and War coverage."
+    },
+    {
+      "title": "The Good, the Bad and the Ugly",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "429",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Classic Italian Western; improves sparse Western and international genre density."
+    },
+    {
+      "title": "The Handmaiden",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "290098",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Korean period psychological thriller; improves non-English and historical coverage."
+    },
+    {
+      "title": "The Hunt",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "103663",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Danish psychological drama; improves European and non-English representation."
+    },
+    {
+      "title": "The Texas Chain Saw Massacre",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "30497",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "1970s survival horror; strengthens decade and sparse Horror subgenre coverage."
+    },
+    {
+      "title": "The Umbrellas of Cherbourg",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "596",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "French romantic musical; strengthens older non-English and Music coverage."
+    },
+    {
+      "title": "3%",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "62127",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Ended Brazilian dystopian series; improves Portuguese-language and lifecycle coverage."
+    },
+    {
+      "title": "El Ministerio del Tiempo",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "62099",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Spanish historical science-fiction series; improves non-English and History density."
+    },
+    {
+      "title": "Ghost in the Shell: Stand Alone Complex",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1095",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Ended Japanese cyberpunk anime; strengthens older animation and cyberpunk coverage."
+    },
+    {
+      "title": "Kohrra",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "225084",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Punjabi crime procedural; improves Indian-language and investigative-series coverage."
+    },
+    {
+      "title": "Made in Abyss",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "72636",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Japanese dark-fantasy anime; improves non-English animation and survival coverage."
+    },
+    {
+      "title": "Mare of Easttown",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "115004",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Completed crime miniseries; strengthens procedural and limited-series density."
+    },
+    {
+      "title": "Narcos: Mexico",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "80968",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Ended bilingual crime series; improves Latin American and lifecycle representation."
+    },
+    {
+      "title": "Neon Genesis Evangelion",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "890",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Ended 1990s Japanese anime; strengthens older animation and psychological science fiction."
+    },
+    {
+      "title": "Scam 1992: The Harshad Mehta Story",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "111188",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Hindi financial period drama; improves Indian-language, History and limited-series coverage."
+    },
+    {
+      "title": "Signal",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "66330",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Korean crime science-fiction series; strengthens non-English procedural and genre density."
+    },
+    {
+      "title": "The Last Frontier",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "221079",
+      "priority": "batch_test_9",
+      "ingestion_status": "candidate",
+      "notes": "Recent survival-thriller series; improves current procedural and remote-setting coverage."
+    }
+  ]
+}
