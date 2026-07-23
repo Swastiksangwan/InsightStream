@@ -420,6 +420,23 @@ All tests and builds should pass with the local database prepared from `schema.s
 
 ## Documentation
 
+### Source-signal mapping review
+
+Run mapping work from the repository root. Review and preview commands are read-only with respect to PostgreSQL; the importer is also a dry run unless `--write` is explicitly supplied.
+
+```bash
+python3 -m analytics.scripts.source_signals.build_unmapped_keyword_review
+python3 -m analytics.scripts.source_signals.build_keyword_signal_preview
+python3 -m analytics.scripts.source_signals.import_source_signals_from_preview
+python3 -m analytics.scripts.audits.audit_source_signal_mapping_quality
+python3 -m analytics.scripts.audits.audit_decision_display_quality
+python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness
+```
+
+Generated reviews, previews, dry-run reports, and audits stay under ignored `analytics/processed/` paths. Keyword identity uses the versioned `source-signal-keyword-v1` normalization contract.
+
+The runtime mapping config is `analytics/config/source_signal_keyword_mapping.json`; tracked rationale and exact human decisions live separately in `analytics/config/source_signal_keyword_review_decisions.json`. The generated review is evidence only, not runtime configuration. Use `--baseline-mapping-file <path>` with the review command when a real before/after status comparison is required. PostgreSQL review access is explicitly read-only, and the importer remains non-mutating unless `--write` is supplied.
+
 Useful current docs:
 
 - `docs/product_direction.md`

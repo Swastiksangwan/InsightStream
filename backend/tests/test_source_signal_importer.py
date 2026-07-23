@@ -292,6 +292,77 @@ def test_source_signal_importer_deletes_obsolete_selected_signals():
 
     assert plan.signals_to_delete_or_deactivate == 1
     assert plan.obsolete_signal_ids == [79]
+    title_report = plan.titles_imported[0]
+    assert title_report["signals_inserted"] == 1
+    assert title_report["signals_removed"] == 1
+    assert title_report["removed_signals"] == [
+        {
+            "dimension": "tone",
+            "value": "obsolete",
+            "display_label": "Obsolete",
+            "replacement_signal": None,
+            "reason": "The corrected mapping no longer generates a supported signal in this dimension.",
+            "removal_type": "semantic_mapping_removal",
+            "semantic_change": True,
+        }
+    ]
+    assert title_report["affected_dimensions"] == ["mood", "tone"]
+    assert title_report["warnings"] == []
+
+
+def test_signal_updates_are_classified_by_semantic_version_and_provenance_changes():
+    importer = load_source_signal_importer_module()
+    record = importer.SourceSignalRecord(
+        content_id=123,
+        dimension="mood",
+        value="tense",
+        label="Tense",
+        confidence="medium",
+        source_names=["tmdb_keywords"],
+        source_payload={"mapping_version": "new", "content_type": "movie"},
+    )
+    existing = {
+        "label": "Tense",
+        "confidence": "medium",
+        "source_names": ["tmdb_keywords"],
+        "source_payload": {"mapping_version": "old", "content_type": "movie"},
+        "is_active": True,
+    }
+
+    assert importer.signal_update_type(existing, record) == "mapping_version_only_update"
+    assert importer.signal_update_type({**existing, "label": "Old"}, record) == "semantic_update"
+    assert (
+        importer.signal_update_type({**existing, "source_names": ["other"]}, record)
+        == "provenance_only_update"
+    )
+    assert importer.signal_update_type({**existing, "source_payload": record.source_payload}, record) == "unchanged"
+
+
+def test_import_plan_reports_mapping_version_churn_separately():
+    importer = load_source_signal_importer_module()
+    existing_signals = [
+        matching_existing_signal(),
+        {
+            **matching_existing_signal(),
+            "id": 78,
+            "dimension": "mood",
+            "value": "tense",
+            "label": "Tense",
+        },
+    ]
+    plan = build_plan(
+        importer,
+        conn=FakeConnection(existing_signals=existing_signals),
+        report=report_payload(mapping_version="new-version"),
+    )
+
+    assert plan.signals_to_update == 2
+    assert plan.signals_mapping_version_only_updates == 2
+    assert plan.signals_semantic_updates == 0
+    assert plan.signals_provenance_only_updates == 0
+    assert {
+        item["update_type"] for item in plan.titles_imported[0]["updated_signals"]
+    } == {"mapping_version_only_update"}
 
 
 def test_source_signal_partial_import_fails_without_allow_flag():

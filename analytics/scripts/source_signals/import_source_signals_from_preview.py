@@ -114,6 +114,9 @@ class ImportPlan:
     invalid_preview_rows: int = 0
     signals_to_insert: int = 0
     signals_to_update: int = 0
+    signals_semantic_updates: int = 0
+    signals_mapping_version_only_updates: int = 0
+    signals_provenance_only_updates: int = 0
     signals_to_delete_or_deactivate: int = 0
     signals_unchanged: int = 0
     guidance_to_insert: int = 0
@@ -580,16 +583,35 @@ def fetch_existing_guidance(
     return {int(row["content_id"]): dict(row) for row in rows}
 
 
-def signal_needs_update(existing: dict[str, Any], record: SourceSignalRecord) -> bool:
-    return any(
+def signal_update_type(existing: dict[str, Any], record: SourceSignalRecord) -> str:
+    if any(
         (
             existing.get("label") != record.label,
             existing.get("confidence") != record.confidence,
-            not json_equal(existing.get("source_names"), record.source_names),
-            not json_equal(existing.get("source_payload"), record.source_payload),
             existing.get("is_active") is not True,
         )
-    )
+    ):
+        return "semantic_update"
+    if not json_equal(existing.get("source_names"), record.source_names):
+        return "provenance_only_update"
+
+    existing_payload = existing.get("source_payload") or {}
+    desired_payload = record.source_payload
+    if json_equal(existing_payload, desired_payload):
+        return "unchanged"
+    if isinstance(existing_payload, dict) and isinstance(desired_payload, dict):
+        changed_keys = {
+            key
+            for key in set(existing_payload) | set(desired_payload)
+            if not json_equal(existing_payload.get(key), desired_payload.get(key))
+        }
+        if changed_keys == {"mapping_version"}:
+            return "mapping_version_only_update"
+    return "provenance_only_update"
+
+
+def signal_needs_update(existing: dict[str, Any], record: SourceSignalRecord) -> bool:
+    return signal_update_type(existing, record) != "unchanged"
 
 
 def guidance_needs_update(existing: dict[str, Any], record: WatchGuidanceRecord) -> bool:
@@ -701,6 +723,18 @@ def build_import_plan(
                 "content_id": content_id,
                 "title": content_rows[content_id]["title"],
                 "content_type": content_rows[content_id]["content_type"],
+                "signals_inserted": 0,
+                "signals_updated": 0,
+                "semantic_updates": 0,
+                "mapping_version_only_updates": 0,
+                "provenance_only_updates": 0,
+                "signals_removed": 0,
+                "signals_unchanged": 0,
+                "inserted_signals": [],
+                "updated_signals": [],
+                "removed_signals": [],
+                "affected_dimensions": set(),
+                "warnings": [],
             }
         )
 
@@ -709,18 +743,110 @@ def build_import_plan(
 
     desired_signal_keys = {record.key for record in signal_records}
     existing_signals = fetch_existing_signals(conn, selected_content_ids)
+    title_reports = {row["content_id"]: row for row in plan.titles_imported}
     for record in signal_records:
         existing = existing_signals.get(record.key)
+        title_report = title_reports[record.content_id]
+        signal_identity = {"dimension": record.dimension, "value": record.value}
         if not existing:
             plan.signals_to_insert += 1
-        elif signal_needs_update(existing, record):
-            plan.signals_to_update += 1
+            title_report["signals_inserted"] += 1
+            title_report["inserted_signals"].append(signal_identity)
+            title_report["affected_dimensions"].add(record.dimension)
         else:
+            update_type = signal_update_type(existing, record)
+        if existing and update_type != "unchanged":
+            plan.signals_to_update += 1
+            title_report["signals_updated"] += 1
+            if update_type == "semantic_update":
+                plan.signals_semantic_updates += 1
+                title_report["semantic_updates"] += 1
+            elif update_type == "mapping_version_only_update":
+                plan.signals_mapping_version_only_updates += 1
+                title_report["mapping_version_only_updates"] += 1
+            else:
+                plan.signals_provenance_only_updates += 1
+                title_report["provenance_only_updates"] += 1
+            title_report["updated_signals"].append(
+                {
+                    **signal_identity,
+                    "update_type": update_type,
+                    "before": (
+                        {
+                            "display_label": existing.get("label"),
+                            "confidence": existing.get("confidence"),
+                        }
+                        if update_type == "semantic_update"
+                        else None
+                    ),
+                    "after": (
+                        {"display_label": record.label, "confidence": record.confidence}
+                        if update_type == "semantic_update"
+                        else None
+                    ),
+                }
+            )
+            title_report["affected_dimensions"].add(record.dimension)
+        elif existing:
             plan.signals_unchanged += 1
+            title_report["signals_unchanged"] += 1
+    desired_by_content_dimension: dict[tuple[int, str], list[SourceSignalRecord]] = {}
+    for record in signal_records:
+        desired_by_content_dimension.setdefault((record.content_id, record.dimension), []).append(
+            record
+        )
     for key, existing in existing_signals.items():
         if key[0] in selected_content_ids and key not in desired_signal_keys:
             plan.signals_to_delete_or_deactivate += 1
             plan.obsolete_signal_ids.append(int(existing["id"]))
+            title_report = title_reports[key[0]]
+            title_report["signals_removed"] += 1
+            replacements = desired_by_content_dimension.get((key[0], key[1]), [])
+            replacement = next(
+                (record for record in replacements if record.key not in existing_signals),
+                replacements[0] if replacements else None,
+            )
+            removal_reason = (
+                "The generated signal set retains a higher-ranked replacement in this dimension."
+                if replacement
+                else "The corrected mapping no longer generates a supported signal in this dimension."
+            )
+            title_report["removed_signals"].append(
+                {
+                    "dimension": key[1],
+                    "value": key[2],
+                    "display_label": existing.get("label"),
+                    "replacement_signal": (
+                        {
+                            "dimension": replacement.dimension,
+                            "value": replacement.value,
+                            "display_label": replacement.label,
+                        }
+                        if replacement
+                        else None
+                    ),
+                    "reason": removal_reason,
+                    "removal_type": (
+                        "ranking_displacement" if replacement else "semantic_mapping_removal"
+                    ),
+                    "semantic_change": True,
+                }
+            )
+            title_report["affected_dimensions"].add(key[1])
+
+    desired_content_ids = {record.content_id for record in signal_records}
+    for content_id, title_report in title_reports.items():
+        if title_report["signals_removed"] and content_id not in desired_content_ids:
+            plan.errors.append(
+                f"{title_report['title']}: removal would leave the title without useful signals."
+            )
+
+    for title_report in plan.titles_imported:
+        title_report["affected_dimensions"] = sorted(title_report["affected_dimensions"])
+        for field_name in ("inserted_signals", "updated_signals", "removed_signals"):
+            title_report[field_name].sort(
+                key=lambda item: (item["dimension"], item["value"])
+            )
 
     existing_guidance = fetch_existing_guidance(conn, selected_content_ids)
     for record in guidance_records:
@@ -1013,6 +1139,9 @@ def report_from_plan(plan: ImportPlan) -> dict[str, Any]:
         "invalid_preview_rows": plan.invalid_preview_rows,
         "signals_to_insert": plan.signals_to_insert,
         "signals_to_update": plan.signals_to_update,
+        "signals_semantic_updates": plan.signals_semantic_updates,
+        "signals_mapping_version_only_updates": plan.signals_mapping_version_only_updates,
+        "signals_provenance_only_updates": plan.signals_provenance_only_updates,
         "signals_to_delete_or_deactivate": plan.signals_to_delete_or_deactivate,
         "signals_unchanged": plan.signals_unchanged,
         "guidance_to_insert": plan.guidance_to_insert,
@@ -1041,6 +1170,12 @@ def print_summary(plan: ImportPlan) -> None:
         f"{plan.signals_to_update}/"
         f"{plan.signals_to_delete_or_deactivate}/"
         f"{plan.signals_unchanged}"
+    )
+    print(
+        "Signal updates semantic/version-only/provenance-only: "
+        f"{plan.signals_semantic_updates}/"
+        f"{plan.signals_mapping_version_only_updates}/"
+        f"{plan.signals_provenance_only_updates}"
     )
     print(
         "Guidance to insert/update/unchanged: "

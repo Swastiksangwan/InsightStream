@@ -1,5 +1,5 @@
 {
-  "mapping_version": "2026-07-09-v2.1",
+  "mapping_version": "2026-07-22-v2.3",
   "description": "Curated keyword-to-signal mapping for TMDb keyword-derived watch guidance.",
   "source": "tmdb_keywords",
   "newly_mapped_from_previous_version": [
@@ -337,7 +337,31 @@
     "wildlife conservation",
     "captivating",
     "inspiring",
-    "relaxing"
+    "relaxing",
+    "android",
+    "anxious",
+    "audacious",
+    "cyberpunk",
+    "dark",
+    "depressing",
+    "disturbed",
+    "dreary",
+    "family relationships",
+    "historical",
+    "hopeless",
+    "husband wife relationship",
+    "inspirational",
+    "introspective",
+    "manipulation",
+    "melancholy",
+    "mother son relationship",
+    "murder investigation",
+    "obsession",
+    "parent child relationship",
+    "police procedural",
+    "rescue",
+    "surrealism",
+    "tragedy"
   ],
   "dimensions": [
     "topic_theme",
@@ -349,20 +373,39 @@
     "content_caution_proxy"
   ],
   "excluded_keywords": [
+    "action",
     "aftercreditsstinger",
+    "anthology",
     "based on novel or book",
     "based on true story",
+    "based on video game",
+    "best picture nominee",
+    "boston massachusetts",
     "duringcreditsstinger",
+    "england",
+    "female protagonist",
+    "hero",
+    "london england",
+    "los angeles california",
+    "marvel cinematic universe mcu",
     "mid credit scene",
+    "miniseries",
+    "new mexico",
+    "new york city",
+    "oscar winner",
     "post credit scene",
+    "prequel",
     "remake",
     "sequel",
     "spin off",
+    "villain",
     "woman director"
   ],
   "spoiler_unsafe_keywords": [
     "betrayal",
     "death",
+    "fall from grace",
+    "loss of loved one",
     "murdered",
     "plot twist",
     "secret identity",
@@ -14369,6 +14412,161 @@
         }
       ],
       "notes": "Investigation evidence cue."
+    },
+    "android": {
+      "dimensions": ["topic_theme", "audience_expectation"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "robotics", "display_label": "Robotics", "weight": 2, "confidence": "medium", "spoiler_safe": true},
+        {"dimension": "audience_expectation", "value": "tech-driven sci-fi", "display_label": "Tech-driven sci-fi", "weight": 2, "confidence": "medium", "spoiler_safe": true}
+      ],
+      "notes": "Stable robotics and technology-story cue."
+    },
+    "anxious": {
+      "dimensions": ["mood"],
+      "signals": [{"dimension": "mood", "value": "tense", "display_label": "Tense", "weight": 1, "confidence": "low", "spoiler_safe": true}],
+      "notes": "Mood alias."
+    },
+    "audacious": {
+      "dimensions": ["tone"],
+      "signals": [{"dimension": "tone", "value": "bold", "display_label": "Bold", "weight": 1, "confidence": "low", "spoiler_safe": true}],
+      "notes": "Conservative tone alias."
+    },
+    "cyberpunk": {
+      "dimensions": ["topic_theme", "audience_expectation"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "technology and society", "display_label": "Technology and society", "weight": 2, "confidence": "medium", "spoiler_safe": true},
+        {"dimension": "audience_expectation", "value": "cyberpunk", "display_label": "Cyberpunk", "weight": 3, "confidence": "medium", "spoiler_safe": true}
+      ],
+      "notes": "Stable multi-title subgenre cue; adds one viewer-useful canonical audience value."
+    },
+    "dark": {
+      "dimensions": ["tone"],
+      "signals": [{"dimension": "tone", "value": "dark", "display_label": "Dark tone", "weight": 2, "confidence": "medium", "spoiler_safe": true}],
+      "notes": "Direct tone alias."
+    },
+    "depressing": {
+      "dimensions": ["mood"],
+      "signals": [{"dimension": "mood", "value": "bleak", "display_label": "Bleak", "weight": 1, "confidence": "low", "spoiler_safe": true}],
+      "notes": "Mood alias."
+    },
+    "disturbed": {
+      "dimensions": ["mood"],
+      "signals": [{"dimension": "mood", "value": "unsettling", "display_label": "Unsettling", "weight": 1, "confidence": "low", "spoiler_safe": true}],
+      "notes": "Mood alias."
+    },
+    "dreary": {
+      "dimensions": ["mood"],
+      "signals": [{"dimension": "mood", "value": "bleak", "display_label": "Bleak", "weight": 1, "confidence": "low", "spoiler_safe": true}],
+      "notes": "Mood alias."
+    },
+    "family relationships": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "family relationship", "display_label": "Family relationship", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "General family-dynamics cue using established values."
+    },
+    "historical": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "period setting", "display_label": "Period setting", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Broad period-context cue; does not infer historical drama."
+    },
+    "hopeless": {
+      "dimensions": ["mood"],
+      "signals": [{"dimension": "mood", "value": "bleak", "display_label": "Bleak", "weight": 1, "confidence": "low", "spoiler_safe": true}],
+      "notes": "Mood alias."
+    },
+    "husband wife relationship": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "family relationship", "display_label": "Family relationship", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Neutral marital/family relationship cue; does not infer conflict."
+    },
+    "inspirational": {
+      "dimensions": ["mood"],
+      "signals": [
+        {"dimension": "mood", "value": "inspiring", "display_label": "Inspiring", "weight": 2, "confidence": "medium", "spoiler_safe": true}
+      ],
+      "notes": "Canonical alias of inspiring; does not infer uplifting tone."
+    },
+    "introspective": {
+      "dimensions": ["mood"],
+      "signals": [
+        {"dimension": "mood", "value": "thoughtful", "display_label": "Thoughtful", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Stable reflective-viewing cue using existing canonical values."
+    },
+    "manipulation": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "manipulation", "display_label": "Manipulation", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Explicit interpersonal-control theme; does not infer mood."
+    },
+    "melancholy": {
+      "dimensions": ["mood"],
+      "signals": [{"dimension": "mood", "value": "melancholy", "display_label": "Melancholy", "weight": 1, "confidence": "low", "spoiler_safe": true}],
+      "notes": "Direct mood alias."
+    },
+    "mother son relationship": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "family relationship", "display_label": "Family relationship", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Family-dynamics alias using established values."
+    },
+    "murder investigation": {
+      "dimensions": ["topic_theme", "audience_expectation", "pacing"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "investigation-led story", "display_label": "Investigation-led", "weight": 1, "confidence": "low", "spoiler_safe": true},
+        {"dimension": "audience_expectation", "value": "investigation-led mystery", "display_label": "Investigation-led mystery", "weight": 1, "confidence": "low", "spoiler_safe": true},
+        {"dimension": "pacing", "value": "investigation-led", "display_label": "Investigation-led", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Canonical investigation alias."
+    },
+    "obsession": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "obsession", "display_label": "Obsession", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Stable multi-title theme; does not infer mood."
+    },
+    "parent child relationship": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "family relationship", "display_label": "Family relationship", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Family-dynamics alias using established values."
+    },
+    "police procedural": {
+      "dimensions": ["pacing"],
+      "signals": [
+        {"dimension": "pacing", "value": "investigation-led", "display_label": "Investigation-led", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Stable procedural-story cue using established values."
+    },
+    "rescue": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "rescue mission", "display_label": "Rescue mission", "weight": 1, "confidence": "low", "spoiler_safe": true}
+      ],
+      "notes": "Canonical alias of rescue mission."
+    },
+    "surrealism": {
+      "dimensions": ["mood", "audience_expectation"],
+      "signals": [
+        {"dimension": "mood", "value": "surreal", "display_label": "Surreal", "weight": 2, "confidence": "medium", "spoiler_safe": true},
+        {"dimension": "audience_expectation", "value": "reality-bending story", "display_label": "Reality-bending story", "weight": 2, "confidence": "medium", "spoiler_safe": true}
+      ],
+      "notes": "Canonical surreal-viewing alias."
+    },
+    "tragedy": {
+      "dimensions": ["mood"],
+      "signals": [{"dimension": "mood", "value": "tragic", "display_label": "Tragic", "weight": 2, "confidence": "medium", "spoiler_safe": true}],
+      "notes": "Canonical alias of tragic."
     }
   },
   "signal_display": {

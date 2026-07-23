@@ -778,6 +778,27 @@ analytics/processed/tmdb_keywords/run_reports/tmdb_keywords_import_report.json
 
 The keyword-to-signal preview layer converts imported raw TMDb keywords into local, product-friendly watch guidance previews. It can also use local metadata fallback and curated title overrides for weak keyword-only profiles. It does not create `source_signals` tables, change backend APIs, or update the frontend.
 
+Before changing mappings, generate the deterministic review dataset:
+
+```bash
+python3 -m analytics.scripts.source_signals.build_unmapped_keyword_review
+```
+
+The three mapping-review files have separate ownership:
+
+- `analytics/config/source_signal_keyword_mapping.json` is the runtime source of truth used by preview/import code.
+- `analytics/config/source_signal_keyword_review_decisions.json` is the tracked human-curation record containing classification, rationale, confidence, exact proposed mappings, and its supported runtime mapping version.
+- `analytics/processed/source_signal_reviews/source_signal_unmapped_keyword_review.json` is a generated, ignored report. It combines database statistics, runtime status, and curated decisions; it is not an input to preview/import.
+
+The report covers the top 100 unmapped keywords, every unmapped keyword affecting at least three titles, and keywords materially affecting low-coverage titles. The builder validates exact decision/config parity and uses an explicit PostgreSQL read-only transaction. Locations, franchise names, awards, and lifecycle markers are classified but are not forced into viewing-signal dimensions. To show real before/after transitions, supply a retained baseline config:
+
+```bash
+python3 -m analytics.scripts.source_signals.build_unmapped_keyword_review \
+  --baseline-mapping-file /path/to/baseline-source-signal-mapping.json
+```
+
+Without a baseline, before-state fields remain not evaluated. Scripts do not invent semantic decisions.
+
 Default preview:
 
 ```bash
@@ -825,7 +846,7 @@ analytics/processed/source_signals/run_reports/source_signal_preview_report.json
 Preview behavior:
 
 - reads imported TMDb keywords from `keyword_sources`, `provider_keywords`, and `content_keywords`;
-- applies the curated keyword-to-signal mapping config, currently `2026-07-02-v3.1`;
+- applies the curated keyword-to-signal mapping config, currently `2026-07-22-v2.3`;
 - applies curated title overrides, currently `2026-07-02-v3.1`, for known weak or misleading keyword-only previews;
 - uses local genre metadata fallback only when keyword-derived signals are weak;
 - excludes noisy keywords from user-facing guidance;
@@ -865,6 +886,8 @@ python3 -m analytics.scripts.source_signals.import_source_signals_from_preview -
 Importer behavior:
 
 - dry-run by default, with no DB writes;
+- reports inserted, removed and unchanged signals per title, and separates semantic updates from mapping-version-only and provenance-only updates;
+- gives every removal a concrete identity, rationale, removal type, and replacement signal when ranking displacement applies;
 - `--write` creates one `source_signal_import_runs` row and upserts current rows in `content_source_signals` and `content_watch_guidance`;
 - imports only content IDs present in the selected preview scope;
 - does not touch content IDs outside the selected preview;
