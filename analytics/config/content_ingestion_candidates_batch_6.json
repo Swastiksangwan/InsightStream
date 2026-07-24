@@ -1,0 +1,230 @@
+{
+  "description": "Candidate InsightStream content targets for the sixth controlled catalog expansion batch. Review and validate before merging into content_ingestion_targets.json.",
+  "targets": [
+    {
+      "title": "Backrooms",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1083381",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Upcoming Kane Parsons and A24 horror candidate; release metadata requires validation before merge."
+    },
+    {
+      "title": "Bacurau",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "446159",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Brazilian genre-hybrid candidate; improves Portuguese-language, Western and political-thriller coverage."
+    },
+    {
+      "title": "Come and See",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "25237",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Soviet anti-war drama; strengthens older international, History and War coverage."
+    },
+    {
+      "title": "Eega",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "148265",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Telugu fantasy-action candidate; improves Indian-language and inventive genre coverage."
+    },
+    {
+      "title": "Evil Dead Burn",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1212763",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Upcoming supernatural-horror candidate; release metadata requires validation before merge."
+    },
+    {
+      "title": "Hamnet",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "858024",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent Chloé Zhao historical-drama candidate; improves literary and period coverage."
+    },
+    {
+      "title": "Materialists",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1136867",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent romantic-comedy candidate; broadens contemporary relationship and independent-film coverage."
+    },
+    {
+      "title": "Obsession",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1339713",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Upcoming Curry Barker psychological-horror film; release metadata requires validation before merge."
+    },
+    {
+      "title": "Sentimental Value",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1124566",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent Norwegian family-drama candidate; improves European and non-English representation."
+    },
+    {
+      "title": "Sinners",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1233413",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent supernatural-horror candidate; strengthens Horror and Music-adjacent genre density."
+    },
+    {
+      "title": "Stop Making Sense",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "24128",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "1980s concert documentary; strengthens sparse Documentary and Music coverage."
+    },
+    {
+      "title": "Superman",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1061474",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "2025 James Gunn and David Corenswet film; adds current mainstream superhero coverage."
+    },
+    {
+      "title": "The Secret Agent",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1220564",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent Brazilian political-thriller candidate; improves Portuguese-language and History coverage."
+    },
+    {
+      "title": "The Voice of Hind Rajab",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1480382",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent Arabic-language historical-drama candidate; strengthens War and regional representation."
+    },
+    {
+      "title": "Train Dreams",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1241983",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent period-drama candidate; adds independent literary adaptation and historical coverage."
+    },
+    {
+      "title": "Adolescence",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "249042",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent British limited series; improves crime drama and completed short-form coverage."
+    },
+    {
+      "title": "Dear Child",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "229221",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "German limited thriller; improves non-English psychological-crime and lifecycle diversity."
+    },
+    {
+      "title": "Dhootha",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "200946",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Telugu supernatural thriller; strengthens Indian-language series and Horror coverage."
+    },
+    {
+      "title": "Kingdom",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "70593",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Korean historical-horror series; improves non-English, period and survival coverage."
+    },
+    {
+      "title": "Lupin",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "96677",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "French returning crime series; improves non-English and ongoing-series representation."
+    },
+    {
+      "title": "Station Eleven",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "90972",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Completed limited survival drama; strengthens post-apocalyptic and lifecycle diversity."
+    },
+    {
+      "title": "The Eternaut",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "226362",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent Argentine science-fiction series; improves Spanish-language and survival coverage."
+    },
+    {
+      "title": "The Pitt",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "250307",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Recent returning medical drama; improves currently airing and procedural-series density."
+    },
+    {
+      "title": "The Vietnam War",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "46434",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "Completed documentary miniseries; strengthens sparse Documentary, History and War coverage."
+    },
+    {
+      "title": "The World at War",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "751",
+      "priority": "batch_test_6",
+      "ingestion_status": "candidate",
+      "notes": "1970s ended documentary series; improves decade, History, War and lifecycle representation."
+    }
+  ]
+}

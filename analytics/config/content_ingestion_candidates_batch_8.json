@@ -1,0 +1,230 @@
+{
+  "description": "Candidate InsightStream content targets for the eighth controlled catalog expansion batch. Review and validate before merging into content_ingestion_targets.json.",
+  "targets": [
+    {
+      "title": "All That Jazz",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "16858",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "1970s musical drama; strengthens decade and sparse Music coverage."
+    },
+    {
+      "title": "Brazil",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "68",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "1980s dystopian satire; improves decade and speculative political coverage."
+    },
+    {
+      "title": "Eddington",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "648878",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Recent neo-Western candidate; improves current Western and political-satire coverage."
+    },
+    {
+      "title": "Free Solo",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "515042",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Adventure documentary; strengthens sparse Documentary and survival-risk coverage."
+    },
+    {
+      "title": "In the Mood for Love",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "843",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Cantonese romantic drama; improves East Asian and reflective relationship coverage."
+    },
+    {
+      "title": "Nouvelle Vague",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1254808",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Recent French-language historical film candidate; improves European and cinema-history coverage."
+    },
+    {
+      "title": "Once",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "5723",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Irish independent music romance; strengthens Music and grounded romantic-drama coverage."
+    },
+    {
+      "title": "Paris Is Burning",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "31225",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "1990s cultural documentary; strengthens Documentary and underrepresented community stories."
+    },
+    {
+      "title": "Paths of Glory",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "975",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Classic anti-war drama; improves older-film, History and War coverage."
+    },
+    {
+      "title": "Portrait of a Lady on Fire",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "531428",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "French period romance; improves non-English historical and relationship coverage."
+    },
+    {
+      "title": "Ringu",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "2671",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Japanese supernatural horror; strengthens non-English and sparse Horror subgenre density."
+    },
+    {
+      "title": "The Exorcist",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "9552",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "1970s supernatural-horror landmark; improves decade and Horror coverage."
+    },
+    {
+      "title": "The Smashing Machine",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "760329",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Recent biographical sports-drama candidate; adds current independent and biography coverage."
+    },
+    {
+      "title": "Weapons",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1078605",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Recent mystery-horror candidate; strengthens current psychological and supernatural coverage."
+    },
+    {
+      "title": "1899",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "90669",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Completed multilingual mystery series; improves European and ended-series representation."
+    },
+    {
+      "title": "Alien: Earth",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "157239",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Recent science-fiction horror series; improves current and returning genre coverage."
+    },
+    {
+      "title": "Call My Agent!",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "64165",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Ended French comedy-drama; improves non-English and completed-series coverage."
+    },
+    {
+      "title": "City of Men",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "3317",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Ended Brazilian coming-of-age series; strengthens Portuguese-language and older-series coverage."
+    },
+    {
+      "title": "Gomorrah",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "61068",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Ended Italian crime series; improves non-English and long-form crime density."
+    },
+    {
+      "title": "How to Sell Drugs Online (Fast)",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "88236",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "German coming-of-age crime comedy; improves non-English and returning-series representation."
+    },
+    {
+      "title": "Monster",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "30981",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Ended Japanese psychological anime; strengthens older anime and crime-thriller density."
+    },
+    {
+      "title": "My Brilliant Friend",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "78154",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Completed Italian period drama; improves non-English, historical and lifecycle coverage."
+    },
+    {
+      "title": "Task",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "228305",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Recent crime miniseries candidate; improves current procedural and limited-series coverage."
+    },
+    {
+      "title": "The Bureau",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "62476",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Ended French spy series; strengthens non-English political-thriller and lifecycle density."
+    },
+    {
+      "title": "Tokyo Vice",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "90296",
+      "priority": "batch_test_8",
+      "ingestion_status": "candidate",
+      "notes": "Completed bilingual crime series; improves Japanese setting and investigative coverage."
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "description": "Candidate InsightStream content targets for the seventh controlled catalog expansion batch. Review and validate before merging into content_ingestion_targets.json.",
+  "targets": [
+    {
+      "title": "13th",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "407806",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Social-justice documentary; strengthens sparse Documentary and historical-topic coverage."
+    },
+    {
+      "title": "28 Years Later",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1100988",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Recent survival-horror candidate; strengthens Horror and post-apocalyptic coverage."
+    },
+    {
+      "title": "Amadeus",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "279",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "1980s historical music drama; improves decade, History and Music coverage."
+    },
+    {
+      "title": "Army of Shadows",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "15383",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "French resistance drama; strengthens older non-English, War and political-thriller coverage."
+    },
+    {
+      "title": "Bāhubali: The Beginning",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "256040",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Telugu historical epic; improves Indian-language, action-fantasy and period coverage."
+    },
+    {
+      "title": "Bugonia",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "701387",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Recent science-fiction dark-comedy candidate; adds contemporary genre diversity."
+    },
+    {
+      "title": "Main Vaapas Aaunga",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1431068",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Hindi recent"
+    },
+    {
+      "title": "Central Station",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "666",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Brazilian road drama; strengthens Portuguese-language and international character stories."
+    },
+    {
+      "title": "Das Boot",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "387",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "1980s German war thriller; improves decade, non-English and War coverage."
+    },
+    {
+      "title": "Frankenstein",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1062722",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Recent gothic-horror adaptation; strengthens Horror and literary period coverage."
+    },
+    {
+      "title": "Grave of the Fireflies",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "12477",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "1980s Japanese animated war drama; improves anime, decade and War coverage."
+    },
+    {
+      "title": "No Other Choice",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "639988",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Recent Korean dark-comedy thriller; improves non-English and contemporary genre density."
+    },
+    {
+      "title": "Sound of Metal",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "502033",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Independent music drama; strengthens Music and accessibility-related storytelling."
+    },
+    {
+      "title": "The Wicker Man",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "16307",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "1970s British folk horror; improves decade and sparse Horror subgenre coverage."
+    },
+    {
+      "title": "A Knight of the Seven Kingdoms",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "224372",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Upcoming fantasy series; release and lifecycle metadata require validation before merge."
+    },
+    {
+      "title": "Babylon Berlin",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "66980",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "German period crime series; improves non-English, political-thriller and returning-series coverage."
+    },
+    {
+      "title": "Delhi Crime",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "87508",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Indian crime procedural; strengthens Hindi-language and investigative-series density."
+    },
+    {
+      "title": "Deutschland 83",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "62681",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Ended German spy series; improves non-English, Cold War and lifecycle representation."
+    },
+    {
+      "title": "Generation Kill",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "17035",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Completed war miniseries; strengthens War, procedural realism and limited-series coverage."
+    },
+    {
+      "title": "Moving",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "126485",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Korean supernatural action series; improves non-English and coming-of-age genre density."
+    },
+    {
+      "title": "Paatal Lok",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "103051",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Hindi crime thriller; strengthens Indian-language and returning-series coverage."
+    },
+    {
+      "title": "Pachinko",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "110382",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Multilingual historical family series; improves Korean, Japanese and lifecycle diversity."
+    },
+    {
+      "title": "Pluribus",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "225171",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Recent science-fiction series; improves current high-concept and returning-series coverage."
+    },
+    {
+      "title": "The Americans",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "46533",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Ended political spy drama; strengthens completed-series and Cold War thriller density."
+    },
+    {
+      "title": "The Studio",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "247767",
+      "priority": "batch_test_7",
+      "ingestion_status": "candidate",
+      "notes": "Recent returning comedy series; improves current comedy and industry-satire coverage."
+    }
+  ]
+}

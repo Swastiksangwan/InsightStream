@@ -2,6 +2,10 @@
 """
 Merge validated ingestion candidates into the main target config.
 
+Run and review validate_ingestion_candidates before using this command. This
+script performs structural and duplicate checks but does not prove that remote
+TMDb validation succeeded.
+
 Dry run is the default. Use --apply to write analytics/config/content_ingestion_targets.json.
 This script does not fetch provider data and does not write to PostgreSQL.
 """
@@ -21,9 +25,9 @@ DEFAULT_CANDIDATES_PATH = (
     REPO_ROOT / "analytics" / "config" / "content_ingestion_candidates_batch_2.json"
 )
 DEFAULT_TARGETS_PATH = REPO_ROOT / "analytics" / "config" / "content_ingestion_targets.json"
-VERIFIED_NOTES = "Verified batch-2 scalable ingestion target."
 SUPPORTED_CONTENT_TYPES = {"movie", "series"}
 SUPPORTED_SOURCE_NAMES = {"tmdb"}
+SUPPORTED_CANDIDATE_STATUS = "candidate"
 
 
 class MergeError(RuntimeError):
@@ -32,7 +36,10 @@ class MergeError(RuntimeError):
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Merge validated ingestion candidates into the main target config."
+        description=(
+            "Merge previously validated and reviewed ingestion candidates into "
+            "the main target config."
+        )
     )
     parser.add_argument(
         "--candidates",
@@ -53,7 +60,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--priority",
         default="batch_test_2",
-        help="Priority value to assign to merged candidates.",
+        help="Expected priority; every candidate must already match this value.",
     )
     parser.add_argument(
         "--apply",
@@ -91,6 +98,18 @@ def normalize_title(value: str | None) -> str:
     if not value:
         return ""
     return re.sub(r"[^a-z0-9]+", "", value.lower())
+
+
+def normalize_optional_year(value: Any) -> int | None:
+    if value is None or value == "":
+        return None
+    try:
+        year = int(value)
+    except (TypeError, ValueError):
+        return None
+    if 1800 <= year <= 3000:
+        return year
+    return None
 
 
 def load_json_object(path: Path) -> dict[str, Any]:
@@ -135,6 +154,11 @@ def validate_target_shape(target: dict[str, Any], label: str) -> list[str]:
     content_type = (clean_text(target.get("content_type")) or "").lower()
     source_name = (clean_text(target.get("source_name")) or "").lower()
     source_id = clean_text(target.get("source_id"))
+    priority = clean_text(target.get("priority"))
+    ingestion_status = (clean_text(target.get("ingestion_status")) or "").lower()
+    notes = clean_text(target.get("notes"))
+    original_language = clean_text(target.get("original_language"))
+    year = target.get("year")
 
     if not title:
         errors.append(f"{label}: missing title")
@@ -146,8 +170,40 @@ def validate_target_shape(target: dict[str, Any], label: str) -> list[str]:
         errors.append(f"{label}: missing source_id")
     elif not source_id.isdigit() or int(source_id) <= 0:
         errors.append(f"{label}: source_id must be a positive integer string")
+    if not priority:
+        errors.append(f"{label}: missing priority")
+    if ingestion_status != SUPPORTED_CANDIDATE_STATUS:
+        errors.append(f"{label}: ingestion_status must be candidate")
+    if not notes:
+        errors.append(f"{label}: notes must be non-empty")
+    if original_language and not re.fullmatch(
+        r"[a-z]{2}", original_language.casefold()
+    ):
+        errors.append(f"{label}: original_language must be an ISO 639-1 code")
+    if year is not None and year != "":
+        if normalize_optional_year(year) is None:
+            errors.append(f"{label}: year must be an integer from 1800 through 3000")
 
     return errors
+
+
+def validate_candidate_priority(
+    target: dict[str, Any],
+    expected_priority: str,
+    label: str,
+) -> list[str]:
+    actual_priority = clean_text(target.get("priority"))
+    if actual_priority == expected_priority:
+        return []
+
+    title = clean_text(target.get("title")) or "untitled"
+    actual_display = actual_priority or "<missing>"
+    return [
+        (
+            f"{label} ({title}): priority must match --priority "
+            f"{expected_priority}; actual priority is {actual_display}"
+        )
+    ]
 
 
 def duplicate_errors(targets: list[dict[str, Any]], label: str) -> list[str]:
@@ -212,16 +268,26 @@ def cross_duplicate_errors(
     return errors
 
 
-def normalized_candidate(candidate: dict[str, Any], priority: str) -> dict[str, str]:
-    return {
+def normalized_candidate(candidate: dict[str, Any], priority: str) -> dict[str, Any]:
+    normalized: dict[str, Any] = {
         "title": clean_text(candidate.get("title")) or "",
         "content_type": (clean_text(candidate.get("content_type")) or "").lower(),
         "source_name": (clean_text(candidate.get("source_name")) or "").lower(),
         "source_id": clean_text(candidate.get("source_id")) or "",
         "priority": priority,
         "ingestion_status": "verified",
-        "notes": VERIFIED_NOTES,
+        "notes": clean_text(candidate.get("notes")) or "",
     }
+
+    original_language = clean_text(candidate.get("original_language"))
+    if original_language:
+        normalized["original_language"] = original_language.casefold()
+
+    year = normalize_optional_year(candidate.get("year"))
+    if year is not None:
+        normalized["year"] = year
+
+    return normalized
 
 
 def write_json(path: Path, data: dict[str, Any]) -> None:
@@ -257,7 +323,9 @@ def main(argv: list[str] | None = None) -> int:
         if not isinstance(candidate, dict):
             errors.append(f"candidate #{index}: expected object")
             continue
-        errors.extend(validate_target_shape(candidate, f"candidate #{index}"))
+        label = f"candidate #{index}"
+        errors.extend(validate_target_shape(candidate, label))
+        errors.extend(validate_candidate_priority(candidate, priority, label))
 
     errors.extend(duplicate_errors(existing_targets, "existing target"))
     errors.extend(duplicate_errors(normalized_candidates, "candidate"))

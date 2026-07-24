@@ -1365,6 +1365,1131 @@
       "priority": "batch_test_5",
       "ingestion_status": "verified",
       "notes": "Verified batch-2 scalable ingestion target."
+    },
+    {
+      "title": "Backrooms",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1083381",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Upcoming Kane Parsons and A24 horror candidate; release metadata requires validation before merge."
+    },
+    {
+      "title": "Bacurau",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "446159",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Brazilian genre-hybrid candidate; improves Portuguese-language, Western and political-thriller coverage."
+    },
+    {
+      "title": "Come and See",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "25237",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Soviet anti-war drama; strengthens older international, History and War coverage."
+    },
+    {
+      "title": "Eega",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "148265",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Telugu fantasy-action candidate; improves Indian-language and inventive genre coverage."
+    },
+    {
+      "title": "Evil Dead Burn",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1212763",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Upcoming supernatural-horror candidate; release metadata requires validation before merge."
+    },
+    {
+      "title": "Hamnet",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "858024",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent Chloé Zhao historical-drama candidate; improves literary and period coverage."
+    },
+    {
+      "title": "Materialists",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1136867",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent romantic-comedy candidate; broadens contemporary relationship and independent-film coverage."
+    },
+    {
+      "title": "Obsession",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1339713",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Upcoming Curry Barker psychological-horror film; release metadata requires validation before merge."
+    },
+    {
+      "title": "Sentimental Value",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1124566",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent Norwegian family-drama candidate; improves European and non-English representation."
+    },
+    {
+      "title": "Sinners",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1233413",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent supernatural-horror candidate; strengthens Horror and Music-adjacent genre density."
+    },
+    {
+      "title": "Stop Making Sense",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "24128",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "1980s concert documentary; strengthens sparse Documentary and Music coverage."
+    },
+    {
+      "title": "Superman",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1061474",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "2025 James Gunn and David Corenswet film; adds current mainstream superhero coverage."
+    },
+    {
+      "title": "The Secret Agent",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1220564",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent Brazilian political-thriller candidate; improves Portuguese-language and History coverage."
+    },
+    {
+      "title": "The Voice of Hind Rajab",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1480382",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent Arabic-language historical-drama candidate; strengthens War and regional representation."
+    },
+    {
+      "title": "Train Dreams",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1241983",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent period-drama candidate; adds independent literary adaptation and historical coverage."
+    },
+    {
+      "title": "Adolescence",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "249042",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent British limited series; improves crime drama and completed short-form coverage."
+    },
+    {
+      "title": "Dear Child",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "229221",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "German limited thriller; improves non-English psychological-crime and lifecycle diversity."
+    },
+    {
+      "title": "Dhootha",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "200946",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Telugu supernatural thriller; strengthens Indian-language series and Horror coverage."
+    },
+    {
+      "title": "Kingdom",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "70593",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Korean historical-horror series; improves non-English, period and survival coverage."
+    },
+    {
+      "title": "Lupin",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "96677",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "French returning crime series; improves non-English and ongoing-series representation."
+    },
+    {
+      "title": "Station Eleven",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "90972",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Completed limited survival drama; strengthens post-apocalyptic and lifecycle diversity."
+    },
+    {
+      "title": "The Eternaut",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "226362",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent Argentine science-fiction series; improves Spanish-language and survival coverage."
+    },
+    {
+      "title": "The Pitt",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "250307",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Recent returning medical drama; improves currently airing and procedural-series density."
+    },
+    {
+      "title": "The Vietnam War",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "46434",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "Completed documentary miniseries; strengthens sparse Documentary, History and War coverage."
+    },
+    {
+      "title": "The World at War",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "751",
+      "priority": "batch_test_6",
+      "ingestion_status": "verified",
+      "notes": "1970s ended documentary series; improves decade, History, War and lifecycle representation."
+    },
+    {
+      "title": "13th",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "407806",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Social-justice documentary; strengthens sparse Documentary and historical-topic coverage."
+    },
+    {
+      "title": "28 Years Later",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1100988",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Recent survival-horror candidate; strengthens Horror and post-apocalyptic coverage."
+    },
+    {
+      "title": "Amadeus",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "279",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "1980s historical music drama; improves decade, History and Music coverage."
+    },
+    {
+      "title": "Army of Shadows",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "15383",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "French resistance drama; strengthens older non-English, War and political-thriller coverage."
+    },
+    {
+      "title": "Bāhubali: The Beginning",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "256040",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Telugu historical epic; improves Indian-language, action-fantasy and period coverage."
+    },
+    {
+      "title": "Bugonia",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "701387",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Recent science-fiction dark-comedy candidate; adds contemporary genre diversity."
+    },
+    {
+      "title": "Main Vaapas Aaunga",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1431068",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Hindi recent"
+    },
+    {
+      "title": "Central Station",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "666",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Brazilian road drama; strengthens Portuguese-language and international character stories."
+    },
+    {
+      "title": "Das Boot",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "387",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "1980s German war thriller; improves decade, non-English and War coverage."
+    },
+    {
+      "title": "Frankenstein",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1062722",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Recent gothic-horror adaptation; strengthens Horror and literary period coverage."
+    },
+    {
+      "title": "Grave of the Fireflies",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "12477",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "1980s Japanese animated war drama; improves anime, decade and War coverage."
+    },
+    {
+      "title": "No Other Choice",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "639988",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Recent Korean dark-comedy thriller; improves non-English and contemporary genre density."
+    },
+    {
+      "title": "Sound of Metal",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "502033",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Independent music drama; strengthens Music and accessibility-related storytelling."
+    },
+    {
+      "title": "The Wicker Man",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "16307",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "1970s British folk horror; improves decade and sparse Horror subgenre coverage."
+    },
+    {
+      "title": "A Knight of the Seven Kingdoms",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "224372",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Upcoming fantasy series; release and lifecycle metadata require validation before merge."
+    },
+    {
+      "title": "Babylon Berlin",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "66980",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "German period crime series; improves non-English, political-thriller and returning-series coverage."
+    },
+    {
+      "title": "Delhi Crime",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "87508",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Indian crime procedural; strengthens Hindi-language and investigative-series density."
+    },
+    {
+      "title": "Deutschland 83",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "62681",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Ended German spy series; improves non-English, Cold War and lifecycle representation."
+    },
+    {
+      "title": "Generation Kill",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "17035",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Completed war miniseries; strengthens War, procedural realism and limited-series coverage."
+    },
+    {
+      "title": "Moving",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "126485",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Korean supernatural action series; improves non-English and coming-of-age genre density."
+    },
+    {
+      "title": "Paatal Lok",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "103051",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Hindi crime thriller; strengthens Indian-language and returning-series coverage."
+    },
+    {
+      "title": "Pachinko",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "110382",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Multilingual historical family series; improves Korean, Japanese and lifecycle diversity."
+    },
+    {
+      "title": "Pluribus",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "225171",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Recent science-fiction series; improves current high-concept and returning-series coverage."
+    },
+    {
+      "title": "The Americans",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "46533",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Ended political spy drama; strengthens completed-series and Cold War thriller density."
+    },
+    {
+      "title": "The Studio",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "247767",
+      "priority": "batch_test_7",
+      "ingestion_status": "verified",
+      "notes": "Recent returning comedy series; improves current comedy and industry-satire coverage."
+    },
+    {
+      "title": "All That Jazz",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "16858",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "1970s musical drama; strengthens decade and sparse Music coverage."
+    },
+    {
+      "title": "Brazil",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "68",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "1980s dystopian satire; improves decade and speculative political coverage."
+    },
+    {
+      "title": "Eddington",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "648878",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Recent neo-Western candidate; improves current Western and political-satire coverage."
+    },
+    {
+      "title": "Free Solo",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "515042",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Adventure documentary; strengthens sparse Documentary and survival-risk coverage."
+    },
+    {
+      "title": "In the Mood for Love",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "843",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Cantonese romantic drama; improves East Asian and reflective relationship coverage."
+    },
+    {
+      "title": "Nouvelle Vague",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1254808",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Recent French-language historical film candidate; improves European and cinema-history coverage."
+    },
+    {
+      "title": "Once",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "5723",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Irish independent music romance; strengthens Music and grounded romantic-drama coverage."
+    },
+    {
+      "title": "Paris Is Burning",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "31225",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "1990s cultural documentary; strengthens Documentary and underrepresented community stories."
+    },
+    {
+      "title": "Paths of Glory",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "975",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Classic anti-war drama; improves older-film, History and War coverage."
+    },
+    {
+      "title": "Portrait of a Lady on Fire",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "531428",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "French period romance; improves non-English historical and relationship coverage."
+    },
+    {
+      "title": "Ringu",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "2671",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Japanese supernatural horror; strengthens non-English and sparse Horror subgenre density."
+    },
+    {
+      "title": "The Exorcist",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "9552",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "1970s supernatural-horror landmark; improves decade and Horror coverage."
+    },
+    {
+      "title": "The Smashing Machine",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "760329",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Recent biographical sports-drama candidate; adds current independent and biography coverage."
+    },
+    {
+      "title": "Weapons",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1078605",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Recent mystery-horror candidate; strengthens current psychological and supernatural coverage."
+    },
+    {
+      "title": "1899",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "90669",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Completed multilingual mystery series; improves European and ended-series representation."
+    },
+    {
+      "title": "Alien: Earth",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "157239",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Recent science-fiction horror series; improves current and returning genre coverage."
+    },
+    {
+      "title": "Call My Agent!",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "64165",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Ended French comedy-drama; improves non-English and completed-series coverage."
+    },
+    {
+      "title": "City of Men",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "3317",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Ended Brazilian coming-of-age series; strengthens Portuguese-language and older-series coverage."
+    },
+    {
+      "title": "Gomorrah",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "61068",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Ended Italian crime series; improves non-English and long-form crime density."
+    },
+    {
+      "title": "How to Sell Drugs Online (Fast)",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "88236",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "German coming-of-age crime comedy; improves non-English and returning-series representation."
+    },
+    {
+      "title": "Monster",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "30981",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Ended Japanese psychological anime; strengthens older anime and crime-thriller density."
+    },
+    {
+      "title": "My Brilliant Friend",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "78154",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Completed Italian period drama; improves non-English, historical and lifecycle coverage."
+    },
+    {
+      "title": "Task",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "228305",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Recent crime miniseries candidate; improves current procedural and limited-series coverage."
+    },
+    {
+      "title": "The Bureau",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "62476",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Ended French spy series; strengthens non-English political-thriller and lifecycle density."
+    },
+    {
+      "title": "Tokyo Vice",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "90296",
+      "priority": "batch_test_8",
+      "ingestion_status": "verified",
+      "notes": "Completed bilingual crime series; improves Japanese setting and investigative coverage."
+    },
+    {
+      "title": "A Separation",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "60243",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Iranian family drama; strengthens Persian-language and international relationship coverage."
+    },
+    {
+      "title": "Decision to Leave",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "705996",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Korean romantic mystery; improves non-English psychological-thriller coverage."
+    },
+    {
+      "title": "Mickey 17",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "696506",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Recent science-fiction satire; improves current space and speculative coverage."
+    },
+    {
+      "title": "Once Upon a Time in the West",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "335",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Classic Italian Western; strengthens sparse Western and older non-English coverage."
+    },
+    {
+      "title": "Shoah",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "42044",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "1980s French documentary; strengthens Documentary, History and War coverage."
+    },
+    {
+      "title": "Sirāt",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1151272",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Recent Spanish-language survival drama; improves non-English and independent coverage."
+    },
+    {
+      "title": "Suspiria",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "11906",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "1970s Italian supernatural horror; improves decade, non-English and Horror density."
+    },
+    {
+      "title": "The Act of Killing",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "123678",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Indonesian historical documentary; strengthens Documentary, History and international coverage."
+    },
+    {
+      "title": "The Battle of Algiers",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "17295",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Political war drama; strengthens older international, History and War coverage."
+    },
+    {
+      "title": "The Good, the Bad and the Ugly",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "429",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Classic Italian Western; improves sparse Western and international genre density."
+    },
+    {
+      "title": "The Handmaiden",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "290098",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Korean period psychological thriller; improves non-English and historical coverage."
+    },
+    {
+      "title": "The Hunt",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "103663",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Danish psychological drama; improves European and non-English representation."
+    },
+    {
+      "title": "The Texas Chain Saw Massacre",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "30497",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "1970s survival horror; strengthens decade and sparse Horror subgenre coverage."
+    },
+    {
+      "title": "The Umbrellas of Cherbourg",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "5967",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "French romantic musical; strengthens older non-English and Music coverage."
+    },
+    {
+      "title": "Big Little Lies",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "66292",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Manually added."
+    },
+    {
+      "title": "Wayward Pines",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "53425",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Manually added."
+    },
+    {
+      "title": "Ghost in the Shell: Stand Alone Complex",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1095",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Ended Japanese cyberpunk anime; strengthens older animation and cyberpunk coverage."
+    },
+    {
+      "title": "Kohrra",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "230034",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Punjabi crime procedural; improves Indian-language and investigative-series coverage."
+    },
+    {
+      "title": "Made in Abyss",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "72636",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Japanese dark-fantasy anime; improves non-English animation and survival coverage."
+    },
+    {
+      "title": "Mare of Easttown",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "115004",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Completed crime miniseries; strengthens procedural and limited-series density."
+    },
+    {
+      "title": "Narcos: Mexico",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "80968",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Ended bilingual crime series; improves Latin American and lifecycle representation."
+    },
+    {
+      "title": "Neon Genesis Evangelion",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "890",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Ended 1990s Japanese anime; strengthens older animation and psychological science fiction."
+    },
+    {
+      "title": "Scam 1992: The Harshad Mehta Story",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "111188",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Hindi financial period drama; improves Indian-language, History and limited-series coverage."
+    },
+    {
+      "title": "Signal",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "64840",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Korean crime science-fiction series; strengthens non-English procedural and genre density."
+    },
+    {
+      "title": "The Last Frontier",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "221079",
+      "priority": "batch_test_9",
+      "ingestion_status": "verified",
+      "notes": "Recent survival-thriller series; improves current procedural and remote-setting coverage."
+    },
+    {
+      "title": "Memories of Murder",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "11423",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Korean crime procedural; improves non-English investigative and psychological coverage."
+    },
+    {
+      "title": "Run Lola Run",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "104",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "German kinetic thriller; strengthens non-English and fast-paced genre coverage."
+    },
+    {
+      "title": "The Assassination of Jesse James by the Coward Robert Ford",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "4512",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Revisionist Western; strengthens sparse Western and historical character-drama coverage."
+    },
+    {
+      "title": "The Babadook",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "242224",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Australian psychological horror; improves sparse Horror and grief-theme coverage."
+    },
+    {
+      "title": "The Gorge",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "950396",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Recent science-fiction survival thriller; improves current genre and romance coverage."
+    },
+    {
+      "title": "The Lives of Others",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "582",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "German political thriller; strengthens non-English, History and surveillance themes."
+    },
+    {
+      "title": "The Phoenician Scheme",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1137350",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Recent independent comedy-drama candidate; broadens current auteur and espionage coverage."
+    },
+    {
+      "title": "The Searchers",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "3114",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Classic Western; strengthens sparse Western and older-film representation."
+    },
+    {
+      "title": "The Secret in Their Eyes",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "25376",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Argentine crime drama; improves Spanish-language and political-history coverage."
+    },
+    {
+      "title": "The Shining",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "694",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "1980s psychological horror; improves decade and sparse Horror subgenre density."
+    },
+    {
+      "title": "The Thing",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "1091",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "1980s science-fiction horror; strengthens decade, survival and Horror coverage."
+    },
+    {
+      "title": "The Witch",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "310131",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Folk-horror period drama; strengthens supernatural, historical and Horror density."
+    },
+    {
+      "title": "The Worst Person in the World",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "660120",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Norwegian romantic dramedy; improves non-English and contemporary coming-of-age coverage."
+    },
+    {
+      "title": "Unforgiven",
+      "content_type": "movie",
+      "source_name": "tmdb",
+      "source_id": "33",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Revisionist Western; strengthens sparse Western and 1990s representation."
+    },
+    {
+      "title": "Daredevil: Born Again",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "202555",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Recent returning crime-action series; improves current mainstream lifecycle coverage."
+    },
+    {
+      "title": "Frieren: Beyond Journey's End",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "209867",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Japanese returning fantasy anime; strengthens non-English animation and reflective adventure."
+    },
+    {
+      "title": "Rome",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "1891",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Ended historical drama; improves War & Politics and completed-series coverage."
+    },
+    {
+      "title": "Sintonia",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "78074",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Brazilian coming-of-age crime series; improves Portuguese-language and lifecycle diversity."
+    },
+    {
+      "title": "Spiral",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "11726",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Ended French crime procedural; strengthens non-English and long-running lifecycle coverage."
+    },
+    {
+      "title": "The Silent Sea",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "96777",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Manually added."
+    },
+    {
+      "title": "The Pacific",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "16997",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Completed war miniseries; strengthens War, History and limited-series coverage."
+    },
+    {
+      "title": "The Paper",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "253941",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Recent workplace comedy series; improves current comedy and returning-series coverage."
+    },
+    {
+      "title": "The West Wing",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "688",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Ended political drama; strengthens War & Politics and older completed-series density."
+    },
+    {
+      "title": "Unorthodox",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "99581",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "German and Yiddish limited series; improves multilingual and completed short-form coverage."
+    },
+    {
+      "title": "Vinland Saga",
+      "content_type": "series",
+      "source_name": "tmdb",
+      "source_id": "88803",
+      "priority": "batch_test_10",
+      "ingestion_status": "verified",
+      "notes": "Japanese historical anime; strengthens non-English animation, War and period coverage."
     }
   ]
 }
