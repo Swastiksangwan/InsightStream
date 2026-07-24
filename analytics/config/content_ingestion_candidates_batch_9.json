@@ -122,28 +122,28 @@
       "title": "The Umbrellas of Cherbourg",
       "content_type": "movie",
       "source_name": "tmdb",
-      "source_id": "596",
+      "source_id": "5967",
       "priority": "batch_test_9",
       "ingestion_status": "candidate",
       "notes": "French romantic musical; strengthens older non-English and Music coverage."
     },
     {
-      "title": "3%",
+      "title": "Big Little Lies",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "62127",
+      "source_id": "66292",
       "priority": "batch_test_9",
       "ingestion_status": "candidate",
-      "notes": "Ended Brazilian dystopian series; improves Portuguese-language and lifecycle coverage."
+      "notes": "Manually added."
     },
     {
-      "title": "El Ministerio del Tiempo",
+      "title": "Wayward Pines",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "62099",
+      "source_id": "53425",
       "priority": "batch_test_9",
       "ingestion_status": "candidate",
-      "notes": "Spanish historical science-fiction series; improves non-English and History density."
+      "notes": "Manually added."
     },
     {
       "title": "Ghost in the Shell: Stand Alone Complex",
@@ -158,7 +158,7 @@
       "title": "Kohrra",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "225084",
+      "source_id": "230034",
       "priority": "batch_test_9",
       "ingestion_status": "candidate",
       "notes": "Punjabi crime procedural; improves Indian-language and investigative-series coverage."
@@ -212,7 +212,7 @@
       "title": "Signal",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "66330",
+      "source_id": "64840",
       "priority": "batch_test_9",
       "ingestion_status": "candidate",
       "notes": "Korean crime science-fiction series; strengthens non-English procedural and genre density."

@@ -38,7 +38,7 @@
       "notes": "French resistance drama; strengthens older non-English, War and political-thriller coverage."
     },
     {
-      "title": "Baahubali: The Beginning",
+      "title": "Bāhubali: The Beginning",
       "content_type": "movie",
       "source_name": "tmdb",
       "source_id": "256040",
@@ -56,13 +56,13 @@
       "notes": "Recent science-fiction dark-comedy candidate; adds contemporary genre diversity."
     },
     {
-      "title": "C/o Kancharapalem",
+      "title": "Main Vaapas Aaunga",
       "content_type": "movie",
       "source_name": "tmdb",
-      "source_id": "494851",
+      "source_id": "1431068",
       "priority": "batch_test_7",
       "ingestion_status": "candidate",
-      "notes": "Telugu relationship drama; improves Indian-language and grounded romantic storytelling."
+      "notes": "Hindi recent"
     },
     {
       "title": "Central Station",
@@ -149,7 +149,7 @@
       "title": "Delhi Crime",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "84814",
+      "source_id": "87508",
       "priority": "batch_test_7",
       "ingestion_status": "candidate",
       "notes": "Indian crime procedural; strengthens Hindi-language and investigative-series density."
@@ -158,7 +158,7 @@
       "title": "Deutschland 83",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "62572",
+      "source_id": "62681",
       "priority": "batch_test_7",
       "ingestion_status": "candidate",
       "notes": "Ended German spy series; improves non-English, Cold War and lifecycle representation."
@@ -167,7 +167,7 @@
       "title": "Generation Kill",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "828",
+      "source_id": "17035",
       "priority": "batch_test_7",
       "ingestion_status": "candidate",
       "notes": "Completed war miniseries; strengthens War, procedural realism and limited-series coverage."
@@ -176,7 +176,7 @@
       "title": "Moving",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "86941",
+      "source_id": "126485",
       "priority": "batch_test_7",
       "ingestion_status": "candidate",
       "notes": "Korean supernatural action series; improves non-English and coming-of-age genre density."
@@ -185,7 +185,7 @@
       "title": "Paatal Lok",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "92250",
+      "source_id": "103051",
       "priority": "batch_test_7",
       "ingestion_status": "candidate",
       "notes": "Hindi crime thriller; strengthens Indian-language and returning-series coverage."

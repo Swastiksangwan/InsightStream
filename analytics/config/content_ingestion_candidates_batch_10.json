@@ -158,7 +158,7 @@
       "title": "Sintonia",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "91162",
+      "source_id": "78074",
       "priority": "batch_test_10",
       "ingestion_status": "candidate",
       "notes": "Brazilian coming-of-age crime series; improves Portuguese-language and lifecycle diversity."
@@ -167,19 +167,19 @@
       "title": "Spiral",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "11261",
+      "source_id": "11726",
       "priority": "batch_test_10",
       "ingestion_status": "candidate",
       "notes": "Ended French crime procedural; strengthens non-English and long-running lifecycle coverage."
     },
     {
-      "title": "Suzhal: The Vortex",
+      "title": "The Silent Sea",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "135003",
+      "source_id": "96777",
       "priority": "batch_test_10",
       "ingestion_status": "candidate",
-      "notes": "Tamil mystery thriller; improves Indian-language and investigative-series density."
+      "notes": "Manually added."
     },
     {
       "title": "The Pacific",
@@ -212,7 +212,7 @@
       "title": "Unorthodox",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "99509",
+      "source_id": "99581",
       "priority": "batch_test_10",
       "ingestion_status": "candidate",
       "notes": "German and Yiddish limited series; improves multilingual and completed short-form coverage."

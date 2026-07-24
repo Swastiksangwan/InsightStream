@@ -149,7 +149,7 @@
       "title": "Call My Agent!",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "65334",
+      "source_id": "64165",
       "priority": "batch_test_8",
       "ingestion_status": "candidate",
       "notes": "Ended French comedy-drama; improves non-English and completed-series coverage."
@@ -194,7 +194,7 @@
       "title": "My Brilliant Friend",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "73662",
+      "source_id": "78154",
       "priority": "batch_test_8",
       "ingestion_status": "candidate",
       "notes": "Completed Italian period drama; improves non-English, historical and lifecycle coverage."
@@ -221,7 +221,7 @@
       "title": "Tokyo Vice",
       "content_type": "series",
       "source_name": "tmdb",
-      "source_id": "110316",
+      "source_id": "90296",
       "priority": "batch_test_8",
       "ingestion_status": "candidate",
       "notes": "Completed bilingual crime series; improves Japanese setting and investigative coverage."
