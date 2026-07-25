@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 
-InsightStream / CineLens is an information-first entertainment decision-support platform for movies and series.
+InsightStream is an information-first entertainment decision-support platform for movies and series.
 
 The current MVP focuses on structured metadata, discovery, availability, personal watch state, cast and crew, and person pages. The product is designed to help users decide what to watch by making content data easier to inspect and compare.
 
