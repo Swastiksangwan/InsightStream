@@ -1,8 +1,8 @@
 {
-  "review_version": "2026-07-22-v1.1",
-  "supports_mapping_version": "2026-07-22-v2.3",
+  "review_version": "2026-07-28-v1.3",
+  "supports_mapping_version": "2026-07-28-v2.5",
   "normalization_contract": "source-signal-keyword-v1",
-  "description": "Human-curated keyword decisions supporting source-signal mapping version 2026-07-22-v2.3.",
+  "description": "Human-curated keyword decisions supporting source-signal mapping version 2026-07-28-v2.5.",
   "decisions": {
     "1920s": {
       "classification": "useful_product_signal",
@@ -32,12 +32,53 @@
       "confidence": "medium",
       "human_review_required": true
     },
+    "absurdism": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The reviewed titles consistently use it as an absurdist-tone cue, but not necessarily as comedy.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "tone",
+          "value": "absurdist",
+          "display_label": "Absurdist",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
     "action": {
       "classification": "canonical_metadata",
       "action": "exclude",
       "rationale": "Action is already represented by canonical genre metadata and is too broad to infer pacing by itself.",
       "confidence": "high",
       "human_review_required": false
+    },
+    "alcoholism": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The concept is potentially useful, but the current taxonomy has no precise addiction or substance-use value and family/background prominence varies by title.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "alien invasion": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Across the affected titles it consistently indicates conflict with an alien force; the existing broad alien-encounter value is a conservative fit.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "alien encounter",
+          "display_label": "Alien encounter",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
     },
     "android": {
       "classification": "useful_product_signal",
@@ -203,6 +244,20 @@
         }
       ]
     },
+    "death of daughter": {
+      "classification": "spoiler_unsafe",
+      "action": "spoiler_unsafe",
+      "rationale": "The phrase reveals a specific consequential family death.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "death of husband": {
+      "classification": "spoiler_unsafe",
+      "action": "spoiler_unsafe",
+      "rationale": "The phrase reveals a specific consequential family death.",
+      "confidence": "high",
+      "human_review_required": false
+    },
     "depressing": {
       "classification": "useful_product_signal",
       "action": "map",
@@ -299,6 +354,13 @@
       "confidence": "low",
       "human_review_required": true
     },
+    "harsh": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The affected titles use it inconsistently as setting, subject, or reaction language, so it does not support one stable mood or tone.",
+      "confidence": "low",
+      "human_review_required": true
+    },
     "hero": {
       "classification": "irrelevant_or_too_generic",
       "action": "exclude",
@@ -339,6 +401,13 @@
           "spoiler_safe": true
         }
       ]
+    },
+    "horrified": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The provider adjective can describe audience reaction or subject matter and does not reliably identify the title's overall mood.",
+      "confidence": "low",
+      "human_review_required": true
     },
     "husband wife relationship": {
       "classification": "useful_product_signal",
@@ -387,6 +456,23 @@
           "display_label": "Thoughtful",
           "weight": 1,
           "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "kaiju": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The affected titles consistently use it for a giant-creature threat, without proving that the whole title is creature-driven or high intensity.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "creature threat",
+          "display_label": "Creature threat",
+          "weight": 2,
+          "confidence": "medium",
           "spoiler_safe": true
         }
       ]
@@ -484,6 +570,23 @@
         }
       ]
     },
+    "motherhood": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Across the reviewed titles it is a stable family-relationship theme, while emotional tone varies.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "family relationship",
+          "display_label": "Family relationship",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
     "murder investigation": {
       "classification": "useful_product_signal",
       "action": "map",
@@ -555,6 +658,31 @@
       "confidence": "high",
       "human_review_required": false
     },
+    "palace intrigue": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The affected titles consistently center court politics and political power, but the keyword alone does not require a tense mood.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "audience_expectation",
+          "value": "court politics",
+          "display_label": "Court intrigue",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "topic_theme",
+          "value": "political power drama",
+          "display_label": "Political power drama",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
     "parent child relationship": {
       "classification": "useful_product_signal",
       "action": "map",
@@ -571,6 +699,30 @@
           "spoiler_safe": true
         }
       ]
+    },
+    "parenting": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The affected titles use it as a stable family-relationship theme without consistently implying conflict or a particular tone.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "family relationship",
+          "display_label": "Family relationship",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "patriarchy": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The keyword is a meaningful social concept, but the current taxonomy lacks a precise value and mapping it to generic power struggle would lose specificity.",
+      "confidence": "low",
+      "human_review_required": true
     },
     "philosophical": {
       "classification": "ambiguous_manual_review",
@@ -603,10 +755,34 @@
         }
       ]
     },
+    "possession": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Across the affected titles it consistently identifies a supernatural-story element without proving horror intensity.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "supernatural story",
+          "display_label": "Supernatural story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
     "prequel": {
       "classification": "lifecycle_or_format",
       "action": "exclude",
       "rationale": "Franchise chronology does not describe viewing tone, mood or theme.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "reboot": {
+      "classification": "lifecycle_or_format",
+      "action": "exclude",
+      "rationale": "Reboot describes franchise and release lifecycle rather than a stable viewing signal.",
       "confidence": "high",
       "human_review_required": false
     },
@@ -621,6 +797,30 @@
           "dimension": "topic_theme",
           "value": "rescue mission",
           "display_label": "Rescue mission",
+          "weight": 1,
+          "confidence": "low",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "royal family": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The phrase can be factual subject metadata and does not by itself prove court politics, conflict, or a particular viewing tone.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "somber": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Across the affected titles it is a stable subdued mood cue that conservatively reuses the existing melancholy value.",
+      "confidence": "medium",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "mood",
+          "value": "melancholy",
+          "display_label": "Melancholy",
           "weight": 1,
           "confidence": "low",
           "spoiler_safe": true
@@ -682,6 +882,157 @@
       "rationale": "The broad character-role noun does not produce a stable viewer-facing signal.",
       "confidence": "high",
       "human_review_required": false
+    },
+    "war crimes": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The affected titles consistently foreground the human cost of conflict; the mapping avoids inferring a specific war, period, or display warning.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "human cost",
+          "display_label": "Human cost",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "anti corruption": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "On Dhootha the keyword directly identifies opposition to corruption; the existing corruption-story value preserves that meaning without inferring mood or tone.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "corruption story",
+          "display_label": "Corruption story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "clinical": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "Across The Pitt and The Wire, clinical can describe medical subject matter or an observational style, so it is not a stable standalone watch signal.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "complicated": {
+      "classification": "irrelevant_or_too_generic",
+      "action": "leave_unmapped",
+      "rationale": "Across The Pitt, The Lord of the Rings: The Return of the King, and The Sandman, the adjective is too vague to identify a consistent viewing quality.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "drama": {
+      "classification": "canonical_metadata",
+      "action": "exclude",
+      "rationale": "Drama is already represented by canonical genre metadata and is too broad to create a useful source signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "dramatic": {
+      "classification": "irrelevant_or_too_generic",
+      "action": "leave_unmapped",
+      "rationale": "The provider adjective appears across materially different dramas and does not establish a stable tone, mood, or intensity.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "hospital": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The Pitt uses hospital as a central medical-workplace identity rather than incidental geography; the mapping is narrow and reusable for future hospital-centered titles.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "medical workplace",
+          "display_label": "Medical workplace",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "informative": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "Across The Pitt, Blade Runner 2049, and The Wire, informative does not consistently identify the title's subject, tone, or viewing style.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "medical drama": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The phrase directly communicates The Pitt's medical-drama format and is precise enough to remain useful across future titles.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "audience_expectation",
+          "value": "medical drama",
+          "display_label": "Medical drama",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "medical procedural": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The phrase directly identifies The Pitt's medical-procedural structure without inferring pace, mood, or intensity.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "audience_expectation",
+          "value": "medical procedural",
+          "display_label": "Medical procedural",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "pittsburgh pennsylvania": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "The phrase is geographic metadata and should not become a viewing signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "real time": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The phrase directly identifies The Pitt's real-time narrative structure; it is represented without inferring that the title is fast-paced.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "pacing",
+          "value": "real-time",
+          "display_label": "Real-time",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "yellow journalism": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "Dhootha uses the phrase as journalism subject matter, but the current taxonomy has no precise media-ethics value and broader mappings would overstate its role.",
+      "confidence": "low",
+      "human_review_required": true
     }
   }
 }

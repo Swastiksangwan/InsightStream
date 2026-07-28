@@ -245,6 +245,73 @@ def test_bounty_hunter_is_held_for_manual_review():
     assert "bounty hunter" not in mapping["spoiler_unsafe_keywords"]
 
 
+def test_batch_6_review_decisions_match_runtime_actions():
+    mapping = mapping_config()
+    decisions = review.load_review_decisions(
+        REPO_ROOT / "analytics" / "config" / "source_signal_keyword_review_decisions.json"
+    )
+
+    mapped = {
+        "absurdism",
+        "alien invasion",
+        "kaiju",
+        "motherhood",
+        "palace intrigue",
+        "parenting",
+        "possession",
+        "somber",
+        "war crimes",
+    }
+    held = {"alcoholism", "harsh", "horrified", "patriarchy", "royal family"}
+
+    assert all(decisions[keyword]["action"] == "map" for keyword in mapped)
+    assert all(keyword in mapping["keyword_mappings"] for keyword in mapped)
+    assert decisions["reboot"]["action"] == "exclude"
+    assert "reboot" in mapping["excluded_keywords"]
+    assert all(
+        decisions[keyword]["action"] == "spoiler_unsafe"
+        for keyword in {"death of daughter", "death of husband"}
+    )
+    assert {"death of daughter", "death of husband"} <= set(
+        mapping["spoiler_unsafe_keywords"]
+    )
+    assert all(decisions[keyword]["action"] == "leave_unmapped" for keyword in held)
+    assert held.isdisjoint(mapping["keyword_mappings"])
+    assert held.isdisjoint(mapping["excluded_keywords"])
+    assert held.isdisjoint(mapping["spoiler_unsafe_keywords"])
+
+
+def test_curated_review_v25_decisions_match_runtime_actions():
+    mapping = mapping_config()
+    decisions = review.load_review_decisions(
+        REPO_ROOT / "analytics" / "config" / "source_signal_keyword_review_decisions.json"
+    )
+    mapped = {
+        "anti corruption",
+        "hospital",
+        "medical drama",
+        "medical procedural",
+        "real time",
+    }
+    excluded = {"drama", "pittsburgh pennsylvania"}
+    held = {
+        "yellow journalism",
+        "clinical",
+        "informative",
+        "complicated",
+        "dramatic",
+    }
+
+    assert all(decisions[keyword]["action"] == "map" for keyword in mapped)
+    assert mapped <= set(mapping["keyword_mappings"])
+    assert all(decisions[keyword]["action"] == "exclude" for keyword in excluded)
+    assert excluded <= set(mapping["excluded_keywords"])
+    assert all(decisions[keyword]["action"] == "leave_unmapped" for keyword in held)
+    assert held.isdisjoint(mapping["keyword_mappings"])
+    assert held.isdisjoint(mapping["excluded_keywords"])
+    assert held.isdisjoint(mapping["spoiler_unsafe_keywords"])
+
+
 def test_generated_review_path_is_git_ignored():
     path = "analytics/processed/source_signal_reviews/source_signal_unmapped_keyword_review.json"
     result = subprocess.run(

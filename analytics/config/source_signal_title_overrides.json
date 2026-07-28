@@ -1,5 +1,5 @@
 {
-  "override_version": "2026-07-02-v3.1",
+  "override_version": "2026-07-28-v3.3",
   "description": "Curated corrections for source-signal preview when keyword-only mapping is incomplete or misleading.",
   "overrides": [
     {
@@ -912,12 +912,16 @@
         {"dimension": "tone", "value": "serious", "label": "Serious tone", "confidence": "high"}
       ],
       "signals_to_demote": [],
-      "signals_to_suppress": [],
+      "signals_to_suppress": [
+        {"dimension": "audience_expectation", "value": "historical drama"},
+        {"dimension": "topic_theme", "value": "historical drama"},
+        {"dimension": "tone", "value": "tense"}
+      ],
       "preferred_watch_feel": "A serious royal historical drama built around duty, politics, and public image.",
       "preferred_chips": ["Royal drama", "Historical setting", "Political pressure", "Serious tone"],
       "preferred_best_for": ["Historical dramas", "Royal family stories", "Political character dramas"],
       "preferred_consider_first": [],
-      "notes": "Curated royal historical-drama identity."
+      "notes": "Curated royal historical-drama identity; suppresses generic historical-drama duplicates already represented by the stronger royal identity."
     },
     {
       "title": "The Wolf of Wall Street",
@@ -1062,6 +1066,37 @@
       "preferred_best_for": ["Character dramas", "Competition stories", "Stylish limited series"],
       "preferred_consider_first": [],
       "notes": "Adds competition/character-drama identity."
+    },
+    {
+      "title": "Dear Child",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "investigation-led mystery", "label": "Investigation-led mystery", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "crime mystery", "label": "Crime mystery", "confidence": "medium"},
+        {"dimension": "mood", "value": "suspenseful", "label": "Suspenseful", "confidence": "medium"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A suspenseful investigation-led crime mystery about captivity and a long-unsolved disappearance.",
+      "preferred_chips": ["Investigation-led mystery", "Crime mystery", "Suspenseful"],
+      "preferred_best_for": ["Crime mysteries", "Investigation-led stories", "Suspenseful dramas"],
+      "preferred_consider_first": [],
+      "notes": "The only source keyword is lifecycle metadata; local synopsis and genres provide the minimum spoiler-safe crime-mystery identity."
+    },
+    {
+      "title": "Dhootha",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "investigation-led mystery", "label": "Investigation-led mystery", "confidence": "high"},
+        {"dimension": "mood", "value": "suspenseful", "label": "Suspenseful", "confidence": "medium"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A suspenseful investigation-led mystery about ominous newspaper clippings and corruption.",
+      "preferred_chips": ["Investigation-led mystery", "Corruption story", "Suspenseful"],
+      "preferred_best_for": ["Mystery series", "Investigation-led stories", "Suspenseful dramas"],
+      "preferred_consider_first": [],
+      "notes": "The reusable anti-corruption mapping supplies theme only; local synopsis and genres are needed for the title's spoiler-safe investigation identity."
     }
   ]
 }

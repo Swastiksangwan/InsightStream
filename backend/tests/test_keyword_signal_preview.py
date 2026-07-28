@@ -47,7 +47,7 @@ def test_load_keyword_signal_mapping_config():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
 
-    assert mapping["mapping_version"] == "2026-07-22-v2.3"
+    assert mapping["mapping_version"] == "2026-07-28-v2.5"
     assert "serial killer" in mapping["keyword_mappings"]
     assert "psychological thriller" in mapping["keyword_mappings"]
     assert "dark fantasy" in mapping["keyword_mappings"]
@@ -69,6 +69,20 @@ def test_load_keyword_signal_mapping_config():
         ("police procedural", "pacing", "investigation-led"),
         ("surrealism", "mood", "surreal"),
         ("cyberpunk", "audience_expectation", "cyberpunk"),
+        ("absurdism", "tone", "absurdist"),
+        ("alien invasion", "topic_theme", "alien encounter"),
+        ("kaiju", "topic_theme", "creature threat"),
+        ("motherhood", "topic_theme", "family relationship"),
+        ("palace intrigue", "audience_expectation", "court politics"),
+        ("parenting", "topic_theme", "family relationship"),
+        ("possession", "topic_theme", "supernatural story"),
+        ("somber", "mood", "melancholy"),
+        ("war crimes", "topic_theme", "human cost"),
+        ("anti corruption", "topic_theme", "corruption story"),
+        ("hospital", "topic_theme", "medical workplace"),
+        ("medical drama", "audience_expectation", "medical drama"),
+        ("medical procedural", "audience_expectation", "medical procedural"),
+        ("real time", "pacing", "real-time"),
     ],
 )
 def test_reviewed_keyword_mappings_reuse_expected_canonical_values(
@@ -93,7 +107,10 @@ def test_reviewed_keyword_mappings_reuse_expected_canonical_values(
         "marvel cinematic universe mcu",
         "oscar winner",
         "prequel",
+        "reboot",
         "female protagonist",
+        "drama",
+        "pittsburgh pennsylvania",
     ],
 )
 def test_reviewed_non_signal_keywords_are_explicitly_excluded(keyword):
@@ -103,7 +120,15 @@ def test_reviewed_non_signal_keywords_are_explicitly_excluded(keyword):
     assert keyword in mapping["excluded_keywords"]
 
 
-@pytest.mark.parametrize("keyword", ["loss of loved one", "fall from grace"])
+@pytest.mark.parametrize(
+    "keyword",
+    [
+        "loss of loved one",
+        "fall from grace",
+        "death of daughter",
+        "death of husband",
+    ],
+)
 def test_reviewed_spoiler_terms_are_not_rendered_as_signals(keyword):
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
@@ -138,6 +163,38 @@ def test_corrected_relationship_and_theme_mappings_do_not_over_infer():
     assert "bounty hunter" not in mapping["keyword_mappings"]
     assert "bounty hunter" not in mapping["excluded_keywords"]
     assert "bounty hunter" not in mapping["spoiler_unsafe_keywords"]
+
+
+@pytest.mark.parametrize(
+    "keyword",
+    ["alcoholism", "harsh", "horrified", "patriarchy", "royal family"],
+)
+def test_batch_6_ambiguous_terms_remain_unmapped(keyword):
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    assert keyword not in mapping["keyword_mappings"]
+    assert keyword not in mapping["excluded_keywords"]
+    assert keyword not in mapping["spoiler_unsafe_keywords"]
+
+
+@pytest.mark.parametrize(
+    "keyword",
+    [
+        "yellow journalism",
+        "clinical",
+        "informative",
+        "complicated",
+        "dramatic",
+    ],
+)
+def test_curated_review_v25_ambiguous_terms_remain_unmapped(keyword):
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+
+    assert keyword not in mapping["keyword_mappings"]
+    assert keyword not in mapping["excluded_keywords"]
+    assert keyword not in mapping["spoiler_unsafe_keywords"]
 
 
 def signal_values_for_dimension(item, dimension):
@@ -182,11 +239,15 @@ def test_title_override_config_loads_safely():
     module = load_keyword_signal_preview_module()
     overrides = load_overrides(module)
 
-    assert overrides["override_version"] == "2026-07-02-v3.1"
+    assert overrides["override_version"] == "2026-07-28-v3.3"
     assert any(
         override["title"] == "Breaking Bad"
         for override in overrides["overrides"]
     )
+    assert {override["title"] for override in overrides["overrides"]} >= {
+        "Dear Child",
+        "Dhootha",
+    }
 
 
 def test_partial_preview_runs_require_explicit_output_paths():
@@ -800,6 +861,129 @@ def test_curated_override_adds_signals_and_sources():
     assert item["curated_override_applied"] is True
     assert "character-driven crime drama" in rendered
     assert "curated_override" in rendered
+
+
+def test_batch_6_curated_review_titles_have_specific_spoiler_safe_identity():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+    overrides = load_overrides(module)
+    contents = [
+        content_fixture(
+            module,
+            ["miniseries"],
+            title="Dear Child",
+            content_type="series",
+            genres=["Crime", "Drama", "Mystery"],
+        ),
+        module.KeywordContent(
+            content_id=134,
+            title="Dhootha",
+            content_type="series",
+            keywords=["anti-corruption", "yellow-journalism"],
+            genres=["Crime", "Drama", "Mystery"],
+        ),
+        module.KeywordContent(
+            content_id=135,
+            title="The Pitt",
+            content_type="series",
+            keywords=[
+                "clinical",
+                "complicated",
+                "drama",
+                "dramatic",
+                "hospital",
+                "informative",
+                "medical drama",
+                "medical procedural",
+                "pittsburgh pennsylvania",
+                "real time",
+            ],
+            genres=["Drama"],
+        ),
+    ]
+    preview, analyses = module.build_preview_payload(
+        generated_at="2026-07-28T00:00:00+00:00",
+        mapping_file=Path("analytics/config/source_signal_keyword_mapping.json"),
+        mapping_config=mapping,
+        override_file=Path("analytics/config/source_signal_title_overrides.json"),
+        override_config=overrides,
+        content_items=contents,
+        include_debug=True,
+    )
+    items = {item["title"]: item for item in preview["items"]}
+
+    assert items["Dear Child"]["curated_override_applied"] is True
+    assert "investigation-led mystery" in json.dumps(items["Dear Child"]).lower()
+    assert items["Dhootha"]["curated_override_applied"] is True
+    assert "corruption story" in json.dumps(items["Dhootha"]).lower()
+    assert items["The Pitt"]["curated_override_applied"] is False
+    assert {
+        "medical drama",
+        "medical procedural",
+    } <= signal_values_for_dimension(items["The Pitt"], "audience_expectation")
+    assert "medical workplace" in signal_values_for_dimension(
+        items["The Pitt"], "topic_theme"
+    )
+    assert "real-time" in signal_values_for_dimension(items["The Pitt"], "pacing")
+
+    report = module.build_report(
+        generated_at="2026-07-28T00:00:00+00:00",
+        mapping_file=Path("analytics/config/source_signal_keyword_mapping.json"),
+        output_path=Path(
+            "analytics/processed/source_signals/reviews/batch_6_curated_review_preview.json"
+        ),
+        report_path=Path(
+            "analytics/processed/source_signals/reviews/batch_6_curated_review_report.json"
+        ),
+        mapping_config=mapping,
+        override_file=Path("analytics/config/source_signal_title_overrides.json"),
+        override_config=overrides,
+        content_items=contents,
+        preview_items=preview["items"],
+        analyses=analyses,
+    )
+    assert report["semantic_quality_summary"] == {
+        "curated_review_candidate_count": 0,
+        "generic_watch_feel_count": 0,
+        "semantic_conflict_count": 0,
+    }
+    assert report["warnings"] == []
+    assert report["errors"] == []
+
+
+def test_the_crown_override_replaces_generic_historical_duplicates():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+    overrides = load_overrides(module)
+
+    item, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["historical drama", "palace intrigue", "power struggle"],
+            title="The Crown",
+            content_type="series",
+            genres=["Drama"],
+        ),
+        mapping,
+        override_config=overrides,
+        include_debug=False,
+    )
+
+    assert "historical drama" not in signal_values_for_dimension(
+        item, "audience_expectation"
+    )
+    assert "historical drama" not in signal_values_for_dimension(item, "topic_theme")
+    assert "royal historical drama" in signal_values_for_dimension(
+        item, "audience_expectation"
+    )
+    assert "court politics" in signal_values_for_dimension(
+        item, "audience_expectation"
+    )
+    assert "political power drama" in signal_values_for_dimension(
+        item, "topic_theme"
+    )
+    assert "tense" in signal_values_for_dimension(item, "mood")
+    assert "tense" not in signal_values_for_dimension(item, "tone")
 
 
 def test_breaking_bad_override_suppresses_misleading_primary_comedy():
