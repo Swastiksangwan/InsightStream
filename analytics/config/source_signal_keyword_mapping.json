@@ -1,5 +1,5 @@
 {
-  "mapping_version": "2026-07-28-v2.5",
+  "mapping_version": "2026-07-28-v2.7",
   "description": "Curated keyword-to-signal mapping for TMDb keyword-derived watch guidance.",
   "source": "tmdb_keywords",
   "newly_mapped_from_previous_version": [
@@ -375,7 +375,11 @@
     "hospital",
     "medical drama",
     "medical procedural",
-    "real time"
+    "real time",
+    "concert film",
+    "energetic",
+    "love triangle",
+    "reincarnation"
   ],
   "dimensions": [
     "topic_theme",
@@ -14685,6 +14689,35 @@
         {"dimension": "pacing", "value": "real-time", "display_label": "Real-time", "weight": 2, "confidence": "medium", "spoiler_safe": true}
       ],
       "notes": "Structural real-time storytelling cue; does not imply fast pacing."
+    },
+    "concert film": {
+      "dimensions": ["audience_expectation", "topic_theme"],
+      "signals": [
+        {"dimension": "audience_expectation", "value": "concert film", "display_label": "Concert film", "weight": 3, "confidence": "medium", "spoiler_safe": true},
+        {"dimension": "topic_theme", "value": "live music performance", "display_label": "Live music performance", "weight": 2, "confidence": "medium", "spoiler_safe": true}
+      ],
+      "notes": "Direct format and live-performance cue; does not infer pace by itself."
+    },
+    "energetic": {
+      "dimensions": ["mood"],
+      "signals": [
+        {"dimension": "mood", "value": "energetic", "display_label": "Energetic", "weight": 2, "confidence": "medium", "spoiler_safe": true}
+      ],
+      "notes": "Direct mood cue without inferring pacing."
+    },
+    "love triangle": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "romantic connection", "display_label": "Romantic connection", "weight": 2, "confidence": "medium", "spoiler_safe": true}
+      ],
+      "notes": "Stable relationship-premise cue using an existing neutral topic value; does not infer a romantic-drama genre."
+    },
+    "reincarnation": {
+      "dimensions": ["topic_theme"],
+      "signals": [
+        {"dimension": "topic_theme", "value": "reincarnation", "display_label": "Reincarnation", "weight": 2, "confidence": "medium", "spoiler_safe": true}
+      ],
+      "notes": "Direct supernatural-cycle theme without inferring tone, mood, or genre."
     }
   },
   "signal_display": {

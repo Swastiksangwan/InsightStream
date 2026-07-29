@@ -47,7 +47,7 @@ def test_load_keyword_signal_mapping_config():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
 
-    assert mapping["mapping_version"] == "2026-07-28-v2.5"
+    assert mapping["mapping_version"] == "2026-07-28-v2.7"
     assert "serial killer" in mapping["keyword_mappings"]
     assert "psychological thriller" in mapping["keyword_mappings"]
     assert "dark fantasy" in mapping["keyword_mappings"]
@@ -83,6 +83,11 @@ def test_load_keyword_signal_mapping_config():
         ("medical drama", "audience_expectation", "medical drama"),
         ("medical procedural", "audience_expectation", "medical procedural"),
         ("real time", "pacing", "real-time"),
+        ("concert film", "audience_expectation", "concert film"),
+        ("concert film", "topic_theme", "live music performance"),
+        ("energetic", "mood", "energetic"),
+        ("love triangle", "topic_theme", "romantic connection"),
+        ("reincarnation", "topic_theme", "reincarnation"),
     ],
 )
 def test_reviewed_keyword_mappings_reuse_expected_canonical_values(
@@ -239,14 +244,18 @@ def test_title_override_config_loads_safely():
     module = load_keyword_signal_preview_module()
     overrides = load_overrides(module)
 
-    assert overrides["override_version"] == "2026-07-28-v3.3"
+    assert overrides["override_version"] == "2026-07-28-v3.5"
     assert any(
         override["title"] == "Breaking Bad"
         for override in overrides["overrides"]
     )
     assert {override["title"] for override in overrides["overrides"]} >= {
+        "Bacurau",
         "Dear Child",
         "Dhootha",
+        "Eega",
+        "Materialists",
+        "Train Dreams",
     }
 
 
@@ -984,6 +993,243 @@ def test_the_crown_override_replaces_generic_historical_duplicates():
     )
     assert "tense" in signal_values_for_dimension(item, "mood")
     assert "tense" not in signal_values_for_dimension(item, "tone")
+
+
+def test_batch_6_display_review_mappings_do_not_overinfer_genre_or_pace():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+    cases = [
+        (
+            ["class differences", "love triangle"],
+            "Materialists",
+            ["Drama", "Romance"],
+            ("topic_theme", "romantic connection"),
+        ),
+        (
+            ["concert film", "energetic"],
+            "Stop Making Sense",
+            ["Documentary", "Music"],
+            ("audience_expectation", "concert film"),
+        ),
+        (
+            ["afterlife", "reincarnation", "revenge"],
+            "Eega",
+            ["Action", "Fantasy"],
+            ("topic_theme", "reincarnation"),
+        ),
+    ]
+
+    for keywords, title, genres, expected in cases:
+        item, _analysis = module.build_preview_item(
+            content_fixture(
+                module,
+                keywords,
+                title=title,
+                content_type="movie",
+                genres=genres,
+            ),
+            mapping,
+            include_debug=False,
+        )
+        assert expected[1] in signal_values_for_dimension(item, expected[0])
+        assert signal_values_for_dimension(item, "pacing") == set()
+
+    materialists, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["class differences", "love triangle"],
+            title="Materialists",
+            content_type="movie",
+            genres=["Drama", "Romance"],
+        ),
+        mapping,
+        include_debug=False,
+    )
+    assert "romantic drama" not in signal_values_for_dimension(
+        materialists, "audience_expectation"
+    )
+    assert "slice of life" not in mapping["keyword_mappings"]
+
+
+def test_batch_6_display_review_overrides_are_specific_and_remove_generic_drama():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+    overrides = load_overrides(module)
+
+    bacurau, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["colonialism", "resistance"],
+            title="Bacurau",
+            content_type="movie",
+            genres=["Mystery", "Thriller", "Western"],
+        ),
+        mapping,
+        override_config=overrides,
+        include_debug=False,
+    )
+    assert "political thriller" in signal_values_for_dimension(
+        bacurau, "audience_expectation"
+    )
+    assert signal_values_for_dimension(bacurau, "pacing") == set()
+
+    materialists, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["class differences", "love triangle"],
+            title="Materialists",
+            content_type="movie",
+            genres=["Drama", "Romance"],
+        ),
+        mapping,
+        override_config=overrides,
+        include_debug=False,
+    )
+    assert "romantic drama" in signal_values_for_dimension(
+        materialists, "audience_expectation"
+    )
+    assert "romantic connection" in signal_values_for_dimension(
+        materialists, "topic_theme"
+    )
+    assert materialists["watch_guidance"]["watch_feel"].startswith(
+        "A serious romantic drama"
+    )
+
+    train_dreams, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["husband wife relationship", "slice of life"],
+            title="Train Dreams",
+            content_type="movie",
+            genres=["Drama"],
+        ),
+        mapping,
+        override_config=overrides,
+        include_debug=False,
+    )
+    assert "slice-of-life drama" in signal_values_for_dimension(
+        train_dreams, "audience_expectation"
+    )
+    assert "drama" not in signal_values_for_dimension(
+        train_dreams, "audience_expectation"
+    )
+    assert "serious" not in signal_values_for_dimension(train_dreams, "tone")
+    assert train_dreams["watch_guidance"]["watch_feel"].startswith(
+        "A reflective slice-of-life drama"
+    )
+
+    dear_child, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["miniseries"],
+            title="Dear Child",
+            content_type="series",
+            genres=["Crime", "Drama", "Mystery"],
+        ),
+        mapping,
+        override_config=overrides,
+        include_debug=False,
+    )
+    assert "investigation-led mystery" in signal_values_for_dimension(
+        dear_child, "audience_expectation"
+    )
+    assert "drama" not in signal_values_for_dimension(
+        dear_child, "audience_expectation"
+    )
+
+    eega, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            ["afterlife", "murder", "reincarnation", "revenge"],
+            title="Eega",
+            content_type="movie",
+            genres=["Action", "Fantasy"],
+        ),
+        mapping,
+        override_config=overrides,
+        include_debug=False,
+    )
+    assert "reincarnation" in signal_values_for_dimension(eega, "topic_theme")
+    assert eega["watch_guidance"]["watch_feel"] == (
+        "A tense fantasy revenge story built around reincarnation and an unlikely hero."
+    )
+    assert signal_values_for_dimension(eega, "pacing") == set()
+
+
+@pytest.mark.parametrize(
+    ("title", "keywords", "genres", "expected_primary_terms"),
+    [
+        (
+            "Bacurau",
+            ["colonialism", "resistance"],
+            ["Mystery", "Thriller", "Western"],
+            ("political thriller", "rebellion"),
+        ),
+        (
+            "Materialists",
+            ["class differences", "love triangle"],
+            ["Drama", "Romance"],
+            ("romantic drama", "class"),
+        ),
+        (
+            "Stop Making Sense",
+            ["concert film", "energetic"],
+            ["Documentary", "Music"],
+            ("concert film", "live music"),
+        ),
+        (
+            "Train Dreams",
+            ["husband wife relationship", "slice of life"],
+            ["Drama"],
+            ("slice-of-life drama", "family relationship"),
+        ),
+        (
+            "Eega",
+            ["afterlife", "murder", "reincarnation", "revenge"],
+            ["Action", "Fantasy"],
+            ("afterlife story", "reincarnation"),
+        ),
+    ],
+)
+def test_batch_6_display_review_produces_specific_primary_insights(
+    title, keywords, genres, expected_primary_terms
+):
+    from app.services.source_signal_service import (
+        build_decision_display,
+        build_watch_profile,
+    )
+
+    module = load_keyword_signal_preview_module()
+    item, _analysis = module.build_preview_item(
+        content_fixture(
+            module,
+            keywords,
+            title=title,
+            content_type="movie",
+            genres=genres,
+        ),
+        load_mapping(module),
+        override_config=load_overrides(module),
+        include_debug=False,
+    )
+    signals = [
+        {"dimension": dimension, **signal}
+        for dimension, rows in item["signals"].items()
+        for signal in rows
+    ]
+    display = build_decision_display(
+        build_watch_profile(item["watch_guidance"], signals),
+        signals,
+        display_context={
+            "content": {"type": "movie"},
+            "genres": genres,
+        },
+    )
+    primary = display["primary_insight"].lower()
+
+    assert all(term in primary for term in expected_primary_terms)
+    assert len(display["primary_insight"]) >= 28
+    assert display["profile"]["pace"] is None
 
 
 def test_breaking_bad_override_suppresses_misleading_primary_comedy():

@@ -1,5 +1,5 @@
 {
-  "override_version": "2026-07-28-v3.3",
+  "override_version": "2026-07-28-v3.5",
   "description": "Curated corrections for source-signal preview when keyword-only mapping is incomplete or misleading.",
   "overrides": [
     {
@@ -1076,7 +1076,9 @@
         {"dimension": "mood", "value": "suspenseful", "label": "Suspenseful", "confidence": "medium"}
       ],
       "signals_to_demote": [],
-      "signals_to_suppress": [],
+      "signals_to_suppress": [
+        {"dimension": "audience_expectation", "value": "drama"}
+      ],
       "preferred_watch_feel": "A suspenseful investigation-led crime mystery about captivity and a long-unsolved disappearance.",
       "preferred_chips": ["Investigation-led mystery", "Crime mystery", "Suspenseful"],
       "preferred_best_for": ["Crime mysteries", "Investigation-led stories", "Suspenseful dramas"],
@@ -1097,6 +1099,65 @@
       "preferred_best_for": ["Mystery series", "Investigation-led stories", "Suspenseful dramas"],
       "preferred_consider_first": [],
       "notes": "The reusable anti-corruption mapping supplies theme only; local synopsis and genres are needed for the title's spoiler-safe investigation identity."
+    },
+    {
+      "title": "Bacurau",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "political thriller", "label": "Political thriller", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A serious political thriller about an isolated community confronting colonial pressure and erasure.",
+      "preferred_chips": ["Political thriller", "Rebellion", "Serious tone"],
+      "preferred_best_for": ["Political thrillers", "Community resistance stories", "Serious mysteries"],
+      "preferred_consider_first": [],
+      "notes": "Sparse provider keywords establish resistance and colonialism but not a reusable global audience identity; local synopsis and genres support this minimal political-thriller correction."
+    },
+    {
+      "title": "Materialists",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "romantic drama", "label": "Romantic drama", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A serious romantic drama about matchmaking, class, and competing relationships.",
+      "preferred_chips": ["Romantic drama", "Romantic connection", "Class tension", "Serious tone"],
+      "preferred_best_for": ["Romantic dramas", "Relationship stories", "Social satires"],
+      "preferred_consider_first": [],
+      "notes": "The global love-triangle rule retains only a neutral romantic-connection theme; local Romance and Drama genres plus synopsis support this title-specific audience identity."
+    },
+    {
+      "title": "Train Dreams",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "slice-of-life drama", "label": "Slice-of-life drama", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [
+        {"dimension": "audience_expectation", "value": "drama"},
+        {"dimension": "tone", "value": "serious"}
+      ],
+      "preferred_watch_feel": "A reflective slice-of-life drama about love, loss, and a working life amid early-20th-century change.",
+      "preferred_chips": ["Slice-of-life drama", "Family relationship", "Reflective"],
+      "preferred_best_for": ["Slice-of-life dramas", "Reflective character stories", "Period dramas"],
+      "preferred_consider_first": [],
+      "notes": "Slice of life remains globally unmapped because it does not always imply drama; local Drama genre and synopsis support this title-specific identity while the override removes the redundant generic Drama fallback."
+    },
+    {
+      "title": "Eega",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "topic_theme", "value": "reincarnation", "label": "Reincarnation", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A tense fantasy revenge story built around reincarnation and an unlikely hero.",
+      "preferred_chips": ["Revenge story", "Reincarnation", "Fantasy", "Tense"],
+      "preferred_best_for": ["Fantasy revenge stories", "Reincarnation stories", "Inventive action fantasies"],
+      "preferred_consider_first": ["Emotional themes may feel heavy."],
+      "notes": "The reusable reincarnation mapping is valid but falls below Eega's crowded topic limit; this override promotes the title's explicit central premise and replaces generic afterlife copy."
     }
   ]
 }
