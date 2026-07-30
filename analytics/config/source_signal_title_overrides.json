@@ -1,5 +1,5 @@
 {
-  "override_version": "2026-07-28-v3.5",
+  "override_version": "2026-07-29-v3.7",
   "description": "Curated corrections for source-signal preview when keyword-only mapping is incomplete or misleading.",
   "overrides": [
     {
@@ -700,6 +700,7 @@
       "content_type": "movie",
       "signals_to_add": [
         {"dimension": "audience_expectation", "value": "revenge western", "label": "Revenge western", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "rescue mission", "label": "Rescue mission", "confidence": "high"},
         {"dimension": "tone", "value": "stylized", "label": "Stylized", "confidence": "high"},
         {"dimension": "mood", "value": "darkly funny", "label": "Darkly funny", "confidence": "medium"}
       ],
@@ -709,7 +710,7 @@
       "preferred_chips": ["Revenge western", "Tense", "Stylized", "Darkly funny"],
       "preferred_best_for": ["Revenge stories", "Westerns", "Stylized action dramas"],
       "preferred_consider_first": ["Better suited for viewers comfortable with darker or more intense stories."],
-      "notes": "Removes warm friendship phrasing from the revenge identity."
+      "notes": "Removes warm friendship phrasing from the revenge identity and preserves the central rescue mission when enslavement is also surfaced."
     },
     {
       "title": "Stranger Things",
@@ -1158,6 +1159,101 @@
       "preferred_best_for": ["Fantasy revenge stories", "Reincarnation stories", "Inventive action fantasies"],
       "preferred_consider_first": ["Emotional themes may feel heavy."],
       "notes": "The reusable reincarnation mapping is valid but falls below Eega's crowded topic limit; this override promotes the title's explicit central premise and replaces generic afterlife copy."
+    },
+    {
+      "title": "Central Station",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "topic_theme", "value": "family relationship", "label": "Family relationship", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A journey-driven drama about an unlikely bond and a search for family.",
+      "preferred_chips": ["Road-trip story", "Family relationship", "Journey-driven"],
+      "preferred_best_for": ["Road dramas", "Character journeys", "Family stories"],
+      "preferred_consider_first": [],
+      "notes": "The reusable road-movie mapping supplies structure; local synopsis supports the minimal family-relationship identity needed to replace generic Drama guidance."
+    },
+    {
+      "title": "Moving",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "family drama", "label": "Family drama", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "family relationship", "label": "Family relationship", "confidence": "high"}
+      ],
+      "signals_to_demote": [
+        {"value": "superhero story"}
+      ],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A heroic family drama about hidden powers, parents, and children facing danger together.",
+      "preferred_chips": ["Family drama", "Family relationship", "Superhuman powers", "Heroic"],
+      "preferred_best_for": ["Family dramas", "Superpowered stories", "Heroic ensemble series"],
+      "preferred_consider_first": [],
+      "notes": "Provider keywords over-promote a generic superhero identity; the local synopsis supports a family-centered correction while preserving the superpowered signals."
+    },
+    {
+      "title": "Pachinko",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "family drama", "label": "Family drama", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "family relationship", "label": "Family relationship", "confidence": "high"},
+        {"dimension": "mood", "value": "nostalgic", "label": "Nostalgic", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "An intimate multigenerational family drama shaped by migration, memory, and resilience.",
+      "preferred_chips": ["Family drama", "Family relationship", "Intimate", "Nostalgic"],
+      "preferred_best_for": ["Multigenerational dramas", "Family sagas", "Intimate historical stories"],
+      "preferred_consider_first": ["Expect a more emotional watch."],
+      "notes": "Sparse mapped vocabulary cannot express the title's central multigenerational family identity; the local keyword supports nostalgia only within this curated context."
+    },
+    {
+      "title": "The Studio",
+      "content_type": "series",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "workplace comedy", "label": "Workplace comedy", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "workplace story", "label": "Workplace story", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A playful workplace comedy about creative ambition and corporate pressure inside a movie studio.",
+      "preferred_chips": ["Workplace comedy", "Workplace story", "Playful", "Light"],
+      "preferred_best_for": ["Workplace comedies", "Entertainment-industry satires", "Playful ensemble series"],
+      "preferred_consider_first": [],
+      "notes": "The local Comedy genre and studio-workplace synopsis support existing workplace values; global film-industry keywords remain unmapped to avoid assuming comedy."
+    },
+    {
+      "title": "Sound of Metal",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "music-driven story", "label": "Music-driven story", "confidence": "high"}
+      ],
+      "signals_to_demote": [],
+      "signals_to_suppress": [
+        {"dimension": "audience_expectation", "value": "drama"}
+      ],
+      "preferred_watch_feel": "A music-driven character drama about hearing loss, addiction, and adapting to change.",
+      "preferred_chips": ["Music-driven story", "Addiction"],
+      "preferred_best_for": ["Character dramas", "Music-centered stories", "Stories about adaptation"],
+      "preferred_consider_first": [],
+      "notes": "The reusable addiction mapping supplies a topic, while local Music genre and synopsis provide the title-specific identity needed to replace generic Drama guidance."
+    },
+    {
+      "title": "No Other Choice",
+      "content_type": "movie",
+      "signals_to_add": [
+        {"dimension": "audience_expectation", "value": "workplace crime thriller", "label": "Workplace crime thriller", "confidence": "high"},
+        {"dimension": "topic_theme", "value": "economic pressure", "label": "Economic pressure", "confidence": "medium"}
+      ],
+      "signals_to_demote": [
+        {"value": "offbeat comedy"}
+      ],
+      "signals_to_suppress": [],
+      "preferred_watch_feel": "A darkly comic crime thriller about unemployment, status, and mounting desperation.",
+      "preferred_chips": ["Workplace crime thriller", "Economic pressure", "Darkly funny", "Dark tone"],
+      "preferred_best_for": ["Dark crime thrillers", "Workplace satires", "Morally escalating character stories"],
+      "preferred_consider_first": ["Better suited for viewers comfortable with darker or more intense stories."],
+      "notes": "Local Crime/Thriller genres, unemployment keywords, and synopsis support a specific dark workplace-crime identity without creating a global unemployment mapping."
     }
   ]
 }

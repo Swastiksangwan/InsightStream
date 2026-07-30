@@ -47,7 +47,7 @@ def test_load_keyword_signal_mapping_config():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
 
-    assert mapping["mapping_version"] == "2026-07-28-v2.7"
+    assert mapping["mapping_version"] == "2026-07-29-v2.9"
     assert "serial killer" in mapping["keyword_mappings"]
     assert "psychological thriller" in mapping["keyword_mappings"]
     assert "dark fantasy" in mapping["keyword_mappings"]
@@ -88,6 +88,20 @@ def test_load_keyword_signal_mapping_config():
         ("energetic", "mood", "energetic"),
         ("love triangle", "topic_theme", "romantic connection"),
         ("reincarnation", "topic_theme", "reincarnation"),
+        ("addiction", "topic_theme", "addiction"),
+        ("cold war", "topic_theme", "cold war"),
+        ("comedy horror", "audience_expectation", "horror comedy"),
+        ("duty", "topic_theme", "duty"),
+        ("mental illness", "topic_theme", "mental health"),
+        ("musical", "audience_expectation", "musical"),
+        ("power politics", "topic_theme", "power struggle"),
+        ("racism", "topic_theme", "racial injustice"),
+        ("road movie", "topic_theme", "road-trip story"),
+        ("road movie", "pacing", "journey-driven"),
+        ("slavery", "topic_theme", "enslavement"),
+        ("struggle for survival", "topic_theme", "survival story"),
+        ("true crime", "audience_expectation", "true crime"),
+        ("undercover", "topic_theme", "undercover operation"),
     ],
 )
 def test_reviewed_keyword_mappings_reuse_expected_canonical_values(
@@ -116,6 +130,12 @@ def test_reviewed_keyword_mappings_reuse_expected_canonical_values(
         "female protagonist",
         "drama",
         "pittsburgh pennsylvania",
+        "based on play or musical",
+        "busan south korea",
+        "italy",
+        "osaka japan",
+        "rio de janeiro",
+        "washington dc usa",
     ],
 )
 def test_reviewed_non_signal_keywords_are_explicitly_excluded(keyword):
@@ -132,6 +152,7 @@ def test_reviewed_non_signal_keywords_are_explicitly_excluded(keyword):
         "fall from grace",
         "death of daughter",
         "death of husband",
+        "sacrifice",
     ],
 )
 def test_reviewed_spoiler_terms_are_not_rendered_as_signals(keyword):
@@ -244,7 +265,7 @@ def test_title_override_config_loads_safely():
     module = load_keyword_signal_preview_module()
     overrides = load_overrides(module)
 
-    assert overrides["override_version"] == "2026-07-28-v3.5"
+    assert overrides["override_version"] == "2026-07-29-v3.7"
     assert any(
         override["title"] == "Breaking Bad"
         for override in overrides["overrides"]
@@ -256,6 +277,12 @@ def test_title_override_config_loads_safely():
         "Eega",
         "Materialists",
         "Train Dreams",
+        "Central Station",
+        "Moving",
+        "Pachinko",
+        "Sound of Metal",
+        "The Studio",
+        "No Other Choice",
     }
 
 
@@ -960,6 +987,137 @@ def test_batch_6_curated_review_titles_have_specific_spoiler_safe_identity():
     assert report["errors"] == []
 
 
+def test_batch_7_literal_mappings_do_not_infer_extra_dimensions():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+    expected = {
+        "mental illness": [("topic_theme", "mental health")],
+        "power politics": [("topic_theme", "power struggle")],
+        "struggle for survival": [("topic_theme", "survival story")],
+        "duty": [("topic_theme", "duty")],
+    }
+
+    for keyword, expected_signals in expected.items():
+        actual = [
+            (signal["dimension"], signal["value"])
+            for signal in mapping["keyword_mappings"][keyword]["signals"]
+        ]
+        assert actual == expected_signals
+
+    road_dimensions = {
+        signal["dimension"]
+        for signal in mapping["keyword_mappings"]["road movie"]["signals"]
+    }
+    assert road_dimensions == {"topic_theme", "pacing"}
+
+
+def test_batch_7_curated_titles_resolve_semantic_qa_without_hiding_source_signals():
+    module = load_keyword_signal_preview_module()
+    mapping = load_mapping(module)
+    overrides = load_overrides(module)
+    contents = [
+        module.KeywordContent(
+            content_id=3949,
+            title="Central Station",
+            content_type="movie",
+            keywords=["orphan", "road movie", "rio de janeiro"],
+            genres=["Drama"],
+        ),
+        module.KeywordContent(
+            content_id=3961,
+            title="Moving",
+            content_type="series",
+            keywords=["high school", "super power", "superhero", "superhuman"],
+            genres=["Action", "Adventure", "Drama", "Mystery"],
+        ),
+        module.KeywordContent(
+            content_id=3963,
+            title="Pachinko",
+            content_type="series",
+            keywords=["immigrant family", "intimate", "melancholy", "nostalgic"],
+            genres=["Drama"],
+        ),
+        module.KeywordContent(
+            content_id=3966,
+            title="The Studio",
+            content_type="series",
+            keywords=["film industry", "hilarious", "movie studio"],
+            genres=["Comedy", "Drama"],
+        ),
+        module.KeywordContent(
+            content_id=3954,
+            title="Sound of Metal",
+            content_type="movie",
+            keywords=["addiction", "deaf", "heavy metal"],
+            genres=["Drama", "Music"],
+        ),
+        module.KeywordContent(
+            content_id=3953,
+            title="No Other Choice",
+            content_type="movie",
+            keywords=["dark comedy", "paper industry", "unemployment"],
+            genres=["Comedy", "Crime", "Thriller"],
+        ),
+    ]
+    preview, analyses = module.build_preview_payload(
+        generated_at="2026-07-29T00:00:00+00:00",
+        mapping_file=Path("analytics/config/source_signal_keyword_mapping.json"),
+        mapping_config=mapping,
+        override_file=Path("analytics/config/source_signal_title_overrides.json"),
+        override_config=overrides,
+        content_items=contents,
+        include_debug=True,
+    )
+    items = {item["title"]: item for item in preview["items"]}
+
+    assert all(item["curated_override_applied"] for item in items.values())
+    assert items["Central Station"]["watch_guidance"]["watch_feel"].startswith(
+        "A journey-driven drama"
+    )
+    assert items["Moving"]["watch_guidance"]["watch_feel"].startswith(
+        "A heroic family drama"
+    )
+    assert "superhuman powers" in signal_values_for_dimension(
+        items["Moving"], "topic_theme"
+    )
+    assert items["Pachinko"]["watch_guidance"]["watch_feel"].startswith(
+        "An intimate multigenerational family drama"
+    )
+    assert "nostalgic" in signal_values_for_dimension(items["Pachinko"], "mood")
+    assert items["The Studio"]["watch_guidance"]["watch_feel"].startswith(
+        "A playful workplace comedy"
+    )
+    assert items["Sound of Metal"]["watch_guidance"]["watch_feel"].startswith(
+        "A music-driven character drama"
+    )
+    assert items["No Other Choice"]["watch_guidance"]["watch_feel"].startswith(
+        "A darkly comic crime thriller"
+    )
+    assert "economic pressure" in signal_values_for_dimension(
+        items["No Other Choice"], "topic_theme"
+    )
+
+    report = module.build_report(
+        generated_at="2026-07-29T00:00:00+00:00",
+        mapping_file=Path("analytics/config/source_signal_keyword_mapping.json"),
+        output_path=Path("analytics/processed/source_signals/debug/batch_7.json"),
+        report_path=Path("analytics/processed/source_signals/debug/batch_7_report.json"),
+        mapping_config=mapping,
+        override_file=Path("analytics/config/source_signal_title_overrides.json"),
+        override_config=overrides,
+        content_items=contents,
+        preview_items=preview["items"],
+        analyses=analyses,
+    )
+    assert report["semantic_quality_summary"] == {
+        "curated_review_candidate_count": 0,
+        "generic_watch_feel_count": 0,
+        "semantic_conflict_count": 0,
+    }
+    assert report["warnings"] == []
+    assert report["errors"] == []
+
+
 def test_the_crown_override_replaces_generic_historical_duplicates():
     module = load_keyword_signal_preview_module()
     mapping = load_mapping(module)
@@ -1603,7 +1761,7 @@ def test_django_override_prevents_warm_revenge_identity():
     item, _analysis = module.build_preview_item(
         content_fixture(
             module,
-            ["revenge", "hope"],
+            ["revenge", "hope", "rescue mission", "slavery"],
             title="Django Unchained",
             content_type="movie",
         ),
@@ -1615,6 +1773,9 @@ def test_django_override_prevents_warm_revenge_identity():
 
     assert "revenge western" in watch_feel
     assert "warm revenge" not in watch_feel
+    assert {
+        signal["value"] for signal in item["signals"]["topic_theme"]
+    } >= {"enslavement", "rescue mission", "revenge story"}
     assert item["watch_guidance"]["consider_first"] == [
         "Better suited for viewers comfortable with darker or more intense stories."
     ]

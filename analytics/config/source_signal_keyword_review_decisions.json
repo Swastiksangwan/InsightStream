@@ -1,8 +1,8 @@
 {
-  "review_version": "2026-07-28-v1.5",
-  "supports_mapping_version": "2026-07-28-v2.7",
+  "review_version": "2026-07-29-v1.7",
+  "supports_mapping_version": "2026-07-29-v2.9",
   "normalization_contract": "source-signal-keyword-v1",
-  "description": "Human-curated keyword decisions supporting source-signal mapping version 2026-07-28-v2.7.",
+  "description": "Human-curated keyword decisions supporting source-signal mapping version 2026-07-29-v2.9.",
   "decisions": {
     "1920s": {
       "classification": "useful_product_signal",
@@ -1116,6 +1116,319 @@
       "rationale": "The phrase is useful but can describe comedy, animation, family stories, or drama; no existing neutral canonical value represents it without over-inferring genre. Train Dreams retains its supported identity through a title override.",
       "confidence": "medium",
       "human_review_required": true
+    },
+    "addiction": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Sound of Metal and The Queen's Gambit both use the keyword for a central addiction subject; the mapping deliberately does not infer recovery, mood, or caution severity.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "addiction",
+          "display_label": "Addiction",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "based on play or musical": {
+      "classification": "lifecycle_or_format",
+      "action": "exclude",
+      "rationale": "This describes adaptation provenance rather than a viewing signal and must not be confused with the musical genre.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "busan south korea": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "This is geographic metadata and is not forced into a topic or audience signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "cautionary": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "Across Barbie, The Return of the King, The Wire, and A Knight of the Seven Kingdoms, the adjective does not identify a stable mood, tone, or audience expectation.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "cold war": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Deutschland and The Americans both use the term as stable historical-political story context.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "cold war",
+          "display_label": "Cold War",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "comedy horror": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Bugonia and Widow's Bay both use the exact term as a stable horror-comedy genre expectation.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "audience_expectation",
+          "value": "horror comedy",
+          "display_label": "Horror comedy",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "compassionate": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The keyword spans 28 Years Later, A Knight of the Seven Kingdoms, Fargo, Inside Out, and Moon Knight and does not reliably describe the overall mood or tone.",
+      "confidence": "low",
+      "human_review_required": true
+    },
+    "duty": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Das Boot, Godzilla Minus One, and Saving Private Ryan consistently use the keyword as a responsibility-and-service theme.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "duty",
+          "display_label": "Duty",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "italy": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "The country name is geographic metadata and is not forced into a topic signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "kidnapping": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The keyword is explicit premise material in Bugonia, a later revelation in Get Out, and a secondary or undisclosed plot detail in Inception and The Silence of the Lambs. Mixed disclosure makes both global display and global spoiler suppression too broad.",
+      "confidence": "medium",
+      "human_review_required": true
+    },
+    "mental illness": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Bugonia, Joker, and The Holdovers all use the term as mental-health subject matter; the neutral existing value avoids diagnostic, mood, or danger claims.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "mental health",
+          "display_label": "Mental health",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "modern history": {
+      "classification": "canonical_metadata",
+      "action": "leave_unmapped",
+      "rationale": "Across Babylon Berlin, Peaky Blinders, and The Queen's Gambit, the term is broad period metadata and does not identify one stable product concept.",
+      "confidence": "medium",
+      "human_review_required": true
+    },
+    "musical": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "La La Land and Main Vaapas Aaunga both use the keyword as a direct musical-format expectation.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "audience_expectation",
+          "value": "musical",
+          "display_label": "Musical",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "nostalgic": {
+      "classification": "ambiguous_manual_review",
+      "action": "leave_unmapped",
+      "rationale": "The mood term is semantically valid, but mapping it globally suppresses stronger metadata fallback identity on a sparsely mapped animated title. Existing curated titles retain supported nostalgia through overrides until fallback composition can preserve both.",
+      "confidence": "medium",
+      "human_review_required": true
+    },
+    "osaka japan": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "This is geographic metadata and is not forced into a story-theme signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "power politics": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Bugonia and The Wire both use the phrase for institutional power conflict; the established power-struggle value is sufficient without inferring genre or tension.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "power struggle",
+          "display_label": "Power struggle",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "racism": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "13th, Django Unchained, Get Out, and Killers of the Flower Moon all use racism as substantive subject matter rather than incidental metadata.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "racial injustice",
+          "display_label": "Racial injustice",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "rio de janeiro": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "The city name is geographic metadata and is not promoted to a source signal.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "road movie": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Central Station uses the exact keyword as a journey structure and road-story identity; unlike the broader road-trip rule, this mapping does not infer an easygoing mood.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "road-trip story",
+          "display_label": "Road-trip story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        },
+        {
+          "dimension": "pacing",
+          "value": "journey-driven",
+          "display_label": "Journey-driven",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "sacrifice": {
+      "classification": "spoiler_unsafe",
+      "action": "spoiler_unsafe",
+      "rationale": "For the affected fantasy, superhero, and folk-horror titles, the term can disclose a decisive character outcome or ritual plot development.",
+      "confidence": "high",
+      "human_review_required": false
+    },
+    "slavery": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "13th, Django Unchained, Gladiator, and RRR all use enslavement as substantive historical or social subject matter.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "enslavement",
+          "display_label": "Enslavement",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "struggle for survival": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Grave of the Fireflies, Society of the Snow, and The Martian consistently use the phrase for a survival premise; the existing survival-story value avoids extra pace or intensity inference.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "survival story",
+          "display_label": "Survival story",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "true crime": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "Delhi Crime, Killers of the Flower Moon, and MINDHUNTER all use the phrase as a stable factual-crime viewing expectation, whether documentary-inspired or dramatized.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "audience_expectation",
+          "value": "true crime",
+          "display_label": "True crime",
+          "weight": 3,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "undercover": {
+      "classification": "useful_product_signal",
+      "action": "map",
+      "rationale": "The Americans and The Departed both use the keyword for a central infiltration premise without requiring a mood or pacing inference.",
+      "confidence": "high",
+      "human_review_required": false,
+      "mapping": [
+        {
+          "dimension": "topic_theme",
+          "value": "undercover operation",
+          "display_label": "Undercover operation",
+          "weight": 2,
+          "confidence": "medium",
+          "spoiler_safe": true
+        }
+      ]
+    },
+    "washington dc usa": {
+      "classification": "location_or_setting",
+      "action": "exclude",
+      "rationale": "The city/country phrase is geographic metadata and is not promoted to a story signal.",
+      "confidence": "high",
+      "human_review_required": false
     }
   }
 }
