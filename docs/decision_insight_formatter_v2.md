@@ -2,7 +2,7 @@
 
 This document is the canonical operational reference for the sentence shown under
 **Why this stands out** on an InsightStream title-detail page. It describes the
-implementation on Formatter version `2.0.0`; it does not describe planned behavior.
+implementation on Formatter version `2.0.1`; it does not describe planned behavior.
 
 ## 1. Purpose And Product Contract
 
@@ -244,7 +244,7 @@ A normal details request follows this concrete call path:
 
 | Version | Current value | Location | Bump when |
 | --- | --- | --- | --- |
-| Formatter | `2.0.0` | `DECISION_INSIGHT_FORMATTER_VERSION` in `decision_insight_formatter.py` | Planning, validation, rendering, compatibility, or public-safety behavior changes. |
+| Formatter | `2.0.1` | `DECISION_INSIGHT_FORMATTER_VERSION` in `decision_insight_formatter.py` | Planning, validation, rendering, compatibility, or public-safety behavior changes. |
 | Keyword mapping | `2026-07-29-v2.9` | `source_signal_keyword_mapping.json` | Runtime keyword-to-signal semantics change. |
 | Review decisions | `2026-07-29-v1.7` | `source_signal_keyword_review_decisions.json` | Governed decisions change; it must support the current mapping version. |
 | Title overrides | `2026-07-29-v3.7` | `source_signal_title_overrides.json` | Structured title override semantics change. |
@@ -324,6 +324,11 @@ normalized label. Unknown labels without a governed identity noun/copy role are
 rejected as `missing_identity_copy_role`; low-confidence identities cannot outrank
 higher-trust evidence.
 
+`GOVERNED_IDENTITY_COPY_ROLES` admits specific identities whose final token is not
+a general identity noun. Formatter 2.0.1 includes `Aviation action`; it requires a
+curated/source identity plus Action metadata. An aircraft mention alone cannot
+create it, and curated provenance retains tier 1.
+
 ## 11. Identity Trust Tiers
 
 `IDENTITY_TRUST_TIER_LABELS` is the executable registry. Within a tier,
@@ -354,6 +359,14 @@ normalized ordering makes ties deterministic.
 - Crime and fantasy identities require compatible genre or explicit premise.
 - Generic marker-based inferred identities at weaker tiers must match Comedy,
   Documentary, Horror, Mystery, Romance, Thriller, or Western metadata.
+
+Lexical premise evidence is centralized in `EVIDENCE_FAMILIES` and matched with
+`evidence_family_matches()`. Governed singular/plural forms include serial
+killer/serial killers, cartel/cartels, and spy/spies plus explicit agent,
+intelligence-service, espionage, MI5, and MI6 phrases. The verb construction
+`spies on` is excluded. A spy
+identity also requires explicit premise evidence and compatible Drama, Thriller,
+Crime, Action, War, or War & Politics metadata.
 
 Rejected candidates receive `identity_metadata_conflict`, a specific conflict reason,
 and evidence. Selection falls through to the strongest compatible candidate.
@@ -456,7 +469,8 @@ Each component records `rule`, matched text, and scope in its evidence field.
 - `template_family`;
 - `rejected_candidates` with source/evidence/reason;
 - `validation_errors`;
-- `curated_override_applied`, `curated_identity_available`;
+- `curated_override_applied`, `curated_identity_available`, and
+  `curated_identity_evaluation`;
 - `formatter_version`.
 
 Each selected `InsightComponent` carries text, grammatical role, concept family,
@@ -482,9 +496,16 @@ Representative abbreviated serialization:
   "template_family": "identity_conflict",
   "rejected_candidates": [],
   "validation_errors": [],
-  "formatter_version": "2.0.0"
+  "formatter_version": "2.0.1"
 }
 ```
+
+`curated_identity_evaluation` is `not_applicable` when no curated identity exists,
+`not_evaluated` before the selection pipeline processes one, `selected` when it
+wins, or `evaluated_rejected` when copy-role, compatibility, or ranking checks
+reject it. Only `not_evaluated` produces
+`PRIMARY_IDENTITY_CURATED_OVERRIDE_IGNORED`; an evaluated rejection can require
+source review without invalidating safe display.
 
 ## 20. Plan Validation
 
@@ -531,8 +552,8 @@ modifier is appended. The same plan always renders the same result.
 | Field | Source and consistency rule |
 | --- | --- |
 | `decision_layer.display.primary_insight` | Formatter-rendered authoritative prose. |
-| `display.profile.identity` | Safe structured profile with selected identity first. |
-| `display.profile.themes/feel/pace/best_for/consider_first` | Safe structured fields, filtered for rejected concept families. |
+| `display.profile.identity` | Safe structured profile with selected identity first; weaker same-family fragments are removed. |
+| `display.profile.themes/feel/pace/best_for/consider_first` | Safe structured fields, filtered for rejected concepts and weaker fragments that merely repeat the selected identity. |
 | `display.supporting_facts` | Metadata/rating/access/credits facts; not primary copy. |
 | `decision_layer.watch_profile.watch_feel` | Compatibility alias of the exact primary insight. |
 | `watch_profile.chips/best_for/consider_first` | Sanitized stored guidance, filtered for rejected concepts. |
@@ -542,6 +563,10 @@ modifier is appended. The same plan always renders the same result.
 | `DecisionDisplayCard` | Renders only `decision_layer.display`; never reconstructs prose. |
 
 Rejected and unsafe concepts may not appear in any of these public fields.
+For example, `Investigation-led mystery` suppresses the weaker public theme
+`Investigation-led`, while `Conspiracy` and `Government secrecy` remain eligible.
+If this deduplication empties themes, a selected safe topic differentiator is
+restored so the structured profile remains consistent with the sentence.
 
 ## 24. Readiness States
 
@@ -562,6 +587,11 @@ source_signal_review_required: true
 The rejected concept remains diagnostic evidence and is removed from every public
 field. Display review issues affect display readiness; source conflicts alone do
 not. Critical issues remain reserved for unsafe or incoherent public output.
+
+A safe Documentary metadata identity with a specific governed overview
+differentiator is not classified as incidental or low-specificity merely because
+incompatible fictional identities were rejected. Those rejections still set
+`source_signal_review_required=true`.
 
 ## 25. Audit And Diagnostic Pipeline
 
@@ -722,7 +752,7 @@ fabricated. Plan uses `identity_about`; output is `A drama.` The sentence is tru
 but audit rules may mark it low-specificity/fallback-only for display review. The
 formatter does not throw.
 
-All examples use formatter `2.0.0`, mapping `2026-07-29-v2.9`, review
+All examples use formatter `2.0.1`, mapping `2026-07-29-v2.9`, review
 `2026-07-29-v1.7`, and overrides `2026-07-29-v3.7`.
 
 ## 33. Related Commands Quick Reference

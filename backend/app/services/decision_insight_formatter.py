@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 
-DECISION_INSIGHT_FORMATTER_VERSION = "2.0.0"
+DECISION_INSIGHT_FORMATTER_VERSION = "2.0.1"
 # Compatibility alias for older internal imports and serialized fixtures.
 INSIGHT_FORMATTER_VERSION = DECISION_INSIGHT_FORMATTER_VERSION
 
@@ -422,9 +422,46 @@ RELIABLE_CONTEXT_IDENTITIES = {
     "sci-fi heist",
     "sci-fi mystery",
     "serial-killer investigation",
+    "spy story",
     "space survival drama",
     "supernatural superhero adventure",
     "tech dystopia anthology",
+}
+
+# Lexical variants are governed as families so compatibility and inference use
+# the same deterministic evidence contract.
+EVIDENCE_FAMILIES = {
+    "cartel": (
+        "cartel",
+        "cartels",
+        "drug cartel",
+        "drug cartels",
+    ),
+    "serial_killer": (
+        "serial killer",
+        "serial killers",
+        "serial-killer",
+        "serial-killers",
+    ),
+    "spy": (
+        "spy",
+        "spies",
+        "undercover spy",
+        "undercover spies",
+        "secret agent",
+        "secret agents",
+        "intelligence agent",
+        "intelligence agents",
+        "intelligence service",
+        "intelligence services",
+        "espionage",
+        "mi5",
+        "mi6",
+    ),
+}
+
+GOVERNED_IDENTITY_COPY_ROLES = {
+    "aviation action",
 }
 
 INSIGHT_CONTEXT_RULES = (
@@ -620,6 +657,7 @@ class InsightPlan:
     validation_errors: list[str] = field(default_factory=list)
     curated_override_applied: bool = False
     curated_identity_available: bool = False
+    curated_identity_evaluation: str = "not_applicable"
     formatter_version: str = INSIGHT_FORMATTER_VERSION
 
     def as_dict(self) -> dict[str, Any]:
@@ -745,6 +783,16 @@ def insight_signal_match(
     for signal in candidates:
         if insight_normalized(signal.get("label")) == normalized:
             return signal
+    if dimensions and dimensions <= {"tone", "mood"}:
+        normalized_role = re.sub(r"\s+(tone|mood)$", "", normalized)
+        for signal in candidates:
+            signal_role = re.sub(
+                r"\s+(tone|mood)$",
+                "",
+                insight_normalized(signal.get("label")),
+            )
+            if signal_role == normalized_role:
+                return signal
     for signal in candidates:
         if insight_concept_family(signal.get("label")) == family:
             return signal
@@ -758,6 +806,7 @@ def identity_has_copy_role(label: str) -> bool:
         normalized
         and (
             normalized in dominant
+            or normalized in GOVERNED_IDENTITY_COPY_ROLES
             or normalized in INSIGHT_GENERIC_IDENTITIES
             or normalized.split()[-1] in IDENTITY_NOUNS
             or normalized.endswith((" sci fi", " sci-fi", " heist"))
@@ -924,11 +973,33 @@ def identity_compatibility(
     if "anthology" in normalized and not has_evidence("anthology"):
         return False, "missing_explicit_anthology_evidence", "requires explicit anthology structure"
 
-    if "cartel" in normalized and not any(
-        phrase_present(overview, phrase)
-        for phrase in ("cartel", "organized crime", "drug trafficking", "drug trade")
+    if "cartel" in normalized and not (
+        evidence_family_matches(overview, "cartel")
+        or any(
+            phrase_present(overview, phrase)
+            for phrase in ("organized crime", "drug trafficking", "drug trade")
+        )
     ):
         return False, "missing_cartel_or_organized_crime_evidence", "requires explicit cartel or organized-crime premise"
+
+    if normalized in {"spy story", "spy thriller"}:
+        compatible_genre = has_genre(
+            "drama",
+            "thriller",
+            "crime",
+            "action",
+            "war & politics",
+            "war",
+        )
+        if not compatible_genre or not evidence_family_matches(overview, "spy"):
+            return False, "missing_central_spy_evidence", "requires an explicit spy/agent premise and compatible genre metadata"
+
+    if normalized == "aviation action":
+        governed_source = candidate.source.startswith(
+            ("curated_override:", "source_signal:")
+        )
+        if not governed_source or not has_genre("action"):
+            return False, "missing_aviation_action_evidence", "requires a curated/source identity and Action metadata"
 
     if normalized == "dark fantasy":
         explicit_dark_fantasy = candidate.source.startswith(
@@ -968,8 +1039,9 @@ def identity_compatibility(
         if not explicit_prison_identity:
             return False, "incidental_prison_context", "requires an explicit prison identity and central premise"
 
-    if normalized == "serial killer investigation" and not has_evidence(
-        "serial killer", "serial-killer"
+    if normalized == "serial killer investigation" and not evidence_family_matches(
+        overview,
+        "serial_killer",
     ):
         return False, "missing_serial_killer_evidence", "generic murder or detective evidence is insufficient"
 
@@ -1122,7 +1194,6 @@ def inferred_identity_trust(
         ((display_context or {}).get("content") or {}).get("overview")
     )
     explicit_rules = {
-        "serial killer investigation": ("serial killer", "serial-killer"),
         "cyberpunk action sci fi": ("cyberpunk", "cyber-punk"),
         "prison drama": ("prison inmate", "prison system", "corrupt warden"),
         "action crime investigation": ("police investigator", "federal investigator"),
@@ -1133,6 +1204,16 @@ def inferred_identity_trust(
         "psychological survival thriller": ("survival", "stranded", "plane crash"),
     }
     phrases = explicit_rules.get(normalized) or ()
+    if normalized == "serial killer investigation" and evidence_family_matches(
+        overview,
+        "serial_killer",
+    ):
+        return 3, "explicit_premise_identity"
+    if normalized in {"spy story", "spy thriller"} and evidence_family_matches(
+        overview,
+        "spy",
+    ):
+        return 3, "explicit_premise_identity"
     if any(phrase_present(overview, phrase) for phrase in phrases):
         return 3, "explicit_premise_identity"
     return 5, "governed_inferred_identity"
@@ -1151,6 +1232,7 @@ def select_identity(
         + [display_context.get("inferred_identity")]
     )
     candidate_rows: list[IdentityCandidate] = []
+    curated_identity_signals: list[dict[str, Any]] = []
     seen: set[tuple[str, int, str]] = set()
 
     def add_candidate(candidate: IdentityCandidate) -> None:
@@ -1165,13 +1247,32 @@ def select_identity(
         if signal.get("dimension") not in {"audience_expectation", "topic_theme"}:
             continue
         label = signal.get("label")
-        if not identity_has_copy_role(label):
-            continue
         confidence = insight_normalized(signal.get("confidence")) or None
         curated = (
             bool(watch_profile.get("curated_override_applied"))
             and "curated override" in signal_source_names(signal)
         )
+        curated_identity_signal = bool(
+            curated
+            and (
+                signal.get("dimension") == "audience_expectation"
+                or identity_has_copy_role(label)
+            )
+        )
+        if curated_identity_signal:
+            curated_identity_signals.append(signal)
+        if not identity_has_copy_role(label):
+            if curated_identity_signal:
+                plan.rejected_candidates.append(
+                    {
+                        "candidate": label,
+                        "role": "primary_identity",
+                        "reason": "missing_identity_copy_role",
+                        "source": f"curated_override:{signal.get('dimension')}:{signal.get('value')}",
+                        "confidence": confidence,
+                    }
+                )
+            continue
         if curated:
             tier = 1
         elif signal.get("dimension") == "audience_expectation":
@@ -1284,6 +1385,12 @@ def select_identity(
         ),
     )
     selected = ranked[0] if ranked else None
+    if not curated_identity_signals:
+        plan.curated_identity_evaluation = "not_applicable"
+    elif selected and selected.source.startswith("curated_override:"):
+        plan.curated_identity_evaluation = "selected"
+    elif curated_identity_signals:
+        plan.curated_identity_evaluation = "evaluated_rejected"
     if not selected:
         return None
     for candidate in ranked[1:]:
@@ -1320,6 +1427,20 @@ def phrase_present(text: str, phrase: str) -> bool:
             rf"(?<![a-z0-9]){re.escape(normalized_phrase)}(?![a-z0-9])",
             text,
         )
+    )
+
+
+def evidence_family_matches(text: Any, family: str) -> bool:
+    """Match a governed lexical family without arbitrary substring checks."""
+
+    normalized = insight_normalized(text)
+    if family == "spy":
+        # Avoid treating the third-person verb in "spies on" as a spy premise.
+        normalized = re.sub(r"\bspies on\b", "", normalized)
+    variants = EVIDENCE_FAMILIES.get(family) or ()
+    return bool(
+        normalized
+        and any(phrase_present(normalized, variant) for variant in variants)
     )
 
 
@@ -1763,10 +1884,15 @@ def build_insight_plan(
     )
     plan.curated_identity_available = any(
         signal.get("dimension") in {"audience_expectation", "topic_theme"}
-        and identity_has_copy_role(signal.get("label"))
+        and (
+            signal.get("dimension") == "audience_expectation"
+            or identity_has_copy_role(signal.get("label"))
+        )
         and "curated override" in signal_source_names(signal)
         for signal in safe
     )
+    if plan.curated_identity_available:
+        plan.curated_identity_evaluation = "not_evaluated"
     for signal in signals or []:
         if signal.get("spoiler_safe") is False:
             plan.rejected_candidates.append(

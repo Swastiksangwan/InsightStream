@@ -40,6 +40,49 @@ def test_context_identity_does_not_promote_incidental_words(
     assert inferred != forbidden
 
 
+def test_governed_spy_identity_requires_explicit_premise_and_compatible_genre():
+    inferred = infer_context_identity(
+        {"watch_feel": None, "chips": [], "best_for": []},
+        [],
+        display_context={
+            "content": {
+                "type": "series",
+                "overview": (
+                    "An East German soldier is sent west as an undercover spy "
+                    "for an intelligence service."
+                ),
+            },
+            "genres": ["Drama", "Thriller"],
+        },
+    )
+    incidental = infer_context_identity(
+        {"watch_feel": None, "chips": [], "best_for": []},
+        [],
+        display_context={
+            "content": {
+                "type": "series",
+                "overview": "A student spies on a neighbor after school.",
+            },
+            "genres": ["Drama"],
+        },
+    )
+    intelligence_service = infer_context_identity(
+        {"watch_feel": None, "chips": [], "best_for": []},
+        [],
+        display_context={
+            "content": {
+                "type": "series",
+                "overview": "A team of MI5 agents navigate the espionage world.",
+            },
+            "genres": ["Comedy", "Crime", "Drama"],
+        },
+    )
+
+    assert inferred == "Spy thriller"
+    assert intelligence_service == "Spy story"
+    assert incidental != "Spy story"
+
+
 class FakeResult:
     def __init__(self, row=None, rows=None):
         self.row = row
@@ -378,8 +421,8 @@ def test_future_batch_title_gets_formatter_output_without_sentence_migration():
     assert "stored ingestion guidance" not in str(decision_layer).casefold()
     assert (
         decision_layer["debug"]["insight_plan"]["formatter_version"]
-        == "2.0.0"
-    )
+            == "2.0.1"
+        )
 
 
 def test_decision_layer_keeps_useful_chips():
@@ -855,6 +898,122 @@ def test_decision_display_prefers_serial_killer_crime_thriller_without_repetitio
     )
     assert "built around detective investigation" not in insight
     assert "serial-killer investigation" in insight
+
+
+def test_plural_serial_killer_evidence_accepts_governed_identity():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=["Serial-killer investigation", "Tense"],
+            best_for=["Crime investigations"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row(
+                "audience_expectation",
+                "Serial-killer investigation",
+                confidence="medium",
+            ),
+            signal_row("tone", "Tense", confidence="high"),
+        ],
+    )
+
+    layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": "FBI agents interview serial killers to understand their crimes.",
+            },
+            genres=["Crime", "Drama", "Thriller"],
+        ),
+    )
+
+    assert layer["display"]["profile"]["identity"][0] == (
+        "Serial-killer investigation"
+    )
+    assert "serial-killer investigation" in layer["display"][
+        "primary_insight"
+    ].casefold()
+
+
+def test_plural_cartel_evidence_accepts_governed_identity():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=["Cartel crime drama"],
+            best_for=["Crime dramas"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row(
+                "audience_expectation",
+                "Cartel crime drama",
+                confidence="high",
+            )
+        ],
+    )
+
+    layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": "Agents pursue powerful drug cartels across several countries.",
+            },
+            genres=["Crime", "Drama"],
+        ),
+    )
+
+    assert layer["display"]["profile"]["identity"][0] == "Cartel crime drama"
+
+
+def test_selected_identity_fragment_is_removed_from_all_public_profile_fields():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=[
+                "Investigation-led mystery",
+                "Investigation-led",
+                "Conspiracy",
+            ],
+            best_for=["Investigation-led", "Mystery viewers"],
+            consider_first=["Investigation-led"],
+        ),
+        signals=[
+            signal_row(
+                "audience_expectation",
+                "Investigation-led mystery",
+                confidence="high",
+            ),
+            signal_row("topic_theme", "Investigation-led", confidence="high"),
+            signal_row("topic_theme", "Conspiracy", confidence="high"),
+        ],
+    )
+
+    layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": "Two agents investigate unexplained cases and a government conspiracy.",
+            },
+            genres=["Mystery", "Drama"],
+        ),
+    )
+
+    profile = layer["display"]["profile"]
+    assert profile["identity"][0] == "Investigation-led mystery"
+    assert "Conspiracy thriller" not in profile["identity"]
+    assert "Investigation-led" not in profile["themes"]
+    assert "Conspiracy" in profile["themes"]
+    assert "Investigation-led" not in layer["watch_profile"]["chips"]
+    assert "Investigation-led" not in layer["watch_profile"]["best_for"]
+    assert "Investigation-led" not in layer["watch_profile"]["consider_first"]
+    assert all(
+        "with investigation-led" not in reason.casefold()
+        for reason in layer["decision_support"]["reasons"]
+    )
 
 
 def test_decision_display_prefers_action_crime_investigation_over_assassin_story():

@@ -871,6 +871,23 @@ def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
             if item.get("reason") == "identity_metadata_conflict"
             and str(item.get("source") or "").startswith("source_signal:")
         ]
+        primary_differentiator = plan.get("primary_differentiator") or {}
+        governed_specific_differentiator = bool(
+            primary_differentiator.get("source") == "overview_rule"
+            and primary_differentiator.get("supported") is not False
+            and primary_differentiator.get("concept_family")
+        )
+        safe_documentary_context = bool(
+            insight_normalized(primary_identity_plan.get("text")) == "documentary"
+            and primary_identity_plan.get("source") in {"genre_context", "inferred_context"}
+            and governed_specific_differentiator
+            and source_conflicts
+            and all(
+                item.get("conflict_reason")
+                == "documentary_rejects_fictional_identity"
+                for item in source_conflicts
+            )
+        )
         selected_identity_conflicts = [
             item
             for item in identity_rejections
@@ -918,6 +935,7 @@ def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
         if (
             primary_identity_plan.get("source") == "inferred_context"
             and primary_identity_trust_tier >= 5
+            and not safe_documentary_context
         ):
             add_unique_issue(
                 issues,
@@ -930,11 +948,18 @@ def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
                     "backend_display_rule",
                 ),
             )
-        if (
-            plan.get("curated_override_applied")
-            and plan.get("curated_identity_available")
-            and "curated_override" not in str(primary_identity_plan.get("source") or "")
-        ):
+        curated_evaluation = plan.get("curated_identity_evaluation")
+        curated_not_evaluated = (
+            curated_evaluation == "not_evaluated"
+            if curated_evaluation is not None
+            else bool(
+                plan.get("curated_override_applied")
+                and plan.get("curated_identity_available")
+                and "curated_override"
+                not in str(primary_identity_plan.get("source") or "")
+            )
+        )
+        if curated_not_evaluated:
             add_unique_issue(
                 issues,
                 issue(
@@ -942,7 +967,7 @@ def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
                     "high",
                     "insight_plan.primary_identity",
                     primary_identity_plan.get("text") or "",
-                    "A compatible curated identity was available but not selected.",
+                    "A curated identity was present but could not be evaluated.",
                     "backend_display_rule",
                 ),
             )
@@ -1114,6 +1139,7 @@ def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
                 and insight_normalized(primary_identity)
                 in {"drama", "story", "documentary", "comedy"}
             )
+            and not safe_documentary_context
         ):
             add_unique_issue(
                 issues,

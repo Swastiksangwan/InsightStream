@@ -1288,11 +1288,29 @@ def infer_context_identity(watch_profile, signals, display_context=None):
             return "Tech dystopia anthology"
         return "Dark sci-fi anthology"
 
-    explicit_serial_killer = contains_any(evidence_text, ("serial killer", "serial-killer"))
+    explicit_serial_killer = decision_insight_formatter.evidence_family_matches(
+        overview,
+        "serial_killer",
+    )
     if has_crime and (has_thriller or has_mystery) and explicit_serial_killer:
         if contains_any(evidence_text, ("neo noir", "neo-noir")):
             return "Neo-noir crime thriller"
         return "Serial-killer investigation"
+
+    compatible_spy_genre = any(
+        (
+            has_genre_context(display_context, "drama"),
+            has_thriller,
+            has_crime,
+            has_action,
+            has_war,
+        )
+    )
+    if compatible_spy_genre and decision_insight_formatter.evidence_family_matches(
+        overview,
+        "spy",
+    ):
+        return "Spy thriller" if has_thriller else "Spy story"
 
     explicit_physical_survival = contains_any(
         evidence_text,
@@ -2550,6 +2568,137 @@ def filter_rejected_public_profile(profile, rejected_families):
     return filtered
 
 
+def filter_primary_identity_overlaps(profile, primary_identity):
+    """Keep the selected identity and remove only weaker family fragments."""
+
+    if not primary_identity:
+        return profile
+    family = decision_insight_formatter.insight_concept_family(primary_identity)
+    if not family:
+        return profile
+    filtered = dict(profile or {})
+    primary_normalized = decision_insight_formatter.insight_normalized(
+        primary_identity
+    )
+
+    def weaker_overlap(label):
+        normalized = decision_insight_formatter.insight_normalized(label)
+        return bool(
+            normalized
+            and normalized != primary_normalized
+            and decision_insight_formatter.text_uses_concept_family(label, family)
+            and decision_insight_formatter.phrase_present(
+                primary_normalized,
+                normalized,
+            )
+        )
+
+    identities = []
+    for label in filtered.get("identity") or []:
+        if decision_insight_formatter.insight_normalized(label) == primary_normalized:
+            if identities:
+                continue
+            identities.append(primary_identity)
+            continue
+        if weaker_overlap(label):
+            continue
+        identities.append(label)
+    filtered["identity"] = unique_preserve_order(
+        [primary_identity, *identities]
+    )[:3]
+    for field, limit in (
+        ("themes", 3),
+        ("feel", 2),
+        ("best_for", 2),
+        ("consider_first", 1),
+    ):
+        filtered[field] = [
+            label
+            for label in filtered.get(field) or []
+            if not weaker_overlap(label)
+        ][:limit]
+    pace = filtered.get("pace")
+    if pace and weaker_overlap(pace):
+        filtered["pace"] = None
+    return filtered
+
+
+def filter_primary_identity_fragments(values, primary_identity, limit=None):
+    if not primary_identity:
+        return list(values or [])[:limit] if limit is not None else list(values or [])
+    primary_normalized = decision_insight_formatter.insight_normalized(
+        primary_identity
+    )
+    family = decision_insight_formatter.insight_concept_family(primary_identity)
+    filtered = [
+        value
+        for value in values or []
+        if not (
+            decision_insight_formatter.insight_normalized(value)
+            != primary_normalized
+            and decision_insight_formatter.text_uses_concept_family(value, family)
+            and decision_insight_formatter.phrase_present(
+                primary_normalized,
+                decision_insight_formatter.insight_normalized(value),
+            )
+        )
+    ]
+    return filtered[:limit] if limit is not None else filtered
+
+
+def filter_primary_identity_signal_fragments(signals, primary_identity):
+    if not primary_identity:
+        return list(signals or [])
+    kept_labels = set(
+        filter_primary_identity_fragments(
+            [signal.get("label") or signal.get("value") for signal in signals or []],
+            primary_identity,
+        )
+    )
+    return [
+        signal
+        for signal in signals or []
+        if (signal.get("label") or signal.get("value")) in kept_labels
+    ]
+
+
+def selected_topic_differentiator_labels(insight_plan):
+    labels = []
+    for component in (
+        insight_plan.primary_differentiator,
+        insight_plan.secondary_differentiator,
+    ):
+        if not component or not component.source.startswith("source_signal:topic_theme:"):
+            continue
+        prefix, separator, label = component.evidence.partition(":")
+        if prefix == "topic_theme" and separator and has_text(label):
+            labels.append(label)
+    return unique_preserve_order(labels)
+
+
+def filter_secondary_identities_overlapping_themes(profile):
+    filtered = dict(profile or {})
+    identities = list(filtered.get("identity") or [])
+    themes = list(filtered.get("themes") or [])
+    if len(identities) < 2 or not themes:
+        return filtered
+    theme_families = {
+        decision_insight_formatter.insight_concept_family(theme)
+        for theme in themes
+        if has_text(theme)
+    }
+    filtered["identity"] = [
+        identities[0],
+        *(
+            identity
+            for identity in identities[1:]
+            if decision_insight_formatter.insight_concept_family(identity)
+            not in theme_families
+        ),
+    ][:3]
+    return filtered
+
+
 def _build_decision_display_and_plan(
     watch_profile,
     signals,
@@ -2580,12 +2729,13 @@ def _build_decision_display_and_plan(
     )
     profile = filter_rejected_public_profile(profile, rejected_families)
     if plan.primary_identity:
-        profile["identity"] = unique_preserve_order(
-            [
-                plan.primary_identity.text,
-                *(profile.get("identity") or []),
-            ]
-        )[:3]
+        profile = filter_primary_identity_overlaps(
+            profile,
+            plan.primary_identity.text,
+        )
+    if not profile.get("themes"):
+        profile["themes"] = selected_topic_differentiator_labels(plan)[:3]
+    profile = filter_secondary_identities_overlapping_themes(profile)
     display = {
         "primary_insight": decision_insight_formatter.render_insight_plan(plan),
         "profile": profile,
@@ -2635,9 +2785,16 @@ def get_content_decision_layer(
             insight_plan
         )
     )
-    compatible_public_signals = filter_rejected_public_signals(
-        public_signals,
-        rejected_families,
+    compatible_public_signals = filter_primary_identity_signal_fragments(
+        filter_rejected_public_signals(
+            public_signals,
+            rejected_families,
+        ),
+        (
+            insight_plan.primary_identity.text
+            if insight_plan.primary_identity
+            else None
+        ),
     )
     watch_profile = dict(structured_watch_profile)
     for field, limit in (
@@ -2645,9 +2802,16 @@ def get_content_decision_layer(
         ("best_for", 4),
         ("consider_first", 2),
     ):
-        watch_profile[field] = filter_rejected_public_labels(
-            watch_profile.get(field) or [],
-            rejected_families,
+        watch_profile[field] = filter_primary_identity_fragments(
+            filter_rejected_public_labels(
+                watch_profile.get(field) or [],
+                rejected_families,
+            ),
+            (
+                insight_plan.primary_identity.text
+                if insight_plan.primary_identity
+                else None
+            ),
             limit=limit,
         )
     watch_profile["watch_feel"] = display.get("primary_insight")

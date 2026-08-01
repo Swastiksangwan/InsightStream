@@ -4,6 +4,8 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 
 def load_audit_module():
     repo_root = Path(__file__).resolve().parents[2]
@@ -481,6 +483,92 @@ def test_weak_and_incidental_identity_provenance_requires_review():
 
     assert "PRIMARY_IDENTITY_INCIDENTAL_CONTEXT" in issue_codes(record)
     assert record["display_ready"] is False
+
+
+def test_documentary_with_governed_specific_context_is_display_ready_with_source_review():
+    module = load_audit_module()
+    display = clean_display(
+        primary_insight="A tense documentary examining racial inequality."
+    )
+    display["profile"]["identity"] = ["Documentary"]
+    display["profile"]["themes"] = ["Racial inequality"]
+    display["_insight_plan"] = {
+        "primary_identity": {
+            "text": "Documentary",
+            "source": "inferred_context",
+            "supported": True,
+            "trust_tier": 5,
+        },
+        "primary_differentiator": {
+            "text": "racial inequality",
+            "source": "overview_rule",
+            "concept_family": "racial injustice",
+            "supported": True,
+        },
+        "rejected_candidates": [
+            {
+                "candidate": label,
+                "role": "primary_identity",
+                "reason": "identity_metadata_conflict",
+                "source": f"source_signal:audience_expectation:{label}",
+                "conflict_reason": "documentary_rejects_fictional_identity",
+            }
+            for label in (
+                "Crime drama",
+                "Political thriller",
+                "Prison drama",
+            )
+        ],
+        "validation_errors": [],
+    }
+
+    record = audit_record(module, display)
+
+    assert "PRIMARY_IDENTITY_INCIDENTAL_CONTEXT" not in issue_codes(record)
+    assert "PRIMARY_INSIGHT_LOW_SPECIFICITY" not in issue_codes(record)
+    assert "SOURCE_SIGNAL_IDENTITY_METADATA_CONFLICT" in issue_codes(record)
+    assert record["display_ready"] is True
+    assert record["source_signal_review_required"] is True
+
+
+@pytest.mark.parametrize(
+    ("state", "expects_issue"),
+    [
+        ("not_evaluated", True),
+        ("selected", False),
+        ("evaluated_rejected", False),
+    ],
+)
+def test_curated_identity_audit_uses_explicit_evaluation_state(
+    state,
+    expects_issue,
+):
+    module = load_audit_module()
+    display = clean_display(primary_insight="A tense crime thriller.")
+    display["profile"]["identity"] = ["Crime thriller"]
+    display["_insight_plan"] = {
+        "primary_identity": {
+            "text": "Crime thriller",
+            "source": (
+                "curated_override:audience_expectation:crime thriller"
+                if state == "selected"
+                else "source_signal:audience_expectation:crime thriller"
+            ),
+            "supported": True,
+            "trust_tier": 2,
+        },
+        "curated_override_applied": True,
+        "curated_identity_available": True,
+        "curated_identity_evaluation": state,
+        "rejected_candidates": [],
+        "validation_errors": [],
+    }
+
+    record = audit_record(module, display)
+
+    assert (
+        "PRIMARY_IDENTITY_CURATED_OVERRIDE_IGNORED" in issue_codes(record)
+    ) is expects_issue
 
 
 def test_catalog_targets_are_consumed_in_bounded_batches():

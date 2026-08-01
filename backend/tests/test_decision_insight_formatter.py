@@ -5,6 +5,7 @@ from app.services.decision_insight_formatter import (
     InsightPlan,
     audience_modifier,
     build_insight_plan,
+    evidence_family_matches,
     genre_identity,
     render_decision_headline,
     render_insight_plan,
@@ -249,6 +250,108 @@ def test_curated_identity_uses_highest_trust_tier_when_metadata_compatible():
     assert plan.primary_identity.trust_tier == 1
     assert plan.primary_identity.source.startswith("curated_override:")
     assert plan.curated_identity_available is True
+    assert plan.curated_identity_evaluation == "selected"
+
+
+def test_aviation_action_is_a_governed_curated_identity_with_supported_modifier():
+    signals = [
+        signal(
+            "audience_expectation",
+            "Aviation action",
+            confidence="high",
+            sources=["curated_override"],
+        ),
+        signal("tone", "Bold", confidence="low"),
+        signal("tone", "Serious tone", confidence="high"),
+    ]
+    plan = build_insight_plan(
+        profile(identity=["Aviation action", "Drama"], feel=["Bold", "Serious"]),
+        {"watch_feel": None, "curated_override_applied": True},
+        signals,
+        context(
+            overview="Elite naval aviators train for a dangerous mission.",
+            genres=["Action", "Drama"],
+        ),
+    )
+    sentence = render_insight_plan(plan)
+
+    assert plan.primary_identity.text == "Aviation action"
+    assert plan.primary_identity.trust_tier == 1
+    assert plan.curated_identity_evaluation == "selected"
+    assert plan.tone_modifier.text == "serious"
+    assert sentence.startswith("A serious aviation action")
+
+
+def test_aviation_action_requires_governed_source_and_action_metadata():
+    plan, sentence = format_plan(
+        profile(identity=["Aviation action", "Drama"]),
+        [signal("audience_expectation", "Aviation action", confidence="high")],
+        context(
+            overview="A family watches an aircraft cross the sky.",
+            genres=["Drama"],
+        ),
+    )
+
+    assert plan.primary_identity.text == "Drama"
+    assert sentence == "A drama."
+    assert any(
+        item.get("conflict_reason") == "missing_aviation_action_evidence"
+        for item in plan.rejected_candidates
+    )
+
+
+@pytest.mark.parametrize(
+    ("family", "singular", "plural"),
+    [
+        ("serial_killer", "a serial killer case", "multiple serial killers"),
+        ("cartel", "a drug cartel", "several drug cartels"),
+        ("spy", "an undercover spy", "undercover spies"),
+    ],
+)
+def test_evidence_family_matching_supports_governed_lexical_forms(
+    family,
+    singular,
+    plural,
+):
+    assert evidence_family_matches(singular, family)
+    assert evidence_family_matches(plural, family)
+    assert not evidence_family_matches("A private family matter.", family)
+
+
+def test_curated_identity_evaluation_records_copy_role_rejection_as_evaluated():
+    rejected = build_insight_plan(
+        profile(identity=["Romantic drama", "Crime thriller"]),
+        {"watch_feel": None, "curated_override_applied": True},
+        [
+            signal(
+                "audience_expectation",
+                "Romantic drama",
+                confidence="high",
+                sources=["curated_override"],
+            ),
+            signal("audience_expectation", "Crime thriller", confidence="high"),
+        ],
+        context(
+            overview="Detectives investigate organized crime.",
+            genres=["Crime", "Thriller"],
+        ),
+    )
+    not_evaluated = build_insight_plan(
+        profile(identity=["Unclassified resonance", "Drama"]),
+        {"watch_feel": None, "curated_override_applied": True},
+        [
+            signal(
+                "audience_expectation",
+                "Unclassified resonance",
+                confidence="high",
+                sources=["curated_override"],
+            )
+        ],
+        context(genres=["Drama"]),
+    )
+
+    assert rejected.curated_identity_evaluation == "evaluated_rejected"
+    assert not_evaluated.curated_identity_evaluation == "evaluated_rejected"
 
 
 def test_copy_realization_avoids_stacks_momentum_chains_and_raw_taxonomy():
