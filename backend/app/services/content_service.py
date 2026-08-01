@@ -614,7 +614,6 @@ def home_candidate_query(
         SELECT
             {CONTENT_SELECT_FIELDS},
             {CONTENT_SCORE_SELECT_FIELDS},
-            cwg.watch_feel,
             cwg.chips,
             cwg.best_for,
             cwg.consider_first
@@ -1165,10 +1164,6 @@ def build_home_decision_reason(row: dict, chips: list[str], platforms: list[str]
             return truncate_sentence(f"{chips[0]} with {lower_first_phrase(chips[1])}.")
         if score is not None:
             return truncate_sentence(f"High-scoring {primary}.")
-
-    watch_feel = clean_home_label(row.get("watch_feel"))
-    if watch_feel:
-        return truncate_sentence(watch_feel)
 
     if platforms:
         return truncate_sentence(f"Available on {platforms[0]}.")
@@ -2299,7 +2294,11 @@ def get_detail_ratings(db: Session, content_id: int):
     }
 
 
-def get_content_details_service(content_id: int, db: Session):
+def get_content_details_service(
+    content_id: int,
+    db: Session,
+    include_decision_debug: bool = False,
+):
     content_query = text(f"""
         SELECT
             {CONTENT_SELECT_FIELDS}
@@ -2344,6 +2343,7 @@ def get_content_details_service(content_id: int, db: Session):
     decision_layer = get_content_decision_layer(
         db,
         content_id,
+        include_debug=include_decision_debug,
         display_context={
             "content": content,
             "genres": genres,

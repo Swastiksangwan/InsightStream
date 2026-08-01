@@ -2,6 +2,7 @@ import argparse
 import importlib.util
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 
 def load_audit_module():
@@ -248,3 +249,275 @@ def test_fail_on_critical_and_fail_under_score_behavior():
         [clean],
         argparse.Namespace(fail_on_critical=True, fail_under_score=80),
     )
+
+
+def test_primary_insight_audit_flags_raw_label_grammar():
+    module = load_audit_module()
+    display = clean_display(
+        primary_insight="A workplace comedy built around light."
+    )
+    display["profile"]["identity"] = ["Workplace comedy"]
+    display["profile"]["themes"] = []
+
+    record = audit_record(module, display)
+
+    assert "PRIMARY_INSIGHT_RAW_LABEL_GRAMMAR" in issue_codes(record)
+
+
+def test_primary_insight_audit_flags_duplicate_concept_family():
+    module = load_audit_module()
+    display = clean_display(
+        primary_insight="A romantic drama built around romance."
+    )
+    display["profile"]["identity"] = ["Romantic drama"]
+    display["profile"]["themes"] = ["Romantic connection"]
+
+    record = audit_record(module, display)
+
+    assert "PRIMARY_INSIGHT_DUPLICATE_CONCEPTS" in issue_codes(record)
+
+
+def test_primary_insight_audit_flags_repeated_word_and_punctuation():
+    module = load_audit_module()
+    display = clean_display(
+        primary_insight=(
+            "A survival drama about survival pressure, and resilience."
+        )
+    )
+    display["profile"]["identity"] = ["Survival drama"]
+    display["profile"]["themes"] = ["Human resilience"]
+
+    record = audit_record(module, display)
+    codes = issue_codes(record)
+
+    assert "PRIMARY_INSIGHT_REPEATED_WORD" in codes
+    assert "PRIMARY_INSIGHT_PUNCTUATION" in codes
+
+
+def test_primary_insight_audit_flags_unsupported_and_fallback_only_plan():
+    module = load_audit_module()
+    display = clean_display(primary_insight="A specific historical drama.")
+    display["_insight_plan"] = {
+        "primary_identity": {
+            "text": "Historical drama",
+            "source": "display_profile",
+        },
+        "primary_differentiator": None,
+        "validation_errors": ["unsupported_component"],
+        "template_family": "identity_about",
+    }
+
+    record = audit_record(module, display)
+    codes = issue_codes(record)
+
+    assert "PRIMARY_INSIGHT_UNSUPPORTED_COMPONENT" in codes
+    assert "PRIMARY_INSIGHT_FALLBACK_ONLY" in codes
+
+
+def test_short_specific_identity_is_not_padded_or_flagged():
+    module = load_audit_module()
+    display = clean_display(primary_insight="A workplace comedy.")
+    display["profile"]["identity"] = ["Workplace comedy"]
+    display["_insight_plan"] = {
+        "primary_identity": {
+            "text": "Workplace comedy",
+            "source": "source_signal:audience_expectation:workplace comedy",
+            "supported": True,
+        },
+        "primary_differentiator": None,
+        "validation_errors": [],
+        "template_family": "identity_about",
+    }
+
+    assert "PRIMARY_INSIGHT_TOO_SHORT" not in issue_codes(
+        audit_record(module, display)
+    )
+
+
+def test_short_generic_identity_remains_reviewable():
+    module = load_audit_module()
+    display = clean_display(primary_insight="A documentary.")
+    display["profile"]["identity"] = ["Documentary"]
+    display["_insight_plan"] = {
+        "primary_identity": {
+            "text": "Documentary",
+            "source": "genre_context",
+            "supported": True,
+        },
+        "primary_differentiator": None,
+        "validation_errors": [],
+        "template_family": "identity_about",
+    }
+
+    assert "PRIMARY_INSIGHT_TOO_SHORT" in issue_codes(
+        audit_record(module, display)
+    )
+
+
+def test_primary_insight_audit_flags_spoiler_risk():
+    module = load_audit_module()
+
+    record = audit_record(
+        module,
+        clean_display(
+            primary_insight=(
+                "A mystery shaped by the surprise ending and its aftermath."
+            )
+        ),
+    )
+
+    assert "PRIMARY_INSIGHT_SPOILER_RISK" in issue_codes(record)
+
+
+def test_catalog_audit_flags_dominant_template_family():
+    module = load_audit_module()
+    records = [
+        audit_record(
+            module,
+            {
+                **clean_display(
+                    primary_insight=f"A crime thriller about case pressure {index}."
+                ),
+                "_insight_plan": {
+                    "template_family": "identity_about",
+                    "primary_identity": {
+                        "text": "Crime thriller",
+                        "source": "source_signal:audience_expectation",
+                    },
+                    "primary_differentiator": {
+                        "text": "case pressure",
+                        "source": "source_signal:topic_theme",
+                    },
+                    "validation_errors": [],
+                },
+            },
+        )
+        for index in range(10)
+    ]
+
+    updated = module.apply_template_overuse_issues(records)
+
+    assert all(
+        "PRIMARY_INSIGHT_TEMPLATE_OVERUSE" in issue_codes(record)
+        for record in updated
+    )
+
+
+def test_small_catalog_does_not_report_template_overuse():
+    module = load_audit_module()
+    records = [
+        audit_record(
+            module,
+            clean_display(primary_insight="A crime thriller about case pressure."),
+        )
+    ]
+
+    updated = module.apply_template_overuse_issues(records)
+
+    assert "PRIMARY_INSIGHT_TEMPLATE_OVERUSE" not in issue_codes(updated[0])
+
+
+def test_semantic_identity_conflicts_require_source_review_without_blocking_safe_display():
+    module = load_audit_module()
+    display = clean_display(primary_insight="An animated superhero story.")
+    display["_insight_plan"] = {
+        "primary_identity": {
+            "text": "Animated superhero story",
+            "source": "source_signal:audience_expectation:superhero story",
+            "supported": True,
+            "trust_tier": 2,
+        },
+        "rejected_candidates": [
+            {
+                "candidate": "Romantic drama",
+                "role": "primary_identity",
+                "reason": "identity_metadata_conflict",
+                "source": "source_signal:audience_expectation:romantic drama",
+                "conflict_reason": "missing_central_romance_evidence",
+            }
+        ],
+        "validation_errors": [],
+    }
+
+    record = audit_record(module, display)
+
+    assert "SOURCE_SIGNAL_IDENTITY_METADATA_CONFLICT" in issue_codes(record)
+    assert record["display_ready"] is True
+    assert record["display_review_required"] is False
+    assert record["source_signal_review_required"] is True
+    assert record["review_required"] is True
+
+
+def test_copy_semantic_audit_flags_new_grammar_classes():
+    module = load_audit_module()
+    cases = {
+        "PRIMARY_INSIGHT_ADJECTIVE_STACK": "A fast-paced tense thriller.",
+        "PRIMARY_INSIGHT_AWKWARD_PACING": "A thriller with gentle pacing momentum.",
+        "PRIMARY_INSIGHT_CONJUNCTION_CHAIN": "A drama about ambition and rivalry and technology and society.",
+        "PRIMARY_INSIGHT_RAW_TAXONOMY": "An adventure shaped by anime style.",
+    }
+
+    for expected_code, primary in cases.items():
+        record = audit_record(module, clean_display(primary_insight=primary))
+        assert expected_code in issue_codes(record)
+        assert record["display_ready"] is False
+
+
+def test_weak_and_incidental_identity_provenance_requires_review():
+    module = load_audit_module()
+    display = clean_display(primary_insight="A prison drama.")
+    display["_insight_plan"] = {
+        "primary_identity": {
+            "text": "Prison drama",
+            "source": "inferred_context",
+            "supported": True,
+            "trust_tier": 5,
+        },
+        "rejected_candidates": [],
+        "validation_errors": [],
+    }
+
+    record = audit_record(module, display)
+
+    assert "PRIMARY_IDENTITY_INCIDENTAL_CONTEXT" in issue_codes(record)
+    assert record["display_ready"] is False
+
+
+def test_catalog_targets_are_consumed_in_bounded_batches():
+    module = load_audit_module()
+
+    class Result:
+        def __init__(self):
+            self.rows = [
+                {
+                    "id": index,
+                    "title": f"Title {index}",
+                    "content_type": "movie",
+                    "year": 2024,
+                }
+                for index in range(1, 6)
+            ]
+
+        def mappings(self):
+            return self
+
+        def fetchmany(self, size):
+            batch, self.rows = self.rows[:size], self.rows[size:]
+            return batch
+
+    class Connection:
+        def execute(self, _query, _params):
+            return Result()
+
+    args = SimpleNamespace(
+        content_id=None,
+        content_type="all",
+        limit=None,
+        offset=0,
+        batch_size=2,
+    )
+
+    batches = list(module.query_catalog_target_batches(Connection(), args))
+
+    assert [len(batch) for batch in batches] == [2, 2, 1]
+    assert [row["id"] for batch in batches for row in batch] == [1, 2, 3, 4, 5]

@@ -208,7 +208,7 @@ def test_source_signal_guidance_enriches_insight_summary():
 
     assert summary["headline"].startswith("A tense character-driven crime drama")
     assert "pressure and consequence" in summary["summary"]
-    assert "strong audience backing" in summary["summary"]
+    assert "strong rating signal" in summary["summary"]
     assert "streaming access in India" in summary["summary"]
     assert "Example Platform" not in summary["summary"]
     assert "It also has" not in summary["summary"]
@@ -461,6 +461,40 @@ def test_summary_rating_signal_uses_scoring_source_count_not_displayed_sources()
     assert "2 scoring sources" in audience_signal
     assert "3 rating sources" not in audience_signal
     assert "Letterboxd" not in audience_signal
+
+
+def test_mixed_rating_sources_use_provider_neutral_summary_language():
+    summary = build_insight_summary(
+        {
+            "content": base_content(runtime=110),
+            "genres": ["Drama"],
+            "platforms": availability("streaming"),
+            "ratings": {
+                "unified_score": 84,
+                "source_count": 2,
+                "scoring_source_count": 2,
+                "sources": [
+                    {
+                        "source_name": "tmdb",
+                        "source_category": "audience",
+                        "included_in_unified_score": True,
+                    },
+                    {
+                        "source_name": "metacritic",
+                        "source_category": "critic",
+                        "included_in_unified_score": True,
+                    },
+                ],
+            },
+            "series_metadata": None,
+            "credits": credits(director="Example Director"),
+            "decision_layer": decision_layer(),
+        }
+    )
+
+    assert "strong cross-source ratings" in summary["summary"]
+    assert "audience backing" not in summary["summary"]
+    assert any(signal["label"] == "Ratings" for signal in summary["key_signals"])
 
 
 def test_no_crew_content_does_not_claim_director_or_creator():

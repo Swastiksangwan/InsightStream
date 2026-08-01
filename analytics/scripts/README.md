@@ -32,7 +32,11 @@ from the repository root during this refactor.
 | `audit_catalog_expansion_readiness.py` | `python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness` | Catalog baseline and expansion-readiness audit | Read-only | Read | No | `analytics/processed/catalog_audits/` |
 | `audit_decision_display_quality.py` | `python3 -m analytics.scripts.audits.audit_decision_display_quality` | Product-facing decision-display QA | Read-only | Read | No | `analytics/processed/source_signals/` |
 | `audit_source_signal_mapping_quality.py` | `python3 -m analytics.scripts.audits.audit_source_signal_mapping_quality` | Stored source-signal mapping QA | Read-only | Read | No | `analytics/processed/source_signals/` |
+| `build_decision_insight_baseline.py` | `python3 -m analytics.scripts.audits.build_decision_insight_baseline` | Capture current catalog Decision Insight output before formatter changes | Read-only | Read | No | `analytics/processed/source_signals/decision_insight_formatter_v2/` |
+| `build_decision_insight_stratified_review.py` | `python3 -m analytics.scripts.audits.build_decision_insight_stratified_review` | Build deterministic formatter QA and overview-provenance samples | Read-only artifact | No | No | `analytics/processed/source_signals/decision_insight_formatter_v2/` |
 | `check_ingestion_health.py` | `python3 -m analytics.scripts.audits.check_ingestion_health` | Catalog ingestion-health checks | Read-only | Read | No | `analytics/processed/tmdb/run_reports/` |
+| `compare_decision_insight_formatter.py` | `python3 -m analytics.scripts.audits.compare_decision_insight_formatter` | Compare a captured baseline with the current formatter and evidence plan | Read-only | Read | No | `analytics/processed/source_signals/decision_insight_formatter_v2/` |
+| `explain_decision_insight.py` | `python3 -m analytics.scripts.audits.explain_decision_insight --content-id <id>` | Explain one runtime formatter plan, public output, conflicts, and readiness states | Read-only | Read | No | Console; optional ignored JSON path |
 | `reconcile_basic_metadata.py` | `python3 -m analytics.scripts.audits.reconcile_basic_metadata` | Compare seed and processed basic metadata | Read-only | No | No | `analytics/processed/tmdb/` report |
 | `build_content_refresh_plan.py` | `python3 -m analytics.scripts.refresh.build_content_refresh_plan` | Build a shared due-work plan | Read-only | Read | No | `analytics/processed/tmdb/content_refresh_plan.json` |
 | `plan_series_refresh.py` | `python3 -m analytics.scripts.refresh.plan_series_refresh` | Plan legacy-compatible series refresh targets | Read-only | Read | No | `analytics/config/series_refresh_targets.json`, run report |
@@ -94,3 +98,34 @@ python3 -m analytics.scripts.source_signals.build_unmapped_keyword_review \
 ```
 
 Without a baseline file, before-state fields are reported as not evaluated rather than inferred. Semantic decisions remain human-authored; the script only validates and renders them.
+
+## Decision Insight Formatter Contract
+
+The canonical architecture and operations reference is
+`docs/decision_insight_formatter_v2.md`. This section is only a command-level
+summary for analytics operators.
+
+`content_watch_guidance` stores structured guidance inputs and legacy
+`watch_feel` provenance. It does not store the authoritative public primary
+insight. `backend/app/services/decision_insight_formatter.py` deterministically
+plans, validates, and renders the public sentence from already-loaded,
+spoiler-safe signals and metadata. The detail service exposes that one runtime
+sentence through `decision_layer.display.primary_insight`; compatibility
+`watch_profile.watch_feel`, decision support, and Insight Summary consume the
+same result.
+
+Spoiler-unsafe keywords and mappings are excluded before preview output. Safe
+signals persist `spoiler_safe` provenance in the existing source payload, and
+the runtime query carries that internal flag through Formatter v2 without
+adding it to public signal objects. Missing safety provenance on legacy active
+rows defaults to safe because those rows were produced by the same preview
+exclusion invariant. Rating modifiers use audience wording only when at least
+two included scoring sources are audience-category sources; mixed or unknown
+source compositions use provider-neutral cross-source wording.
+Rating provenance remains available to supporting facts and Insight Summary;
+it is not appended to the content-focused `primary_insight` sentence.
+
+Baseline, comparison, display-audit, and stratified-review commands report the
+actual catalog size. Their database cursors load catalog targets in bounded
+batches (default 100); complete JSON output remains naturally proportional to
+the catalog size. Generated reports remain ignored.

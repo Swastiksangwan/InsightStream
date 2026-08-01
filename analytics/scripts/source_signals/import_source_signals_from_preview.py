@@ -428,6 +428,7 @@ def signal_records_from_item(
                     confidence=confidence,
                     source_names=sorted({str(source) for source in sources}),
                     source_payload={
+                        "spoiler_safe": bool(signal.get("spoiler_safe", True)),
                         "mapping_version": report.get("mapping_version"),
                         "override_version": report.get("override_version"),
                         "preview_generator_version": report.get(

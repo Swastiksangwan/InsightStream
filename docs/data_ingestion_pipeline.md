@@ -37,9 +37,9 @@ Future ingestion updates should go into this document.
 | TMDb keywords preview/import | Implemented | `analytics/scripts/ingestion/build_tmdb_keywords_preview.py`, `analytics/scripts/ingestion/merge_tmdb_keywords_retry_preview.py`, `analytics/scripts/ingestion/import_tmdb_keywords_from_preview.py` | Import only with `--apply` | Fetches movie/TV keyword preview/report, supports retry/merge, and imports raw provider keywords into normalized keyword tables. |
 | Keyword-to-signal preview | Implemented, preview-only | `analytics/scripts/source_signals/build_keyword_signal_preview.py` | No | Reads imported TMDb keywords from DB, applies curated mapping config, and writes local source-signal preview/report JSON only. |
 | Source signal storage import | Implemented | `analytics/scripts/source_signals/import_source_signals_from_preview.py` | Only with `--write` | Imports current source signals and productized watch guidance from the clean preview into storage tables. |
-| Source signal decision layer API | Implemented | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and returns sanitized compatibility fields plus compact `decision_layer.display` output for frontend use. |
+| Source signal decision layer API | Implemented | `backend/app/services/source_signal_service.py`, content detail API | No | Reads stored source signals/watch guidance and builds compact `decision_layer.display` copy through a deterministic evidence plan, semantic deduplication, governed copy roles, and controlled templates. |
 | Homepage sections API | Implemented | `backend/app/services/content_service.py`, `GET /content/home` | No | Builds backend-powered homepage rails from local catalog data with bounded candidate pools and deterministic weekly/daily rotation. |
-| Decision display QA audit | Implemented | `analytics/scripts/audits/audit_decision_display_quality.py` | No | Read-only catalog audit for compact display quality scores, issue codes, review candidates, and generated local JSON/CSV/summary reports. |
+| Decision display QA audit | Implemented | `analytics/scripts/audits/audit_decision_display_quality.py` | No | Read-only catalog audit for unsupported evidence, generic identity, concept duplication, raw-label grammar, repetition, punctuation, spoiler risk, and catalog template overuse. |
 | Source signal mapping QA audit | Implemented | `analytics/scripts/audits/audit_source_signal_mapping_quality.py` | No | Read-only audit for stored signal richness, missing dimensions, generic genre/subgenre coverage, fallback dependency, and unmapped keyword opportunities. |
 | Ingestion health check | Implemented | `analytics/scripts/audits/check_ingestion_health.py` | No | Read-only health checks for target coverage, metadata completeness, ratings, availability, people, and series lifecycle data. |
 
@@ -905,8 +905,8 @@ The backend content detail response now includes a nullable `decision_layer` obj
 The decision layer:
 
 - reads `content_watch_guidance` and active `content_source_signals`;
-- returns `display`, the preferred compact frontend-facing object with `primary_insight`, grouped profile labels, and supporting facts;
-- returns a productized `watch_profile` with `watch_feel`, sanitized `chips`, `best_for`, and `consider_first`;
+- returns `display`, the authoritative compact frontend-facing object with the runtime-derived `primary_insight`, grouped profile labels, and supporting facts;
+- returns a compatibility `watch_profile` whose public `watch_feel` is the same Formatter v2 sentence, plus sanitized `chips`, `best_for`, and `consider_first`;
 - returns compact `decision_support` copy with headline, reasons, and cautions;
 - returns `signal_quality`, including `storage_ready`, `frontend_ready`, `has_watch_guidance`, and `has_source_signals`;
 - filters or rewrites mechanical labels such as platform/viewer chips before they reach the public API;
@@ -928,7 +928,7 @@ Preferred display shape:
 
 ```json
 {
-  "primary_insight": "A surreal sci-fi heist built around memory and identity, with strong audience backing.",
+  "primary_insight": "A surreal sci-fi heist exploring memory and identity.",
   "profile": {
     "identity": ["Sci-fi heist"],
     "themes": ["Memory and identity"],
@@ -1255,3 +1255,55 @@ Catalog and source-signal audits reuse the same versioned keyword-normalization
 helper as the keyword-to-signal preview. Stored provider names, stored normalized
 names, mapping keys, exclusions, and spoiler-unsafe terms therefore receive the
 same punctuation and separator normalization before coverage is calculated.
+
+## 16. Decision Insight Formatter v2
+
+See `docs/decision_insight_formatter_v2.md` for the authoritative end-to-end
+runtime, safety, versioning, audit, and debugging contract. This section records
+only the ingestion boundary.
+
+The expansion path for Batch 8 and later is:
+
+```text
+raw keyword import
+-> source-signal mapping preview
+-> reviewed source-signal import
+-> structured signals/guidance in PostgreSQL
+-> content details request
+-> Formatter v2 plan, validation, and rendering
+-> display-quality audit
+```
+
+No sentence migration or manually stored `primary_insight` is required for a
+new title. The formatter performs no SQL itself; the source-signal service
+passes already-loaded signals, guidance, genres, ratings, credits, and content
+metadata. A formatter code change therefore takes effect on the next details
+request and does not require rewriting `content_watch_guidance`.
+
+The stored `content_watch_guidance.watch_feel` column remains ingestion
+provenance and a legacy structured-guidance input, not public presentation
+authority. The details response derives one Formatter v2 sentence and reuses it
+for `display.primary_insight`, compatibility `watch_profile.watch_feel`,
+decision support, and Insight Summary. The frontend reads
+`decision_layer.display.primary_insight`.
+
+Active signal reads derive an internal `spoiler_safe` flag from the existing
+signal provenance payload. Formatter planning, profile construction, public
+chips, and compatibility copy all exclude unsafe rows; the internal flag is
+not part of the public signal contract. Preview generation remains the first
+line of defense and never emits spoiler-unsafe mappings as active signals.
+
+The concise decision-support headline is rendered from the validated Insight
+Plan identity and modifier, not parsed from `primary_insight`. Unified ratings
+can contain audience, critic, theatrical, or internal sources: audience
+backing language requires at least two included audience sources, while mixed
+or unknown source composition uses cross-source rating language. Rating
+provenance remains available in supporting facts and Insight Summary, not the
+content-focused primary insight. Documentary genre combinations are resolved
+before fictional war/history drama fallbacks.
+
+Overview context is allowed only through phrase-aware governed rules. Each
+selected component records the rule, matched local phrase, and whether the
+rendered phrase is equivalent to or narrower than its evidence. Unknown labels
+without a safe grammatical copy role are rejected from the sentence and
+reported for review rather than interpolated as raw prose.
