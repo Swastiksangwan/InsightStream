@@ -32,6 +32,15 @@ from analytics.scripts.common.paths import REPO_ROOT, ensure_backend_import_path
 ensure_backend_import_path()
 
 from app.services.content_service import get_content_details_service  # noqa: E402
+from app.services.decision_insight_formatter import (  # noqa: E402
+    INSIGHT_ABOUT_PHRASES,
+    INSIGHT_CONCEPT_ALIASES,
+    insight_concept_family,
+    insight_normalized,
+)
+from analytics.scripts.audits.decision_insight_report_metadata import (  # noqa: E402
+    decision_insight_versions,
+)
 
 
 DATABASE_URL_ENV = "DATABASE_URL"
@@ -65,6 +74,9 @@ SEVERITY_PENALTIES = {
     "low": 4,
 }
 SEVERITIES = ("critical", "high", "medium", "low")
+SOURCE_SIGNAL_REVIEW_ISSUE_CODES = {
+    "SOURCE_SIGNAL_IDENTITY_METADATA_CONFLICT",
+}
 
 TECHNICAL_LEAK_TERMS = (
     "tmdb_keywords",
@@ -157,6 +169,22 @@ BAD_BUILT_AROUND_TARGETS = (
     "drama",
     "story",
 )
+PRIMARY_INSIGHT_SPOILER_TERMS = (
+    "death of ",
+    "secret identity",
+    "surprise ending",
+    "plot twist",
+    "suicide",
+)
+PRIMARY_INSIGHT_GENERIC_PATTERNS = (
+    r"^an? (?:serious |emotional |light |dark )?(?:drama|story|documentary)\.?$",
+    r"^an? music-driven story(?:\s|\.|$)",
+)
+PRIMARY_INSIGHT_RAW_GRAMMAR_PATTERNS = (
+    r"\bbuilt around (?:light|dark|serious|emotional|eerie|foreboding)\b",
+    r"\babout (?:light|dark tone|serious tone)\b",
+    r"\bbuilt around [^,.]+ story\b",
+)
 WEAK_CAUTION_PATTERNS = (
     "better suited for viewers comfortable with darker or more intense stories",
     "may feel complex on first watch",
@@ -212,6 +240,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=non_negative_int,
         default=0,
         help="Catalog offset for batch audits. Defaults to 0.",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=positive_int,
+        default=100,
+        help="Rows fetched from the catalog cursor at a time. Defaults to 100.",
     )
     parser.add_argument(
         "--min-score",
@@ -353,7 +387,11 @@ def flatten_public_strings(value: Any) -> list[tuple[str, str]]:
 
 
 def display_text(display: dict[str, Any] | None) -> str:
-    return " ".join(value for _field, value in flatten_public_strings(display or {})).lower()
+    return " ".join(
+        value
+        for field, value in flatten_public_strings(display or {})
+        if not field.startswith("_insight_plan")
+    ).lower()
 
 
 def non_access_display_text(display: dict[str, Any] | None) -> str:
@@ -361,7 +399,7 @@ def non_access_display_text(display: dict[str, Any] | None) -> str:
         return ""
     values = []
     for field, value in flatten_public_strings(display):
-        if field.startswith("supporting_facts"):
+        if field.startswith("supporting_facts") or field.startswith("_insight_plan"):
             continue
         values.append(value)
     return " ".join(values).lower()
@@ -428,6 +466,14 @@ def display_ready_for(score: int, issues: list[DisplayIssue]) -> bool:
     return score >= 80 and not any(
         item.severity in {"critical", "high"} for item in issues
     )
+
+
+def display_issues(issues: list[DisplayIssue]) -> list[DisplayIssue]:
+    return [item for item in issues if item.code not in SOURCE_SIGNAL_REVIEW_ISSUE_CODES]
+
+
+def source_signal_review_issues(issues: list[DisplayIssue]) -> list[DisplayIssue]:
+    return [item for item in issues if item.code in SOURCE_SIGNAL_REVIEW_ISSUE_CODES]
 
 
 def singular_key(label: str) -> str:
@@ -501,6 +547,130 @@ def bad_built_around_target(primary: str) -> str | None:
         if target == bad_target or target.startswith(f"{bad_target} "):
             return target
     return None
+
+
+def primary_template_family(primary: str, display: dict[str, Any] | None = None) -> str:
+    plan = (display or {}).get("_insight_plan") or {}
+    if plan.get("template_family"):
+        return str(plan["template_family"])
+    lower_primary = lower_text(primary)
+    if " built around " in lower_primary:
+        return "built_around"
+    if " examining " in lower_primary:
+        return "documentary_examination"
+    if " exploring " in lower_primary:
+        return "character_exploration"
+    if " driven by " in lower_primary:
+        return "experience_driven"
+    if " that blends " in lower_primary:
+        return "hybrid_blend"
+    if " shaped by " in lower_primary:
+        return "layered_exploration"
+    if " where " in lower_primary:
+        return "identity_conflict"
+    if " about " in lower_primary:
+        return "identity_about"
+    return "identity_only"
+
+
+def primary_concept_duplicates(
+    primary: str,
+    identity: list[str],
+    themes: list[str],
+) -> list[str]:
+    normalized_primary = insight_normalized(primary)
+    families = defaultdict(list)
+    for label in identity + themes:
+        normalized_label = insight_normalized(label)
+        phrase = insight_normalized(INSIGHT_ABOUT_PHRASES.get(normalized_label, label))
+        family = insight_concept_family(label)
+        family_aliases = {
+            insight_normalized(alias)
+            for alias in INSIGHT_CONCEPT_ALIASES.get(family, set())
+        }
+        if (
+            normalized_label not in normalized_primary
+            and phrase not in normalized_primary
+            and not any(
+                alias and alias in normalized_primary
+                for alias in family_aliases
+            )
+        ):
+            continue
+        families[family].append(label)
+    return sorted(
+        family
+        for family, labels in families.items()
+        if family and len({insight_normalized(label) for label in labels}) > 1
+    )
+
+
+def has_primary_punctuation_problem(primary: str) -> bool:
+    return bool(
+        re.search(r",\s+and\b", primary)
+        or re.search(r"\s+[,.!?]", primary)
+        or re.search(r"[,.!?]{2,}", primary)
+        or primary.count("(") != primary.count(")")
+    )
+
+
+def primary_repeated_word(primary: str) -> str | None:
+    ignored = {
+        "a",
+        "an",
+        "and",
+        "about",
+        "the",
+        "that",
+        "through",
+        "with",
+    }
+    words = re.findall(r"[a-z][a-z-]+", lower_text(primary))
+    for index, word in enumerate(words):
+        if word in ignored or len(word) < 4:
+            continue
+        if word in words[index + 1 : index + 7]:
+            return word
+    return None
+
+
+def primary_chip_repetition(primary: str, profile: dict[str, Any]) -> bool:
+    normalized_primary = insight_normalized(primary)
+    for label in (
+        (profile.get("identity") or [])
+        + (profile.get("themes") or [])
+        + (profile.get("feel") or [])
+    ):
+        normalized = insight_normalized(label)
+        if normalized and normalized_primary.count(normalized) > 1:
+            return True
+    return False
+
+
+def has_adjective_stack(primary: str) -> bool:
+    return bool(
+        re.search(
+            r"^an?\s+(?:fast-paced|fast-moving|slow-burn|measured|quiet|tense|bleak|warm|dark|serious|light|gentle)\s+"
+            r"(?:tense|bleak|warm|dark|serious|light|gentle|restrained|quiet)\b",
+            lower_text(primary),
+        )
+    )
+
+
+def has_awkward_pacing(primary: str) -> bool:
+    value = lower_text(primary)
+    return " momentum" in value or bool(
+        re.search(r"\b(?:gentle|slow-burn|fast-paced) pacing (?:rhythm|momentum)\b", value)
+    )
+
+
+def has_conjunction_chain(primary: str) -> bool:
+    return len(re.findall(r"\band\b", lower_text(primary))) >= 3
+
+
+def has_raw_taxonomy_copy(primary: str) -> bool:
+    value = lower_text(primary)
+    return any(term in value for term in ("animation style", "anime style"))
 
 
 def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
@@ -684,6 +854,377 @@ def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
             )
 
     if primary:
+        plan = display.get("_insight_plan") or {}
+        validation_errors = plan.get("validation_errors") or []
+        primary_identity_plan = plan.get("primary_identity") or {}
+        primary_identity_trust_tier = int(
+            primary_identity_plan.get("trust_tier") or 0
+        )
+        identity_rejections = [
+            item
+            for item in plan.get("rejected_candidates") or []
+            if item.get("role") == "primary_identity"
+        ]
+        source_conflicts = [
+            item
+            for item in identity_rejections
+            if item.get("reason") == "identity_metadata_conflict"
+            and str(item.get("source") or "").startswith("source_signal:")
+        ]
+        primary_differentiator = plan.get("primary_differentiator") or {}
+        governed_specific_differentiator = bool(
+            primary_differentiator.get("source") == "overview_rule"
+            and primary_differentiator.get("supported") is not False
+            and primary_differentiator.get("concept_family")
+        )
+        safe_documentary_context = bool(
+            insight_normalized(primary_identity_plan.get("text")) == "documentary"
+            and primary_identity_plan.get("source") in {"genre_context", "inferred_context"}
+            and governed_specific_differentiator
+            and source_conflicts
+            and all(
+                item.get("conflict_reason")
+                == "documentary_rejects_fictional_identity"
+                for item in source_conflicts
+            )
+        )
+        selected_identity_conflicts = [
+            item
+            for item in identity_rejections
+            if item.get("reason") == "identity_metadata_conflict"
+            and insight_normalized(item.get("candidate"))
+            == insight_normalized(primary_identity_plan.get("text"))
+            and item.get("source") == primary_identity_plan.get("source")
+        ]
+        if selected_identity_conflicts:
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_IDENTITY_METADATA_CONFLICT",
+                    "critical",
+                    "insight_plan.primary_identity",
+                    primary_identity_plan.get("text") or "",
+                    "Selected primary identity conflicts with title metadata.",
+                    "backend_display_rule",
+                ),
+            )
+        selected_corroboration = int(
+            primary_identity_plan.get("corroboration_count") or 0
+        )
+        selected_incidental = bool(
+            primary_identity_plan.get("incidental_context")
+        )
+        selected_source = str(primary_identity_plan.get("source") or "")
+        stronger_candidates = []
+        if "curated_override" not in selected_source:
+            for item in identity_rejections:
+                if item.get("reason") != "lower_trust_or_specificity":
+                    continue
+                candidate_tier = int(item.get("trust_tier") or 99)
+                trust_allows_comparison = bool(
+                    candidate_tier <= primary_identity_trust_tier
+                    or (
+                        selected_source == "genre_context"
+                        and candidate_tier == primary_identity_trust_tier + 1
+                    )
+                )
+                candidate_count = int(item.get("corroboration_count") or 0)
+                if (
+                    trust_allows_comparison
+                    and item.get("explicit_premise_evidence") is True
+                    and candidate_count > selected_corroboration
+                    and (selected_incidental or candidate_count >= 4)
+                ):
+                    stronger_candidates.append(item)
+        if stronger_candidates:
+            stronger = sorted(
+                stronger_candidates,
+                key=lambda item: (
+                    -int(item.get("corroboration_count") or 0),
+                    int(item.get("trust_tier") or 99),
+                    insight_normalized(item.get("candidate")),
+                ),
+            )[0]
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_IDENTITY_STRONGER_CORROBORATED_CANDIDATE_AVAILABLE",
+                    "high",
+                    "insight_plan.primary_identity",
+                    (
+                        f"selected={primary_identity_plan.get('text')} "
+                        f"tier={primary_identity_trust_tier} "
+                        f"sources={primary_identity_plan.get('corroboration_sources') or []}; "
+                        f"stronger={stronger.get('candidate')} "
+                        f"tier={stronger.get('trust_tier')} "
+                        f"sources={stronger.get('corroboration_sources') or []}; "
+                        f"ranking={stronger.get('ranking_rationale') or stronger.get('reason')}"
+                    ),
+                    "A compatible identity with stronger independent premise evidence was not selected.",
+                    "backend_display_rule",
+                ),
+            )
+        if source_conflicts:
+            add_unique_issue(
+                issues,
+                issue(
+                    "SOURCE_SIGNAL_IDENTITY_METADATA_CONFLICT",
+                    "high",
+                    "insight_plan.rejected_candidates",
+                    " | ".join(str(item.get("candidate")) for item in source_conflicts),
+                    "One or more source-signal identities conflict with title metadata and were rejected.",
+                    "mapping_config_review",
+                ),
+            )
+        if primary_identity_trust_tier >= 6:
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_IDENTITY_WEAK_PROVENANCE",
+                    "high",
+                    "insight_plan.primary_identity",
+                    primary_identity_plan.get("text") or "",
+                    "Primary identity comes from a low-trust topic or metadata fallback.",
+                    "source_signal_quality_review",
+                ),
+            )
+        if (
+            primary_identity_plan.get("source") == "inferred_context"
+            and primary_identity_trust_tier >= 5
+            and not safe_documentary_context
+        ):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_IDENTITY_INCIDENTAL_CONTEXT",
+                    "high",
+                    "insight_plan.primary_identity",
+                    primary_identity_plan.get("text") or "",
+                    "Primary identity relies on inferred context without explicit premise-level support.",
+                    "backend_display_rule",
+                ),
+            )
+        curated_evaluation = plan.get("curated_identity_evaluation")
+        curated_not_evaluated = (
+            curated_evaluation == "not_evaluated"
+            if curated_evaluation is not None
+            else bool(
+                plan.get("curated_override_applied")
+                and plan.get("curated_identity_available")
+                and "curated_override"
+                not in str(primary_identity_plan.get("source") or "")
+            )
+        )
+        if curated_not_evaluated:
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_IDENTITY_CURATED_OVERRIDE_IGNORED",
+                    "high",
+                    "insight_plan.primary_identity",
+                    primary_identity_plan.get("text") or "",
+                    "A curated identity was present but could not be evaluated.",
+                    "backend_display_rule",
+                ),
+            )
+        if validation_errors:
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_UNSUPPORTED_COMPONENT",
+                    "critical",
+                    "primary_insight",
+                    " | ".join(str(value) for value in validation_errors),
+                    "Insight plan contains an unsupported or invalid component.",
+                    "backend_display_rule",
+                ),
+            )
+        if any(
+            re.search(pattern, lower_text(primary))
+            for pattern in PRIMARY_INSIGHT_GENERIC_PATTERNS
+        ):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_GENERIC",
+                    "high",
+                    "primary_insight",
+                    primary,
+                    "Primary insight is generic despite the available display context.",
+                    "backend_display_rule",
+                ),
+            )
+        duplicate_families = (
+            ["insight_plan"]
+            if "duplicate_concept_family" in validation_errors
+            else (
+                []
+                if plan
+                else primary_concept_duplicates(primary, identity, themes)
+            )
+        )
+        if duplicate_families:
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_DUPLICATE_CONCEPTS",
+                    "high",
+                    "primary_insight",
+                    " | ".join(duplicate_families),
+                    "Primary insight repeats equivalent product concepts.",
+                    "backend_display_rule",
+                ),
+            )
+        if any(
+            re.search(pattern, lower_text(primary))
+            for pattern in PRIMARY_INSIGHT_RAW_GRAMMAR_PATTERNS
+        ):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_RAW_LABEL_GRAMMAR",
+                    "high",
+                    "primary_insight",
+                    primary,
+                    "Primary insight inserts a canonical label into an unsupported grammatical role.",
+                    "backend_display_rule",
+                ),
+            )
+        repeated_word = primary_repeated_word(primary)
+        if repeated_word:
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_REPEATED_WORD",
+                    "high",
+                    "primary_insight",
+                    repeated_word,
+                    "Primary insight repeats a content word too closely.",
+                    "backend_display_rule",
+                ),
+            )
+        if has_primary_punctuation_problem(primary):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_PUNCTUATION",
+                    "high",
+                    "primary_insight",
+                    primary,
+                    "Primary insight contains awkward or invalid punctuation.",
+                    "backend_display_rule",
+                ),
+            )
+        if has_adjective_stack(primary):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_ADJECTIVE_STACK",
+                    "high",
+                    "primary_insight",
+                    primary,
+                    "Primary insight stacks pacing and tone adjectives awkwardly.",
+                    "backend_display_rule",
+                ),
+            )
+        if has_awkward_pacing(primary):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_AWKWARD_PACING",
+                    "high",
+                    "primary_insight",
+                    primary,
+                    "Primary insight uses an awkward or generic pacing construction.",
+                    "backend_display_rule",
+                ),
+            )
+        if has_conjunction_chain(primary):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_CONJUNCTION_CHAIN",
+                    "high",
+                    "primary_insight",
+                    primary,
+                    "Primary insight chains too many conjunctions.",
+                    "backend_display_rule",
+                ),
+            )
+        if has_raw_taxonomy_copy(primary):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_RAW_TAXONOMY",
+                    "high",
+                    "primary_insight",
+                    primary,
+                    "Primary insight exposes an internal taxonomy label as product copy.",
+                    "backend_display_rule",
+                ),
+            )
+        if any(term in lower_text(primary) for term in PRIMARY_INSIGHT_SPOILER_TERMS):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_SPOILER_RISK",
+                    "critical",
+                    "primary_insight",
+                    primary,
+                    "Primary insight may expose spoiler-sensitive plot information.",
+                    "mapping_config_review",
+                ),
+            )
+        if primary_chip_repetition(primary, profile):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_CHIP_REPETITION",
+                    "low",
+                    "primary_insight",
+                    primary,
+                    "Primary insight restates too many compact profile labels.",
+                    "backend_display_rule",
+                ),
+            )
+        primary_identity = identity[0] if identity else ""
+        if (
+            insight_normalized(primary_identity) in GENERIC_IDENTITIES
+            or (
+                len(insight_normalized(primary_identity).split()) <= 1
+                and insight_normalized(primary_identity)
+                in {"drama", "story", "documentary", "comedy"}
+            )
+            and not safe_documentary_context
+        ):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_LOW_SPECIFICITY",
+                    "medium",
+                    "profile.identity",
+                    primary_identity,
+                    "Primary insight leads with a low-specificity identity.",
+                    "backend_display_rule",
+                ),
+            )
+        if (
+            plan
+            and (plan.get("primary_identity") or {}).get("source")
+            in {"display_profile", "metadata_fallback"}
+            and not plan.get("primary_differentiator")
+        ):
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_INSIGHT_FALLBACK_ONLY",
+                    "medium",
+                    "primary_insight",
+                    primary,
+                    "Primary insight relies only on fallback identity without a supported differentiator.",
+                    "source_signal_quality_review",
+                ),
+            )
         if len(primary) > 180:
             add_unique_issue(
                 issues,
@@ -696,7 +1237,16 @@ def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
                     "backend_display_rule",
                 ),
             )
-        if len(primary) < 28:
+        plan_identity = (plan or {}).get("primary_identity") or {}
+        normalized_plan_identity = insight_normalized(plan_identity.get("text"))
+        has_specific_supported_identity = bool(
+            plan_identity.get("supported") is not False
+            and len(normalized_plan_identity.split()) >= 2
+            and normalized_plan_identity not in GENERIC_IDENTITIES
+            and normalized_plan_identity
+            not in {"comedy drama", "documentary viewing", "generic drama"}
+        )
+        if len(primary) < 28 and not has_specific_supported_identity:
             add_unique_issue(
                 issues,
                 issue(
@@ -940,6 +1490,16 @@ def suggested_next_step(issues: list[DisplayIssue]) -> str:
         "BLOCKED_PHRASE",
         "BAD_BUILT_AROUND_TARGET",
         "PRIMARY_INSIGHT_REPETITIVE",
+        "PRIMARY_INSIGHT_DUPLICATE_CONCEPTS",
+        "PRIMARY_INSIGHT_FALLBACK_ONLY",
+        "PRIMARY_INSIGHT_GENERIC",
+        "PRIMARY_INSIGHT_LOW_SPECIFICITY",
+        "PRIMARY_INSIGHT_PUNCTUATION",
+        "PRIMARY_INSIGHT_RAW_LABEL_GRAMMAR",
+        "PRIMARY_INSIGHT_REPEATED_WORD",
+        "PRIMARY_INSIGHT_TEMPLATE_OVERUSE",
+        "PRIMARY_INSIGHT_UNSUPPORTED_COMPONENT",
+        "PRIMARY_IDENTITY_STRONGER_CORROBORATED_CANDIDATE_AVAILABLE",
     }:
         return "backend_display_rule"
     if codes & {
@@ -972,8 +1532,10 @@ def normalized_profile(display: dict[str, Any] | None) -> dict[str, Any]:
 
 def audit_display_record(content: dict[str, Any], display: dict[str, Any] | None) -> dict[str, Any]:
     issues = detect_display_issues(display)
-    score = calculate_score(issues)
-    grade = grade_for_score(score, issues)
+    public_issues = display_issues(issues)
+    source_issues = source_signal_review_issues(issues)
+    score = calculate_score(public_issues)
+    grade = grade_for_score(score, public_issues)
     counts = issue_counts(issues)
     profile = normalized_profile(display)
     supporting_facts = (display or {}).get("supporting_facts") or []
@@ -985,12 +1547,22 @@ def audit_display_record(content: dict[str, Any], display: dict[str, Any] | None
         "year": content.get("year"),
         "display_quality_score": score,
         "grade": grade,
-        "display_ready": display_ready_for(score, issues),
-        "review_required": not display_ready_for(score, issues),
+        "display_ready": display_ready_for(score, public_issues),
+        "display_review_required": not display_ready_for(score, public_issues),
+        "source_signal_review_required": bool(source_issues),
+        "review_required": (
+            not display_ready_for(score, public_issues) or bool(source_issues)
+        ),
         "primary_insight": (display or {}).get("primary_insight"),
+        "template_family": primary_template_family(
+            (display or {}).get("primary_insight") or "",
+            display,
+        ),
         "profile": profile,
         "supporting_facts": supporting_facts,
         "issues": [item.as_dict() for item in issues],
+        "display_issues": [item.as_dict() for item in public_issues],
+        "source_signal_review_issues": [item.as_dict() for item in source_issues],
         "issue_counts": counts,
         "suggested_next_step": suggested_next_step(issues),
     }
@@ -1000,7 +1572,79 @@ def audit_content_detail(detail: dict[str, Any]) -> dict[str, Any]:
     content = detail.get("content") or {}
     decision_layer = detail.get("decision_layer") or {}
     display = decision_layer.get("display") if decision_layer else None
+    insight_plan = ((decision_layer.get("debug") or {}).get("insight_plan"))
+    if display and insight_plan:
+        display = dict(display)
+        display["_insight_plan"] = insight_plan
     return audit_display_record(content, display)
+
+
+def apply_template_overuse_issues(
+    records: list[dict[str, Any]],
+    threshold: float = 0.50,
+    minimum_catalog_size: int = 10,
+) -> list[dict[str, Any]]:
+    if len(records) < minimum_catalog_size:
+        return records
+    counts = Counter(record.get("template_family") for record in records)
+    dominant, count = counts.most_common(1)[0]
+    if not dominant or count / len(records) <= threshold:
+        return records
+
+    for record in records:
+        if record.get("template_family") != dominant:
+            continue
+        if any(
+            item["code"] == "PRIMARY_INSIGHT_TEMPLATE_OVERUSE"
+            for item in record.get("issues") or []
+        ):
+            continue
+        record["issues"].append(
+            issue(
+                "PRIMARY_INSIGHT_TEMPLATE_OVERUSE",
+                "low",
+                "primary_insight",
+                dominant,
+                "One sentence template dominates too much of the catalog.",
+                "backend_display_rule",
+            ).as_dict()
+        )
+        severity_counts = Counter(
+            item["severity"] for item in record["issues"]
+        )
+        record["issue_counts"] = {
+            severity: severity_counts.get(severity, 0)
+            for severity in SEVERITIES
+        }
+        issue_objects = [
+            DisplayIssue(
+                code=item["code"],
+                severity=item["severity"],
+                field=item["field"],
+                value=item["value"],
+                message=item["message"],
+                suggested_action=item["suggested_action"],
+            )
+            for item in record["issues"]
+        ]
+        public_issue_objects = display_issues(issue_objects)
+        source_issue_objects = source_signal_review_issues(issue_objects)
+        score = calculate_score(public_issue_objects)
+        record["display_quality_score"] = score
+        record["grade"] = grade_for_score(score, public_issue_objects)
+        record["display_ready"] = display_ready_for(score, public_issue_objects)
+        record["display_review_required"] = not record["display_ready"]
+        record["source_signal_review_required"] = bool(source_issue_objects)
+        record["review_required"] = (
+            record["display_review_required"]
+            or record["source_signal_review_required"]
+        )
+        record["display_issues"] = [item.as_dict() for item in public_issue_objects]
+        record["source_signal_review_issues"] = [
+            item.as_dict() for item in source_issue_objects
+        ]
+        record["suggested_next_step"] = suggested_next_step(issue_objects)
+    return records
 
 
 def should_include_in_json(record: dict[str, Any], args: argparse.Namespace) -> bool:
@@ -1081,6 +1725,12 @@ def content_type_breakdown(records: list[dict[str, Any]]) -> dict[str, dict[str,
         breakdown[content_type] = {
             "titles_seen": len(rows),
             "display_ready_count": sum(1 for row in rows if row["display_ready"]),
+            "display_review_required_count": sum(
+                1 for row in rows if row["display_review_required"]
+            ),
+            "source_signal_review_required_count": sum(
+                1 for row in rows if row["source_signal_review_required"]
+            ),
             "review_required_count": sum(1 for row in rows if row["review_required"]),
             "average_score": average_score,
             "grade_counts": grade_counts(rows),
@@ -1106,6 +1756,12 @@ def build_summary(records: list[dict[str, Any]], generated_at: str) -> dict[str,
         "titles_with_display": titles_with_display,
         "titles_missing_display": titles_seen - titles_with_display,
         "display_ready_count": sum(1 for row in records if row["display_ready"]),
+        "display_review_required_count": sum(
+            1 for row in records if row["display_review_required"]
+        ),
+        "source_signal_review_required_count": sum(
+            1 for row in records if row["source_signal_review_required"]
+        ),
         "review_required_count": sum(1 for row in records if row["review_required"]),
         "average_score": average_score,
         "grade_counts": grade_counts(records),
@@ -1129,6 +1785,7 @@ def build_summary(records: list[dict[str, Any]], generated_at: str) -> dict[str,
         "top_issue_examples": top_issue_examples(records),
         "content_type_breakdown": content_type_breakdown(records),
         "generated_at": generated_at,
+        "versions": decision_insight_versions(),
     }
 
 
@@ -1146,6 +1803,10 @@ def csv_row(record: dict[str, Any]) -> dict[str, Any]:
         "display_quality_score": record.get("display_quality_score"),
         "grade": record.get("grade"),
         "display_ready": record.get("display_ready"),
+        "display_review_required": record.get("display_review_required"),
+        "source_signal_review_required": record.get(
+            "source_signal_review_required"
+        ),
         "review_required": record.get("review_required"),
         "primary_issue_codes": pipe_join(primary_issue_codes(record)),
         "primary_issue_severities": pipe_join(
@@ -1179,6 +1840,8 @@ CSV_COLUMNS = [
     "display_quality_score",
     "grade",
     "display_ready",
+    "display_review_required",
+    "source_signal_review_required",
     "review_required",
     "primary_issue_codes",
     "primary_issue_severities",
@@ -1203,7 +1866,7 @@ def write_csv(path: Path, records: list[dict[str, Any]]) -> None:
             writer.writerow(csv_row(record))
 
 
-def query_catalog_targets(connection, args: argparse.Namespace) -> list[dict[str, Any]]:
+def query_catalog_target_batches(connection, args: argparse.Namespace):
     where = []
     params: dict[str, Any] = {
         "limit": args.limit,
@@ -1238,28 +1901,46 @@ def query_catalog_targets(connection, args: argparse.Namespace) -> list[dict[str
     if args.content_id:
         query = query.bindparams(bindparam("content_ids", expanding=True))
 
-    result = connection.execute(query, params)
-    return [dict(row) for row in result.mappings().all()]
+    result = connection.execute(query, params).mappings()
+    batch_size = getattr(args, "batch_size", 100)
+    while True:
+        rows = result.fetchmany(batch_size)
+        if not rows:
+            break
+        yield [dict(row) for row in rows]
+
+
+def query_catalog_targets(connection, args: argparse.Namespace) -> list[dict[str, Any]]:
+    return [
+        row
+        for batch in query_catalog_target_batches(connection, args)
+        for row in batch
+    ]
 
 
 def audit_catalog(connection, args: argparse.Namespace) -> list[dict[str, Any]]:
     records = []
-    for target in query_catalog_targets(connection, args):
-        detail = get_content_details_service(target["id"], connection)
-        if not detail:
-            record = audit_display_record(
-                {
-                    "id": target["id"],
-                    "title": target["title"],
-                    "type": target["content_type"],
-                    "year": target["year"],
-                },
-                None,
+    for targets in query_catalog_target_batches(connection, args):
+        for target in targets:
+            detail = get_content_details_service(
+                target["id"],
+                connection,
+                include_decision_debug=True,
             )
-        else:
-            record = audit_content_detail(detail)
-        records.append(record)
-    return records
+            if not detail:
+                record = audit_display_record(
+                    {
+                        "id": target["id"],
+                        "title": target["title"],
+                        "type": target["content_type"],
+                        "year": target["year"],
+                    },
+                    None,
+                )
+            else:
+                record = audit_content_detail(detail)
+            records.append(record)
+    return apply_template_overuse_issues(records)
 
 
 def should_fail_run(summary: dict[str, Any], records: list[dict[str, Any]], args: argparse.Namespace) -> bool:
@@ -1286,11 +1967,13 @@ def build_detail_report(
     return {
         "generated_at": generated_at,
         "db_write_performed": False,
+        "versions": decision_insight_versions(),
         "filters": {
             "content_ids": args.content_id or [],
             "content_type": args.content_type,
             "limit": args.limit,
             "offset": args.offset,
+            "batch_size": getattr(args, "batch_size", 100),
             "min_score": args.min_score,
             "include_passing": args.include_passing,
         },
@@ -1304,7 +1987,12 @@ def print_summary(summary: dict[str, Any], json_path: Path, csv_path: Path, summ
     print("DB writes: none")
     print(f"Titles seen: {summary['titles_seen']}")
     print(f"Display ready: {summary['display_ready_count']}")
-    print(f"Review required: {summary['review_required_count']}")
+    print(f"Display review required: {summary['display_review_required_count']}")
+    print(
+        "Source-signal review required: "
+        f"{summary['source_signal_review_required_count']}"
+    )
+    print(f"Any operational review required: {summary['review_required_count']}")
     print(f"Average score: {summary['average_score']}")
     print(f"Critical issues: {summary['issue_counts_by_severity'].get('critical', 0)}")
     print(f"JSON report: {relative_path(json_path)}")
@@ -1329,7 +2017,9 @@ def main(argv: list[str] | None = None) -> int:
 
     engine = create_engine(database_url)
     with engine.connect() as connection:
+        connection.execute(text("SET TRANSACTION READ ONLY"))
         records = audit_catalog(connection, args)
+        connection.rollback()
 
     summary = build_summary(records, generated_at)
     detail_report = build_detail_report(records, summary, args, generated_at)

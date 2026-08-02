@@ -49,8 +49,8 @@ Covered areas:
 - keyword-to-signal preview mapping/helper behavior, including v3.2.1 metadata fallback, curated overrides, partial-output protection, semantic QA report fields, generator/QA version fields, product-copy safeguards, v1 reusable mapping rules, v2 config hygiene plus family/emotional, workplace, supernatural, political/crime/survival, historical/war, and mythology/identity cues, and v2.1 period/hotel/caper, social-satire, creature-adventure, superhero-team, mythic, and brisk-investigation cleanup
 - source-signal storage schema verification
 - source-signal importer dry-run/write/idempotency validation
-- source-signal decision-layer display grouping, deduplication, supporting facts, repeated-investigation cleanup, historical/war theme fallbacks, specific caution copy, `best_for` normalization, and public-output sanitization
-- decision display quality-audit helper behavior, including issue detection, scoring, grading, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
+- source-signal decision-layer display grouping, deterministic Insight Plans, evidence-bound copy roles, semantic concept deduplication, controlled overview context, supporting facts, historical/war context, specific caution copy, `best_for` normalization, and public-output sanitization
+- decision display quality-audit helper behavior, including generic/duplicate/grammar/spoiler/template issue detection, scoring, grading, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
 - source-signal mapping quality-audit helper behavior, including signal richness scoring, missing dimension detection, calibrated caution-proxy diagnostics, backend-display fallback diagnostics, weak/generic labels, stricter subgenre opportunity detection, unmapped keyword opportunities, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
 - homepage sections API behavior, including section order, hero quick filters, poster-backed cards, explicit refresh-date handling, bounded deterministic rotation, movie/series freshness ordering, mood-bucket inclusion/exclusion rules, score quality, series-only rails, compact card copy, public-label sanitization, duplicate prevention, and limit clamping
 - source-signal ingestion health-check summary behavior
@@ -149,8 +149,11 @@ Without imported people rows, the existing-person endpoint tests are skipped whi
 - `backend/tests/test_keyword_signal_preview.py` — keyword-to-signal preview mapping, reusable mapping rules, mapping-config hygiene, metadata fallback, curated override, partial-output protection, semantic QA versioning, and product-copy tests without live DB/API calls
 - `backend/tests/test_source_signal_schema.py` — source-signal storage schema and index verification
 - `backend/tests/test_source_signal_importer.py` — source-signal importer dry-run, write, validation, idempotency, and JSONB helper tests without live DB/API calls
-- `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization, chip priority, watch profile, compact `decision_layer.display`, supporting facts, global display-quality cleanup, dominant identity selection, overview-assisted theme fallback, repeated-investigation cleanup, historical/war fallback themes, `best_for` normalization, identity/theme/feel dedupe, specific caution wording, and product-friendly decision-copy tests without live DB/API calls
-- `backend/tests/test_decision_display_quality_audit.py` — decision display quality-audit helper tests for clean/missing displays, technical leaks, platform-viewer leaks, generic labels, scoring, CSV rows, summary aggregation, and fail flags without DB writes
+- `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization plus deterministic Insight Plan construction, evidence provenance, controlled overview rules, identity specificity, grammatical copy roles, concept-family dedupe, articles, punctuation, and product-friendly rendering without live DB/API calls
+- `backend/tests/test_decision_insight_formatter.py` — pure Formatter v2 coverage for future titles, unknown labels, sparse evidence, spoiler-safe rejection, rating-source provenance, plan-driven headlines, documentary combinations, overlap, Unicode, and deterministic fallback behavior
+- `backend/tests/test_decision_display_quality_audit.py` — decision display quality-audit helper tests for clean/missing displays, technical leaks, generic/duplicate concepts, raw-label grammar, repetition, punctuation, spoiler risk, template overuse, scoring, CSV rows, summary aggregation, and fail flags without DB writes
+- `backend/tests/test_decision_insight_reports.py` — deterministic baseline/comparison/stratified report metrics, zero/one/many catalog behavior, post-baseline title inclusion, and Insight Plan evidence preservation without DB writes
+- `backend/tests/test_decision_insight_semantic_catalog.py` and `backend/tests/fixtures/decision_insight_semantic_catalog.json` — versioned semantic-property regressions across 26 representative titles and synthetic evidence profiles
 - `backend/tests/test_source_signal_mapping_quality_audit.py` — source-signal mapping quality-audit helper tests for rich records, missing signals, missing dimensions, calibrated caution-proxy behavior, backend-display fallback diagnostics, common-vs-weak labels, stricter genre/subgenre opportunities, unmapped keyword opportunities, CSV rows, summary aggregation, and fail flags without DB writes
 - `backend/tests/test_catalog_expansion_readiness_audit.py` — controlled catalog fixtures for composition, metadata/lifecycle gaps, video refresh health, keyword mapping, source-signal quality, recommendation candidate density, gap planning, report output, strict mode, and read-only/no-network contracts
 
@@ -158,6 +161,9 @@ The catalog expansion audit itself can be run against the prepared local catalog
 with `python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness`. Its
 database transaction is explicitly read-only. Generated JSON/Markdown gap
 reports are ignored by Git and are not test fixtures.
+
+Formatter test ownership, public-field consistency rules, and diagnostic commands
+are documented in `docs/decision_insight_formatter_v2.md`.
 
 ## 6. Important Bug Caught by Tests
 

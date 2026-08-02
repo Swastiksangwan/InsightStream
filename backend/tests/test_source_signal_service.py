@@ -1,9 +1,86 @@
+import pytest
+
+from app.services.decision_insight_formatter import InsightPlan
+from app.services.insight_summary_service import build_insight_summary
 from app.services.source_signal_service import (
+    build_decision_headline,
     display_has_blocked_public_phrase,
     get_content_decision_layer,
+    infer_context_identity,
     sanitize_label,
     sanitize_labels,
 )
+
+
+@pytest.mark.parametrize(
+    ("overview", "genres", "signals", "forbidden"),
+    [
+        ("After years of imprisonment, a dream king returns home.", ["Drama", "Fantasy"], [], "Prison drama"),
+        ("A detective investigates a murder.", ["Crime", "Mystery"], [], "Serial-killer investigation"),
+        ("A monarch fights for political survival.", ["Drama"], [], "Psychological survival thriller"),
+        ("Heroes fight for control of a realm.", ["Action", "Fantasy", "Sci-Fi"], [], "Cyberpunk action sci-fi"),
+        ("A teacher mourns a son lost in war.", ["Comedy", "Drama"], [], "War drama"),
+    ],
+)
+def test_context_identity_does_not_promote_incidental_words(
+    overview,
+    genres,
+    signals,
+    forbidden,
+):
+    inferred = infer_context_identity(
+        {"watch_feel": None, "chips": [], "best_for": []},
+        signals,
+        display_context={
+            "content": {"type": "series", "overview": overview},
+            "genres": genres,
+        },
+    )
+
+    assert inferred != forbidden
+
+
+def test_governed_spy_identity_requires_explicit_premise_and_compatible_genre():
+    inferred = infer_context_identity(
+        {"watch_feel": None, "chips": [], "best_for": []},
+        [],
+        display_context={
+            "content": {
+                "type": "series",
+                "overview": (
+                    "An East German soldier is sent west as an undercover spy "
+                    "for an intelligence service."
+                ),
+            },
+            "genres": ["Drama", "Thriller"],
+        },
+    )
+    incidental = infer_context_identity(
+        {"watch_feel": None, "chips": [], "best_for": []},
+        [],
+        display_context={
+            "content": {
+                "type": "series",
+                "overview": "A student spies on a neighbor after school.",
+            },
+            "genres": ["Drama"],
+        },
+    )
+    intelligence_service = infer_context_identity(
+        {"watch_feel": None, "chips": [], "best_for": []},
+        [],
+        display_context={
+            "content": {
+                "type": "series",
+                "overview": "A team of MI5 agents navigate the espionage world.",
+            },
+            "genres": ["Comedy", "Crime", "Drama"],
+        },
+    )
+
+    assert inferred == "Spy thriller"
+    assert intelligence_service == "Spy story"
+    assert incidental != "Spy story"
 
 
 class FakeResult:
@@ -66,12 +143,19 @@ def guidance_row(**overrides):
     return row
 
 
-def signal_row(dimension, label, value=None, confidence="medium"):
+def signal_row(
+    dimension,
+    label,
+    value=None,
+    confidence="medium",
+    spoiler_safe=True,
+):
     return {
         "dimension": dimension,
         "value": value or label.lower(),
         "label": label,
         "confidence": confidence,
+        "spoiler_safe": spoiler_safe,
     }
 
 
@@ -123,6 +207,19 @@ def test_sanitize_labels_removes_platform_and_weak_labels():
     ) == ["Dark fantasy", "Tense"]
 
 
+def test_decision_headline_falls_back_when_plan_has_no_supported_identity():
+    plan = InsightPlan(validation_errors=["missing_supported_identity"])
+
+    assert build_decision_headline(
+        plan,
+        {"best_for": ["Thoughtful mysteries"], "chips": ["Mystery"]},
+    ) == "Best suited for thoughtful mysteries."
+    assert build_decision_headline(
+        plan,
+        {"best_for": [], "chips": ["Mystery"]},
+    ) == "Best suited for mystery."
+
+
 def assert_display_has_no_blocked_phrases(display):
     assert not display_has_blocked_public_phrase(display)
 
@@ -139,8 +236,9 @@ def test_decision_layer_returns_sanitized_watch_profile_and_decision_copy():
 
     decision_layer = get_content_decision_layer(db, 1)
 
-    assert decision_layer["watch_profile"]["watch_feel"].startswith(
-        "A tense character-driven crime drama"
+    assert (
+        decision_layer["watch_profile"]["watch_feel"]
+        == decision_layer["display"]["primary_insight"]
     )
     assert "JioHotstar viewers" not in decision_layer["watch_profile"]["chips"]
     assert "Drama" not in decision_layer["watch_profile"]["chips"]
@@ -148,7 +246,7 @@ def test_decision_layer_returns_sanitized_watch_profile_and_decision_copy():
     assert "Crime dramas" in decision_layer["watch_profile"]["best_for"]
     assert "Long-form dramas" in decision_layer["watch_profile"]["best_for"]
     assert decision_layer["decision_support"]["headline"] == (
-        "Best suited for viewers looking for a tense character-driven crime drama."
+        "Best suited for viewers looking for a foreboding crime drama."
     )
     reasons = decision_layer["decision_support"]["reasons"]
     assert reasons
@@ -163,6 +261,168 @@ def test_decision_layer_returns_sanitized_watch_profile_and_decision_copy():
         "has_watch_guidance": True,
         "has_source_signals": True,
     }
+
+
+def test_stored_watch_feel_is_not_returned_as_authoritative_runtime_copy():
+    legacy_sentence = "A legacy sentence that should never reach API consumers."
+    db = FakeDecisionDb(
+        guidance=guidance_row(watch_feel=legacy_sentence),
+        signals=[
+            signal_row("audience_expectation", "Crime thriller"),
+            signal_row("topic_theme", "Investigation"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(genres=["Crime", "Thriller"]),
+    )
+
+    assert legacy_sentence not in str(decision_layer)
+    assert (
+        decision_layer["watch_profile"]["watch_feel"]
+        == decision_layer["display"]["primary_insight"]
+    )
+
+
+def test_runtime_service_excludes_spoiler_unsafe_signal_from_all_copy():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="Legacy copy must not restore the unsafe revelation.",
+            chips=["Crime thriller"],
+            best_for=["Crime thrillers"],
+        ),
+        signals=[
+            signal_row("audience_expectation", "Crime thriller"),
+            signal_row(
+                "topic_theme",
+                "Secret identity",
+                spoiler_safe=False,
+            ),
+            signal_row("topic_theme", "Investigation"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        include_debug=True,
+        display_context=display_context(genres=["Crime", "Thriller"]),
+    )
+
+    public_text = str(
+        {
+            "display": decision_layer["display"],
+            "watch_profile": decision_layer["watch_profile"],
+            "decision_support": decision_layer["decision_support"],
+        }
+    ).casefold()
+    assert "secret identity" not in public_text
+    assert all(
+        signal["label"] != "Secret identity"
+        for signal in decision_layer["debug"]["signals"]
+    )
+    assert any(
+        item["candidate"] == "Secret identity"
+        and item["reason"] == "spoiler_unsafe"
+        for item in decision_layer["debug"]["insight_plan"]["rejected_candidates"]
+    )
+    assert (
+        decision_layer["watch_profile"]["watch_feel"]
+        == decision_layer["display"]["primary_insight"]
+    )
+
+
+def test_runtime_service_keeps_rejected_source_identity_out_of_all_public_fields():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=["Superhero team story", "Romantic drama", "Romantic connection"],
+            best_for=["Superhero stories", "Romantic drama viewers"],
+        ),
+        signals=[
+            signal_row(
+                "audience_expectation",
+                "Superhero team story",
+                confidence="high",
+            ),
+            signal_row("audience_expectation", "Romantic drama"),
+            signal_row("topic_theme", "Superhuman powers"),
+            signal_row("tone", "Tense"),
+        ],
+    )
+    context = display_context(
+        content={
+            "id": 1,
+            "title": "Synthetic Hero Story",
+            "type": "movie",
+            "overview": "A superhero team protects the city using superhuman powers.",
+        },
+        genres=["Action", "Adventure", "Animation"],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        include_debug=True,
+        display_context=context,
+    )
+    insight_summary = build_insight_summary({**context, "decision_layer": decision_layer})
+
+    public_text = str(
+        {
+            "display": decision_layer["display"],
+            "watch_profile": decision_layer["watch_profile"],
+            "decision_support": decision_layer["decision_support"],
+            "insight_summary": insight_summary,
+        }
+    ).casefold()
+    assert "romantic" not in public_text
+    assert "romance" not in public_text
+    assert "superhero" in public_text
+    assert any(
+        signal["label"] == "Romantic drama"
+        for signal in decision_layer["debug"]["signals"]
+    )
+    assert any(
+        item.get("candidate") == "Romantic drama"
+        and item.get("reason") == "identity_metadata_conflict"
+        for item in decision_layer["debug"]["insight_plan"]["rejected_candidates"]
+    )
+
+
+def test_future_batch_title_gets_formatter_output_without_sentence_migration():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="Stored ingestion guidance is not the public sentence.",
+        ),
+        signals=[
+            signal_row("audience_expectation", "Medical procedural"),
+            signal_row("topic_theme", "Medical workplace"),
+        ],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        987654,
+        include_debug=True,
+        display_context={
+            "content": {
+                "id": 987654,
+                "title": "Future Batch Series",
+                "type": "series",
+                "overview": None,
+            },
+            "genres": ["Drama"],
+        },
+    )
+
+    assert decision_layer["display"]["primary_insight"]
+    assert "stored ingestion guidance" not in str(decision_layer).casefold()
+    assert (
+        decision_layer["debug"]["insight_plan"]["formatter_version"]
+            == "2.0.2"
+        )
 
 
 def test_decision_layer_keeps_useful_chips():
@@ -275,12 +535,13 @@ def test_decision_display_groups_compact_profile_and_facts():
 
     display = decision_layer["display"]
     assert_display_has_no_blocked_phrases(display)
-    assert display["primary_insight"].startswith("A surreal sci-fi heist")
+    assert display["primary_insight"].startswith("A surreal heist story")
     assert "memory and identity" in display["primary_insight"].lower()
-    assert "strong audience backing" in display["primary_insight"].lower()
+    assert "ratings" not in display["primary_insight"].lower()
+    assert "audience backing" not in display["primary_insight"].lower()
     assert "Best suited" not in display["primary_insight"]
     assert len(display["primary_insight"]) <= 180
-    assert display["profile"]["identity"] == ["Sci-fi heist"]
+    assert display["profile"]["identity"] == ["Heist story"]
     assert "Spy story" not in display["profile"]["identity"]
     assert "Spy story" not in display["profile"]["themes"]
     assert display["profile"]["themes"] == ["Memory and identity"]
@@ -293,13 +554,55 @@ def test_decision_display_groups_compact_profile_and_facts():
 
     facts = display["supporting_facts"]
     assert len(facts) <= 4
-    assert {"label": "Audience", "value": "86/100 from 2 scoring sources"} in facts
+    assert {"label": "Ratings", "value": "86/100 from 2 scoring sources"} in facts
     assert {"label": "Access", "value": "Streaming in India"} in facts
     assert {
         "label": "Creative lead",
         "value": "Directed by Christopher Nolan",
     } in facts
     assert {"label": "Age rating", "value": "UA"} in facts
+
+
+def test_mixed_rating_provenance_stays_in_supporting_output_only():
+    db = FakeDecisionDb(
+        guidance=guidance_row(chips=["Crime thriller", "Investigation"]),
+        signals=[
+            signal_row("audience_expectation", "Crime thriller"),
+            signal_row("topic_theme", "Investigation"),
+        ],
+    )
+    ratings = {
+        "unified_score": 86,
+        "scoring_source_count": 2,
+        "sources": [
+            {
+                "source_name": "tmdb",
+                "source_category": "audience",
+                "included_in_unified_score": True,
+            },
+            {
+                "source_name": "metacritic",
+                "source_category": "critic",
+                "included_in_unified_score": True,
+            },
+        ],
+    }
+
+    layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            genres=["Crime", "Thriller"],
+            ratings=ratings,
+        ),
+    )
+
+    assert "ratings" not in layer["display"]["primary_insight"].casefold()
+    assert "audience backing" not in layer["display"]["primary_insight"].casefold()
+    assert {
+        "label": "Ratings",
+        "value": "86/100 from 2 scoring sources",
+    } in layer["display"]["supporting_facts"]
 
 
 def test_decision_display_deduplicates_overlapping_feel_labels():
@@ -338,7 +641,7 @@ def test_decision_display_deduplicates_overlapping_feel_labels():
     profile = decision_layer["display"]["profile"]
     assert_display_has_no_blocked_phrases(decision_layer["display"])
 
-    assert "Political dark fantasy" in profile["identity"]
+    assert profile["identity"][0] == "Dark fantasy"
     assert "Fantasy adventure" not in profile["identity"]
     assert "Power struggle" in profile["themes"]
     assert len(profile["feel"]) <= 2
@@ -496,7 +799,8 @@ def test_decision_display_prefers_prison_drama_over_corruption_setting_context()
     assert "warm corruption story" not in insight
     assert "1940s setting" not in themes
     assert themes & {"hope", "endurance", "friendship", "institutional corruption"}
-    assert "exceptional audience backing" in insight
+    assert "ratings" not in insight
+    assert "audience backing" not in insight
 
 
 def test_decision_display_prefers_satirical_scifi_anthology_over_crime_story():
@@ -594,6 +898,122 @@ def test_decision_display_prefers_serial_killer_crime_thriller_without_repetitio
     )
     assert "built around detective investigation" not in insight
     assert "serial-killer investigation" in insight
+
+
+def test_plural_serial_killer_evidence_accepts_governed_identity():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=["Serial-killer investigation", "Tense"],
+            best_for=["Crime investigations"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row(
+                "audience_expectation",
+                "Serial-killer investigation",
+                confidence="medium",
+            ),
+            signal_row("tone", "Tense", confidence="high"),
+        ],
+    )
+
+    layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": "FBI agents interview serial killers to understand their crimes.",
+            },
+            genres=["Crime", "Drama", "Thriller"],
+        ),
+    )
+
+    assert layer["display"]["profile"]["identity"][0] == (
+        "Serial-killer investigation"
+    )
+    assert "serial-killer investigation" in layer["display"][
+        "primary_insight"
+    ].casefold()
+
+
+def test_plural_cartel_evidence_accepts_governed_identity():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=["Cartel crime drama"],
+            best_for=["Crime dramas"],
+            consider_first=[],
+        ),
+        signals=[
+            signal_row(
+                "audience_expectation",
+                "Cartel crime drama",
+                confidence="high",
+            )
+        ],
+    )
+
+    layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": "Agents pursue powerful drug cartels across several countries.",
+            },
+            genres=["Crime", "Drama"],
+        ),
+    )
+
+    assert layer["display"]["profile"]["identity"][0] == "Cartel crime drama"
+
+
+def test_selected_identity_fragment_is_removed_from_all_public_profile_fields():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            chips=[
+                "Investigation-led mystery",
+                "Investigation-led",
+                "Conspiracy",
+            ],
+            best_for=["Investigation-led", "Mystery viewers"],
+            consider_first=["Investigation-led"],
+        ),
+        signals=[
+            signal_row(
+                "audience_expectation",
+                "Investigation-led mystery",
+                confidence="high",
+            ),
+            signal_row("topic_theme", "Investigation-led", confidence="high"),
+            signal_row("topic_theme", "Conspiracy", confidence="high"),
+        ],
+    )
+
+    layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={
+                "type": "series",
+                "overview": "Two agents investigate unexplained cases and a government conspiracy.",
+            },
+            genres=["Mystery", "Drama"],
+        ),
+    )
+
+    profile = layer["display"]["profile"]
+    assert profile["identity"][0] == "Investigation-led mystery"
+    assert "Conspiracy thriller" not in profile["identity"]
+    assert "Investigation-led" not in profile["themes"]
+    assert "Conspiracy" in profile["themes"]
+    assert "Investigation-led" not in layer["watch_profile"]["chips"]
+    assert "Investigation-led" not in layer["watch_profile"]["best_for"]
+    assert "Investigation-led" not in layer["watch_profile"]["consider_first"]
+    assert all(
+        "with investigation-led" not in reason.casefold()
+        for reason in layer["decision_support"]["reasons"]
+    )
 
 
 def test_decision_display_prefers_action_crime_investigation_over_assassin_story():
@@ -1043,6 +1463,32 @@ def test_decision_display_adds_space_survival_themes_and_specific_caution():
     ].lower()
 
 
+def test_documentary_war_context_never_becomes_war_drama():
+    db = FakeDecisionDb(
+        guidance=guidance_row(
+            watch_feel="A documentary.",
+            chips=["Documentary"],
+            best_for=["Documentary viewers"],
+            consider_first=[],
+        ),
+        signals=[signal_row("audience_expectation", "Documentary")],
+    )
+
+    decision_layer = get_content_decision_layer(
+        db,
+        1,
+        display_context=display_context(
+            content={"type": "movie", "overview": None},
+            genres=["Documentary", "War"],
+            ratings={"unified_score": None, "scoring_source_count": 0, "sources": []},
+        ),
+    )
+
+    insight = decision_layer["display"]["primary_insight"].casefold()
+    assert "war documentary" in insight
+    assert "war drama" not in insight
+
+
 def test_decision_display_adds_heist_and_spy_theme_fallbacks():
     heist_db = FakeDecisionDb(
         guidance=guidance_row(
@@ -1259,3 +1705,188 @@ def test_decision_layer_does_not_expose_technical_fields_by_default():
     assert "tmdb_keywords" not in public_text
     assert "confidence" not in public_text
     assert "provider" not in public_text
+
+
+def test_insight_plan_is_deterministic_and_records_governed_evidence():
+    from app.services.source_signal_service import build_insight_plan
+
+    profile = {
+        "identity": ["Workplace comedy"],
+        "themes": ["Human cost"],
+        "feel": ["Light"],
+        "pace": None,
+    }
+    signals = [
+        signal_row("audience_expectation", "Workplace comedy"),
+        signal_row("tone", "Light"),
+    ]
+    context = {
+        "content": {
+            "type": "series",
+            "overview": (
+                "A film studio executive tries to balance creative ambition "
+                "with pressure inside the studio."
+            ),
+        },
+        "genres": ["Comedy"],
+    }
+
+    first = build_insight_plan(profile, guidance_row(), signals, context).as_dict()
+    second = build_insight_plan(profile, guidance_row(), signals, context).as_dict()
+
+    assert first == second
+    assert first["primary_identity"]["source"].startswith("source_signal:")
+    assert first["primary_differentiator"]["source"] == "overview_rule"
+    assert "studio_workplace" in first["primary_differentiator"]["evidence"]
+    assert all(
+        component.get("text") != "the human cost"
+        for component in (
+            first["primary_differentiator"],
+            first["secondary_differentiator"] or {},
+        )
+    )
+
+
+def test_formatter_rejects_fallback_theme_without_semantic_evidence():
+    from app.services.source_signal_service import build_decision_display
+
+    display = build_decision_display(
+        {
+            **guidance_row(),
+            "watch_feel": "A warm workplace comedy.",
+            "chips": ["Workplace comedy", "Human cost", "Warm"],
+        },
+        [
+            signal_row("audience_expectation", "Workplace comedy"),
+            signal_row("mood", "Warm"),
+        ],
+        display_context={"content": {"type": "series"}, "genres": ["Comedy"]},
+        include_insight_plan=True,
+    )
+
+    assert "human cost" not in display["primary_insight"].lower()
+    assert display["insight_plan"]["validation_errors"] == []
+
+
+def test_formatter_deduplicates_concert_identity_and_live_performance():
+    from app.services.source_signal_service import build_decision_display
+
+    display = build_decision_display(
+        guidance_row(
+            watch_feel="An energetic concert film about a live performance.",
+            chips=["Concert film", "Live music performance", "Energetic"],
+        ),
+        [
+            signal_row("audience_expectation", "Concert film"),
+            signal_row("topic_theme", "Live music performance"),
+            signal_row("mood", "Energetic"),
+        ],
+        display_context={
+            "content": {
+                "type": "movie",
+                "overview": "A concert captured during a live stage performance.",
+            },
+            "genres": ["Documentary", "Music"],
+        },
+        include_insight_plan=True,
+    )
+
+    primary = display["primary_insight"].lower()
+    assert "concert film" in primary
+    assert primary.count("live performance") <= 1
+    assert display["insight_plan"]["validation_errors"] == []
+
+
+def test_formatter_handles_article_and_punctuation_for_character_drama():
+    from app.services.source_signal_service import build_decision_display
+
+    display = build_decision_display(
+        guidance_row(
+            watch_feel="An emotional character drama about family relationships.",
+            chips=["Emotional character drama", "Family relationship", "Emotional"],
+        ),
+        [
+            signal_row("audience_expectation", "Emotional character drama"),
+            signal_row("topic_theme", "Family relationship"),
+            signal_row("mood", "Emotional"),
+        ],
+        display_context={"content": {"type": "movie"}, "genres": ["Drama"]},
+    )
+
+    primary = display["primary_insight"]
+    assert primary.startswith("An emotional character drama")
+    assert ", and" not in primary
+    assert primary.endswith(".")
+
+
+def test_formatter_known_examples_use_specific_non_repetitive_copy():
+    from app.services.source_signal_service import build_decision_display
+
+    examples = [
+        (
+            "Backrooms",
+            ["Body-horror satire"],
+            ["Body transformation", "Creature threat"],
+            ["Foreboding"],
+            ["Horror"],
+            "A woman enters a shifting maze where a creature threat closes in.",
+            ("body-horror satire", "body transformation", "creature threat"),
+        ),
+        (
+            "Materialists",
+            ["Romantic drama"],
+            ["Class divide", "Romantic connection"],
+            ["Serious"],
+            ["Drama", "Romance"],
+            "A matchmaker weighs modern matchmaking against class and status.",
+            ("romantic drama", "matchmaking", "class"),
+        ),
+        (
+            "Sentimental Value",
+            ["Emotional character drama"],
+            ["Family conflict", "Family relationship"],
+            ["Emotional"],
+            ["Drama"],
+            "An estranged family confronts a fractured family relationship.",
+            ("character drama", "family"),
+        ),
+        (
+            "Sinners",
+            ["Music-driven story", "Supernatural horror"],
+            ["Social critique", "Supernatural story"],
+            ["Surreal"],
+            ["Action", "Horror", "Thriller"],
+            "Music and supernatural danger expose social inequality.",
+            ("music-driven horror", "social critique"),
+        ),
+    ]
+
+    for _title, identities, themes, feel, genres, overview, expected in examples:
+        signals = [
+            *[
+                signal_row("audience_expectation", label)
+                for label in identities
+            ],
+            *[signal_row("topic_theme", label) for label in themes],
+            *[signal_row("mood", label) for label in feel],
+        ]
+        display = build_decision_display(
+            guidance_row(
+                watch_feel=f"A {identities[0].lower()}.",
+                chips=identities + themes + feel,
+            ),
+            signals,
+            display_context={
+                "content": {"type": "movie", "overview": overview},
+                "genres": genres,
+            },
+            include_insight_plan=True,
+        )
+        primary = display["primary_insight"].lower()
+
+        assert all(term in primary for term in expected), (
+            f"{_title}: expected {expected!r} in {primary!r}"
+        )
+        assert "built around" not in primary
+        assert ", and" not in primary
+        assert display["insight_plan"]["validation_errors"] == []

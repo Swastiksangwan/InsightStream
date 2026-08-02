@@ -1,5 +1,7 @@
 from datetime import date, datetime
 
+from app.services import decision_insight_formatter
+
 
 UNSUPPORTED_MARKETING_PHRASES = (
     "must-watch",
@@ -202,6 +204,7 @@ def rating_context(ratings):
             "score": None,
             "strength": None,
             "headline_phrase": None,
+            "label": "Ratings",
             "signal": None,
             "summary_phrase": None,
         }
@@ -218,18 +221,23 @@ def rating_context(ratings):
         f"{'' if scoring_source_count == 1 else 's'}"
     )
 
+    provenance = decision_insight_formatter.rating_source_provenance(ratings or {})
+    label = "Audience" if provenance["audience_only"] else "Ratings"
+    modifier = decision_insight_formatter.audience_modifier({"ratings": ratings or {}})
+
     if score >= 80:
         strength = "Strong"
-        headline_phrase = "strong audience backing"
     elif score >= 70:
         strength = "Positive"
-        headline_phrase = "positive audience backing"
     elif score >= 60:
         strength = "Mixed-to-positive"
-        headline_phrase = "mixed-to-positive audience signal"
     else:
         strength = "Moderate"
-        headline_phrase = "moderate rating signal"
+    headline_phrase = (
+        modifier.text
+        if modifier
+        else f"{strength.casefold()} rating signal"
+    )
 
     signal = f"{strength} · {score}/100 from {source_name}"
 
@@ -237,6 +245,7 @@ def rating_context(ratings):
         "score": score,
         "strength": strength,
         "headline_phrase": headline_phrase,
+        "label": label,
         "signal": signal,
         "summary_phrase": lower_first(headline_phrase),
     }
@@ -751,7 +760,7 @@ def build_insight_summary(content_detail: dict) -> dict:
         add_generated_from(generated_from, "watch_profile")
 
     if rating["signal"]:
-        add_signal(key_signals, "Audience", rating["signal"])
+        add_signal(key_signals, rating["label"], rating["signal"])
         add_generated_from(generated_from, "ratings")
 
     if availability:

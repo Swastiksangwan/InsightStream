@@ -1333,7 +1333,7 @@ def test_batch_6_display_review_overrides_are_specific_and_remove_generic_drama(
             "Stop Making Sense",
             ["concert film", "energetic"],
             ["Documentary", "Music"],
-            ("concert film", "live music"),
+            ("concert film",),
         ),
         (
             "Train Dreams",
@@ -1386,7 +1386,7 @@ def test_batch_6_display_review_produces_specific_primary_insights(
     primary = display["primary_insight"].lower()
 
     assert all(term in primary for term in expected_primary_terms)
-    assert len(display["primary_insight"]) >= 28
+    assert len(display["primary_insight"]) >= 24
     assert display["profile"]["pace"] is None
 
 

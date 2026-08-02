@@ -753,10 +753,10 @@ Rules:
 
 Keywords can improve Insight Summary by making the quick take more specific and useful.
 
-Possible improvements:
+Possible improvements keep content identity and rating evidence separate:
 
-- `A slow-burn dystopian sci-fi story with strong audience backing.`
-- `A tense crime investigation with high audience confidence.`
+- primary insight: `A slow-burn dystopian sci-fi story about social control.`
+- rating support: `Strong audience backing from two scoring sources.`
 
 Better `best_for` chips:
 

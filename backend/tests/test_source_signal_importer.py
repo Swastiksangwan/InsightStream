@@ -192,6 +192,7 @@ def matching_existing_signal():
         "confidence": "medium",
         "source_names": ["tmdb_keywords"],
         "source_payload": {
+            "spoiler_safe": True,
             "mapping_version": "2026-07-02-v3.1",
             "override_version": "2026-07-02-v3.1",
             "preview_generator_version": "2026-07-02-v3.2.1",
@@ -229,6 +230,7 @@ def test_source_signal_importer_dry_run_does_not_write():
 
     assert plan.signals_to_insert == 2
     assert plan.guidance_to_insert == 1
+    assert all(record.source_payload["spoiler_safe"] is True for record in plan.signal_records)
     assert plan.db_write_performed is False
     assert conn.write_queries == []
 

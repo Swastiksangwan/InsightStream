@@ -3,6 +3,7 @@ import re
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.services import decision_insight_formatter
 
 GENERIC_REJECT_TERMS = (
     "jiohotstar",
@@ -171,35 +172,6 @@ DISPLAY_IDENTITY_KEYWORDS = (
     "thriller",
     "western",
 )
-
-DOMINANT_IDENTITY_LABELS = {
-    "action-crime investigation",
-    "action-crime investigation series",
-    "animated superhero drama",
-    "courtroom drama",
-    "cyberpunk action sci-fi",
-    "dark sci-fi anthology",
-    "emotional space sci-fi",
-    "hard-edged action series",
-    "historical crime drama",
-    "historical revenge epic",
-    "kitchen workplace drama",
-    "mythic superhero mystery",
-    "nature documentary",
-    "neo-noir crime thriller",
-    "political dark fantasy",
-    "political-action mystery",
-    "prison drama",
-    "psychological survival thriller",
-    "satirical sci-fi anthology",
-    "sci-fi heist",
-    "sci-fi mystery",
-    "serial-killer investigation",
-    "space survival drama",
-    "supernatural superhero adventure",
-    "tech dystopia anthology",
-    "war drama",
-}
 
 DISPLAY_IDENTITY_LIKE_THEME_TERMS = (
     "action",
@@ -901,17 +873,31 @@ def prioritize_chips(stored_chips, signals, limit=5):
 
 
 def public_signal_rows(rows):
-    signals = []
-    for row in rows:
-        signals.append(
-            {
-                "dimension": row["dimension"],
-                "value": row["value"],
-                "label": row["label"],
-                "confidence": row["confidence"],
-            }
+    return [
+        {
+            "dimension": signal["dimension"],
+            "value": signal["value"],
+            "label": signal["label"],
+            "confidence": signal["confidence"],
+        }
+        for signal in decision_insight_formatter.safe_signals(
+            runtime_signal_rows(rows)
         )
-    return signals
+    ]
+
+
+def runtime_signal_rows(rows):
+    return [
+        {
+            "dimension": row["dimension"],
+            "value": row["value"],
+            "label": row["label"],
+            "confidence": row["confidence"],
+            "spoiler_safe": row.get("spoiler_safe") is not False,
+            "source_names": json_list(row.get("source_names")),
+        }
+        for row in rows
+    ]
 
 
 def fetch_watch_guidance(db: Session, content_id: int):
@@ -942,7 +928,13 @@ def fetch_active_source_signals(db: Session, content_id: int):
             dimension,
             value,
             label,
-            confidence
+            confidence,
+            source_names,
+            CASE
+                WHEN source_payload ? 'spoiler_safe'
+                    THEN source_payload ->> 'spoiler_safe' = 'true'
+                ELSE TRUE
+            END AS spoiler_safe
         FROM content_source_signals
         WHERE content_id = :content_id
           AND is_active = TRUE
@@ -961,28 +953,6 @@ def fetch_active_source_signals(db: Session, content_id: int):
     """)
     rows = db.execute(query, {"content_id": content_id}).mappings().all()
     return [dict(row) for row in rows]
-
-
-def simplify_watch_feel_for_headline(watch_feel):
-    if not has_text(watch_feel):
-        return None
-
-    phrase = watch_feel.strip().rstrip(".")
-    lower_phrase = phrase.lower()
-    for article in ("a ", "an "):
-        if lower_phrase.startswith(article):
-            phrase = phrase[len(article):]
-            lower_phrase = phrase.lower()
-            break
-
-    for marker in (" built around ", " about ", " with "):
-        if marker in lower_phrase:
-            marker_index = lower_phrase.index(marker)
-            if marker_index >= 12:
-                phrase = phrase[:marker_index].strip()
-                break
-
-    return phrase[:1].lower() + phrase[1:] if phrase else None
 
 
 def values_by_dimension(signals):
@@ -1048,10 +1018,10 @@ def pacing_reason(pacing, identity, watch_feel):
     return f"{sentence_case(pacing)} structure helps set the viewing rhythm."
 
 
-def build_decision_headline(watch_profile):
-    identity = simplify_watch_feel_for_headline(watch_profile.get("watch_feel"))
-    if identity:
-        return f"Best suited for viewers looking for {article_for(identity)} {identity}."
+def build_decision_headline(insight_plan, watch_profile):
+    headline = decision_insight_formatter.render_decision_headline(insight_plan)
+    if headline:
+        return headline
 
     best_for = watch_profile.get("best_for") or []
     if best_for:
@@ -1177,6 +1147,12 @@ def build_watch_profile(guidance, signals=None):
             json_list(guidance.get("consider_first")),
             limit=2,
         ),
+        "curated_override_applied": bool(
+            guidance.get("curated_override_applied")
+        ),
+        "metadata_fallback_applied": bool(
+            guidance.get("metadata_fallback_applied")
+        ),
     }
 
 
@@ -1260,205 +1236,153 @@ def is_weak_identity_label(value):
 
 
 def infer_context_identity(watch_profile, signals, display_context=None):
-    text_value = combined_display_text(
-        watch_profile,
-        signals,
-        display_context=display_context,
+    signal_text = " ".join(
+        f"{signal.get('value') or ''} {signal.get('label') or ''}".lower()
+        for signal in signals or []
+        if has_text(signal.get("label")) or has_text(signal.get("value"))
     )
-
-    has_scifi = has_scifi_context(display_context, text_value)
-    has_fantasy = has_genre_context(display_context, "fantasy") or "fantasy" in text_value
-    has_animation = has_animation_context(display_context, text_value)
-    has_action = has_genre_context(display_context, "action") or "action" in text_value
-    has_crime = has_genre_context(display_context, "crime") or "crime" in text_value
+    overview = content_context_text(display_context)
+    evidence_text = f"{signal_text} {overview}"
+    has_scifi = has_genre_context(display_context, "sci-fi", "science fiction")
+    has_fantasy = has_genre_context(display_context, "fantasy")
+    has_animation = has_genre_context(display_context, "animation")
+    has_action = has_genre_context(display_context, "action")
+    has_crime = has_genre_context(display_context, "crime")
     has_history = has_genre_context(display_context, "history", "historical")
-    has_war = has_genre_context(display_context, "war") or contains_any(
-        text_value,
-        (
-            "world war",
-            "war drama",
-            "war story",
-            "soldier",
-            "holocaust",
-            "nazi",
-            "occupation",
-            "battle",
-        ),
-    )
     has_documentary = has_genre_context(display_context, "documentary")
-    has_mystery = (
-        has_genre_context(display_context, "mystery") or "mystery" in text_value
-    )
-    has_thriller = has_genre_context(display_context, "thriller") or "thriller" in text_value
-    has_horror = has_genre_context(display_context, "horror") or "horror" in text_value
+    has_mystery = has_genre_context(display_context, "mystery")
+    has_thriller = has_genre_context(display_context, "thriller")
+    has_horror = has_genre_context(display_context, "horror")
+    has_war = has_genre_context(display_context, "war", "war & politics")
     is_series = content_type_context(display_context) == "series"
 
-    if contains_any(text_value, ("prison", "inmate", "warden")):
+    if has_documentary:
+        if has_genre_context(display_context, "nature"):
+            return "Nature documentary"
+        if has_war:
+            return "War documentary"
+        if has_history:
+            return "History documentary"
+        if has_genre_context(display_context, "music"):
+            return "Music documentary"
+        return "Documentary"
+
+    prison_markers = sum(
+        marker in overview
+        for marker in ("prison", "inmate", "warden", "long sentence")
+    )
+    if prison_markers >= 2 and has_genre_context(display_context, "drama", "crime"):
         return "Prison drama"
 
-    if has_scifi and "heist" in text_value:
+    if has_scifi and contains_any(
+        evidence_text,
+        ("sci-fi heist", "science fiction heist", "heist story"),
+    ):
         return "Sci-fi heist"
 
-    if has_scifi and "space" in text_value and any(
-        term in text_value
-        for term in ("survival", "family", "time", "humanity", "future")
-    ):
-        if "emotional" in text_value or "family" in text_value:
-            return "Emotional space sci-fi"
-        return "Space survival drama"
-
-    if has_scifi and contains_any(
-        text_value,
-        ("anthology", "technology", "innovation", "society", "surveillance"),
-    ):
-        if contains_any(text_value, ("satire", "satirical", "darkly funny")):
+    explicit_anthology = contains_any(evidence_text, ("anthology", "anthology series"))
+    if has_scifi and explicit_anthology:
+        if contains_any(evidence_text, ("satire", "satirical", "darkly funny")):
             return "Satirical sci-fi anthology"
-        if "anthology" in text_value:
-            return "Dark sci-fi anthology"
-        if contains_any(text_value, ("dystopia", "dystopian")) and contains_any(
-            text_value,
-            ("technology", "innovation", "society", "surveillance"),
-        ):
+        if contains_any(evidence_text, ("dystopia", "dystopian", "technology", "surveillance")):
             return "Tech dystopia anthology"
+        return "Dark sci-fi anthology"
 
-    if has_scifi and has_mystery and contains_any(
-        text_value,
-        ("unexplained", "fbi", "government secrecy", "belief", "paranormal"),
-    ):
-        return "Sci-fi mystery"
-
-    if has_action and (has_thriller or has_mystery) and contains_any(
-        text_value,
-        ("federal", "agent", "surveillance", "political", "government"),
-    ):
-        return "Political-action mystery"
-
-    if has_history and has_crime and contains_any(
-        text_value,
-        (
-            "institutional corruption",
-            "exploitation",
-            "federal",
-            "murder",
-            "investigation",
-            "corruption",
-        ),
-    ):
-        return "Historical crime drama"
-
-    if (
-        has_crime
-        and (has_thriller or has_mystery)
-        and contains_any(
-            text_value,
-            ("serial killer", "serial-killer", "homicide", "detective", "murder", "sins"),
-        )
-    ):
-        if contains_any(text_value, ("neo noir", "neo-noir", "detective", "sins")):
+    explicit_serial_killer = decision_insight_formatter.evidence_family_matches(
+        overview,
+        "serial_killer",
+    )
+    if has_crime and (has_thriller or has_mystery) and explicit_serial_killer:
+        if contains_any(evidence_text, ("neo noir", "neo-noir")):
             return "Neo-noir crime thriller"
         return "Serial-killer investigation"
+
+    compatible_spy_genre = any(
+        (
+            has_genre_context(display_context, "drama"),
+            has_thriller,
+            has_crime,
+            has_action,
+            has_war,
+        )
+    )
+    if compatible_spy_genre and decision_insight_formatter.evidence_family_matches(
+        overview,
+        "spy",
+    ):
+        return "Spy thriller" if has_thriller else "Spy story"
+
+    explicit_physical_survival = contains_any(
+        evidence_text,
+        (
+            "struggle for survival",
+            "survival story",
+            "tries to survive",
+            "fight to survive",
+            "stranded",
+            "wilderness survival",
+            "plane crash",
+        ),
+    )
+    if (has_thriller or has_horror) and explicit_physical_survival:
+        return "Psychological survival thriller"
 
     if has_war:
         return "War drama"
 
+    if has_history and has_crime and contains_any(
+        evidence_text,
+        ("institutional corruption", "federal investigation", "historical crime"),
+    ):
+        return "Historical crime drama"
+
     if has_action and has_crime and contains_any(
-        text_value,
-        (
-            "police",
-            "military",
-            "military police",
-            "investigator",
-            "ex-military",
-            "drifter",
-            "lone investigator",
-            "corruption",
-            "conspiracy",
-        ),
+        evidence_text,
+        ("police investigation", "federal investigation", "lone investigator"),
     ):
-        return (
-            "Action-crime investigation series"
-            if is_series
-            else "Action-crime investigation"
-        )
+        return "Action-crime investigation series" if is_series else "Action-crime investigation"
 
-    if contains_any(text_value, ("psychological thriller", "psychological")) and (
-        contains_any(
-            text_value,
-            ("survival", "trauma", "wilderness", "group collapse", "past consequences"),
-        )
-        or has_horror
-        or has_mystery
+    if has_scifi and contains_any(evidence_text, ("cyberpunk", "cyber-punk")):
+        return "Cyberpunk action sci-fi"
+
+    explicit_superhero = contains_any(
+        evidence_text,
+        ("superhero story", "superhero team story", "comic-book roots", "comic book"),
+    )
+    if has_animation and explicit_superhero:
+        return "Animated superhero drama"
+    if has_fantasy and explicit_superhero and contains_any(
+        evidence_text, ("mythology", "gods", "mythic")
     ):
-        return "Psychological survival thriller"
+        return "Mythic superhero mystery" if has_mystery else "Supernatural superhero adventure"
 
-    if (has_horror or has_mystery or has_thriller) and contains_any(
-        text_value,
-        ("survival", "plane crash", "wilderness", "trauma", "group collapse"),
+    if has_fantasy and contains_any(
+        evidence_text,
+        ("political power", "power struggle", "court intrigue", "royal power"),
     ):
-        return "Psychological survival thriller"
+        return "Political dark fantasy"
+    if has_fantasy and "dark fantasy" in evidence_text:
+        return "Dark fantasy"
 
-    if "superhero" in text_value and contains_any(
-        text_value,
-        (
-            "egypt",
-            "egyptian",
-            "gods",
-            "myth",
-            "mythology",
-            "identity",
-            "identities",
-            "blackout",
-        ),
-    ):
-        if has_mystery or contains_any(text_value, ("mystery", "identity", "blackout")):
-            return "Mythic superhero mystery"
-        return "Supernatural superhero adventure"
-
-    if contains_any(text_value, ("coming-of-age", "coming of age")) and contains_any(
-        text_value,
-        ("memory", "emotional", "thoughtful", "intimate"),
+    if contains_any(evidence_text, ("coming-of-age", "coming of age")) and contains_any(
+        evidence_text, ("memory", "emotional", "thoughtful", "intimate")
     ):
         return "Intimate coming-of-age drama"
 
-    if has_scifi and "cyberpunk" in text_value:
-        return "Cyberpunk action sci-fi"
-    if has_scifi and any(term in text_value for term in ("reality", "control")) and (
-        "action" in text_value or "martial" in text_value
-    ):
-        return "Cyberpunk action sci-fi"
-    if has_fantasy and any(
-        term in text_value
-        for term in ("political", "power struggle", "succession", "court intrigue")
-    ):
-        return "Political dark fantasy"
-    if "kitchen" in text_value and "workplace" in text_value:
+    if "kitchen workplace" in evidence_text:
         return "Kitchen workplace drama"
-    if any(term in text_value for term in ("courtroom", "legal")):
-        if "thriller" in text_value:
-            return "Legal thriller"
-        return "Courtroom drama"
-    if has_animation and "superhero" in text_value:
-        return "Animated superhero drama"
-    if has_documentary and any(
-        term in text_value for term in ("nature", "wildlife", "planet")
-    ):
-        return "Nature documentary"
-    if has_documentary:
-        return "Documentary"
-
+    if contains_any(evidence_text, ("courtroom drama", "legal drama", "legal thriller")):
+        return "Legal thriller" if has_thriller else "Courtroom drama"
+    if has_scifi and has_mystery:
+        return "Sci-fi mystery"
     if has_scifi:
-        return (
-            "Sci-fi drama"
-            if has_genre_context(display_context, "drama")
-            else "Sci-fi story"
-        )
+        return "Sci-fi drama" if has_genre_context(display_context, "drama") else "Sci-fi story"
     if has_crime:
         return "Crime drama"
     if has_history:
         return "Historical drama"
     if has_animation and has_genre_context(display_context, "adventure"):
         return "Animated adventure"
-
     return None
 
 
@@ -2339,24 +2263,6 @@ def join_short_list(values):
     return f"{', '.join(cleaned[:-1])}, and {cleaned[-1]}"
 
 
-def strong_audience_backing_phrase(display_context):
-    ratings = (display_context or {}).get("ratings") or {}
-    score = ratings.get("unified_score")
-    scoring_count = ratings.get("scoring_source_count") or 0
-
-    if score is None or scoring_count < 2:
-        return None
-
-    if score >= 90:
-        return "exceptional audience backing"
-    if score >= 80:
-        return "strong audience backing"
-    if score >= 70:
-        return "positive audience backing"
-
-    return None
-
-
 def theme_clause_for_identity(identity_phrase, themes):
     theme_text = join_short_list(themes[:3])
     if not theme_text:
@@ -2455,71 +2361,6 @@ def normalized_feel_adjective(value):
     return lower_first(normalized) if has_text(normalized) else None
 
 
-def build_primary_insight(display_profile, watch_profile, display_context=None):
-    identity = (display_profile.get("identity") or [None])[0]
-    watch_feel = watch_profile.get("watch_feel")
-
-    if not has_text(identity):
-        simplified = simplify_watch_feel_for_headline(watch_feel)
-        identity = sentence_case(simplified) if simplified else None
-
-    if not has_text(identity):
-        return None
-
-    if is_weak_identity_label(identity):
-        fallback_identity = infer_context_identity(
-            watch_profile,
-            [],
-            display_context=display_context,
-        )
-        if fallback_identity:
-            identity = fallback_identity
-
-    identity_phrase = lower_first(normalize_display_phrase(identity))
-    identity_starts_with_feel = any(
-        identity_phrase.startswith(feel_label)
-        for feel_label in DISPLAY_FEEL_LABELS
-    )
-    raw_feel = next(
-        (
-            label
-            for label in display_profile.get("feel") or []
-            if has_text(label)
-            and not identity_starts_with_feel
-            and normalized_feel_adjective(label) not in identity_phrase.lower()
-        ),
-        None,
-    )
-    feel = normalized_feel_adjective(raw_feel)
-    feel_prefix = f"{lower_first(feel)} " if feel else ""
-    subject = f"{feel_prefix}{identity_phrase}".strip()
-    sentence = f"{article_for(subject).capitalize()} {subject}"
-
-    themes = primary_theme_labels(display_profile.get("themes") or [])
-    if themes:
-        clause = theme_clause_for_identity(identity_phrase, themes)
-        if clause:
-            sentence += f" {clause}"
-    elif display_profile.get("pace"):
-        sentence += f" with {lower_first(display_profile['pace'])} structure"
-
-    audience_phrase = strong_audience_backing_phrase(display_context)
-    if audience_phrase and len(sentence) <= 126:
-        sentence += f", with {audience_phrase}"
-
-    sentence = ensure_sentence(sentence)
-    if len(sentence) > 180:
-        sentence = ensure_sentence(sentence[:177].rsplit(" ", 1)[0])
-
-    if sanitize_public_display_text(sentence):
-        return sentence
-
-    fallback = f"{article_for(identity_phrase).capitalize()} {identity_phrase}"
-    if display_profile.get("pace"):
-        fallback += f" with {lower_first(display_profile['pace'])} structure"
-    return ensure_sentence(fallback) if sanitize_public_display_text(fallback) else None
-
-
 def format_scoring_source_count(count):
     return f"{count} scoring source{'s' if count != 1 else ''}"
 
@@ -2530,14 +2371,16 @@ def build_audience_fact(display_context):
     if score is None:
         return None
 
-    scoring_count = ratings.get("scoring_source_count") or 0
+    provenance = decision_insight_formatter.rating_source_provenance(ratings)
+    scoring_count = provenance["source_count"]
+    label = "Audience" if provenance["audience_only"] else "Ratings"
     if scoring_count > 0:
         return {
-            "label": "Audience",
+            "label": label,
             "value": f"{score}/100 from {format_scoring_source_count(scoring_count)}",
         }
 
-    return {"label": "Audience", "value": f"{score}/100"}
+    return {"label": label, "value": f"{score}/100"}
 
 
 def availability_kind(platforms):
@@ -2677,21 +2520,244 @@ def build_supporting_facts(display_context):
     return facts[:4]
 
 
-def build_decision_display(watch_profile, signals, display_context=None):
+def filter_rejected_public_labels(values, rejected_families, limit=None):
+    filtered = [
+        value
+        for value in values or []
+        if not any(
+            decision_insight_formatter.text_uses_concept_family(value, family)
+            for family in rejected_families
+        )
+    ]
+    return filtered[:limit] if limit is not None else filtered
+
+
+def filter_rejected_public_signals(signals, rejected_families):
+    return [
+        signal
+        for signal in signals or []
+        if not decision_insight_formatter.signal_uses_rejected_concept(
+            signal,
+            rejected_families,
+        )
+    ]
+
+
+def filter_rejected_public_profile(profile, rejected_families):
+    if not rejected_families:
+        return profile
+    filtered = dict(profile or {})
+    for field, limit in (
+        ("identity", 3),
+        ("themes", 3),
+        ("feel", 2),
+        ("best_for", 2),
+        ("consider_first", 1),
+    ):
+        filtered[field] = filter_rejected_public_labels(
+            filtered.get(field) or [],
+            rejected_families,
+            limit=limit,
+        )
+    pace = filtered.get("pace")
+    if pace and any(
+        decision_insight_formatter.text_uses_concept_family(pace, family)
+        for family in rejected_families
+    ):
+        filtered["pace"] = None
+    return filtered
+
+
+def filter_primary_identity_overlaps(profile, primary_identity):
+    """Keep the selected identity and remove only weaker family fragments."""
+
+    if not primary_identity:
+        return profile
+    family = decision_insight_formatter.insight_concept_family(primary_identity)
+    if not family:
+        return profile
+    filtered = dict(profile or {})
+    primary_normalized = decision_insight_formatter.insight_normalized(
+        primary_identity
+    )
+
+    def weaker_overlap(label):
+        normalized = decision_insight_formatter.insight_normalized(label)
+        return bool(
+            normalized
+            and normalized != primary_normalized
+            and decision_insight_formatter.text_uses_concept_family(label, family)
+            and decision_insight_formatter.phrase_present(
+                primary_normalized,
+                normalized,
+            )
+        )
+
+    identities = []
+    for label in filtered.get("identity") or []:
+        if decision_insight_formatter.insight_normalized(label) == primary_normalized:
+            if identities:
+                continue
+            identities.append(primary_identity)
+            continue
+        if weaker_overlap(label):
+            continue
+        identities.append(label)
+    filtered["identity"] = unique_preserve_order(
+        [primary_identity, *identities]
+    )[:3]
+    for field, limit in (
+        ("themes", 3),
+        ("feel", 2),
+        ("best_for", 2),
+        ("consider_first", 1),
+    ):
+        filtered[field] = [
+            label
+            for label in filtered.get(field) or []
+            if not weaker_overlap(label)
+        ][:limit]
+    pace = filtered.get("pace")
+    if pace and weaker_overlap(pace):
+        filtered["pace"] = None
+    return filtered
+
+
+def filter_primary_identity_fragments(values, primary_identity, limit=None):
+    if not primary_identity:
+        return list(values or [])[:limit] if limit is not None else list(values or [])
+    primary_normalized = decision_insight_formatter.insight_normalized(
+        primary_identity
+    )
+    family = decision_insight_formatter.insight_concept_family(primary_identity)
+    filtered = [
+        value
+        for value in values or []
+        if not (
+            decision_insight_formatter.insight_normalized(value)
+            != primary_normalized
+            and decision_insight_formatter.text_uses_concept_family(value, family)
+            and decision_insight_formatter.phrase_present(
+                primary_normalized,
+                decision_insight_formatter.insight_normalized(value),
+            )
+        )
+    ]
+    return filtered[:limit] if limit is not None else filtered
+
+
+def filter_primary_identity_signal_fragments(signals, primary_identity):
+    if not primary_identity:
+        return list(signals or [])
+    kept_labels = set(
+        filter_primary_identity_fragments(
+            [signal.get("label") or signal.get("value") for signal in signals or []],
+            primary_identity,
+        )
+    )
+    return [
+        signal
+        for signal in signals or []
+        if (signal.get("label") or signal.get("value")) in kept_labels
+    ]
+
+
+def selected_topic_differentiator_labels(insight_plan):
+    labels = []
+    for component in (
+        insight_plan.primary_differentiator,
+        insight_plan.secondary_differentiator,
+    ):
+        if not component or not component.source.startswith("source_signal:topic_theme:"):
+            continue
+        prefix, separator, label = component.evidence.partition(":")
+        if prefix == "topic_theme" and separator and has_text(label):
+            labels.append(label)
+    return unique_preserve_order(labels)
+
+
+def filter_secondary_identities_overlapping_themes(profile):
+    filtered = dict(profile or {})
+    identities = list(filtered.get("identity") or [])
+    themes = list(filtered.get("themes") or [])
+    if len(identities) < 2 or not themes:
+        return filtered
+    theme_families = {
+        decision_insight_formatter.insight_concept_family(theme)
+        for theme in themes
+        if has_text(theme)
+    }
+    filtered["identity"] = [
+        identities[0],
+        *(
+            identity
+            for identity in identities[1:]
+            if decision_insight_formatter.insight_concept_family(identity)
+            not in theme_families
+        ),
+    ][:3]
+    return filtered
+
+
+def _build_decision_display_and_plan(
+    watch_profile,
+    signals,
+    display_context=None,
+):
+    formatter_watch_profile = dict(watch_profile or {})
+    formatter_watch_profile["watch_feel"] = None
+    safe_runtime_signals = decision_insight_formatter.safe_signals(signals)
     profile = build_display_profile(
+        formatter_watch_profile,
+        safe_runtime_signals,
+        display_context=display_context,
+    )
+    formatter_context = dict(display_context or {})
+    formatter_context["inferred_identity"] = infer_context_identity(
+        formatter_watch_profile,
+        safe_runtime_signals,
+        display_context=display_context,
+    )
+    plan = decision_insight_formatter.build_insight_plan(
+        profile,
+        formatter_watch_profile,
+        signals,
+        display_context=formatter_context,
+    )
+    rejected_families = (
+        decision_insight_formatter.rejected_source_signal_concept_families(plan)
+    )
+    profile = filter_rejected_public_profile(profile, rejected_families)
+    if plan.primary_identity:
+        profile = filter_primary_identity_overlaps(
+            profile,
+            plan.primary_identity.text,
+        )
+    if not profile.get("themes"):
+        profile["themes"] = selected_topic_differentiator_labels(plan)[:3]
+    profile = filter_secondary_identities_overlapping_themes(profile)
+    display = {
+        "primary_insight": decision_insight_formatter.render_insight_plan(plan),
+        "profile": profile,
+        "supporting_facts": build_supporting_facts(display_context),
+    }
+    return display, plan
+
+
+def build_decision_display(
+    watch_profile,
+    signals,
+    display_context=None,
+    include_insight_plan=False,
+):
+    display, plan = _build_decision_display_and_plan(
         watch_profile,
         signals,
         display_context=display_context,
     )
-    return {
-        "primary_insight": build_primary_insight(
-            profile,
-            watch_profile,
-            display_context,
-        ),
-        "profile": profile,
-        "supporting_facts": build_supporting_facts(display_context),
-    }
+    if include_insight_plan:
+        display["insight_plan"] = plan.as_dict()
+    return display
 
 
 def get_content_decision_layer(
@@ -2706,23 +2772,65 @@ def get_content_decision_layer(
     if not guidance and not signal_rows:
         return None
 
+    runtime_signals = runtime_signal_rows(signal_rows)
     public_signals = public_signal_rows(signal_rows)
-    watch_profile = build_watch_profile(guidance, public_signals)
-    decision_support = {
-        "headline": build_decision_headline(watch_profile),
-        "reasons": build_decision_reasons(watch_profile, public_signals),
-        "cautions": build_decision_cautions(watch_profile, public_signals),
-    }
-    display = build_decision_display(
-        watch_profile,
-        public_signals,
+    structured_watch_profile = build_watch_profile(guidance, public_signals)
+    display, insight_plan = _build_decision_display_and_plan(
+        structured_watch_profile,
+        runtime_signals,
         display_context=display_context,
     )
+    rejected_families = (
+        decision_insight_formatter.rejected_source_signal_concept_families(
+            insight_plan
+        )
+    )
+    compatible_public_signals = filter_primary_identity_signal_fragments(
+        filter_rejected_public_signals(
+            public_signals,
+            rejected_families,
+        ),
+        (
+            insight_plan.primary_identity.text
+            if insight_plan.primary_identity
+            else None
+        ),
+    )
+    watch_profile = dict(structured_watch_profile)
+    for field, limit in (
+        ("chips", 5),
+        ("best_for", 4),
+        ("consider_first", 2),
+    ):
+        watch_profile[field] = filter_primary_identity_fragments(
+            filter_rejected_public_labels(
+                watch_profile.get(field) or [],
+                rejected_families,
+            ),
+            (
+                insight_plan.primary_identity.text
+                if insight_plan.primary_identity
+                else None
+            ),
+            limit=limit,
+        )
+    watch_profile["watch_feel"] = display.get("primary_insight")
+    decision_support = {
+        "headline": build_decision_headline(insight_plan, watch_profile),
+        "reasons": build_decision_reasons(
+            watch_profile,
+            compatible_public_signals,
+        ),
+        "cautions": build_decision_cautions(
+            watch_profile,
+            compatible_public_signals,
+        ),
+    }
     signal_quality = {
         "storage_ready": bool(guidance.get("storage_ready")) if guidance else False,
         "frontend_ready": bool(guidance.get("frontend_ready")) if guidance else False,
         "has_watch_guidance": guidance is not None,
-        "has_source_signals": bool(signal_rows),
+        "has_source_signals": bool(public_signals),
     }
     decision_layer = {
         "watch_profile": watch_profile,
@@ -2740,6 +2848,15 @@ def get_content_decision_layer(
             "signal_sources": (
                 json_list(guidance.get("signal_sources")) if guidance else []
             ),
+            "insight_plan": insight_plan.as_dict(),
         }
 
     return decision_layer
+
+
+# Compatibility exports for callers that imported formatter helpers from this
+# service before Formatter v2 was split into its own pure module.
+build_insight_plan = decision_insight_formatter.build_insight_plan
+validate_insight_plan = decision_insight_formatter.validate_insight_plan
+render_insight_plan = decision_insight_formatter.render_insight_plan
+build_primary_insight = decision_insight_formatter.build_primary_insight
