@@ -571,6 +571,50 @@ def test_curated_identity_audit_uses_explicit_evaluation_state(
     ) is expects_issue
 
 
+def test_audit_flags_independently_stronger_compatible_identity_candidate():
+    module = load_audit_module()
+    display = clean_display(primary_insight="A tense investigation-led mystery.")
+    display["profile"]["identity"] = ["Investigation-led mystery"]
+    display["_insight_plan"] = {
+        "primary_identity": {
+            "text": "Investigation-led mystery",
+            "source": "source_signal:audience_expectation:investigation-led mystery",
+            "supported": True,
+            "trust_tier": 4,
+            "corroboration_sources": ["audience_expectation", "content_genre"],
+            "corroboration_count": 2,
+            "incidental_context": True,
+        },
+        "rejected_candidates": [
+            {
+                "candidate": "Heist caper",
+                "role": "primary_identity",
+                "reason": "lower_trust_or_specificity",
+                "source": "source_signal:audience_expectation:heist caper",
+                "trust_tier": 4,
+                "corroboration_sources": [
+                    "audience_expectation",
+                    "content_genre",
+                    "explicit_overview",
+                    "topic_theme",
+                ],
+                "corroboration_count": 4,
+                "explicit_premise_evidence": True,
+                "ranking_rationale": "lost on specificity",
+            }
+        ],
+        "validation_errors": [],
+    }
+
+    record = audit_record(module, display)
+
+    assert (
+        "PRIMARY_IDENTITY_STRONGER_CORROBORATED_CANDIDATE_AVAILABLE"
+        in issue_codes(record)
+    )
+    assert record["display_ready"] is False
+
+
 def test_catalog_targets_are_consumed_in_bounded_batches():
     module = load_audit_module()
 

@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 
 
-DECISION_INSIGHT_FORMATTER_VERSION = "2.0.1"
+DECISION_INSIGHT_FORMATTER_VERSION = "2.0.2"
 # Compatibility alias for older internal imports and serialized fixtures.
 INSIGHT_FORMATTER_VERSION = DECISION_INSIGHT_FORMATTER_VERSION
 
@@ -454,7 +454,18 @@ EVIDENCE_FAMILIES = {
         "intelligence agents",
         "intelligence service",
         "intelligence services",
+        "intelligence officer",
+        "intelligence officers",
+        "intelligence operative",
+        "intelligence operatives",
+        "soviet agent",
+        "soviet agents",
+        "sleeper agent",
+        "sleeper agents",
+        "posing as",
+        "living undercover",
         "espionage",
+        "kgb",
         "mi5",
         "mi6",
     ),
@@ -462,6 +473,78 @@ EVIDENCE_FAMILIES = {
 
 GOVERNED_IDENTITY_COPY_ROLES = {
     "aviation action",
+    "martial arts action",
+}
+
+# Preserve only governed acronym and proper-name forms. This registry is applied
+# at the final display-realization boundary rather than repeated in templates.
+GOVERNED_DISPLAY_CASING = (
+    ("world war ii", "World War II"),
+    ("wwii", "WWII"),
+    ("mi5", "MI5"),
+    ("mi6", "MI6"),
+    ("fbi", "FBI"),
+    ("cia", "CIA"),
+    ("kgb", "KGB"),
+    ("ai", "AI"),
+)
+
+IDENTITY_EVIDENCE_LABEL_FAMILIES = (
+    ("mythic_scifi", ("mythic sci fi", "mythic sci-fi")),
+    ("space_scifi", ("space sci fi", "space sci-fi", "space opera")),
+    ("superhero", ("superhero",)),
+    ("organized_crime", ("organized crime", "cartel")),
+    ("investigation", ("investigation", "investigative", "detective")),
+    ("creature", ("creature", "kaiju")),
+    ("fantasy", ("fantasy",)),
+    ("heist", ("heist", "caper")),
+    ("action", ("action", "martial arts")),
+    ("spy", ("spy", "espionage")),
+    ("war", ("war drama", "war story", "world war")),
+)
+
+IDENTITY_SIGNAL_CORROBORATION = {
+    "mythic_scifi": ("destiny", "mythology", "mythic", "prophecy"),
+    "space_scifi": ("space", "space opera", "space sci fi"),
+    "superhero": ("superhero", "superhuman powers", "heroic teamwork"),
+    "organized_crime": ("organized crime", "cartel", "crime world"),
+    "investigation": ("investigation", "detective", "federal investigation"),
+    "creature": ("creature", "kaiju", "monster"),
+    "fantasy": ("dark fantasy", "fairy tale", "magical world", "mythic fantasy"),
+    "heist": ("heist", "caper", "robbery"),
+    "action": ("action", "martial arts"),
+    "spy": ("spy", "espionage", "intelligence work", "undercover operation"),
+    "war": ("war", "world war"),
+}
+
+IDENTITY_GENRE_CORROBORATION = {
+    "mythic_scifi": {"sci fi", "science fiction"},
+    "space_scifi": {"sci fi", "science fiction"},
+    "superhero": {"action", "adventure", "animation"},
+    "organized_crime": {"crime"},
+    "investigation": {"crime", "mystery", "thriller"},
+    "creature": {"horror", "sci fi", "science fiction"},
+    "fantasy": {"fantasy"},
+    "heist": {"action", "comedy", "crime"},
+    "action": {"action"},
+    "spy": {"action", "crime", "drama", "thriller", "war", "war politics"},
+    "war": {"war", "war politics"},
+}
+
+INCIDENTAL_IDENTITY_FAMILIES = {
+    "creature",
+    "investigation",
+    "organized_crime",
+    "space_scifi",
+    "war",
+}
+
+INCIDENTAL_DIFFERENTIATOR_FAMILIES = {
+    "creature",
+    "investigation",
+    "organized_crime",
+    "prison",
+    "war_identity",
 }
 
 INSIGHT_CONTEXT_RULES = (
@@ -631,6 +714,11 @@ class InsightComponent:
     confidence: str | None = None
     trust_tier: int | None = None
     selection_rationale: str | None = None
+    corroboration_sources: tuple[str, ...] = ()
+    corroboration_count: int = 0
+    centrality_class: str | None = None
+    explicit_premise_evidence: bool = False
+    incidental_context: bool = False
 
 
 @dataclass(frozen=True)
@@ -641,6 +729,12 @@ class IdentityCandidate:
     source: str
     evidence: str
     position: int
+    corroboration_sources: tuple[str, ...] = ()
+    corroboration_count: int = 0
+    centrality_class: str = "uncorroborated"
+    explicit_premise_evidence: bool = False
+    incidental_context: bool = False
+    ranking_rationale: str | None = None
 
 
 @dataclass
@@ -690,11 +784,26 @@ def normalize_display_phrase(value: Any) -> str | None:
         normalized,
         flags=re.IGNORECASE,
     )
-    return normalized
+    return realize_display_casing(normalized)
+
+
+def realize_display_casing(value: str) -> str:
+    """Restore governed token casing without title-casing arbitrary prose."""
+
+    output = value
+    for source, replacement in GOVERNED_DISPLAY_CASING:
+        output = re.sub(
+            rf"(?<![A-Za-z0-9]){re.escape(source)}(?![A-Za-z0-9])",
+            replacement,
+            output,
+            flags=re.IGNORECASE,
+        )
+    return output
 
 
 def lower_first(value: str) -> str:
-    return value[:1].lower() + value[1:] if value else value
+    lowered = value[:1].lower() + value[1:] if value else value
+    return realize_display_casing(lowered)
 
 
 def sentence_case(value: str) -> str:
@@ -704,7 +813,7 @@ def sentence_case(value: str) -> str:
 def ensure_sentence(value: str | None) -> str | None:
     if not has_text(value):
         return value
-    value = value.strip()
+    value = realize_display_casing(value.strip())
     return value if value.endswith((".", "!", "?")) else f"{value}."
 
 
@@ -1219,6 +1328,188 @@ def inferred_identity_trust(
     return 5, "governed_inferred_identity"
 
 
+def identity_evidence_family(label: Any) -> str | None:
+    normalized = insight_normalized(label)
+    for family, markers in IDENTITY_EVIDENCE_LABEL_FAMILIES:
+        if any(phrase_present(normalized, marker) for marker in markers):
+            return family
+    return None
+
+
+def identity_has_explicit_premise(family: str | None, overview: str) -> bool:
+    if not family or not overview:
+        return False
+    if family == "spy":
+        return evidence_family_matches(overview, "spy")
+    phrases = {
+        "mythic_scifi": ("prophecy", "destiny", "messiah", "mythic"),
+        "space_scifi": ("in space", "cosmic", "intergalactic", "spacecraft"),
+        "superhero": ("superhero", "super hero", "avengers", "one hero"),
+        "organized_crime": ("organized crime", "criminal organization", "cartel"),
+        "investigation": (
+            "investigates",
+            "investigation",
+            "detective",
+            "solve the case",
+            "hunt a serial killer",
+        ),
+        "creature": ("creature", "kaiju", "monster"),
+        "fantasy": (
+            "fantasy",
+            "faun",
+            "labyrinth",
+            "lost princess",
+            "underground kingdom",
+            "magical world",
+            "mythical land",
+        ),
+        "heist": ("heist", "art thief", "robbery", "caper"),
+        "action": ("face off", "martial arts", "assassin", "defeating"),
+        "war": (
+            "battlefield",
+            "military unit",
+            "soldier",
+            "troops",
+            "resistance fighter",
+            "resistance",
+            "nazi",
+            "nazis",
+            "occupation",
+            "occupied",
+            "fighting the war",
+        ),
+    }.get(family, ())
+    return any(phrase_present(overview, phrase) for phrase in phrases)
+
+
+def corroborate_identity_candidate(
+    candidate: IdentityCandidate,
+    signals: list[dict[str, Any]],
+    display_context: dict[str, Any],
+) -> IdentityCandidate:
+    """Attach independent evidence families without flattening trust tiers."""
+
+    family = identity_evidence_family(candidate.label)
+    sources: set[str] = set()
+    if candidate.source.startswith("curated_override:"):
+        sources.add("curated_identity")
+    elif candidate.source.startswith("source_signal:audience_expectation"):
+        sources.add("audience_expectation")
+    elif candidate.source.startswith("source_signal:topic_theme"):
+        sources.add("topic_theme")
+    elif candidate.source == "genre_context":
+        sources.add("content_genre")
+    elif candidate.source == "inferred_context":
+        sources.add("governed_context")
+
+    signal_markers = IDENTITY_SIGNAL_CORROBORATION.get(family or "", ())
+    for signal in safe_signals(signals):
+        dimension = signal.get("dimension")
+        if dimension not in {"audience_expectation", "topic_theme"}:
+            continue
+        signal_text = signal.get("label") or signal.get("value")
+        signal_family = identity_evidence_family(signal_text)
+        marker_match = any(
+            phrase_present(insight_normalized(signal_text), marker)
+            for marker in signal_markers
+        )
+        if family and (signal_family == family or marker_match):
+            sources.add(dimension)
+
+    genres = {
+        insight_normalized(genre)
+        for genre in (display_context or {}).get("genres") or []
+        if has_text(genre)
+    }
+    if genres & IDENTITY_GENRE_CORROBORATION.get(family or "", set()):
+        sources.add("content_genre")
+
+    overview = insight_normalized(
+        ((display_context or {}).get("content") or {}).get("overview")
+    )
+    explicit_premise = identity_has_explicit_premise(family, overview)
+    if explicit_premise:
+        sources.add("explicit_overview")
+
+    incidental = bool(
+        family in INCIDENTAL_IDENTITY_FAMILIES
+        and not explicit_premise
+        and "curated_identity" not in sources
+    )
+    if incidental:
+        centrality = "incidental_context"
+    elif explicit_premise:
+        centrality = "explicit_premise"
+    elif len(sources) >= 2:
+        centrality = "corroborated"
+    else:
+        centrality = "single_source"
+    return IdentityCandidate(
+        label=candidate.label,
+        trust_tier=candidate.trust_tier,
+        confidence=candidate.confidence,
+        source=candidate.source,
+        evidence=candidate.evidence,
+        position=candidate.position,
+        corroboration_sources=tuple(sorted(sources)),
+        corroboration_count=len(sources),
+        centrality_class=centrality,
+        explicit_premise_evidence=explicit_premise,
+        incidental_context=incidental,
+        ranking_rationale=candidate.ranking_rationale,
+    )
+
+
+def apply_identity_centrality_guard(
+    ranked: list[IdentityCandidate],
+) -> tuple[IdentityCandidate | None, str]:
+    """Resolve close ranking contests without replacing trust-tier authority."""
+
+    if not ranked:
+        return None, "no_compatible_identity"
+    selected = ranked[0]
+    if selected.trust_tier == 1:
+        return selected, "curated_tier_authority"
+
+    alternatives = []
+    for candidate in ranked[1:]:
+        same_tier = candidate.trust_tier == selected.trust_tier
+        governed_genre_guard = bool(
+            selected.source == "genre_context"
+            and candidate.trust_tier == selected.trust_tier + 1
+        )
+        if not (same_tier or governed_genre_guard):
+            continue
+        required_gain = 2 if governed_genre_guard else 1
+        materially_stronger = (
+            candidate.corroboration_count
+            >= selected.corroboration_count + required_gain
+        )
+        central_enough = bool(
+            candidate.explicit_premise_evidence
+            and (
+                selected.incidental_context
+                or candidate.corroboration_count >= 4
+            )
+        )
+        if materially_stronger and central_enough:
+            alternatives.append(candidate)
+
+    if not alternatives:
+        return selected, "trust_tier_then_specificity"
+    chosen = sorted(
+        alternatives,
+        key=lambda candidate: (
+            -candidate.corroboration_count,
+            candidate.trust_tier,
+            CONFIDENCE_ORDER.get(candidate.confidence or "", 99),
+            candidate.position,
+            insight_normalized(candidate.label),
+        ),
+    )[0]
+    return chosen, "explicit_premise_with_stronger_independent_corroboration"
+
+
 def select_identity(
     display_profile: dict[str, Any],
     watch_profile: dict[str, Any],
@@ -1372,7 +1663,9 @@ def select_identity(
                 }
             )
             continue
-        compatible.append(candidate)
+        compatible.append(
+            corroborate_identity_candidate(candidate, signals, display_context)
+        )
 
     ranked = sorted(
         compatible,
@@ -1384,7 +1677,7 @@ def select_identity(
             insight_normalized(candidate.label),
         ),
     )
-    selected = ranked[0] if ranked else None
+    selected, selection_rationale = apply_identity_centrality_guard(ranked)
     if not curated_identity_signals:
         plan.curated_identity_evaluation = "not_applicable"
     elif selected and selected.source.startswith("curated_override:"):
@@ -1393,16 +1686,38 @@ def select_identity(
         plan.curated_identity_evaluation = "evaluated_rejected"
     if not selected:
         return None
-    for candidate in ranked[1:]:
+    for candidate in ranked:
+        if candidate is selected:
+            continue
         if insight_normalized(candidate.label) != insight_normalized(selected.label):
+            displaced_by_centrality = bool(
+                ranked
+                and candidate is ranked[0]
+                and selected is not ranked[0]
+            )
             plan.rejected_candidates.append(
                 {
                     "candidate": candidate.label,
                     "role": "primary_identity",
-                    "reason": "lower_trust_or_specificity",
+                    "reason": (
+                        "stronger_corroborated_candidate_selected"
+                        if displaced_by_centrality
+                        else "lower_trust_or_specificity"
+                    ),
                     "source": candidate.source,
                     "confidence": candidate.confidence,
                     "trust_tier": candidate.trust_tier,
+                    "evidence": candidate.evidence,
+                    "corroboration_sources": candidate.corroboration_sources,
+                    "corroboration_count": candidate.corroboration_count,
+                    "centrality_class": candidate.centrality_class,
+                    "explicit_premise_evidence": candidate.explicit_premise_evidence,
+                    "incidental_context": candidate.incidental_context,
+                    "ranking_rationale": (
+                        "lost to explicit premise with materially stronger independent corroboration"
+                        if displaced_by_centrality
+                        else "lower trust, confidence, specificity, or centrality"
+                    ),
                 }
             )
     return InsightComponent(
@@ -1414,8 +1729,14 @@ def select_identity(
         confidence=selected.confidence,
         trust_tier=selected.trust_tier,
         selection_rationale=(
-            f"selected {IDENTITY_TRUST_TIER_LABELS[selected.trust_tier]} before specificity ranking"
+            f"selected {IDENTITY_TRUST_TIER_LABELS[selected.trust_tier]};"
+            f"rule={selection_rationale}"
         ),
+        corroboration_sources=selected.corroboration_sources,
+        corroboration_count=selected.corroboration_count,
+        centrality_class=selected.centrality_class,
+        explicit_premise_evidence=selected.explicit_premise_evidence,
+        incidental_context=selected.incidental_context,
     )
 
 
@@ -1537,6 +1858,53 @@ def theme_component(
     )
 
 
+def differentiator_is_incidental(
+    component: InsightComponent,
+    display_context: dict[str, Any],
+    identity: InsightComponent | None,
+) -> bool:
+    if component.source == "overview_rule":
+        return False
+    family = component.concept_family
+    normalized = insight_normalized(component.text)
+    if family not in INCIDENTAL_DIFFERENTIATOR_FAMILIES:
+        if normalized.startswith("organized crime"):
+            family = "organized_crime"
+        elif normalized.startswith("prison"):
+            family = "prison"
+        else:
+            return False
+
+    overview = insight_normalized(
+        ((display_context or {}).get("content") or {}).get("overview")
+    )
+    genres = {
+        insight_normalized(genre)
+        for genre in (display_context or {}).get("genres") or []
+        if has_text(genre)
+    }
+    if family == "war_identity":
+        return not (
+            genres & {"war", "war politics"}
+            or identity_has_explicit_premise("war", overview)
+        )
+    if family == "creature":
+        central_identity_family = identity_evidence_family(
+            identity.text if identity else ""
+        )
+        explicit_creature = identity_has_explicit_premise("creature", overview) or any(
+            phrase_present(overview, marker)
+            for marker in ("dinosaur", "dinosaurs", "supernatural threat")
+        )
+        return bool(
+            not explicit_creature
+            and central_identity_family in {"mythic_scifi", "space_scifi"}
+        )
+    # These concepts need affirmative incidental evidence before suppression;
+    # absence from a short overview is not enough to demote a governed signal.
+    return False
+
+
 def select_differentiators(
     display_profile: dict[str, Any],
     signals: list[dict[str, Any]],
@@ -1588,6 +1956,18 @@ def select_differentiators(
     seen_families = {identity.concept_family} if identity else set()
     identity_text = insight_normalized(identity.text if identity else "")
     for candidate_index, candidate in enumerate(candidates):
+        if differentiator_is_incidental(candidate, display_context, identity):
+            plan.rejected_candidates.append(
+                {
+                    "candidate": candidate.text,
+                    "role": candidate.role,
+                    "reason": "incidental_context_suppressed",
+                    "concept_family": candidate.concept_family,
+                    "source": candidate.source,
+                    "evidence": candidate.evidence,
+                }
+            )
+            continue
         if selected and candidate.confidence == "low":
             plan.rejected_candidates.append(
                 {

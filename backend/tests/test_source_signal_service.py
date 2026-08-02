@@ -421,7 +421,7 @@ def test_future_batch_title_gets_formatter_output_without_sentence_migration():
     assert "stored ingestion guidance" not in str(decision_layer).casefold()
     assert (
         decision_layer["debug"]["insight_plan"]["formatter_version"]
-            == "2.0.1"
+            == "2.0.2"
         )
 
 

@@ -7,6 +7,7 @@ from app.services.decision_insight_formatter import (
     build_insight_plan,
     evidence_family_matches,
     genre_identity,
+    realize_display_casing,
     render_decision_headline,
     render_insight_plan,
 )
@@ -884,3 +885,110 @@ def test_low_confidence_theme_does_not_fill_secondary_slot():
         item["reason"] == "low_confidence_secondary"
         for item in plan.rejected_candidates
     )
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("ai thriller", "AI thriller"),
+        ("a tense ai thriller", "a tense AI thriller"),
+        ("an ai thriller", "an AI thriller"),
+        ("AI thriller", "AI thriller"),
+        ("(fbi), cia; mi5/mi6 and kgb", "(FBI), CIA; MI5/MI6 and KGB"),
+        ("world war ii drama", "World War II drama"),
+        ("a wwii story", "a WWII story"),
+        ("a paid role", "a paid role"),
+    ],
+)
+def test_token_aware_display_casing(raw, expected):
+    assert realize_display_casing(raw) == expected
+
+
+def test_centrality_guard_prefers_explicit_fantasy_over_background_war_genre():
+    plan, sentence = format_plan(
+        profile(identity=["War drama", "Dark fantasy"], themes=["Dark fantasy", "War"]),
+        [
+            signal("audience_expectation", "Dark fantasy"),
+            signal("topic_theme", "Dark fantasy"),
+            signal("topic_theme", "War"),
+        ],
+        context(
+            genres=["Drama", "Fantasy", "War"],
+            overview=(
+                "In post-civil-war Spain, a child enters a labyrinth where a "
+                "faun reveals an underground kingdom and a lost princess."
+            ),
+        ),
+    )
+
+    assert plan.primary_identity.text == "Dark fantasy"
+    assert plan.primary_identity.explicit_premise_evidence is True
+    assert "fantasy" in sentence.casefold()
+    assert any(
+        item.get("candidate") == "War drama"
+        and item.get("reason") == "stronger_corroborated_candidate_selected"
+        for item in plan.rejected_candidates
+    )
+
+
+def test_centrality_guard_preserves_curated_tier_one_authority():
+    display_profile = profile(identity=["AI thriller", "Tech-driven sci-fi"])
+    signals = [
+        signal(
+            "audience_expectation",
+            "AI thriller",
+            confidence="high",
+            sources=["curated_override"],
+        ),
+        signal("audience_expectation", "Tech-driven sci-fi"),
+        signal("topic_theme", "Technology and society"),
+    ]
+    plan = build_insight_plan(
+        display_profile,
+        {"curated_override_applied": True},
+        signals,
+        context(
+            genres=["Drama", "Sci-Fi"],
+            overview="A programmer tests the first true artificial intelligence.",
+        ),
+    )
+
+    assert plan.primary_identity.text == "AI thriller"
+    assert plan.primary_identity.trust_tier == 1
+
+
+def test_incidental_war_theme_is_suppressed_but_retained_in_debug_provenance():
+    plan, sentence = format_plan(
+        profile(
+            identity=["Reality-bending sci-fi"],
+            themes=["Alien encounter", "War"],
+        ),
+        [
+            signal("audience_expectation", "Reality-bending sci-fi"),
+            signal("topic_theme", "Alien encounter"),
+            signal("topic_theme", "War"),
+        ],
+        context(
+            genres=["Drama", "Mystery", "Sci-Fi"],
+            overview=(
+                "An expert linguist is recruited after alien crafts arrive to "
+                "determine whether they come in peace."
+            ),
+        ),
+    )
+
+    assert "alien encounter" in sentence.casefold()
+    assert "war" not in sentence.casefold()
+    assert any(
+        item.get("candidate") == "war"
+        and item.get("reason") == "incidental_context_suppressed"
+        for item in plan.rejected_candidates
+    )
+
+
+def test_governed_spy_evidence_recognizes_agents_and_undercover_premise():
+    assert evidence_family_matches(
+        "Two Soviet KGB officers pose as a married couple while living undercover.",
+        "spy",
+    )
+    assert not evidence_family_matches("A secret government mission begins.", "spy")

@@ -2,7 +2,7 @@
 
 This document is the canonical operational reference for the sentence shown under
 **Why this stands out** on an InsightStream title-detail page. It describes the
-implementation on Formatter version `2.0.1`; it does not describe planned behavior.
+implementation on Formatter version `2.0.2`; it does not describe planned behavior.
 
 ## 1. Purpose And Product Contract
 
@@ -244,7 +244,7 @@ A normal details request follows this concrete call path:
 
 | Version | Current value | Location | Bump when |
 | --- | --- | --- | --- |
-| Formatter | `2.0.1` | `DECISION_INSIGHT_FORMATTER_VERSION` in `decision_insight_formatter.py` | Planning, validation, rendering, compatibility, or public-safety behavior changes. |
+| Formatter | `2.0.2` | `DECISION_INSIGHT_FORMATTER_VERSION` in `decision_insight_formatter.py` | Planning, validation, rendering, compatibility, or public-safety behavior changes. |
 | Keyword mapping | `2026-07-29-v2.9` | `source_signal_keyword_mapping.json` | Runtime keyword-to-signal semantics change. |
 | Review decisions | `2026-07-29-v1.7` | `source_signal_keyword_review_decisions.json` | Governed decisions change; it must support the current mapping version. |
 | Title overrides | `2026-07-29-v3.7` | `source_signal_title_overrides.json` | Structured title override semantics change. |
@@ -325,17 +325,19 @@ rejected as `missing_identity_copy_role`; low-confidence identities cannot outra
 higher-trust evidence.
 
 `GOVERNED_IDENTITY_COPY_ROLES` admits specific identities whose final token is not
-a general identity noun. Formatter 2.0.1 includes `Aviation action`; it requires a
-curated/source identity plus Action metadata. An aircraft mention alone cannot
-create it, and curated provenance retains tier 1.
+a general identity noun. Formatter 2.0.2 includes `Aviation action` and
+`Martial-arts action`. Both require a governed source identity and compatible
+Action metadata; an aircraft, fight, or weapon mention alone cannot create them.
+Curated provenance retains tier 1.
 
 ## 11. Identity Trust Tiers
 
 `IDENTITY_TRUST_TIER_LABELS` is the executable registry. Within a tier,
 `identity_score()` favors reliable governed identities, specificity markers,
 audience-expectation evidence, and confidence while penalizing generic/weak labels.
-Candidates not selected are retained with `lower_trust_or_specificity`. Stable
-normalized ordering makes ties deterministic.
+Candidates not selected are retained with `lower_trust_or_specificity` or the
+explicit centrality displacement reason. Stable normalized ordering makes ties
+deterministic.
 
 ## 12. Compatibility Rules
 
@@ -362,9 +364,10 @@ normalized ordering makes ties deterministic.
 
 Lexical premise evidence is centralized in `EVIDENCE_FAMILIES` and matched with
 `evidence_family_matches()`. Governed singular/plural forms include serial
-killer/serial killers, cartel/cartels, and spy/spies plus explicit agent,
-intelligence-service, espionage, MI5, and MI6 phrases. The verb construction
-`spies on` is excluded. A spy
+killer/serial killers, cartel/cartels, and spy/spies plus explicit secret-agent,
+intelligence-service/officer/operative, Soviet-agent, sleeper-agent, posing-as,
+living-undercover, KGB, MI5, and MI6 phrases. The verb construction `spies on` is
+excluded. A spy
 identity also requires explicit premise evidence and compatible Drama, Thriller,
 Crime, Action, War, or War & Politics metadata.
 
@@ -373,12 +376,26 @@ and evidence. Selection falls through to the strongest compatible candidate.
 
 ## 13. Centrality And Corroboration
 
-Centrality is not inferred from one incidental token. The formatter combines genre,
-overview premise, independent signal labels, confidence, curated provenance,
-governed genre composites, and explicit overview rules. Some identities, such as
-cartel, prison, war, serial-killer, and survival thriller, have dedicated centrality
-requirements. A rejected upstream identity can remain in internal conflict evidence
-while a compatible fallback makes the public display usable.
+Centrality is not inferred from one incidental token. Each compatible candidate
+records independent corroboration families: curated identity,
+`audience_expectation`, `topic_theme`, content genre, explicit overview premise,
+and governed inferred context. Repeated labels within one family count once.
+
+Trust tiers remain authoritative. Tier-1 curated identities are never displaced by
+the centrality guard. After compatibility, the guard may resolve only a same-tier
+contest, or a contest between a governed tier-3 genre composite and an adjacent
+tier-4 candidate. The alternative must have explicit premise evidence and a
+materially larger independent corroboration set. This prevents a longer incidental
+label such as creature, investigation, space, organized-crime, or background-war
+context from winning on specificity alone. Every selected and rejected candidate
+records `corroboration_sources`, `corroboration_count`, `centrality_class`,
+`explicit_premise_evidence`, `incidental_context`, and ranking rationale.
+
+Some identities, such as cartel, prison, war, serial-killer, and survival thriller,
+also retain dedicated compatibility requirements. Missing overview wording is not
+itself evidence that a concept is incidental. A rejected upstream identity can
+remain in internal conflict evidence while a compatible fallback makes the public
+display usable.
 
 ## 14. Modifier Selection
 
@@ -400,6 +417,14 @@ unsupported raw taxonomy, missing copy roles, and low-confidence secondary items
 rejected with reasons. The explicit racial-inequality context is exclusive; lower
 priority candidates are recorded but not selected. Atomic phrases containing
 `and` use `alongside` when another phrase is joined.
+
+`differentiator_is_incidental()` applies an additional conservative centrality
+check. War is suppressed when neither War metadata nor an explicit central war
+premise supports it. Creature context is suppressed only when a central mythic/space
+sci-fi identity wins and the overview has no explicit creature premise. Governed
+overview-rule phrases remain eligible, and absent wording alone does not suppress
+investigation, prison, or organized-crime signals. Suppressed concepts remain in
+the debug plan as `incidental_context_suppressed`.
 
 ## 16. Concept Families And Semantic Deduplication
 
@@ -496,7 +521,7 @@ Representative abbreviated serialization:
   "template_family": "identity_conflict",
   "rejected_candidates": [],
   "validation_errors": [],
-  "formatter_version": "2.0.1"
+  "formatter_version": "2.0.2"
 }
 ```
 
@@ -523,6 +548,12 @@ length, missing facts, and existing profile correctness rules. Critical display
 issues make `display_ready=false`. A successfully rejected identity conflict creates
 source-signal review, not a display failure.
 
+`PRIMARY_IDENTITY_STRONGER_CORROBORATED_CANDIDATE_AVAILABLE` independently audits
+serialized candidate provenance. It reports the selected/candidate tiers,
+corroboration sources, and ranking rationale when an explicit, materially better
+supported compatible identity loses without a higher-trust justification. The
+audit evaluates plan data independently rather than calling the selection guard.
+
 ## 21. Template Families
 
 Templates are selected semantically by `select_template()`, never randomly:
@@ -540,8 +571,12 @@ Templates are selected semantically by `select_template()`, never randomly:
 
 ## 22. Rendering Rules
 
-`article_for()` selects `a/an` from the normalized subject; sentence casing preserves
-the governed phrase, including explicit `Cold War` and acronym copy roles. The
+`article_for()` selects `a/an` from the normalized subject. The centralized
+`realize_display_casing()` registry restores only governed token/phrase forms:
+`AI`, `FBI`, `CIA`, `MI5`, `MI6`, `KGB`, `WWII`, and `World War II`. It applies at
+the display-realization boundary, including after lowercasing an identity for an
+article, so `AI thriller` cannot become `aI thriller`. It does not title-case a
+sentence or uppercase ordinary substrings. The
 renderer normalizes whitespace, removes comma-before-and, uses safe conjunctions for
 atomic phrases, avoids duplicate families/phrases before rendering, and caps output
 at 180 characters on a word boundary. Modifier ordering is deterministic. No rating
@@ -752,7 +787,17 @@ fabricated. Plan uses `identity_about`; output is `A drama.` The sentence is tru
 but audit rules may mark it low-specificity/fallback-only for display review. The
 formatter does not throw.
 
-All examples use formatter `2.0.1`, mapping `2026-07-29-v2.9`, review
+The tracked semantic regression catalog also covers acronym realization, spy lexical
+variants, fantasy-versus-background-war centrality, mythic/space/creature contests,
+heist-versus-investigation, superhero-versus-space, action-versus-organized-crime,
+and incidental differentiator suppression without production title allowlists.
+
+Automated centrality remains deliberately bounded. It recognizes only governed
+families and lexical evidence; it does not summarize overviews, infer unregistered
+identities, or demote a signal merely because a short overview omits it. Genuine
+source-evidence gaps remain mapping or human-review work.
+
+All examples use formatter `2.0.2`, mapping `2026-07-29-v2.9`, review
 `2026-07-29-v1.7`, and overrides `2026-07-29-v3.7`.
 
 ## 33. Related Commands Quick Reference

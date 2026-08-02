@@ -111,7 +111,7 @@ def proposed_detail():
                     "template_family": "identity_conflict",
                     "rejected_candidates": [],
                     "validation_errors": [],
-                    "formatter_version": "2.0.1",
+                    "formatter_version": "2.0.2",
                 }
             },
         },

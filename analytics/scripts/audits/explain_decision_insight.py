@@ -84,6 +84,14 @@ def identity_candidates(plan: dict[str, Any]) -> list[dict[str, Any]]:
                 "confidence": selected.get("confidence"),
                 "compatibility": "accepted",
                 "centrality_or_corroboration": selected.get("evidence"),
+                "corroboration_sources": selected.get("corroboration_sources") or [],
+                "corroboration_count": selected.get("corroboration_count") or 0,
+                "centrality_class": selected.get("centrality_class"),
+                "explicit_premise_evidence": bool(
+                    selected.get("explicit_premise_evidence")
+                ),
+                "incidental_context": bool(selected.get("incidental_context")),
+                "ranking_rationale": selected.get("selection_rationale"),
                 "selection_result": "selected",
                 "rejection_reason": None,
             }
@@ -100,6 +108,14 @@ def identity_candidates(plan: dict[str, Any]) -> list[dict[str, Any]]:
                 "confidence": item.get("confidence"),
                 "compatibility": "rejected" if conflict else "accepted",
                 "centrality_or_corroboration": item.get("evidence"),
+                "corroboration_sources": item.get("corroboration_sources") or [],
+                "corroboration_count": item.get("corroboration_count") or 0,
+                "centrality_class": item.get("centrality_class"),
+                "explicit_premise_evidence": bool(
+                    item.get("explicit_premise_evidence")
+                ),
+                "incidental_context": bool(item.get("incidental_context")),
+                "ranking_rationale": item.get("ranking_rationale"),
                 "selection_result": "rejected",
                 "rejection_reason": item.get("conflict_reason")
                 if conflict
@@ -215,6 +231,8 @@ def print_explanation(payload: dict[str, Any]) -> None:
             f"{candidate.get('candidate')} | tier={candidate.get('trust_tier')} | "
             f"source={candidate.get('source')} | "
             f"compatibility={candidate.get('compatibility')} | "
+            f"centrality={candidate.get('centrality_class')} | "
+            f"corroboration={candidate.get('corroboration_sources')} | "
             f"result={candidate.get('selection_result')} | "
             f"reason={candidate.get('rejection_reason') or 'selected/compatible'}"
         )

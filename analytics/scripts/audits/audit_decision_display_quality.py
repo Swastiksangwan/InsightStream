@@ -908,6 +908,62 @@ def detect_display_issues(display: dict[str, Any] | None) -> list[DisplayIssue]:
                     "backend_display_rule",
                 ),
             )
+        selected_corroboration = int(
+            primary_identity_plan.get("corroboration_count") or 0
+        )
+        selected_incidental = bool(
+            primary_identity_plan.get("incidental_context")
+        )
+        selected_source = str(primary_identity_plan.get("source") or "")
+        stronger_candidates = []
+        if "curated_override" not in selected_source:
+            for item in identity_rejections:
+                if item.get("reason") != "lower_trust_or_specificity":
+                    continue
+                candidate_tier = int(item.get("trust_tier") or 99)
+                trust_allows_comparison = bool(
+                    candidate_tier <= primary_identity_trust_tier
+                    or (
+                        selected_source == "genre_context"
+                        and candidate_tier == primary_identity_trust_tier + 1
+                    )
+                )
+                candidate_count = int(item.get("corroboration_count") or 0)
+                if (
+                    trust_allows_comparison
+                    and item.get("explicit_premise_evidence") is True
+                    and candidate_count > selected_corroboration
+                    and (selected_incidental or candidate_count >= 4)
+                ):
+                    stronger_candidates.append(item)
+        if stronger_candidates:
+            stronger = sorted(
+                stronger_candidates,
+                key=lambda item: (
+                    -int(item.get("corroboration_count") or 0),
+                    int(item.get("trust_tier") or 99),
+                    insight_normalized(item.get("candidate")),
+                ),
+            )[0]
+            add_unique_issue(
+                issues,
+                issue(
+                    "PRIMARY_IDENTITY_STRONGER_CORROBORATED_CANDIDATE_AVAILABLE",
+                    "high",
+                    "insight_plan.primary_identity",
+                    (
+                        f"selected={primary_identity_plan.get('text')} "
+                        f"tier={primary_identity_trust_tier} "
+                        f"sources={primary_identity_plan.get('corroboration_sources') or []}; "
+                        f"stronger={stronger.get('candidate')} "
+                        f"tier={stronger.get('trust_tier')} "
+                        f"sources={stronger.get('corroboration_sources') or []}; "
+                        f"ranking={stronger.get('ranking_rationale') or stronger.get('reason')}"
+                    ),
+                    "A compatible identity with stronger independent premise evidence was not selected.",
+                    "backend_display_rule",
+                ),
+            )
         if source_conflicts:
             add_unique_issue(
                 issues,
@@ -1443,6 +1499,7 @@ def suggested_next_step(issues: list[DisplayIssue]) -> str:
         "PRIMARY_INSIGHT_REPEATED_WORD",
         "PRIMARY_INSIGHT_TEMPLATE_OVERUSE",
         "PRIMARY_INSIGHT_UNSUPPORTED_COMPONENT",
+        "PRIMARY_IDENTITY_STRONGER_CORROBORATED_CANDIDATE_AVAILABLE",
     }:
         return "backend_display_rule"
     if codes & {

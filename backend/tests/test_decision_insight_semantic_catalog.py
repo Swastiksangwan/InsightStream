@@ -87,6 +87,21 @@ def test_semantic_regression_catalog(case):
         assert required.casefold() in public_text
     for forbidden in case["forbidden_public_concepts"]:
         assert forbidden.casefold() not in public_text
+    selected_identity = (plan.get("primary_identity") or {}).get("text") or ""
+    differentiators = " ".join(
+        str((plan.get(key) or {}).get("text") or "")
+        for key in ("primary_differentiator", "secondary_differentiator")
+    )
+    for required in case.get("required_primary_identity_concepts", []):
+        assert required.casefold() in selected_identity.casefold()
+    for forbidden in case.get("forbidden_primary_identity_concepts", []):
+        assert forbidden.casefold() not in selected_identity.casefold()
+    for forbidden in case.get("forbidden_primary_differentiator_concepts", []):
+        assert forbidden.casefold() not in differentiators.casefold()
+    for required in case.get("required_primary_substrings", []):
+        assert required in display["primary_insight"]
+    for forbidden in case.get("forbidden_primary_substrings", []):
+        assert forbidden not in display["primary_insight"]
     assert audit["display_ready"] is case["expected_display_ready"]
     assert audit["source_signal_review_required"] is case[
         "expected_source_signal_review_required"
