@@ -56,13 +56,13 @@
       "notes": "German political thriller; strengthens non-English, History and surveillance themes."
     },
     {
-      "title": "The Phoenician Scheme",
+      "title": "The Royal Tenenbaums",
       "content_type": "movie",
       "source_name": "tmdb",
-      "source_id": "1137350",
+      "source_id": "9428",
       "priority": "batch_test_10",
       "ingestion_status": "candidate",
-      "notes": "Recent independent comedy-drama candidate; broadens current auteur and espionage coverage."
+      "notes": "Manually added."
     },
     {
       "title": "The Searchers",
