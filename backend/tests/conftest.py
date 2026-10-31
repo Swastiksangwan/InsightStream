@@ -5,9 +5,11 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
+BACKEND_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = BACKEND_ROOT.parent
+for import_root in (REPO_ROOT, BACKEND_ROOT):
+    if str(import_root) not in sys.path:
+        sys.path.insert(0, str(import_root))
 
 from app.db.session import SessionLocal
 from app.main import app
