@@ -3,6 +3,16 @@
 backend/.env
 frontend/.env
 frontend/.env.local
+.env.test
+.env.test.*
+backend/.env.*
+!backend/.env.example
+
+# PostgreSQL archives and credential files must stay outside the repository.
+*.dump
+*.backup
+*.sql.gz
+.pgpass
 
 # Analytics raw provider output
 analytics/raw/tmdb/*.json

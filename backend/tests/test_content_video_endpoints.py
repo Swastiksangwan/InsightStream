@@ -204,6 +204,7 @@ def test_content_details_without_videos_returns_empty_additive_shape(client, db_
         db_session.commit()
 
 
+@pytest.mark.migration
 def test_video_hardening_migration_is_idempotent_and_schema_matches(db_session):
     migration_paths = [
         REPO_ROOT / "backend" / "migrations" / "014_add_content_video_metadata.sql",
@@ -269,6 +270,7 @@ def test_video_hardening_migration_is_idempotent_and_schema_matches(db_session):
     assert "idx_content_video_fetch_state_status" not in indexes
 
 
+@pytest.mark.migration
 def test_video_hardening_migration_preserves_existing_rows(db_session):
     content_id = create_content(db_session, "Migration Preservation Video Fixture")
     video_id = db_session.execute(

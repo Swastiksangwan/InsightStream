@@ -1,575 +1,193 @@
-# Backend Database Setup Guide
+# Backend Database Setup and Recovery
 
-This guide explains how to set up, reset, and verify the local InsightStream backend database during development.
+## Existing development data is not the seed
 
-InsightStream currently uses PostgreSQL with SQL files stored in the repository. The database is updated only when those SQL files are executed against PostgreSQL.
+The preserved local development database is **`insightstream_db`**: PostgreSQL
+18.3, 28 public application tables, 200 titles (109 movies / 91 series) at the
+November 2, 2026 Milestone 1 baseline. It includes imported ratings, credits,
+availability, keywords, source signals and videos.
 
-## Purpose
+**Never DROP, reset, truncate or reseed this database to run tests or repair setup.**
+The three-file seed reconstructs only 15 titles. Keep development enrichment,
+disposable test fixtures and private recovery archives separate.
 
-Use this guide when you need to:
+## Connection precedence
 
-- Create the local development database tables.
-- Load sample development data.
-- Apply database indexes.
-- Reset local development data safely.
-- Verify that tables, rows, indexes, and watch-state data are present.
+`backend/app/core/config.py` uses exported environment variables first. In normal
+`development`/`production` mode it loads the explicit `backend/.env` location with
+`override=False`, independent of working directory. It then creates the existing
+SQLAlchemy engine through `app.db.session`. Existing application API behavior is
+unchanged.
 
-This guide is for local backend development only.
+In `test` mode it does not load development dotenv data and requires explicit
+`TEST_DATABASE_URL`. Test configuration/actual target is validated before pytest
+imports application modules. `unit-test` mode forbids application engine creation.
+The test runner loads only the private test configuration, never falls back to
+the development URL and never changes the parent shell environment.
 
-## Prerequisites
+Do not print URLs, passwords, provider tokens, `.env` content or database rows.
 
-Before running the database setup, make sure you have:
+## Start the existing application on macOS
 
-- PostgreSQL installed and running.
-- pgAdmin or `psql` available.
-- A Python virtual environment ready for the backend.
-- Backend dependencies installed from `backend/requirements.txt`.
-- A local `backend/.env` file configured with `DATABASE_URL`.
+Use the already configured Python environment and PostgreSQL service:
 
-Example local `.env` value:
-
-```env
-DATABASE_URL=postgresql://<user>:<password>@localhost:5432/<db_name>
+```bash
+cd backend
+INSIGHTSTREAM_ENV=development python3 -m uvicorn app.main:app --reload
 ```
 
-Do not commit `backend/.env`.
+In another terminal, from the repository root:
 
-## Important Warning
+```bash
+cd frontend
+npm run dev
+```
 
-Editing these files in VS Code does not automatically update PostgreSQL:
+The default API is `http://127.0.0.1:8000`; frontend is `http://localhost:3000`.
+Do not export test settings for an ordinary application server.
 
-- `backend/schema.sql`
-- `backend/sample_data.sql`
-- `backend/indexes.sql`
-
-These files are source-controlled setup files. To change the actual PostgreSQL database, you must execute the SQL in pgAdmin, `psql`, or another PostgreSQL client.
-
-Recommended workflow:
-
-1. Edit SQL files in VS Code.
-2. Execute the SQL against the local database in pgAdmin or `psql`.
-3. Verify the database state with SELECT queries.
-4. Test backend endpoints.
-5. Commit the SQL file changes only after they are verified.
-
-## Correct Local Setup Order
-
-For a clean local database setup, run the files in this order:
-
-1. `backend/schema.sql`
-2. `backend/sample_data.sql`
-3. `backend/indexes.sql`
-
-Why this order matters:
-
-- `schema.sql` creates the tables and constraints.
-- `sample_data.sql` inserts development data into those tables.
-- `indexes.sql` adds performance indexes after the tables exist.
-
-## Run Files With pgAdmin
-
-### 1. Open the Database
-
-1. Open pgAdmin.
-2. Connect to your local PostgreSQL server.
-3. Select the InsightStream development database.
-4. Open the Query Tool.
-
-### 2. Run the Schema
-
-1. Open `backend/schema.sql` in VS Code.
-2. Copy the full file contents.
-3. Paste into pgAdmin Query Tool.
-4. Execute the query.
-
-Expected result: tables are created successfully.
-
-### 3. Run Sample Data
-
-1. Open `backend/sample_data.sql`.
-2. Copy the full file contents.
-3. Paste into pgAdmin Query Tool.
-4. Execute the query.
-
-Expected result: sample rows are inserted successfully.
-
-Current expected seed state: `backend/sample_data.sql` loads 15 content titles, split into 8 movies and 7 series.
-
-The `content.release_date` column stores the original movie release date or series first air date. The `content.latest_activity_date` column stores the date used for Recent sorting, so active series can rank by latest show activity without changing their original premiere year.
-
-### 4. Run Indexes
-
-1. Open `backend/indexes.sql`.
-2. Copy the full file contents.
-3. Paste into pgAdmin Query Tool.
-4. Execute the query.
-
-Expected result: indexes are created successfully.
-
-The index file uses `CREATE INDEX IF NOT EXISTS`, so it is safe to run more than once in local development.
-
-## Optional psql Commands
+## Read-only identity and schema status
 
 From the repository root:
 
 ```bash
-psql "postgresql://<user>:<password>@localhost:5432/<db_name>" -f backend/schema.sql
-psql "postgresql://<user>:<password>@localhost:5432/<db_name>" -f backend/sample_data.sql
-psql "postgresql://<user>:<password>@localhost:5432/<db_name>" -f backend/indexes.sql
+python3 backend/scripts/local_database.py status
 ```
 
-If you are already connected to the database in `psql`, you can run:
+This uses only read-only queries and reports database/version, catalog counts,
+per-table SHA-256 fingerprints, schema/object counts and source-file hashes.
+It explicitly reports migration history as UNTRACKED; presence of a SQL file is
+not proof that a migration ran.
 
-```sql
-\i backend/schema.sql
-\i backend/sample_data.sql
-\i backend/indexes.sql
-```
-
-Run these from the repository root, or adjust the file paths to match your current directory.
-
-## Safe Local Development Reset Options
-
-The following reset options are for local development only.
-
-Do not run these commands on production data, shared staging data, or any database that contains important user data.
-
-### Option A: Drop and Recreate Tables
-
-Use this when you want a completely clean local database structure.
-
-```sql
-DROP TABLE IF EXISTS
-    watch_later,
-    watched,
-    content_people,
-    person_external_ids,
-    content_summary,
-    ratings,
-    content_certifications,
-    content_availability,
-    external_ids,
-    content_platforms,
-    content_genres,
-    platforms,
-    genres,
-    people,
-    content,
-    users
-CASCADE;
-```
-
-Then run:
-
-1. `backend/schema.sql`
-2. `backend/sample_data.sql`
-3. `backend/indexes.sql`
-
-### Option B: Truncate Data and Reset Identities
-
-Use this when the tables already exist and you want to clear local data while keeping the table structure.
-
-```sql
-TRUNCATE TABLE
-    watch_later,
-    watched,
-    content_people,
-    person_external_ids,
-    content_summary,
-    ratings,
-    content_certifications,
-    content_availability,
-    external_ids,
-    content_platforms,
-    content_genres,
-    platforms,
-    genres,
-    people,
-    content,
-    users
-RESTART IDENTITY CASCADE;
-```
-
-Then run:
-
-1. `backend/sample_data.sql`
-2. `backend/indexes.sql`
-
-This keeps the schema in place and resets generated IDs back to their starting values.
-
-## Verification Queries
-
-Run these queries in pgAdmin or `psql` after setup or reset.
-
-### List Tables
-
-```sql
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-ORDER BY table_name;
-```
-
-Expected core tables:
-
-- `content`
-- `content_availability`
-- `content_certifications`
-- `content_genres`
-- `content_platforms`
-- `content_summary`
-- `external_ids`
-- `genres`
-- `people`
-- `person_external_ids`
-- `platforms`
-- `ratings`
-- `content_people`
-- `users`
-- `watch_later`
-- `watched`
-
-### Count Important Tables
-
-```sql
-SELECT 'users' AS table_name, COUNT(*) AS row_count FROM users
-UNION ALL
-SELECT 'content', COUNT(*) FROM content
-UNION ALL
-SELECT 'content_availability', COUNT(*) FROM content_availability
-UNION ALL
-SELECT 'content_certifications', COUNT(*) FROM content_certifications
-UNION ALL
-SELECT 'external_ids', COUNT(*) FROM external_ids
-UNION ALL
-SELECT 'people', COUNT(*) FROM people
-UNION ALL
-SELECT 'person_external_ids', COUNT(*) FROM person_external_ids
-UNION ALL
-SELECT 'content_people', COUNT(*) FROM content_people
-UNION ALL
-SELECT 'genres', COUNT(*) FROM genres
-UNION ALL
-SELECT 'platforms', COUNT(*) FROM platforms
-UNION ALL
-SELECT 'content_genres', COUNT(*) FROM content_genres
-UNION ALL
-SELECT 'content_platforms', COUNT(*) FROM content_platforms
-UNION ALL
-SELECT 'ratings', COUNT(*) FROM ratings
-UNION ALL
-SELECT 'content_summary', COUNT(*) FROM content_summary
-UNION ALL
-SELECT 'watch_later', COUNT(*) FROM watch_later
-UNION ALL
-SELECT 'watched', COUNT(*) FROM watched;
-```
-
-The person/cast/crew tables are not populated by `sample_data.sql`. Expected counts after the core SQL setup are:
-
-- `people`: 0
-- `person_external_ids`: 0
-- `content_people`: 0
-- `content_availability`: 0
-- `content_certifications`: 0
-
-People, cast, crew, director, and creator rows are added separately through the structured credits preview/import script.
-
-Region-aware availability and certification rows are not populated by `sample_data.sql` yet. The older `content_platforms` table remains the simple local seed availability source, and `content.age_rating` remains the compact display field. Future ingestion scripts should populate `content_availability` and `content_certifications` after source/region mapping is implemented.
-
-The read API `GET /content/{content_id}/credits` returns empty arrays until people/credits data has been imported. Person read APIs are also available:
-
-- `GET /people/{person_id}`
-- `GET /people/{person_id}/credits`
-
-These person endpoints require imported people rows. Unknown person IDs return `404`, and known people with no credits return empty grouped credit arrays.
-
-Optional local import after setup:
+## Consistent private backup and verified restore
 
 ```bash
-python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
+python3 backend/scripts/local_database.py backup
 ```
 
-This imports from `analytics/processed/tmdb/credits_preview.json` into `people`, `person_external_ids`, and `content_people`.
+This command:
 
-### Verify Person/Cast/Crew Tables
+1. Requires the explicit local `insightstream_db` target.
+2. Opens a repeatable-read, read-only transaction and fingerprints every public
+   table, ordered by its primary key, plus schema definitions and sequences.
+3. Exports that transaction's PostgreSQL snapshot to `pg_dump --format=custom`.
+4. Creates a mode-0600 archive and manifest under a unique mode-0700 directory:
+   `~/Library/Application Support/InsightStream/backups/<run>/`.
+5. Reads the archive table of contents and calculates SHA-256.
+6. Creates a new unique `insightstream_verify_<timestamp>_<suffix>` database.
+7. Restores with `--exit-on-error --single-transaction --no-owner --no-privileges`.
+8. Requires identical table fingerprints, catalog totals, schema/object counts,
+   constraint/index definitions and sequence state before reporting verified.
 
-```sql
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-  AND table_name IN ('people', 'person_external_ids', 'content_people')
-ORDER BY table_name;
+The tools never pass connection URLs/passwords on command-line arguments. libpq
+credentials are scoped to the child environment; errors go to a private log.
+The PostgreSQL client must support the server version; a failure stops the
+operation. Use a quiet ingestion window: sequence state is not MVCC transactional,
+so concurrent writers can cause a conservative verification failure.
+
+The original Milestone 1 backup was restored and verified before test
+infrastructure changes. Its private manifest retains the PostgreSQL/client
+versions, checksum, complete fingerprints and unique restore target. The dump
+contains real development data; do not move it into Git or public artifacts.
+
+To verify that archive again later:
+
+```bash
+python3 backend/scripts/local_database.py restore-verify \
+  --manifest "$HOME/Library/Application Support/InsightStream/backups/<run>/manifest.json"
 ```
 
-Expected current result:
+Replace `<run>` with the recorded directory. This always creates a new database;
+there is no replace, clean, drop or arbitrary restore-target option. A checksum
+mismatch stops before creating a target. Verification databases are retained;
+removing one later requires checking its exact identity and explicit approval.
 
-- `content_people`
-- `people`
-- `person_external_ids`
+Compare current development data with a saved baseline without printing rows:
 
-```sql
-SELECT 'people' AS table_name, COUNT(*) FROM people
-UNION ALL
-SELECT 'person_external_ids', COUNT(*) FROM person_external_ids
-UNION ALL
-SELECT 'content_people', COUNT(*) FROM content_people;
+```bash
+python3 backend/scripts/local_database.py fingerprint \
+  --manifest "$HOME/Library/Application Support/InsightStream/backups/<run>/manifest.json"
 ```
 
-Expected current result: all counts can be `0`.
+Every comparison must be true when checking test-induced changes. Intentional
+future ingestion changes require a new approved baseline, not editing old hashes.
 
-### Verify Region-Aware Availability and Certification Tables
+Schema verification retains raw hashes and narrowly canonicalizes PostgreSQL's
+lossless `varchar[] -> text[]` literal-array cast deparser rewrite on restore.
+Literal values, constraint names, validation and all other definitions must match.
+The November 2 restore had nine such equivalent CHECK representations.
 
-```sql
-SELECT table_name
-FROM information_schema.tables
-WHERE table_schema = 'public'
-  AND table_name IN ('content_availability', 'content_certifications')
-ORDER BY table_name;
+Limitations: `pg_dump` does not include cluster-wide roles/tablespaces. Recovery
+verification uses existing local admin credentials and does not reproduce original
+ownership/ACLs; it proves application data/schema/sequence restoration, not a
+complete server disaster-recovery drill. Private archives require an independent
+backup destination/retention policy before treating the laptop as recoverable.
+
+## Disposable test environment
+
+```bash
+python3 backend/scripts/local_database.py prepare-test
+python3 backend/scripts/local_database.py check-test
+python3 backend/scripts/run_tests.py -q -rs
 ```
 
-Expected current result:
+Preparation creates only a previously absent `insightstream_test` and dedicated
+unprivileged `insightstream_test_runner` role, using the current declarative
+schema and indexes. No historical migrations run. Role credentials are generated
+locally in private `test.env` (0600), outside Git. The test role can own/modify only
+its disposable database; permission checks require no development-table write
+or development CREATE privileges. PUBLIC access to the new test database is
+revoked. Development privileges/configuration are not modified.
 
-- `content_availability`
-- `content_certifications`
+An existing unknown test database/role is inspected and refused, never overwritten.
+Do not put development/user data into the marked test target. Test runs reset only
+its deterministic 18-title fixture data, including after committed test failures.
+See [Backend Testing](backend_testing.md) for isolation, locks, unit-only runs,
+explicit test-data reset, and the two gated historical migration tests.
 
-```sql
-SELECT 'content_availability' AS table_name, COUNT(*) FROM content_availability
-UNION ALL
-SELECT 'content_certifications', COUNT(*) FROM content_certifications;
-```
+## Declarative baseline and future migration version tracking
 
-Expected current result: both counts can be `0`.
+The existing baseline is repository commit **`d725576`**, consolidated
+`backend/schema.sql` and `backend/indexes.sql`. The live November 2 schema has
+28 tables, 271 columns, 239 constraints including PostgreSQL 18 NOT NULL entries,
+118 indexes, 170 table/index/sequence objects, and no public routines or triggers.
+Fresh test initialization includes the indexes declared in the source files;
+four declared indexes are absent in the historical live database. Milestone 1
+does not apply them or infer old migration execution.
 
-`content_availability` is intended for region-aware provider availability records such as streaming, rent, buy, ads, or free availability by country. `content_certifications` is intended for region/source-aware age rating records. Neither table replaces `content_platforms` or `content.age_rating` yet.
+`backend/migrations/004_...sql` through `015_...sql` are historical SQL files.
+There is no reliable migration ledger. **Do not replay the directory** against
+existing development data. No new migration framework, ledger or migration apply
+command is installed in this milestone.
 
-After running the people/credits import script, useful checks include:
+Proposed small-team approach for the next schema change:
 
-```sql
-SELECT COUNT(*) AS total_people FROM people;
-```
+1. Review/approve the live baseline, fingerprint and known index differences.
+2. Take and verify a new backup.
+3. Review an additive new numbered SQL file, its preconditions and rollback/
+   recovery plan on a fresh verification database.
+4. Introduce a tiny `schema_migrations` ledger only in that separately reviewed
+   change: version, file SHA-256, applied-at and baseline label. Do not fabricate
+   historical rows or execute historical files to fill history.
+5. Apply each new version exactly once under a transaction and advisory lock;
+   reject checksum drift/unknown prerequisites, record success in the same commit.
+6. Update the consolidated fresh-database schema/index definitions and relevant
+   test fixtures in the same feature branch. Apply schema changes independently
+   to each developer's local dev/test targets through that reviewed process.
 
-```sql
-SELECT source_name, COUNT(*) AS total
-FROM person_external_ids
-GROUP BY source_name
-ORDER BY source_name;
-```
+Until that work is explicitly approved, `status` is diagnostic and there is no
+automatic migration application. Fresh database provisioning and versioned
+upgrades are different operations.
 
-```sql
-SELECT role_type, COUNT(*) AS total
-FROM content_people
-GROUP BY role_type
-ORDER BY role_type;
-```
+## Two-developer data workflow
 
-Expected imported role counts from the current preview:
-
-- `cast`: 67
-- `creator`: 10
-- `director`: 10
-
-### Inspect Content Rows
-
-```sql
-SELECT
-    id,
-    title,
-    content_type,
-    release_date,
-    latest_activity_date,
-    year,
-    age_rating
-FROM content
-ORDER BY id;
-```
-
-Expected current seed count: 15 total content rows.
-
-### Verify Recent Sorting Dates
-
-```sql
-SELECT
-    title,
-    content_type,
-    release_date,
-    latest_activity_date,
-    year
-FROM content
-ORDER BY COALESCE(latest_activity_date, release_date) DESC, title ASC
-LIMIT 10;
-```
-
-Expected behavior:
-
-- Movie `latest_activity_date` values match their `release_date`.
-- Series keep their original `release_date` and `year`.
-- Active/recently updated series can sort above newer movies when `latest_activity_date` is newer.
-
-### Verify Content Count by Type
-
-```sql
-SELECT
-    content_type,
-    COUNT(*) AS total
-FROM content
-GROUP BY content_type
-ORDER BY content_type;
-```
-
-Expected current result:
-
-- `movie`: 8
-- `series`: 7
-
-### Verify External IDs by Source
-
-```sql
-SELECT
-    source_name,
-    COUNT(*) AS total
-FROM external_ids
-GROUP BY source_name
-ORDER BY source_name;
-```
-
-Expected current result:
-
-- `imdb`: 15
-- `tmdb`: 15
-
-### Verify Seeded Title External IDs
-
-```sql
-SELECT
-    c.title,
-    c.tmdb_id,
-    ei.source_name,
-    ei.external_id
-FROM content c
-JOIN external_ids ei
-    ON ei.content_id = c.id
-ORDER BY c.title, ei.source_name;
-```
-
-Expected rows include TMDb and verified IMDb IDs for all 15 seeded titles, including:
-
-- Interstellar: `tt0816692`
-- Inception: `tt1375666`
-- Breaking Bad: `tt0903747`
-- The Mandalorian: `82856` and `tt8111088`
-- The Dark Knight: `tt0468569`
-- Dune: Part Two: `tt15239678`
-
-### Inspect Genres
-
-```sql
-SELECT
-    id,
-    name
-FROM genres
-ORDER BY name;
-```
-
-### Inspect Platforms
-
-```sql
-SELECT
-    id,
-    name,
-    platform_type
-FROM platforms
-ORDER BY platform_type, name;
-```
-
-### Verify Indexes
-
-```sql
-SELECT
-    tablename,
-    indexname,
-    indexdef
-FROM pg_indexes
-WHERE schemaname = 'public'
-ORDER BY tablename, indexname;
-```
-
-Useful indexes to confirm include:
-
-- `idx_content_content_type`
-- `idx_content_latest_activity_date`
-- `idx_content_release_date`
-- `idx_content_title_lower`
-- `idx_content_type_latest_activity_date`
-- `idx_content_type_release_date`
-- `idx_people_name`
-- `idx_people_known_for_department`
-- `idx_person_external_ids_person_id`
-- `idx_content_people_content_id`
-- `idx_content_people_person_id`
-- `idx_content_people_role_type`
-- `idx_content_people_content_role_order`
-- `idx_content_summary_unified_score`
-- `idx_genres_name_lower`
-- `idx_platforms_name_lower`
-- `idx_content_platforms_platform_availability`
-- `idx_content_availability_content_region`
-- `idx_content_availability_region_code`
-- `idx_content_certifications_country_code`
-- `idx_watch_later_user_content`
-- `idx_watched_user_content`
-
-### Verify Watch Later and Watched Consistency
-
-The backend service layer is designed to keep the same user/content pair from staying in both `watch_later` and `watched`.
-
-Use this query to find conflicts:
-
-```sql
-SELECT
-    wl.user_id,
-    wl.content_id,
-    c.title
-FROM watch_later wl
-JOIN watched w
-    ON w.user_id = wl.user_id
-   AND w.content_id = wl.content_id
-JOIN content c
-    ON c.id = wl.content_id
-ORDER BY wl.user_id, wl.content_id;
-```
-
-Expected result for a clean current-state dataset: no rows.
-
-If this query returns rows in local development, the sample or manually inserted data has conflicting watch states.
-
-## Current Seed Data Note
-
-`backend/sample_data.sql` is the canonical local development seed file.
-
-The current canonical seed contains 15 titles: 8 movies and 7 series.
-
-It is designed for the current backend state and includes sample data for:
-
-- content listing
-- content details
-- top-rated discovery
-- recent discovery
-- genre/platform discovery
-- combined discovery
-- metadata endpoints
-- watch later and watched examples
-- provider-neutral external IDs for TMDb and verified IMDb matching
-
-The seed file avoids hardcoded generated IDs by using stable lookups such as `tmdb_id`, genre name, platform name, and user email.
-
-Do not use legacy/manual seed files for local setup. `backend/sample_data.sql` is the single canonical seed source.
-
-## Recommended Future Improvements
-
-Recommended future database setup improvements:
-
-- Continue expanding `backend/sample_data.sql` as the single clean local seed source.
-- Add more sample titles only when needed for real endpoint or frontend testing.
-- Plan any future seed expansion before editing SQL.
-- Optionally add database migrations later, for example with Alembic.
+- Each developer has an independently enriched development database and a small
+  reproducible test database. Provider tokens remain private.
+- Commit schema, fixture and code changes; never commit dumps, private environments
+  or generated provider datasets.
+- Catalog batches affect development only. Ordinary tests do not synchronize with
+  the number of ingested titles or private processed previews.
+- Add deterministic fixture records for new behavior and keep genuine independent
+  importer/commit coverage. Do not mock database behavior solely to obtain green.
+- Back up before approved imports/schema changes; record new baselines afterward.
+- Full-catalog restoration is explicit recovery verification, not routine testing.

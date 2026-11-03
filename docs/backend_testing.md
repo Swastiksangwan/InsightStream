@@ -1,191 +1,160 @@
 # Backend Testing Guide
 
-## 1. Purpose
+## Safety boundary
 
-Backend tests verify the current stable read-only API behavior, protect existing endpoints from regressions, and check key seed-data assumptions.
+Routine tests use **only `insightstream_test`**, with role
+`insightstream_test_runner`, on a loopback PostgreSQL server. They never use the
+200-title development catalog. Both `INSIGHTSTREAM_ENV=test` and an explicit
+`TEST_DATABASE_URL` are required. Missing values do not fall back to `DATABASE_URL`
+or `backend/.env`.
 
-These tests are especially useful now that the backend has a stable API surface, canonical sample data, discovery endpoints, metadata endpoints, and watch-state read endpoints.
+Before test modules can import the application's engine, pytest checks the URL,
+actual database/user/server, owner, database purpose marker, role privileges,
+schema-source hashes and expected tables. The role has no superuser, CREATEDB,
+CREATEROLE, replication, bypass-RLS or inherited membership privileges. Permission
+inspection must show zero writable development tables and no development CREATE
+privilege. No write is attempted against development to test those permissions.
 
-## 2. Current Test Scope
+Every SQLAlchemy connection, including independent importer engines, is checked
+again. Application configuration rejects a test target outside test mode. Run
+pytest in a fresh process: cached application engines imported before the safety
+gate are rejected. PostgreSQL URLs are redacted from pytest failure reports.
 
-The current tests cover read-only endpoints and read-only seed verification only.
+## One-time local preparation
 
-Covered areas:
-
-- health endpoint
-- content listing
-- content type filtering
-- recent content
-- top-rated content
-- genre discovery
-- platform discovery
-- combined discovery
-- homepage sections API
-- content details
-- content details additive `videos`/`primary_video` behavior and safe derived URLs
-- content credits endpoint, allowing empty arrays before credits import
-- person detail endpoint, conditional on imported people data
-- person credits endpoint, conditional on imported people data
-- person birthday/place-of-birth response behavior using controlled temporary rows
-- person details importer helper behavior for birthday/place-of-birth preview mapping, safe missing-only updates, conflict preservation, and row-level update output
-- genre metadata
-- platform metadata
-- watched read endpoint
-- watch later read endpoint
-- watch later/watched non-overlap for seeded user
-- external IDs seed verification
-- TMDb external ID coverage for seeded content
-- verified IMDb IDs for all seeded titles
-- duplicate external ID checks
-- people/cast/crew schema table verification
-- person external ID unique constraint verification
-- content-person role type constraint verification
-- strict search endpoint behavior, including title/original-title matching, people-name matching, ranking, count consistency, and exclusion of overview-only, genre-only, biography-only, department-only, and credit-only matches
-- TMDb keyword preview helper behavior
-- TMDb keyword retry/merge helper behavior
-- TMDb keyword storage schema verification
-- TMDb keyword importer dry-run/idempotency helper behavior
-- TMDb keyword health-check summary behavior
-- keyword-to-signal preview mapping/helper behavior, including v3.2.1 metadata fallback, curated overrides, partial-output protection, semantic QA report fields, generator/QA version fields, product-copy safeguards, v1 reusable mapping rules, v2 config hygiene plus family/emotional, workplace, supernatural, political/crime/survival, historical/war, and mythology/identity cues, and v2.1 period/hotel/caper, social-satire, creature-adventure, superhero-team, mythic, and brisk-investigation cleanup
-- source-signal storage schema verification
-- source-signal importer dry-run/write/idempotency validation
-- source-signal decision-layer display grouping, deterministic Insight Plans, evidence-bound copy roles, semantic concept deduplication, controlled overview context, supporting facts, historical/war context, specific caution copy, `best_for` normalization, and public-output sanitization
-- decision display quality-audit helper behavior, including generic/duplicate/grammar/spoiler/template issue detection, scoring, grading, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
-- source-signal mapping quality-audit helper behavior, including signal richness scoring, missing dimension detection, calibrated caution-proxy diagnostics, backend-display fallback diagnostics, weak/generic labels, stricter subgenre opportunity detection, unmapped keyword opportunities, CSV formatting, summary aggregation, and fail-threshold logic without live DB/API calls
-- homepage sections API behavior, including section order, hero quick filters, poster-backed cards, explicit refresh-date handling, bounded deterministic rotation, movie/series freshness ordering, mood-bucket inclusion/exclusion rules, score quality, series-only rails, compact card copy, public-label sanitization, duplicate prevention, and limit clamping
-- source-signal ingestion health-check summary behavior
-
-`POST` and `DELETE` mutation tests are intentionally not included yet. Mutation tests should be added later with a safer test-data strategy so local development data is not accidentally changed during read-only test runs.
-
-## 3. Required Database State
-
-Tests assume the local development database has already been prepared using the canonical setup order:
-
-1. `backend/schema.sql`
-2. `backend/sample_data.sql`
-3. `backend/indexes.sql`
-
-Expected current seed state:
-
-- 15 total content titles
-- 8 movies
-- 7 series
-- test user: `test@example.com`
-- watched: Interstellar, Inception
-- watch later: The Mandalorian, Dune: Part Two
-- external IDs: 15 `tmdb` rows and 15 verified `imdb` rows
-- verified IMDb IDs for all 15 seeded titles
-- people/cast/crew schema tables exist with 0 seeded rows until the local people/credits import script is applied
-- `people.birthday` and `people.place_of_birth` nullable display-metadata columns are present
-- `GET /content/{content_id}/credits` works with either empty credits or imported local credits
-- `GET /people/{person_id}` and `GET /people/{person_id}/credits` work when people data has been imported; existing-person tests are skipped when no local people rows exist
-
-If the database is stale, missing seed data, or still has duplicate old seed rows, tests may fail. Reset the local database and rerun the setup SQL files before debugging the tests themselves.
-
-Existing local databases created before person birthday/place-of-birth support
-should run `backend/migrations/012_add_person_birthday_birthplace.sql` before
-running person endpoint tests.
-
-Existing local databases created before title video support should run
-`backend/migrations/014_add_content_video_metadata.sql` before video importer or
-content-details tests. The migration is additive and idempotent, including the
-hardening path for an earlier local draft: separate attempt/source timestamps,
-primary-video ownership, fetch-state consistency, and redundant-index removal.
-
-Some metadata fields are intentionally enriched by later import scripts rather than by
-`sample_data.sql` itself. For example, original title/language values can be added by
-the TMDb metadata importer after the canonical seed has already created a title. Tests
-that validate the canonical seeded catalog should assert only seed-stable fields, while
-behavior tests for optional metadata should create controlled temporary rows and clean
-them up. This keeps manual metadata imports in a development database from changing
-the meaning of a backend test.
-
-## 4. How to Run Tests
-
-From inside the backend folder:
+Use the existing macOS PostgreSQL installation and current Python environment.
+From the repository root:
 
 ```bash
-source .venv/bin/activate
-pip install -r requirements.txt
-python3 -m pytest
+python3 backend/scripts/local_database.py prepare-test
+python3 backend/scripts/local_database.py check-test
 ```
 
-`pytest` also works if it is available directly:
+Preparation requires the configured local administrative development connection.
+It creates a new role/database only when the names are unused. An existing
+unrecognized role/database is a blocker, not permission to overwrite it. An
+already prepared environment is inspected without resetting it.
 
-```bash
-pytest
-```
-
-Expected current result with local people/credits import applied:
+Generated test credentials live in:
 
 ```text
-35 passed
+~/Library/Application Support/InsightStream/test.env
 ```
 
-Without imported people rows, the existing-person endpoint tests are skipped while the 404 tests still run.
+The directory is mode 0700 and the file is 0600. Do not print, commit or send this
+file. No real credentials are stored in the repository. The test database owner
+is the restricted test role, permitting genuine DDL integration tests in this
+disposable database without granting privileges over development.
 
-## 5. Test File Overview
+## Run tests
 
-- `backend/tests/conftest.py` — shared `TestClient` and database fixtures
-- `backend/tests/test_health.py` — root health endpoint
-- `backend/tests/test_content_read_endpoints.py` — content, discovery, homepage sections, and details read endpoints
-- `backend/tests/test_content_video_endpoints.py` — stored video ordering, optional primary video, safe URL derivation, and no-video response behavior
-- `backend/tests/test_content_video_importer.py` — video upsert idempotency, stale-row semantics, other-source preservation, explicit preview/import language-policy consistency, empty snapshots, and affected-title reporting
-- `backend/tests/test_tmdb_video_metadata.py` — appended-video request strategy, bounded language merging, cache-sidecar validation, retry/review disposition, worker isolation, multilingual normalization/selection, bounded retries, and URL safety without live TMDb calls
-- `backend/tests/test_content_refresh_orchestration.py` — shared planner cadence, legacy series-selection parity, scope filtering, one-request combined refresh, persisted failure disposition, bounded retry, database-level domain isolation, exit codes, and independent domain outcomes
-- `backend/tests/test_content_credits_endpoints.py` — provider-neutral content credits endpoint
-- `backend/tests/test_people_endpoints.py` — provider-neutral person detail and person credits endpoints
-- `backend/tests/test_person_metadata_importer.py` — person details preview/import helper behavior
-- `backend/tests/test_search_endpoints.py` — strict local search behavior for title/original-title matches and people-name matches, including deterministic ranking, SQL-backed counts, pagination ordering, and exclusion of indirect overview/genre/biography/credit matches
-- `backend/tests/test_metadata_endpoints.py` — genre and platform metadata endpoints
-- `backend/tests/test_user_content_read_endpoints.py` — watched/watch-later read endpoints for the seeded user
-- `backend/tests/test_external_ids_seed.py` — read-only external ID seed verification
-- `backend/tests/test_people_schema.py` — read-only people/cast/crew schema verification
-- `backend/tests/test_tmdb_keywords_preview.py` — TMDb keyword preview helper tests without live TMDb calls
-- `backend/tests/test_tmdb_keywords_retry_merge.py` — TMDb keyword retry/merge helper tests without database writes
-- `backend/tests/test_tmdb_keywords_schema.py` — read-only TMDb keyword storage schema verification
-- `backend/tests/test_tmdb_keywords_importer.py` — TMDb keyword importer helper tests without database writes
-- `backend/tests/test_tmdb_keywords_health_check.py` — TMDb keyword health-check summary tests without database access
-- `backend/tests/test_keyword_signal_preview.py` — keyword-to-signal preview mapping, reusable mapping rules, mapping-config hygiene, metadata fallback, curated override, partial-output protection, semantic QA versioning, and product-copy tests without live DB/API calls
-- `backend/tests/test_source_signal_schema.py` — source-signal storage schema and index verification
-- `backend/tests/test_source_signal_importer.py` — source-signal importer dry-run, write, validation, idempotency, and JSONB helper tests without live DB/API calls
-- `backend/tests/test_source_signal_service.py` — source-signal decision-layer sanitization plus deterministic Insight Plan construction, evidence provenance, controlled overview rules, identity specificity, grammatical copy roles, concept-family dedupe, articles, punctuation, and product-friendly rendering without live DB/API calls
-- `backend/tests/test_decision_insight_formatter.py` — pure Formatter v2 coverage for future titles, unknown labels, sparse evidence, spoiler-safe rejection, rating-source provenance, plan-driven headlines, documentary combinations, overlap, Unicode, and deterministic fallback behavior
-- `backend/tests/test_decision_display_quality_audit.py` — decision display quality-audit helper tests for clean/missing displays, technical leaks, generic/duplicate concepts, raw-label grammar, repetition, punctuation, spoiler risk, template overuse, scoring, CSV rows, summary aggregation, and fail flags without DB writes
-- `backend/tests/test_decision_insight_reports.py` — deterministic baseline/comparison/stratified report metrics, zero/one/many catalog behavior, post-baseline title inclusion, and Insight Plan evidence preservation without DB writes
-- `backend/tests/test_decision_insight_semantic_catalog.py` and `backend/tests/fixtures/decision_insight_semantic_catalog.json` — versioned semantic-property regressions across 26 representative titles and synthetic evidence profiles
-- `backend/tests/test_source_signal_mapping_quality_audit.py` — source-signal mapping quality-audit helper tests for rich records, missing signals, missing dimensions, calibrated caution-proxy behavior, backend-display fallback diagnostics, common-vs-weak labels, stricter genre/subgenre opportunities, unmapped keyword opportunities, CSV rows, summary aggregation, and fail flags without DB writes
-- `backend/tests/test_catalog_expansion_readiness_audit.py` — controlled catalog fixtures for composition, metadata/lifecycle gaps, video refresh health, keyword mapping, source-signal quality, recommendation candidate density, gap planning, report output, strict mode, and read-only/no-network contracts
+From the repository root:
 
-The catalog expansion audit itself can be run against the prepared local catalog
-with `python3 -m analytics.scripts.audits.audit_catalog_expansion_readiness`. Its
-database transaction is explicitly read-only. Generated JSON/Markdown gap
-reports are ignored by Git and are not test fixtures.
+```bash
+# Full ordinary suite; private test settings are loaded explicitly by this runner.
+python3 backend/scripts/run_tests.py -q -rs
+
+# Pure tests without a running PostgreSQL server or any database URL.
+python3 backend/scripts/run_tests.py --unit-only -q
+
+# Narrow a run normally.
+python3 backend/scripts/run_tests.py backend/tests/test_search_endpoints.py -q
+```
+
+The runner removes inherited development/provider credentials from the child
+process. Explicit exported test settings override the private file, and unsafe
+settings still fail the guard. A bare `python3 -m pytest` without explicit test
+configuration intentionally fails before collection. `--unit-only` deselects
+cases whose fixture graph requires the database/client and refuses application
+engine initialization.
+
+Both repository-root and `cd backend` invocations work. From backend, use
+`python3 scripts/run_tests.py -q`.
+
+## Deterministic fixtures and genuine commits
+
+The test schema is created from `backend/schema.sql` and `backend/indexes.sql`,
+not by replaying the migration directory and not by restoring development.
+The fixture is the canonical 15-title `backend/sample_data.sql` plus
+`backend/tests/fixtures/catalog.sql`: 18 titles, synthetic source ratings,
+selected people/credits, lifecycle, source signals, regional offers and deliberate
+missing-data cases. Registry definitions are explicitly reseeded after data reset.
+All fixture timestamps are fixed. Provider-derived seed images are not fetched.
+Synthetic ratings are test inputs, never catalog ingestion.
+
+For each database test, the guarded fixture resets only the known test tables
+using TRUNCATE/RESTART IDENTITY, then reloads these small deterministic records.
+It resets again in `finally`, after sessions/clients close. This is deliberate:
+existing integration tests exercise independent connections and real commits, so
+an outer rollback cannot isolate all writes. Assertions and importer behavior
+are retained; everything is confined to the disposable test database.
+
+A session advisory lock prevents concurrent suites/resets on one local database.
+Parallel pytest workers are not supported. A killed process may leave test data;
+inspect identity and use the explicit reset below. Unexpected tables/schema-source
+drift cause refusal rather than an automatic schema rebuild.
+
+```bash
+python3 backend/scripts/local_database.py check-test
+python3 backend/scripts/local_database.py reset-test --confirm-reset insightstream_test
+```
+
+Reset operates only on marked `insightstream_test`, checks development write
+permissions, takes the same lock, and requires the exact target name as explicit
+operator confirmation. There is no development-reset command. A regular test run
+also resets disposable fixture data; never put personal/development data there.
+
+## Historical migrations and skips
+
+The two existing video migration idempotency/preservation tests retain every
+assertion and have the `migration` marker. They require explicit
+`--run-migration-tests` permission and are skipped in the ordinary run. Historical
+migrations were **not replayed during Milestone 1**, including these tests.
+This boundary must remain visible in reported results; the gated tests are not
+claimed as executed.
+
+The five November 1 development-data-dependent skips are now covered by fixture
+cases: mixed scoring-source tie, missing guidance, missing imported rating,
+legacy-only age rating and legacy-only availability. Fixtures also provide
+Oppenheimer regional certification, a US-only offer and no-availability records.
+
+Existing pure formatter/mapping/provider helper tests remain database-independent.
+Real database tests retain schema, SQL/read API, importer-commit, idempotency,
+failure-state and people/search behavior coverage. Database cases are tagged
+`database` automatically from their fixture graph.
+
+## Existing regression history and references
+
+An early combined-discovery regression used `SELECT DISTINCT` with
+`ORDER BY cs.unified_score` without selecting that sort expression. PostgreSQL
+rejected filtered `sort_by=top_rated` queries. The existing fix selects an internal
+`sort_unified_score` value while `build_content_object()` preserves the public
+response shape. This history remains a reason to retain genuine PostgreSQL
+endpoint coverage alongside pure tests.
 
 Formatter test ownership, public-field consistency rules, and diagnostic commands
-are documented in `docs/decision_insight_formatter_v2.md`.
+remain documented in [Decision Insight Formatter v2](decision_insight_formatter_v2.md).
+The read-only catalog expansion audit is documented in
+[Catalog Expansion Readiness](catalog_expansion_readiness.md); generated audit
+reports are evidence, not ordinary test fixtures.
 
-## 6. Important Bug Caught by Tests
+## Validation and two-developer workflow
 
-The combined discovery endpoint failed for `sort_by=top_rated` when filters were also used.
+Before changing fixtures or schema, run the safety unit tests and `check-test`.
+Developers each prepare their own local test database once; no manual
+synchronization with development ingestion is needed. Catalog expansion must not
+change ordinary test counts or expectations. Add a small explicit fixture for a
+new behavior, not a production dump.
 
-PostgreSQL raised an error because the query used `SELECT DISTINCT` and ordered by `cs.unified_score`, but that ordered field was not included in the `SELECT` list.
+Full-catalog recovery is a separate `backup`/`restore-verify` workflow in
+[Backend Database Setup](backend_database_setup.md); it is never an implicit
+pytest fixture. Future snapshot-based integration tests must have their own
+explicit isolated targets and authorization.
 
-The fix added an internal `sort_unified_score` field for SQL sorting only. `build_content_object()` ignores this internal field, so the API response shape stayed unchanged.
-
-This is a good example of why automated tests are useful: the bug was in SQL behavior, not in the visible response contract, and it was easy to miss during manual endpoint checks.
-
-## 7. Future Testing Work
-
-Future test additions should include:
-
-- mutation tests for `POST /watch-later` and `POST /watched`
-- `DELETE` tests for watch later/watched
-- invalid input tests
-- pagination edge cases
-- empty-state tests
-- database reset/test isolation later
-- recommendation tests when recommendations are added
-- advanced-search tests if InsightStream later adds explicit overview, biography, genre, credit, or semantic search modes
-- richer homepage section tests when personalized recommendation rails are introduced
-- frontend/API integration tests later
+November 2, 2026 validation: **876 passed, two skipped** (the explicitly gated
+migration cases), versus the original 829 passed / five skipped baseline.
+The unit-only run passed **747 tests**, deselecting 131 database cases, without
+PostgreSQL access. Forty-four safety/isolation cases were added; all five former
+fixture-dependent skips now execute. An intentional committed-test failure also
+verified cleanup. Development counts, row fingerprints, schema and sequences
+matched the pre-change snapshot. The two gated migration cases were not executed.

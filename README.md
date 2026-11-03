@@ -4,23 +4,46 @@
 
 InsightStream is an information-first entertainment decision-support platform for movies and series.
 
-The current MVP focuses on structured metadata, discovery, availability, personal watch state, cast and crew, and person pages. The product is designed to help users decide what to watch by making content data easier to inspect and compare.
+The working local MVP combines structured metadata, discovery, regional availability, aggregate audience ratings, deterministic decision insights, personal watch state, and cast/crew/person pages. The product is designed to help users decide what to watch by making content data easier to inspect and compare.
 
-Ratings and review intelligence are planned later. Public reviews, comments, posts, communities, followers, and social feeds are not part of the current MVP.
+Aggregate ratings are implemented. Individual review ingestion and review-derived intelligence are not implemented; current decision insights come from metadata, ratings, and mapped source signals. Public reviews, comments, posts, communities, followers, and social feeds are outside the current MVP.
 
 ## 2. Current Phase
 
-Current phase: **Metadata Foundation**
+Current phase: **Working local MVP — recovery and data/pipeline stabilization**
+
+The November 1, 2026 read-only recovery audit at `d725576` verified a 200-title
+development catalog, not just the original seed. These are dated audit measurements,
+not guarantees of provider freshness or production readiness:
+
+| Area | Verified November 1 state |
+| --- | --- |
+| Catalog | 200 titles: 109 movies / 91 series, across 28 application tables |
+| Aggregate ratings | TMDb: 200 titles; IMDb: 150; Letterboxd: 79 of 109 movies |
+| External identifiers | TMDb and IMDb IDs on all 200 titles; an ID does not imply a stored rating |
+| Credits and guidance | Cast and stored watch guidance on all 200 titles; creators on 80 of 91 series |
+| Availability and videos | Regional availability on 198 titles; a selected primary video on 199 |
+
+Milestone 1 established verified private backups and an isolated, deterministic
+PostgreSQL test environment. Its full backend validation passed **876 tests with
+two intentional historical-migration skips**, versus the November 1 baseline of
+829 passed / five skipped. The frontend production build and application smoke
+checks passed. Development data remained at 200 titles with matching integrity
+fingerprints. See [database recovery](docs/backend_database_setup.md) and
+[testing evidence and skip reasons](docs/backend_testing.md).
 
 Completed:
 
-- 15-title movie/series seed catalog.
+- 200-title imported local catalog, alongside the original canonical 15-title seed used for fresh setup and deterministic tests.
 - Content listing, details, discovery, genres, platforms, and personal watch-state APIs.
 - Local catalog search for ingested title/original-title matches and imported people names.
 - Real poster/backdrop URLs persisted in `backend/sample_data.sql`.
 - Provider-neutral `external_ids` table with TMDb and IMDb IDs.
 - Metadata normalization and reconciliation docs.
 - Safe normalized metadata updates for genre additions and series status values.
+- `latest_activity_date` Recent sorting and series lifecycle/season/episode counters.
+- Provider-neutral aggregate rating sources, TMDb/IMDb/Letterboxd importers, normalized scores, and calculated unified scores.
+- Deterministic Insight Summary from ratings and metadata; this is separate from review analysis.
 - People/cast/crew schema: `people`, `person_external_ids`, and `content_people`.
 - Structured credits preview and safe people/credits import.
 - TV aggregate credits support for series cast, with regular TV credits as fallback.
@@ -30,6 +53,8 @@ Completed:
 - Clickable genre chips to filtered discovery.
 - Clickable person cards and person detail pages with biography and filmography.
 - Small TMDb attribution footer in the frontend.
+- Stored video metadata, deterministic primary-video selection, and trailer/teaser UI with failure/empty states.
+- Shared manual series/video refresh planning and execution with per-domain outcomes.
 - TMDb keyword preview pipeline with retry/merge workflow for future source signals.
 - Source-signal decision layer in the content detail API, including compact, rule-cleaned `decision_layer.display` output while keeping raw keywords internal.
 - Backend-powered homepage sections API with deterministic weekly/daily rotation and a frontend homepage that consumes it directly.
@@ -39,15 +64,18 @@ Completed:
 - Source signal mapping improvements v1 for reusable pacing, mood, survival, war, space-sci-fi, post-apocalyptic, kitchen-workplace, investigation, AI, and mythic/future-society signal quality.
 - Source signal mapping improvements v2 for config hygiene plus family/emotional, workplace, supernatural, political/crime/survival, historical/war, nature-documentary, and mythology/identity signal coverage.
 - Source signal mapping improvements v2.1 for targeted remaining-candidate cleanup and stricter subgenre false-positive protection.
+- Runtime Decision Insight Formatter v2.0.2 with evidence-based compact copy and regression coverage.
+- Dedicated test database/role, early connection guards, deterministic commit-safe fixtures, and private backup/restore verification tools.
 
 Next planned:
 
-- `latest_activity_date` for better Recent sorting, especially for active series.
-- Scalable metadata ingestion plan before expanding to 100+ titles.
-- Ratings source architecture.
-- Rating normalization and unified score strategy.
-- Further frontend polish around compact `decision_layer.display`.
-- Review intelligence, pros/cons, and verdict pipeline.
+- Complete and validate existing rating matches before adding more catalog titles.
+- Reconcile stale availability and stabilize repeatable ingestion/refresh workflows.
+- Review source-signal quality and remaining schema/index differences using audit evidence.
+- Establish prerequisites for controlled catalog expansion; batches 8–10 remain un-ingested in the audited snapshot.
+
+Review intelligence remains optional future work requiring a supported data source
+and verified provider access/licensing. It is not a dependency of the working MVP.
 
 ## 3. Tech Stack
 
@@ -85,14 +113,20 @@ Content:
 - Discovery filtering by type, genre, platform, availability, and sort mode
 - Genre and platform metadata
 - Recent and top-rated feeds
+- Six deterministic backend homepage rails, consumed by the frontend with a five-minute homepage cache
 - Watch Later and Watched actions
 
 Metadata:
 
-- Real posters and backdrops for seeded titles
+- Persisted posters and backdrops for the imported catalog
 - TMDb and IMDb external IDs
+- Original title/language and series freshness/lifecycle metadata
 - Normalized genre additions
 - Improved series status values
+- Regional streaming/rent/buy/free/ad-supported offers and certifications
+- TMDb/IMDb/Letterboxd aggregate ratings and a normalized unified score
+- Mapped keyword signals and deterministic compact watch-fit insights
+- Stored trailers/teasers and a selected primary video
 - Content credits: cast, directors, creators, and crew
 - Person records with provider-neutral external IDs
 - Person biographies from processed provider preview
@@ -110,6 +144,12 @@ Frontend:
 - Clickable genre chips to `/discover?genre=<GenreName>`
 - Clickable person cards to `/people/[id]`
 - Fallback poster, backdrop, and avatar states
+
+The unified score uses active, positive-weight sources with at least 50 votes.
+At the audited baseline TMDb and IMDb have equal weight; Letterboxd ratings are
+displayed separately with zero unified-score weight. Ratings are aggregate audience
+scores, not individual reviews. Watch actions currently use a demo user; there is
+no authentication or personalized recommendation system.
 
 ## 5. Backend API Summary
 
@@ -174,7 +214,12 @@ added later as an explicit advanced-search mode.
 
 ## 6. Database Setup
 
-The local database is built from SQL files in this order:
+The preserved local development catalog has 200 titles. The canonical seed below
+contains only 15 and must never be used to reset the enriched development database.
+Use [the safe database workflow](docs/backend_database_setup.md) for private verified
+backups and [isolated testing](docs/backend_testing.md).
+
+For a new empty database only, the declarative seed setup order is:
 
 1. `backend/schema.sql`
 2. `backend/sample_data.sql`
@@ -206,6 +251,8 @@ TMDB_VIDEO_LANGUAGES=en,null
 Notes:
 
 - `DATABASE_URL` is required by the backend and database import scripts.
+- Normal backend startup uses `INSIGHTSTREAM_ENV=development` (the default), exported variables first, then `backend/.env` with `override=False`.
+- Tests require `INSIGHTSTREAM_ENV=test` and `TEST_DATABASE_URL`. The safe runner loads these from a private file outside Git; do not export them for the development server or add them to its `.env`.
 - `TMDB_READ_ACCESS_TOKEN` is required only when fetching provider data from TMDb.
 - `TMDB_LANGUAGE` controls localized TMDb detail/video metadata and defaults to `en-US`.
 - `TMDB_VIDEO_LANGUAGES` controls appended video-language fallbacks. It accepts a
@@ -304,50 +351,33 @@ Analysis/reporting scripts:
 
 These compare seed data with processed provider previews and generate reports. They do not update PostgreSQL.
 
-## 9. Full Database Reset / Restore Flow
+## 9. Safe Database Backup / Recovery
 
-For the current metadata catalog rebuild and ingestion flow, follow `docs/data_ingestion_pipeline.md`.
-
-For a clean local reset in pgAdmin or `psql`:
-
-```sql
-DROP SCHEMA public CASCADE;
-CREATE SCHEMA public;
-```
-
-Then run:
-
-1. `backend/schema.sql`
-2. `backend/sample_data.sql`
-3. `backend/indexes.sql`
-
-Set environment variables before import scripts:
+Never drop, reset or reseed `insightstream_db` to run tests. From the repository root:
 
 ```bash
-export DATABASE_URL="postgresql://<user>:<password>@localhost:5432/<db_name>"
-export TMDB_READ_ACCESS_TOKEN="..."
+python3 backend/scripts/local_database.py backup
+python3 backend/scripts/local_database.py status
 ```
 
-If processed files already exist:
+Backups are private and outside Git. Every backup is restored into a new unique
+verification database and compared before success is reported. The three-file
+seed is not a backup of the enriched catalog. See `docs/backend_database_setup.md`
+for checksum verification, restoration, test preparation and the proposed migration
+versioning process. Historical migrations are not replayed automatically.
+
+To reverify an existing archive or compare development data with its saved baseline:
 
 ```bash
-python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
-python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
+python3 backend/scripts/local_database.py restore-verify \
+  --manifest "$HOME/Library/Application Support/InsightStream/backups/<run>/manifest.json"
+python3 backend/scripts/local_database.py fingerprint \
+  --manifest "$HOME/Library/Application Support/InsightStream/backups/<run>/manifest.json"
 ```
 
-If regenerating provider data:
-
-```bash
-python3 -m analytics.scripts.ingestion.fetch_tmdb_sample
-python3 -m analytics.scripts.ingestion.import_content_videos_from_preview
-python3 -m analytics.scripts.ingestion.import_content_videos_from_preview --apply
-python3 -m analytics.scripts.ingestion.build_tmdb_credits_preview
-python3 -m analytics.scripts.ingestion.import_people_credits_from_preview --apply
-python3 -m analytics.scripts.ingestion.fetch_tmdb_person_details
-python3 -m analytics.scripts.ingestion.import_person_details_from_preview --apply
-```
-
-Poster/backdrop URLs are already restored by `backend/sample_data.sql` for the current 15 titles. Use `update_posters_from_tmdb_preview.py` only for refresh, repair, or new title work.
+Replace `<run>` with the recorded backup directory. `restore-verify` creates a new
+unique verification database; it never replaces an existing target. `status` and
+`fingerprint` are read-only. Keep archives, manifests, and test credentials outside Git.
 
 ## 10. Running Backend
 
@@ -356,7 +386,7 @@ cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+INSIGHTSTREAM_ENV=development python3 -m uvicorn app.main:app --reload
 ```
 
 On Windows, activate the virtual environment with the equivalent script for your shell.
@@ -383,43 +413,66 @@ http://localhost:3000
 
 ## 12. Testing
 
-Backend:
+From the repository root, prepare the dedicated local target once:
 
 ```bash
-cd backend
-python3 -m pytest
+python3 backend/scripts/local_database.py prepare-test
+python3 backend/scripts/local_database.py check-test
+python3 backend/scripts/run_tests.py -q -rs
 ```
 
-Frontend:
+Pure tests can run without PostgreSQL:
 
 ```bash
-cd frontend
-npm run build
+python3 backend/scripts/run_tests.py --unit-only -q
 ```
 
-All tests and builds should pass with the local database prepared from `schema.sql`, `sample_data.sql`, and `indexes.sql`. People/person endpoint tests are designed to handle a database before or after the people/credits import.
+The full runner explicitly loads private test settings outside Git. Database tests
+require confirmed test mode and `TEST_DATABASE_URL`; they never fall back to the
+development URL. Fixtures contain 18 deterministic titles and are reset per test,
+including after real commits. The existing historical-migration tests require
+separate explicit opt-in and are not claimed as executed in ordinary results.
+
+`prepare-test` creates only previously absent test database/role names; it refuses
+unknown existing targets. To reset fixture data explicitly, first verify the target:
+
+```bash
+python3 backend/scripts/local_database.py check-test
+python3 backend/scripts/local_database.py reset-test --confirm-reset insightstream_test
+```
+
+This resets only the marked disposable test database. A bare pytest invocation
+without explicit test settings fails before collection. Pure tests need no database.
+
+Frontend validation remains `cd frontend` then `npm run build`.
+See [Backend Testing](docs/backend_testing.md) for safety guarantees and commands.
 
 ## 13. Current Limitations / Not Yet Implemented
 
-- Scalable ingestion for 100+ titles is not finalized yet.
-- `latest_activity_date` recency sorting is planned but not implemented.
-- Ratings source architecture is not finalized.
-- Review intelligence is not implemented.
-- Current ratings, summaries, pros, cons, verdicts, and unified scores are development seed data.
-- No public social/community layer exists in the MVP.
-- No episode-level credits model exists yet.
-- No frontend code calls TMDb directly.
-- No broad season/episode schema exists yet.
+- Source coverage and freshness are incomplete. The November 1 audit found 50 titles without stored IMDb ratings despite valid IDs, and 30 movies without Letterboxd ratings. Four stored Letterboxd matches required ambiguity review.
+- All 429 current rating rows and 2,515 availability rows had recorded fetch/import dates over 90 days old at the audit. Provider timestamps do not prove present-day correctness.
+- The availability importer inserts offers but does not reconcile disappeared offers or refresh existing rows. Series/video refresh has an explicit operator workflow, not an automatic scheduler.
+- Individual reviews, review-source storage, and review-derived pros/cons/verdict generation are not implemented. The 15 legacy `content_summary` rows and 60 legacy `ratings` rows remain seeded compatibility data; current frontend ratings and insights use the newer contracts.
+- Authentication and user ownership enforcement are absent; personal watch actions use a demo user. Homepage rotation is deterministic, not live trending or personalization.
+- Season/episode counts are title-level metadata; there are no dedicated season/episode entities or episode-level credits. Person filmography covers only imported catalog relationships.
+- No migration ledger exists. The audit found four declared indexes absent from the live database; this milestone does not replay historical migrations or change that schema.
+- Provider permissions, licensing, and attribution require review before public/commercial deployment. The frontend reads application APIs and does not fetch TMDb metadata directly.
 
 ## 14. Roadmap
 
-1. Implement `latest_activity_date` for Recent sorting.
-2. Create a scalable metadata ingestion plan.
-3. Expand the catalog safely beyond 15 titles.
-4. Plan ratings source architecture.
-5. Implement rating normalization and unified score calculation.
-6. Add review intelligence, pros/cons, and verdict pipeline.
-7. Improve discovery and ranking.
+1. **Baseline and safety — Milestone 1 complete:** preserve the 200-title catalog, verify restorable private backups, isolate PostgreSQL tests, and document reproducible local commands. Keep these checks as the foundation for later work.
+2. **Data completeness and correctness:** validate existing IMDb/Letterboxd matches, fill supported aggregate-rating gaps, and distinguish missing data from intentionally unsupported review information. Check provenance before importing.
+3. **Pipeline stabilization:** reconcile availability additions/removals, establish freshness checks and repeatable refresh/recovery evidence, and reduce duplicated manual ingestion steps. Do not add a scheduler before refresh behavior is reliable.
+4. **Targeted architecture and schema work:** address demonstrated query/aggregation and maintenance problems, review index differences, and introduce migration version tracking through a separately reviewed additive change.
+5. **Controlled expansion:** require satisfactory source coverage, refresh/reconciliation, quality checks, and reproducible imports before ingesting the remaining 75 configured targets in batches 8–10 or expanding further. Ordinary tests stay independent of catalog size.
+6. **Product development:** improve discovery and compact insight usability after the foundation is reliable; add authentication/ownership before shared public use. Review ingestion and richer recommendations require separate product and provider-access decisions.
+
+The earlier 15-title metadata foundation and later ratings, recency, homepage,
+video, and source-signal work remain part of the project's history. The last major
+product workstream was Formatter v2.0.2 in August 2026; the November recovery work
+stabilizes that implementation. Existing planning documents below retain their
+historical rationale and may describe steps already delivered; this status and
+roadmap reflect the verified recovery baseline.
 
 ## Documentation
 
