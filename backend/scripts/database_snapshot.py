@@ -92,11 +92,22 @@ def snapshot(connection):
         for (name,) in cursor.fetchall():
             cursor.execute(sql.SQL("SELECT last_value,is_called FROM public.{}").format(sql.Identifier(name)))
             sequences[name] = cursor.fetchone()
+        cursor.execute("SELECT 1 FROM pg_namespace WHERE nspname='insightstream_migrations'")
+        management = None
+        if cursor.fetchone():
+            from scripts.migration_schema import schema_signature
+
+            cursor.execute("""SELECT to_jsonb(h)::text
+                FROM insightstream_migrations.history h ORDER BY version""")
+            rows = cursor.fetchall()
+            management = {"rows": len(rows), "history_sha256": digest(rows),
+                          "schema_sha256": schema_signature(connection, "insightstream_migrations")}
     return {
         "database": database, "version": version, "tables": tables, "catalog": catalog,
         "schema_raw_sha256": raw_schema_hash, "schema_sha256": digest(schema),
         "schema_object_counts": {key: len(value) for key, value in schema.items()},
         "sequences": sequences, "sequences_sha256": digest(sequences),
+        "migration_management": management,
     }
 
 
@@ -138,7 +149,7 @@ def pg_command(arguments, raw_url, directory, database=None):
 def compare_snapshots(expected, actual):
     return {key: expected[key] == actual[key] for key in (
         "tables", "catalog", "schema_sha256", "schema_object_counts", "sequences_sha256"
-    )}
+    )} | {"migration_management": expected.get("migration_management") == actual.get("migration_management")}
 
 
 def restore_verify(raw_url, manifest_path):

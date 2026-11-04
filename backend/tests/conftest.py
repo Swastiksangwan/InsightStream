@@ -22,12 +22,16 @@ from scripts.test_support import acquire_test_lock, reset_fixture, verify_fixtur
 
 def pytest_addoption(parser):
     parser.addoption("--unit-only", action="store_true", help="Run tests with no database/client fixtures; no PostgreSQL required")
-    parser.addoption("--run-migration-tests", action="store_true", help="Explicitly allow historical migration SQL in the disposable test database")
+    parser.addoption("--run-migration-tests", action="store_true", help="Retired unsafe shared-schema replay; use --migration-env lifecycle checks instead")
+    parser.addoption("--migration-env", type=Path, help="Private migration sandbox configuration from migrations prepare-tests; prepare fresh targets per lifecycle run")
 
 
 def pytest_configure(config):
     config._test_lock = None
     config._test_connection_guard = None
+    config._migration_targets = {}
+    if config.getoption("--run-migration-tests"):
+        raise pytest.UsageError("Historical replay on the routine test schema is retired; use a fresh --migration-env sandbox configuration.")
     if config.getoption("--unit-only"):
         os.environ["INSIGHTSTREAM_ENV"] = "unit-test"
         os.environ.pop("DATABASE_URL", None)
@@ -47,6 +51,10 @@ def pytest_configure(config):
             lock.close()
             raise
         config._test_lock = lock
+        if config.getoption("--migration-env"):
+            from scripts.migration_database import read_check_targets
+
+            config._migration_targets = read_check_targets(config.getoption("--migration-env"))
     except DatabaseSafetyError as exc:
         raise pytest.UsageError(str(exc)) from None
     except Exception:
@@ -57,7 +65,14 @@ def pytest_configure(config):
 
     def guard_connection(dbapi_connection, _record):
         try:
-            verify_test_connection(dbapi_connection)
+            names = {item["database"] for item in config._migration_targets.values()}
+            target = dbapi_connection.info.dbname
+            if target in names:
+                from scripts.migration_database import verify_target
+
+                verify_target(dbapi_connection, target)
+            else:
+                verify_test_connection(dbapi_connection)
         finally:
             dbapi_connection.rollback()
 
@@ -77,14 +92,14 @@ def pytest_unconfigure(config):
 def pytest_collection_modifyitems(config, items):
     selected, deselected = [], []
     for item in items:
-        database = bool({"db_session", "client", "database_state"} & set(item.fixturenames))
+        database = bool({"db_session", "client", "database_state", "migration_targets"} & set(item.fixturenames))
         if database:
             item.add_marker(pytest.mark.database)
         if database and config.getoption("--unit-only"):
             deselected.append(item)
             continue
-        if item.get_closest_marker("migration") and not config.getoption("--run-migration-tests"):
-            item.add_marker(pytest.mark.skip(reason="Historical migration execution requires --run-migration-tests; not replayed during Milestone 1."))
+        if item.get_closest_marker("migration"):
+            item.add_marker(pytest.mark.skip(reason="Original historical assertions run through the separate --migration-env sandbox lifecycle; no replay on the routine test schema."))
         selected.append(item)
     if deselected:
         config.hook.pytest_deselected(items=deselected)
@@ -117,6 +132,13 @@ def database_state(request):
             reset_fixture(connection)
         finally:
             connection.close()
+
+
+@pytest.fixture(scope="session")
+def migration_targets(request):
+    if not request.config._migration_targets:
+        pytest.skip("Migration lifecycle checks require a new private --migration-env configuration.")
+    return request.config._migration_targets
 
 
 @pytest.fixture

@@ -17,7 +17,24 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--unit-only", action="store_true")
     parser.add_argument("--test-env", type=Path, default=PRIVATE_ENV)
+    parser.add_argument("--migration-env", type=Path)
     args, pytest_args = parser.parse_known_args()
+    if args.migration_env:
+        # A separate outside-repository path can otherwise influence pytest's
+        # early root discovery before nested conftest options are registered.
+        pytest_args.insert(0, "--migration-env=" + str(args.migration_env.expanduser()))
+    # Nested conftest options are discovered from an explicit test path. With
+    # only flags, pytest may treat an as-yet-unknown custom option as a filename.
+    selected_path = False
+    for value in pytest_args:
+        if value.startswith("-"):
+            continue
+        candidate = (REPO_ROOT / value.split("::", 1)[0]).resolve()
+        if candidate.exists() and (candidate == REPO_ROOT or REPO_ROOT in candidate.parents):
+            selected_path = True
+            break
+    if not selected_path:
+        pytest_args.insert(0, str(REPO_ROOT / "backend/tests"))
     environment = os.environ.copy()
     environment.pop("DATABASE_URL", None)
     environment.pop("TMDB_READ_ACCESS_TOKEN", None)
@@ -32,7 +49,7 @@ def main():
             for key in ("TEST_DATABASE_URL", "INSIGHTSTREAM_ENV"):
                 if key not in environment and key in values:
                     environment[key] = values[key]
-    return subprocess.call([sys.executable, "-m", "pytest", *pytest_args], cwd=REPO_ROOT, env=environment)
+    return subprocess.call([sys.executable, "-m", "pytest", "-c", str(REPO_ROOT / "pytest.ini"), *pytest_args], cwd=REPO_ROOT, env=environment)
 
 
 if __name__ == "__main__":

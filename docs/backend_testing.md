@@ -19,6 +19,10 @@ Every SQLAlchemy connection, including independent importer engines, is checked
 again. Application configuration rejects a test target outside test mode. Run
 pytest in a fresh process: cached application engines imported before the safety
 gate are rejected. PostgreSQL URLs are redacted from pytest failure reports.
+Managed history and schema signatures are also checked. Pending migrations or
+unrecognized drift prevent fixture resets/tests; the runner never auto-migrates
+an existing database. Validated managed public tables join fixture resets, while
+the separate management history is preserved.
 
 ## One-time local preparation
 
@@ -73,8 +77,9 @@ Both repository-root and `cd backend` invocations work. From backend, use
 
 ## Deterministic fixtures and genuine commits
 
-The test schema is created from `backend/schema.sql` and `backend/indexes.sql`,
-not by replaying the migration directory and not by restoring development.
+The test schema starts from the pinned `backend/schema.sql` and
+`backend/indexes.sql`, with managed versions included when preparing a new test
+database. Historical files are not replayed and development is not restored.
 The fixture is the canonical 15-title `backend/sample_data.sql` plus
 `backend/tests/fixtures/catalog.sql`: 18 titles, synthetic source ratings,
 selected people/credits, lifecycle, source signals, regional offers and deliberate
@@ -107,11 +112,16 @@ also resets disposable fixture data; never put personal/development data there.
 ## Historical migrations and skips
 
 The two existing video migration idempotency/preservation tests retain every
-assertion and have the `migration` marker. They require explicit
-`--run-migration-tests` permission and are skipped in the ordinary run. Historical
-migrations were **not replayed during Milestone 1**, including these tests.
-This boundary must remain visible in reported results; the gated tests are not
-claimed as executed.
+assertion and the `migration` marker. Their original shared-database cases remain
+skipped. Historical migrations were **not replayed during Milestone 1**.
+
+Milestone 2A executes both original functions, with their original assertions,
+through `test_original_historical_assertions_execute_only_on_new_disposable_database`
+on a newly initialized sandbox. This reveals that 015 adds a second equivalent
+retry-count CHECK to the consolidated fresh schema. The migration ledger correctly
+reports that replay as drift rather than marking it as managed execution. Routine
+test/development schemas are not changed. The old `--run-migration-tests` flag now
+fails before database access; use the controlled lifecycle checks below.
 
 The five November 1 development-data-dependent skips are now covered by fixture
 cases: mixed scoring-source tie, missing guidance, missing imported rating,
@@ -122,6 +132,43 @@ Existing pure formatter/mapping/provider helper tests remain database-independen
 Real database tests retain schema, SQL/read API, importer-commit, idempotency,
 failure-state and people/search behavior coverage. Database cases are tagged
 `database` automatically from their fixture graph.
+
+## Migration management checks
+
+Create fresh targets, then use the exact private JSON path printed by preparation:
+
+```bash
+python3 backend/scripts/local_database.py migrations prepare-tests
+MIGRATION_CHECKS="$HOME/Library/Application Support/InsightStream/migration-checks/<run>.json"
+
+# Full backend suite, including the three disposable lifecycle checks:
+python3 backend/scripts/run_tests.py --migration-env "$MIGRATION_CHECKS" -q -rs
+```
+
+For a migration-only run, prepare a **new** configuration and add
+`backend/tests/test_migration_management.py` to the runner arguments. Reading a
+configuration revalidates identity but does not consume it or prevent rereading.
+Fresh targets are required for each lifecycle run because initialization refuses
+nonempty schema state. No migration database is reset or deleted automatically.
+Without `--migration-env`, the three lifecycle cases explicitly skip. Pure
+migration safety tests and the shared-test-lock check still run normally.
+`--unit-only` deselects every database case, including migration sandboxes.
+
+The fresh lifecycle covers initialization/baseline provenance, successful schema
+changes, idempotency, modified/missing files, whole-batch rollback, advisory-lock
+contention, data preservation, corrupt history and unrecorded schema drift. The
+existing-schema case uses a schema-only clone with the exact live profile and
+proves no automatic index repair. Historical checks call the original test
+functions on a third new database. Pure cases cover unsupported/nontransactional
+SQL, explicit public-schema object allowlists (including quoted identifiers),
+configuration rereading, duplicate/gapped versions, immutable source checksums, unknown/forged targets,
+backup evidence and protection from development credentials. The shared fixture
+check proves the suite lock blocks test-schema migrations before DDL.
+
+See [Database Setup and Recovery](backend_database_setup.md#migration-management-baseline-and-history)
+for the canonical migration commands, SQL subset, two baseline profiles and later
+approval procedure. Sandbox credentials/archives stay outside Git; created
+databases are retained pending separately approved cleanup.
 
 ## Existing regression history and references
 
@@ -158,3 +205,10 @@ PostgreSQL access. Forty-four safety/isolation cases were added; all five former
 fixture-dependent skips now execute. An intentional committed-test failure also
 verified cleanup. Development counts, row fingerprints, schema and sequences
 matched the pre-change snapshot. The two gated migration cases were not executed.
+
+November 4, 2026 Milestone 2A validation: **928 passed / two intentionally skipped**
+with a fresh migration configuration, including **52 migration-management cases**.
+The original historical assertions passed inside the sandbox lifecycle; their
+two shared-schema entries remain skipped. Unit-only validation passed **795 tests**
+with 135 database cases deselected. The frontend production build passed. The
+existing urllib3/LibreSSL warning remains; no dependencies were installed/changed.

@@ -56,8 +56,9 @@ python3 backend/scripts/local_database.py status
 
 This uses only read-only queries and reports database/version, catalog counts,
 per-table SHA-256 fingerprints, schema/object counts and source-file hashes.
-It explicitly reports migration history as UNTRACKED; presence of a SQL file is
-not proof that a migration ran.
+It also validates migration status. An unregistered database is reported as such;
+presence of a SQL file is not proof that a migration ran. Unknown schema/history
+states fail validation instead of being silently adopted.
 
 ## Consistent private backup and verified restore
 
@@ -145,39 +146,224 @@ its deterministic 18-title fixture data, including after committed test failures
 See [Backend Testing](backend_testing.md) for isolation, locks, unit-only runs,
 explicit test-data reset, and the two gated historical migration tests.
 
-## Declarative baseline and future migration version tracking
+## Migration management: baseline and history
 
-The existing baseline is repository commit **`d725576`**, consolidated
-`backend/schema.sql` and `backend/indexes.sql`. The live November 2 schema has
-28 tables, 271 columns, 239 constraints including PostgreSQL 18 NOT NULL entries,
-118 indexes, 170 table/index/sequence objects, and no public routines or triggers.
-Fresh test initialization includes the indexes declared in the source files;
-four declared indexes are absent in the historical live database. Milestone 1
-does not apply them or infer old migration execution.
+Milestone 2A adds a small Python/psycopg2 runner, using the existing installation.
+No framework, scheduler, provider request or startup migration is introduced.
+**No baseline or migration was applied to `insightstream_db` during this milestone.**
 
-`backend/migrations/004_...sql` through `015_...sql` are historical SQL files.
-There is no reliable migration ledger. **Do not replay the directory** against
-existing development data. No new migration framework, ledger or migration apply
-command is installed in this milestone.
+`backend/migrations/baseline.json` pins the schema/index declarations at
+`349c179`, management DDL, historical file checksums, and two separately verified
+PostgreSQL 18 schema profiles:
 
-Proposed small-team approach for the next schema change:
+| Profile | Tables / indexes | Meaning |
+| --- | --- | --- |
+| `live` | 28 / 118 | Observed 200-title development schema, November 4, 2026 |
+| `declarative` | 28 / 122 | Fresh `schema.sql` + `indexes.sql` initialization |
 
-1. Review/approve the live baseline, fingerprint and known index differences.
-2. Take and verify a new backup.
-3. Review an additive new numbered SQL file, its preconditions and rollback/
-   recovery plan on a fresh verification database.
-4. Introduce a tiny `schema_migrations` ledger only in that separately reviewed
-   change: version, file SHA-256, applied-at and baseline label. Do not fabricate
-   historical rows or execute historical files to fill history.
-5. Apply each new version exactly once under a transaction and advisory lock;
-   reject checksum drift/unknown prerequisites, record success in the same commit.
-6. Update the consolidated fresh-database schema/index definitions and relevant
-   test fixtures in the same feature branch. Apply schema changes independently
-   to each developer's local dev/test targets through that reviewed process.
+Known differences are recorded, not repaired:
 
-Until that work is explicitly approved, `status` is diagnostic and there is no
-automatic migration application. Fresh database provisioning and versioned
-upgrades are different operations.
+- Live lacks `idx_content_content_type_lower`, `idx_content_original_title_lower`,
+  `idx_people_known_for_department_lower`, and `idx_people_name_lower`.
+- Column order differs in `content`, `content_series_metadata`,
+  `content_video_fetch_state`, and `people`.
+- Equivalent retry-count CHECKs have different names:
+  `chk_content_video_fetch_state_failure_count` (live) and
+  `content_video_fetch_state_consecutive_failure_count_check` (declarative).
+
+Signatures retain column order, types/lengths, nullability, defaults, constraint
+names/definitions, index definitions/validity, relation properties, sequence
+definitions/ownership links, routines, triggers, views, types, policies, rules and
+collations. Unexpected non-system schemas/extensions fail validation. Object
+owners, ACLs, comments, table contents and sequence *values* are not schema-version
+identity; target privileges are checked separately, and recovery fingerprints
+cover data and sequence values. Equivalent literal varchar-array CHECK casts use
+the same narrow normalization as backup verification. Other PostgreSQL major
+versions are deliberately unsupported until their signatures are reviewed.
+The accepted database locale is UTF8 / C / C with the libc provider; a different
+locale requires a separately reviewed profile rather than automatic adoption.
+
+`insightstream_migrations.history` lives outside public fixture tables. It records
+version, kind, filename, SHA-256, application time, baseline profile/provenance and
+the resulting application-schema signature. Version **0** is a baseline adoption
+record, not execution of an old migration. Historical files **004–015** are pinned
+archival evidence and never become pending migrations. New versions start at **016**.
+The ledger's structure, manifest checksum, contiguous applied prefix, file
+checksums and schema-signature chain are checked before subsequent work.
+
+### Read-only status, validation and preview
+
+All commands below run from the repository root, in the current Python environment:
+
+```bash
+python3 backend/scripts/local_database.py migrations status --target insightstream_db
+python3 backend/scripts/local_database.py migrations validate --target insightstream_db
+python3 backend/scripts/local_database.py migrations preview --target insightstream_db
+```
+
+These use read-only transactions. Preview reports pending filenames, checksums,
+statement counts and any management-schema/baseline registration changes. Review
+the exact matching SQL files under `backend/migrations/managed/` before approval;
+SQL literals, connection URLs and private rows are not logged. There is no default
+target and no production/remote/unknown-target fallback. The supported targets are
+the exact local development/test names or newly marked `insightstream_migrate_*`
+sandboxes. A name alone is insufficient: actual server, database, role, ownership,
+purpose marker and PostgreSQL major version are checked where applicable.
+
+### Creating and testing a new migration
+
+Keep `schema.sql`, `indexes.sql`, `ledger.sql`, the adopted baseline manifest and
+historical files immutable. New work goes in a new file, for example:
+
+```sql
+-- insightstream-migration: transactional
+ALTER TABLE public.content ADD COLUMN example_note text;
+```
+
+Use `backend/migrations/managed/016_description.sql`, then 017, with three-digit,
+contiguous unique versions and lowercase descriptions. The example is only
+illustrative; no business migration is shipped by Milestone 2A. Include tests and
+deterministic fixture changes for the behavior being introduced. Do not edit an
+applied file to fix it: add a later reviewed migration.
+
+The supported SQL subset is ordinary transactional `CREATE TABLE`, `ALTER TABLE`,
+`CREATE [UNIQUE] INDEX`, and `DROP INDEX`. Standard quotes, comments and semicolons
+are handled conservatively. Data updates, procedural bodies, psql commands, custom
+transaction/session control, CREATE TABLE AS, temporary/unlogged objects and
+CONCURRENTLY operations are rejected. Other operations require a separately
+reviewed procedure/tool extension; they are not silently run outside a transaction.
+The filter is a compatibility boundary, not a sandbox for untrusted SQL authors.
+Review ALTER TABLE carefully: a transaction does not make a destructive change safe.
+
+Table targets, foreign-key `REFERENCES` targets and `DROP INDEX` targets must use
+explicit `public.<name>` qualification, including known application objects. This
+prevents unqualified names from resolving through `search_path` or temporary
+schemas. Approved existing names come from the pinned `schema.sql`/`indexes.sql`;
+reviewed `CREATE TABLE public.<name>` and `CREATE INDEX <name> ON public.<table>`
+declarations extend that allowlist in migration order. PostgreSQL creates a new
+index in its target table's schema, so its declaration uses an unqualified index
+name. Ordinary double-quoted identifiers preserve case and escaped double quotes.
+Unknown existing objects, system/management schemas, internal/reserved object
+names and identifiers exceeding PostgreSQL's 63-byte limit are rejected. Schema
+moves, renames, inheritance/partition operations, indirect `USING INDEX` targets,
+cascading/multiple drops and other unsupported forms require separate review.
+
+Prepare a **new** migration test configuration for each lifecycle test invocation:
+
+```bash
+python3 backend/scripts/local_database.py migrations prepare-tests
+# Use the private configuration path printed by that command:
+MIGRATION_CHECKS="$HOME/Library/Application Support/InsightStream/migration-checks/<run>.json"
+python3 backend/scripts/run_tests.py --migration-env "$MIGRATION_CHECKS" -q -rs
+```
+
+This creates three unique databases owned by the existing restricted test role:
+empty fresh/historical targets and a schema-only clone of development (plus its
+verified management-history metadata, if already registered). Admin
+credentials are used only to create new databases on maintenance database
+`postgres`; pytest receives only restricted target credentials. Configuration and
+schema archives stay private outside Git. All three databases are retained; a
+failed preparation also retains any targets already created. Their removal needs
+a separate identity check and approval. The configuration reader revalidates
+identity but does **not** consume the file or enforce single-use access. A repeated
+lifecycle run fails initialization once a target is nonempty; preparation of fresh
+targets is the supported rerun procedure. Do not reset or replace retained
+databases to get a green result.
+
+For manual fresh initialization of the newly created empty sandbox only:
+
+```bash
+python3 backend/scripts/local_database.py migrations initialize \
+  --target insightstream_migrate_<suffix> --confirm-target insightstream_migrate_<suffix>
+```
+
+Initialization requires an empty public schema, executes the pinned schema/index
+files, registers the declarative baseline, then applies pending managed migrations
+in one transaction. It never loads catalog seeds or reconstructs development.
+The automated lifecycle tests perform this operation themselves.
+
+### Later approved baseline registration and application
+
+The following development-writing commands are prepared for **later approval**.
+They were not executed during Milestone 2A. Stop application/ingestion writes for
+the maintenance window, inspect status/preview, and take a new verified backup:
+
+```bash
+python3 backend/scripts/local_database.py backup
+# Set the exact private manifest path printed by the successful backup command:
+MIGRATION_BACKUP="$HOME/Library/Application Support/InsightStream/backups/<run>/manifest.json"
+python3 backend/scripts/local_database.py migrations validate --target insightstream_db
+python3 backend/scripts/local_database.py migrations preview --target insightstream_db
+```
+
+After explicit approval, register **only** the matched baseline:
+
+```bash
+python3 backend/scripts/local_database.py migrations baseline \
+  --target insightstream_db --confirm-target insightstream_db --profile live \
+  --approve-development --backup-manifest "$MIGRATION_BACKUP"
+python3 backend/scripts/local_database.py migrations validate --target insightstream_db
+python3 backend/scripts/local_database.py migrations status --target insightstream_db
+```
+
+Registration adds the management schema/table and one provenance row. It does not
+change catalog data, repair indexes, or invent migration execution history.
+Repeated registration with the same profile is idempotent. New managed SQL still
+requires a separate preview/review. Take another verified backup after registration
+before a subsequent application, because management history has now changed:
+
+```bash
+python3 backend/scripts/local_database.py migrations apply \
+  --target insightstream_db --confirm-target insightstream_db \
+  --approve-development --backup-manifest "$MIGRATION_BACKUP"
+python3 backend/scripts/local_database.py migrations validate --target insightstream_db
+```
+
+Update `MIGRATION_BACKUP` to that new manifest. Development writes require a backup
+created and restore-verified within 24 hours, a matching archive checksum and saved
+restore verification, and unchanged current data/schema/sequences/history. Missing,
+stale or mismatched evidence fails closed. These checks do not replace human
+approval or prevent another operator writing after the check; use a quiet window.
+
+All pending files and their ledger rows form **one transaction** under a
+database-scoped advisory lock, with two-second lock and 30-second statement
+timeouts. A failure rolls back the entire batch. Re-running with no pending files
+does nothing. There are no automatic down migrations, force/repair switches or
+nontransactional fallback. After an error, inspect the SQLSTATE and unchanged
+status; correct an uncommitted pending file or prepare a reviewed forward fix.
+Recover data from the verified archive if necessary, never by blind rollback SQL.
+
+For an independently prepared test database, inspect/preview and explicitly
+register profile `declarative` (or the actual matched profile), then apply using
+`--target insightstream_test --confirm-target insightstream_test`. Development
+approval/backup flags are not required for this disposable target. A shared pytest
+advisory lock prevents schema changes while a suite/reset is running. The runner
+never auto-migrates an existing test database. Pending managed versions cause an
+early test safety failure; apply them explicitly before testing. New test database
+preparation includes managed versions before loading deterministic fixtures.
+
+### Second developer, catalog growth and recovery
+
+A developer with an existing supported schema follows status → backup → matched
+baseline registration → preview/review → apply → validate. A fresh sandbox follows
+initialize → validate; routine test setup uses `prepare-test`. A brand-new local
+development database still requires separately approved provisioning of the pinned
+schema/index files into a verified **empty** database, or approved restoration of a
+private backup into a new target, before matched baseline registration. There is
+deliberately no development-rebuild command or automatic adoption of a different
+schema. A fresh declarative database uses profile `declarative`, not `live`.
+
+Catalog imports change records, not schema versions. Back up before approved
+imports and capture new data fingerprints afterward; do not manufacture migrations
+for title batches or copy development records into tests. Commit migration SQL,
+code and small deterministic fixtures together. Apply the same versioned SQL to
+each developer's own databases rather than manually synchronizing catalogs.
+
+History proves what this runner executed, not that data is recoverable. Backups
+remain essential and now fingerprint management history/structure as well as
+public data/schema/sequences. Older Milestone 1 manifests without a management
+schema remain comparable. Existing backup limitations about roles/ACLs and
+off-machine retention still apply.
 
 ## Two-developer data workflow
 

@@ -52,9 +52,14 @@ def verify_fixture_schema(connection):
     with connection.cursor() as cursor:
         cursor.execute("SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename")
         tables = [row[0] for row in cursor.fetchall()]
-    if tables != expected_tables():
+    from scripts.migration_management import inspect
+
+    state = inspect(connection, identity["database"])
+    if state["pending"]:
+        raise DatabaseSafetyError("Pending managed test migrations; inspect/preview and explicitly apply them before pytest.")
+    if not state["baseline_registered"] and tables != expected_tables():
         raise DatabaseSafetyError("Unexpected or missing test tables; automatic fixture reset refused.")
-    return identity
+    return {**identity, "fixture_tables": tables}
 
 
 def reset_fixture(connection):
@@ -64,12 +69,12 @@ def reset_fixture(connection):
     rollback alone would not isolate them. Rebuild small test DATA per case; never
     rebuild a schema or restore the development snapshot here.
     """
-    verify_fixture_schema(connection)
+    verified = verify_fixture_schema(connection)
     connection.rollback()
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(sql.SQL("TRUNCATE {} RESTART IDENTITY CASCADE").format(
-                sql.SQL(",").join(sql.Identifier("public", name) for name in expected_tables())
+                sql.SQL(",").join(sql.Identifier("public", name) for name in verified["fixture_tables"])
             ))
             for path in (BACKEND_ROOT / "sample_data.sql", BACKEND_ROOT / "tests/fixtures/catalog.sql"):
                 script = re.sub(r"^\s*(BEGIN|COMMIT);\s*$", "", path.read_text(), flags=re.MULTILINE)

@@ -1,0 +1,76 @@
+{
+  "format": 1,
+  "signature_version": 1,
+  "source_commit": "349c179073208fa01617d88d6368465c7dfc8216",
+  "recorded_date": "2026-11-04",
+  "postgresql_major": 18,
+  "environment": {
+    "namespaces": [
+      "public"
+    ],
+    "extensions": [
+      [
+        "plpgsql",
+        "1.0",
+        "pg_catalog"
+      ]
+    ],
+    "database_locale": [
+      "UTF8",
+      "C",
+      "C",
+      "c"
+    ]
+  },
+  "source_checksums": {
+    "schema.sql": "a6a74467e3e089ea010af4c7640a3b5947c4156e0c275a39fa07a72db363d359",
+    "indexes.sql": "c870c504c585d121a2fd09eb6028525896ff6037de0261598913ebfcd6e818cc",
+    "migrations/ledger.sql": "1d004b314c8136c62bec16b8d7f8104eea947422f84cc02420287ad384abf077"
+  },
+  "historical_checksums": {
+    "004_add_content_series_metadata.sql": "8f50931ab66a3e3a2ef99152b8feca640fc37c6507bcb195f1ddd8a5bde560b4",
+    "005_add_series_season_summary.sql": "b96febe3c122ead71455f02923b35c570730b3ccf5d0f79a485bfb87b823a762",
+    "006_add_ratings_foundation.sql": "f77a9d443c10529e55c013066c602e712bc0a3991131e42d112d9063417525d2",
+    "007_seed_imdb_rating_source.sql": "9593387e45ad9e2ab530bb9c0b2526989a75bb951f6f3a6d2a5ed9c71d51d46e",
+    "008_seed_letterboxd_rating_source.sql": "13a4039dd0baf4a05325140459e701abf29fd74128071245d556829e507dec47",
+    "009_add_tmdb_keyword_storage.sql": "2817ddf07927205576d547cc28b8b968b00ed338d85ac7a8d8c00d27a14cafcc",
+    "010_add_source_signal_storage.sql": "7b2a5ed3526f47067c8f6f0d3ba834c85b1fe4b16a3a0fc9ef3e25ffa1214cd5",
+    "011_add_content_original_title_language.sql": "1699902fc47fae8ac65e61a68e6d3ca22ce0457384d6fc7fe4c2242286089d4f",
+    "012_add_person_birthday_birthplace.sql": "7954348e55571253032c7ac308b0651225b72f717ea97c63101870aaebdd673d",
+    "013_add_search_original_title_index.sql": "75bde73c3bd8feb4ccba73935d3cb241c20badab5776df8cdaff7d2e86bdc022",
+    "014_add_content_video_metadata.sql": "5e4cacc2a4c643131c49398fe981f35c3e1fed1ac512b22ce5f3607025bb0e75",
+    "015_add_video_fetch_failure_state.sql": "1b43b0835b6d103de46dc6e0251bbbc677f65c863e9a2257f3541a6b3e98934c"
+  },
+  "profiles": {
+    "live": {
+      "schema_sha256": "a5aa572999c95e87f4b4f239324c5acf13f29012d01d6d77e55afc78cba729d5",
+      "table_count": 28,
+      "index_count": 118
+    },
+    "declarative": {
+      "schema_sha256": "023a1d0850ed3e1150993797bb87d4eda2527c269b576c013e05232f3ddcee0b",
+      "table_count": 28,
+      "index_count": 122
+    }
+  },
+  "ledger_schema_sha256": "e9209b54a6394a9df8b735e317c383b90db55f48b06e2516369b7c1c1bd4c069",
+  "differences": {
+    "indexes_missing_from_live": [
+      "idx_content_content_type_lower",
+      "idx_content_original_title_lower",
+      "idx_people_known_for_department_lower",
+      "idx_people_name_lower"
+    ],
+    "column_order_differs": [
+      "content",
+      "content_series_metadata",
+      "content_video_fetch_state",
+      "people"
+    ],
+    "equivalent_check_names": {
+      "live": "chk_content_video_fetch_state_failure_count",
+      "declarative": "content_video_fetch_state_consecutive_failure_count_check"
+    },
+    "policy": "Both exact profiles are accepted separately; no indexes/columns/constraints are repaired by baseline registration."
+  }
+}

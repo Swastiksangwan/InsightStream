@@ -32,6 +32,14 @@ checks passed. Development data remained at 200 titles with matching integrity
 fingerprints. See [database recovery](docs/backend_database_setup.md) and
 [testing evidence and skip reasons](docs/backend_testing.md).
 
+Milestone 2A adds explicit baseline validation and transactional migration tracking.
+Development is still **unregistered**: no management schema or migration has been
+applied to its 200-title catalog. Historical SQL is archived, not inferred as run.
+November 4 validation, including the DDL-target review correction, passed
+**988 tests / two intentional skips**, **855 pure
+tests**, and the frontend production build. The two archived cases' original
+assertions also passed through a dedicated disposable sandbox lifecycle.
+
 Completed:
 
 - 200-title imported local catalog, alongside the original canonical 15-title seed used for fresh setup and deterministic tests.
@@ -66,6 +74,7 @@ Completed:
 - Source signal mapping improvements v2.1 for targeted remaining-candidate cleanup and stricter subgenre false-positive protection.
 - Runtime Decision Insight Formatter v2.0.2 with evidence-based compact copy and regression coverage.
 - Dedicated test database/role, early connection guards, deterministic commit-safe fixtures, and private backup/restore verification tools.
+- Versioned migration tooling with two verified baseline profiles, checksummed history, preview, confirmation/backup gates, transactional batches and advisory locks.
 
 Next planned:
 
@@ -363,8 +372,21 @@ python3 backend/scripts/local_database.py status
 Backups are private and outside Git. Every backup is restored into a new unique
 verification database and compared before success is reported. The three-file
 seed is not a backup of the enriched catalog. See `docs/backend_database_setup.md`
-for checksum verification, restoration, test preparation and the proposed migration
-versioning process. Historical migrations are not replayed automatically.
+for checksum verification, restoration, test preparation and the implemented
+migration workflow. Historical migrations are not replayed automatically.
+
+Read-only migration commands:
+
+```bash
+python3 backend/scripts/local_database.py migrations status --target insightstream_db
+python3 backend/scripts/local_database.py migrations validate --target insightstream_db
+python3 backend/scripts/local_database.py migrations preview --target insightstream_db
+```
+
+The [database workflow](docs/backend_database_setup.md#migration-management-baseline-and-history)
+is the command reference for creating version 016 onward, disposable migration
+checks, fresh initialization and later approved development application. Baseline
+registration does not execute old SQL or repair the four missing indexes.
 
 To reverify an existing archive or compare development data with its saved baseline:
 
@@ -430,8 +452,10 @@ python3 backend/scripts/run_tests.py --unit-only -q
 The full runner explicitly loads private test settings outside Git. Database tests
 require confirmed test mode and `TEST_DATABASE_URL`; they never fall back to the
 development URL. Fixtures contain 18 deterministic titles and are reset per test,
-including after real commits. The existing historical-migration tests require
-separate explicit opt-in and are not claimed as executed in ordinary results.
+including after real commits. Historical replay is excluded from the shared test
+schema. The original two migration tests' assertions run through newly created
+sandbox lifecycle checks when a private `--migration-env` is supplied; see
+[migration test preparation](docs/backend_testing.md#migration-management-checks).
 
 `prepare-test` creates only previously absent test database/role names; it refuses
 unknown existing targets. To reset fixture data explicitly, first verify the target:
@@ -455,7 +479,7 @@ See [Backend Testing](docs/backend_testing.md) for safety guarantees and command
 - Individual reviews, review-source storage, and review-derived pros/cons/verdict generation are not implemented. The 15 legacy `content_summary` rows and 60 legacy `ratings` rows remain seeded compatibility data; current frontend ratings and insights use the newer contracts.
 - Authentication and user ownership enforcement are absent; personal watch actions use a demo user. Homepage rotation is deterministic, not live trending or personalization.
 - Season/episode counts are title-level metadata; there are no dedicated season/episode entities or episode-level credits. Person filmography covers only imported catalog relationships.
-- No migration ledger exists. The audit found four declared indexes absent from the live database; this milestone does not replay historical migrations or change that schema.
+- Migration tracking is implemented, but development baseline registration still requires separate approval. Four declared indexes remain absent from the live database; neither baseline registration nor this milestone repairs them.
 - Provider permissions, licensing, and attribution require review before public/commercial deployment. The frontend reads application APIs and does not fetch TMDb metadata directly.
 
 ## 14. Roadmap
@@ -463,7 +487,7 @@ See [Backend Testing](docs/backend_testing.md) for safety guarantees and command
 1. **Baseline and safety — Milestone 1 complete:** preserve the 200-title catalog, verify restorable private backups, isolate PostgreSQL tests, and document reproducible local commands. Keep these checks as the foundation for later work.
 2. **Data completeness and correctness:** validate existing IMDb/Letterboxd matches, fill supported aggregate-rating gaps, and distinguish missing data from intentionally unsupported review information. Check provenance before importing.
 3. **Pipeline stabilization:** reconcile availability additions/removals, establish freshness checks and repeatable refresh/recovery evidence, and reduce duplicated manual ingestion steps. Do not add a scheduler before refresh behavior is reliable.
-4. **Targeted architecture and schema work:** address demonstrated query/aggregation and maintenance problems, review index differences, and introduce migration version tracking through a separately reviewed additive change.
+4. **Targeted architecture and schema work:** use the implemented migration checks and approval workflow, review baseline registration/index differences separately, and address demonstrated query/aggregation and maintenance problems.
 5. **Controlled expansion:** require satisfactory source coverage, refresh/reconciliation, quality checks, and reproducible imports before ingesting the remaining 75 configured targets in batches 8–10 or expanding further. Ordinary tests stay independent of catalog size.
 6. **Product development:** improve discovery and compact insight usability after the foundation is reliable; add authentication/ownership before shared public use. Review ingestion and richer recommendations require separate product and provider-access decisions.
 

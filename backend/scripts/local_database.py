@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Small local PostgreSQL tools. Never resets or migrates development."""
+"""Local PostgreSQL recovery, test isolation and explicitly approved migrations."""
 
 import argparse
 import json
@@ -119,6 +119,12 @@ def prepare_test(raw_url):
             with connection.cursor() as cursor:
                 cursor.execute((BACKEND_ROOT / "schema.sql").read_text())
                 cursor.execute((BACKEND_ROOT / "indexes.sql").read_text())
+        from scripts.migration_management import execute, repository_state
+
+        if repository_state()[2]:
+            # Only this newly provisioned disposable target, never an existing DB.
+            execute(connection, TEST_DATABASE, "baseline", TEST_DATABASE, "declarative")
+            execute(connection, TEST_DATABASE, "apply", TEST_DATABASE)
         reset_fixture(connection)
     finally:
         connection.close()
@@ -139,12 +145,28 @@ def parser():
     command = commands.add_parser("reset-test", help="Reset deterministic DATA in the verified disposable test database only")
     command.add_argument("--confirm-reset", required=True, choices=[TEST_DATABASE])
     commands.add_parser("status", help="Read-only development schema fingerprint; no migration history is inferred")
+    command = commands.add_parser("migrations", help="Explicit migration status, baseline and transactional application")
+    actions = command.add_subparsers(dest="migration_action", required=True)
+    actions.add_parser("prepare-tests", help="Create three NEW restricted migration sandboxes and a private test config")
+    for name in ("status", "validate", "preview", "initialize", "baseline", "apply"):
+        action = actions.add_parser(name)
+        action.add_argument("--target", required=True, help="Exact local database name; no default")
+        if name in {"initialize", "baseline", "apply"}:
+            action.add_argument("--confirm-target", required=True)
+            action.add_argument("--profile", choices=["live", "declarative"])
+            action.add_argument("--approve-development", action="store_true")
+            action.add_argument("--backup-manifest", type=Path)
     return result
 
 
 def main(argv=None):
     os.umask(0o077)
     args = parser().parse_args(argv)
+    if args.command == "migrations":
+        from scripts.migration_management import command
+
+        print(json.dumps(command(args), indent=2))
+        return 0
     if args.command in {"check-test", "reset-test"}:
         target = test_database_url(test_environment())
         identity = verify_test_target(target)
@@ -166,15 +188,18 @@ def main(argv=None):
     elif args.command == "prepare-test":
         result = prepare_test(raw_url)
     else:
+        from scripts.migration_management import inspect
+
         connection = connect(raw_url)
         try:
             state = snapshot(connection)
+            migration_state = inspect(connection, state["database"])
         finally:
             connection.rollback()
             connection.close()
         if state["database"] != "insightstream_db":
             raise DatabaseSafetyError("Connected development identity mismatch.")
-        result = {"database": state["database"], "server_version": state["version"], "catalog": state["catalog"], "tables": state["tables"], "schema_sha256": state["schema_sha256"], "schema_object_counts": state["schema_object_counts"], "schema_sources": schema_sources(), "fixture_sources": fixture_sources(), "migration_history": "UNTRACKED: no migrations applied by this tool"}
+        result = {"database": state["database"], "server_version": state["version"], "catalog": state["catalog"], "tables": state["tables"], "schema_sha256": state["schema_sha256"], "schema_object_counts": state["schema_object_counts"], "schema_sources": schema_sources(), "fixture_sources": fixture_sources(), "migration_history": migration_state}
         if getattr(args, "manifest", None):
             expected = json.loads(args.manifest.read_text())["source_snapshot"]
             result["baseline_comparisons"] = compare_snapshots(expected, state)
