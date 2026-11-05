@@ -33,12 +33,20 @@ fingerprints. See [database recovery](docs/backend_database_setup.md) and
 [testing evidence and skip reasons](docs/backend_testing.md).
 
 Milestone 2A adds explicit baseline validation and transactional migration tracking.
-Development is still **unregistered**: no management schema or migration has been
-applied to its 200-title catalog. Historical SQL is archived, not inferred as run.
+Development was unregistered during implementation; the November 5 inspection
+verified subsequent version-0 registration of the accepted `live` profile, with
+no managed migrations applied. Historical SQL is archived, not inferred as run.
 November 4 validation, including the DDL-target review correction, passed
 **988 tests / two intentional skips**, **855 pure
 tests**, and the frontend production build. The two archived cases' original
 assertions also passed through a dedicated disposable sandbox lifecycle.
+
+Milestone 2B corrects catalog refresh diagnostics and separates stored data,
+historical collection, freshness and retry eligibility. The November 5 read-only
+observation found 36 series targets and 200 video targets due under existing
+rules; it performed no refresh or import. See the
+[catalog diagnostics and refresh lifecycle audit](docs/catalog_diagnostics_refresh_audit_2026_11_05.md)
+for current coverage, source limitations, verification and the recovery sequence.
 
 Completed:
 

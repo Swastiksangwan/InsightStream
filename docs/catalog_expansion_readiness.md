@@ -45,6 +45,34 @@ Readiness areas are reported independently as `pass`, `warning`, `fail`, or
 `not_evaluated`; there is no composite score. Thresholds are written into the
 JSON report so a result remains explainable.
 
+Audit format **1.1** also separates video data presence, historical collection,
+source freshness and operational retry disposition. `fetch_history` reports the
+latest successful/nonempty or valid-empty status and recorded prior successes.
+`source_freshness` compares the last successful source timestamp with the existing
+video lifecycle cadence; it is independent of failure retry/backoff. Missing or
+malformed success timestamps have unknown freshness, never inferred freshness.
+`operational_health` uses the planner's retry ceiling and manual-review rules.
+The compatibility `retryable_failures` count means automatic-retry eligibility,
+not just the raw retryable flag; waiting and due retries are reported separately.
+
+`per_title_refresh` includes both selected and skipped dispositions, metadata-row
+existence and the reason for each scope. Movies have no series disposition.
+Series-row presence is passed explicitly to the shared planner, even if fields
+inside an existing row are null. Runnable targets require the canonical
+`external_ids` TMDb row used by the runner, not merely legacy `content.tmdb_id`.
+Past next-episode dates are dated review observations; this does not change any
+production selection rule or establish that the provider is wrong.
+
+The previous failed/incomplete operational thresholds remain unchanged: zero
+failures passes that dimension; fewer than `max(3, titles * 0.1)` warns; at or
+above that threshold fails. Due work, unknown freshness or missing canonical
+refresh identities adds an overall refresh **warning**, never a new failure
+threshold. Historical success alone cannot produce a fresh/readiness pass.
+The expansion-area result is explicitly a **catalog-structure gate**. It does not
+approve source freshness, reconciliation, permissions or operational expansion.
+See the [November 5 lifecycle audit](catalog_diagnostics_refresh_audit_2026_11_05.md)
+for measured results and the separate prerequisites for expansion.
+
 Keyword mapping coverage is:
 
 ```text

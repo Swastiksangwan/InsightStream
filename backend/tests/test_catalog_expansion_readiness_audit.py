@@ -275,6 +275,7 @@ def test_series_due_status_reuses_existing_planner(monkeypatch):
     seen = []
 
     def fake(row, now, **kwargs):
+        assert row["has_series_metadata"] is True
         seen.append((row["content_id"], now))
         return audit.evaluate_video_refresh.__globals__["ScopeDecision"](True, "fixture_due", "high", None, now)
 
@@ -377,7 +378,7 @@ def test_deterministic_ordering_and_json_markdown_report_structure(tmp_path):
     gap_path = tmp_path / "gap.json"
     audit.write_reports(report, plan, json_path=json_path, markdown_path=markdown_path, gap_path=gap_path)
     loaded = json.loads(json_path.read_text())
-    assert loaded["audit_version"] == "1.0"
+    assert loaded["audit_version"] == "1.1"
     assert "## More Like This Readiness" in markdown_path.read_text()
     assert json.loads(gap_path.read_text())["recommended_next_catalog_size"] == 275
 
@@ -419,3 +420,173 @@ def test_sql_contract_contains_only_read_and_explain_statements():
     source = SCRIPT_PATH.read_text()
     assert "import requests" not in source
     assert "from urllib" not in source
+
+
+@pytest.mark.parametrize("status", ["ongoing", "upcoming", "unknown", "ended", "cancelled"])
+def test_present_series_metadata_matches_the_runner_contract(status):
+    row = record(1, content_type="series")
+    row["series_metadata"].update(series_status_normalized=status,
+        last_refreshed_at=REFERENCE, next_episode_air_date=None, last_episode_air_date=None)
+    report, _ = build([row])
+    health = report["video_and_refresh_health"]
+    assert health["series_refresh_due"] == []
+    assert health["per_title_refresh"][0]["series_metadata_present"] is True
+    assert "missing content_series_metadata" not in health["per_title_refresh"][0]["series_reason"]
+
+
+@pytest.mark.parametrize("metadata,reason", [
+    (None, "missing content_series_metadata row"),
+    ({}, "last_refreshed_at is null"),
+    ({"last_refreshed_at": None}, "last_refreshed_at is null"),
+])
+def test_absent_row_and_present_row_with_null_fields_remain_distinct(metadata, reason):
+    row = record(1, content_type="series")
+    row["series_metadata"] = metadata
+    report, _ = build([row])
+    health = report["video_and_refresh_health"]
+    assert health["series_refresh_due"][0]["reason"] == reason
+    assert health["per_title_refresh"][0]["series_metadata_present"] is (metadata is not None)
+    assert ("series_metadata_missing" in report["per_title"][0]["issues"]) is (metadata is None)
+
+
+@pytest.mark.parametrize("status", ["ongoing", "upcoming", "unknown", "ended", "cancelled"])
+@pytest.mark.parametrize("age,stale", [(timedelta(days=7), False),
+    (timedelta(days=7, microseconds=1), True), (timedelta(days=6), False)])
+def test_audit_preserves_series_cadence_boundaries_and_inactive_exclusions(status, age, stale):
+    row = record(1, content_type="series")
+    row["series_metadata"].update(series_status_normalized=status,
+        last_refreshed_at=REFERENCE-age, next_episode_air_date=None, last_episode_air_date=None)
+    report, _ = build([row])
+    expected = stale and status not in {"ended", "cancelled"}
+    assert bool(report["video_and_refresh_health"]["series_refresh_due"]) is expected
+
+
+@pytest.mark.parametrize("status,last_refreshed,expected", [
+    ("ongoing", REFERENCE-timedelta(days=3), True),
+    ("ongoing", REFERENCE, False), ("ended", REFERENCE-timedelta(days=3), False),
+    ("cancelled", REFERENCE-timedelta(days=3), False),
+])
+def test_past_episode_date_uses_existing_post_air_refresh_rule(status, last_refreshed, expected):
+    row = record(1, content_type="series")
+    row["series_metadata"].update(series_status_normalized=status,
+        last_refreshed_at=last_refreshed, next_episode_air_date=REFERENCE.date()-timedelta(days=1),
+        last_episode_air_date=None)
+    report, _ = build([row])
+    assert bool(report["video_and_refresh_health"]["series_refresh_due"]) is expected
+
+
+@pytest.mark.parametrize("status", ["success", "empty"])
+def test_historical_success_including_empty_is_not_freshness_or_failure(status):
+    row = record(1, videos=status != "empty", primary=status != "empty")
+    row["video_fetch_state"].update(last_fetch_status=status, source_snapshot_empty=status == "empty",
+        last_fetched_at=REFERENCE-timedelta(days=31))
+    report, _ = build([row])
+    health = report["video_and_refresh_health"]
+    readiness = {item["area"]: item for item in report["readiness"]}
+    assert health["fetch_history"]["successful_fetch_recorded"] == 1
+    assert health["fetch_history"]["successful_empty"] == int(status == "empty")
+    assert health["source_freshness"]["due_under_existing_cadence"] == 1
+    assert health["source_freshness"]["within_existing_cadence"] == 0
+    assert health["operational_health"]["failed"] == 0
+    assert readiness["refresh_readiness"]["evidence"]["operational_status"] == "pass"
+    assert readiness["refresh_readiness"]["status"] == "warning"
+    assert readiness["expansion_readiness"]["evidence"]["assessment_scope"] == "catalog_structure_only"
+    report["readiness"] = [readiness["refresh_readiness"]]
+    assert audit.strict_exit_code(report) == 0  # Due work adds no failure threshold.
+
+
+def test_fresh_successful_empty_and_never_attempted_are_different_states():
+    empty = record(1, videos=False, primary=False)
+    empty["video_fetch_state"].update(last_fetch_status="empty", source_snapshot_empty=True)
+    never = record(2, videos=False, primary=False)
+    never["video_fetch_state"] = None
+    report, _ = build([empty, never])
+    health = report["video_and_refresh_health"]
+    assert health["titles_without_videos"] == 2
+    assert health["fetch_history"]["successful_empty"] == 1
+    assert health["fetch_history"]["never_attempted"] == 1
+    assert health["source_freshness"]["within_existing_cadence"] == 1
+    assert health["source_freshness"]["unknown_no_success_timestamp"] == 1
+    assert [item["content_id"] for item in health["video_refresh_due"]] == [2]
+    assert health["manual_review_failures"] == 0
+
+
+@pytest.mark.parametrize("status,retryable,count,attempt_age,eligible,due,manual", [
+    ("failed", True, 1, timedelta(hours=12), True, False, False),
+    ("failed", True, 1, timedelta(days=1), True, True, False),
+    ("failed", True, 2, timedelta(days=1), True, False, False),
+    ("failed", True, 2, timedelta(days=2), True, True, False),
+    ("failed", True, 3, timedelta(days=30), False, False, True),
+    ("failed", False, 1, timedelta(days=30), False, False, True),
+    ("incomplete", True, 1, timedelta(days=30), False, False, True),
+])
+def test_reported_retry_eligibility_matches_planner_ceiling_and_backoff(
+    status, retryable, count, attempt_age, eligible, due, manual
+):
+    row = record(1)
+    row["video_fetch_state"].update(last_fetch_status=status, last_fetch_retryable=retryable,
+        consecutive_failure_count=count, last_attempted_at=REFERENCE-attempt_age,
+        last_fetched_at=REFERENCE-timedelta(days=31))
+    report, _ = build([row])
+    health = report["video_and_refresh_health"]
+    assert health["retryable_failures"] == int(eligible)
+    assert health["manual_review_failures"] == int(manual)
+    assert health["operational_health"]["automatic_retry_due"] == int(due)
+    assert health["operational_health"]["automatic_retry_waiting"] == int(eligible and not due)
+    assert bool(health["video_refresh_due"]) is due
+    # Retry waiting/manual review never makes stale source data fresh.
+    assert health["source_freshness"]["due_under_existing_cadence"] == 1
+
+
+@pytest.mark.parametrize("timestamp", [None, "invalid"])
+def test_success_without_a_valid_source_timestamp_has_unknown_freshness(timestamp):
+    row = record(1)
+    row["video_fetch_state"]["last_fetched_at"] = timestamp
+    report, _ = build([row])
+    assert report["video_and_refresh_health"]["source_freshness"]["unknown_no_success_timestamp"] == 1
+    assert next(item for item in report["readiness"] if item["area"] == "refresh_readiness")["status"] == "warning"
+
+
+def test_mixed_source_age_is_separate_from_latest_fetch_failure_and_output_is_stable():
+    old = record(1)
+    old["video_fetch_state"]["last_fetched_at"] = REFERENCE-timedelta(days=31)
+    fresh_empty = record(2, videos=False, primary=False)
+    fresh_empty["video_fetch_state"]["last_fetch_status"] = "empty"
+    failed = record(3)
+    failed["video_fetch_state"].update(last_fetch_status="failed", last_fetch_retryable=True,
+        consecutive_failure_count=1, last_attempted_at=REFERENCE-timedelta(hours=1))
+    report, plan = build([failed, fresh_empty, old])
+    repeat, _ = build([old, fresh_empty, failed])
+    health = report["video_and_refresh_health"]
+    assert health == repeat["video_and_refresh_health"]
+    assert health["source_freshness"] == {"within_existing_cadence": 2,
+        "due_under_existing_cadence": 1, "unknown_no_success_timestamp": 0}
+    assert health["fetch_status_distribution"] == {"empty": 1, "failed": 1, "success": 1}
+    assert health["operational_health"]["automatic_retry_waiting"] == 1
+    assert "stored videos and historical success do not prove freshness" in audit.render_markdown(report, plan)
+
+
+@pytest.mark.parametrize("offset,expected", [(-1, True), (0, False), (1, False)])
+def test_past_next_episode_warning_is_a_dated_observation_not_a_policy_change(offset, expected):
+    row = record(1, content_type="series")
+    row["series_metadata"].update(next_episode_air_date=REFERENCE.date()+timedelta(days=offset),
+        last_episode_air_date=None, last_refreshed_at=REFERENCE)
+    report, _ = build([row])
+    assert ("next_episode_date_in_past" in report["per_title"][0]["issues"]) is expected
+    lifecycle = report["metadata_coverage"]["malformed_or_inconsistent"]["series_lifecycle"]
+    assert bool(lifecycle) is expected
+
+
+@pytest.mark.parametrize("content_type", ["movie", "series"])
+def test_legacy_tmdb_id_does_not_replace_runner_canonical_identity_join(content_type):
+    row = record(1, content_type=content_type)
+    row["external_ids"].pop("tmdb")
+    row["video_fetch_state"]["last_fetched_at"] = REFERENCE-timedelta(days=31)
+    report, _ = build([row])
+    health = report["video_and_refresh_health"]
+    assert row["tmdb_id"] is not None
+    assert health["video_refresh_due"] == []
+    assert health["series_refresh_due"] == []
+    assert health["ineligible_missing_canonical_tmdb_identity"][0]["content_id"] == 1
+    assert health["per_title_refresh"][0]["video_reason"] == "missing_canonical_tmdb_identity"
+    assert health["source_freshness"]["due_under_existing_cadence"] == 1

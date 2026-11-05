@@ -27,6 +27,7 @@ from analytics.scripts.refresh.content_refresh_planner import (
     evaluate_series_refresh,
     evaluate_video_refresh,
 )
+from analytics.scripts.refresh.plan_series_refresh import normalize_datetime
 from analytics.scripts.source_signals.source_signal_keyword_normalization import (
     keyword_normalization_metadata,
     normalize_keyword_name,
@@ -449,7 +450,7 @@ def series_lifecycle_issues(record: Mapping[str, Any], reference_day: date) -> l
     metadata = record.get("series_metadata")
     if record.get("content_type") != "series":
         return []
-    if not metadata:
+    if metadata is None:
         return ["series_metadata_missing"]
     issues = []
     last_episode = as_date(metadata.get("last_episode_air_date"))
@@ -457,6 +458,8 @@ def series_lifecycle_issues(record: Mapping[str, Any], reference_day: date) -> l
     status = normalize_text(metadata.get("series_status_normalized"))
     if last_episode and next_episode and next_episode < last_episode:
         issues.append("next_episode_precedes_last_episode")
+    if next_episode and next_episode < reference_day:
+        issues.append("next_episode_date_in_past")
     if status in {"ended", "canceled", "cancelled"} and next_episode and next_episode >= reference_day:
         issues.append("ended_series_has_future_episode")
     seasons = metadata.get("number_of_seasons")
@@ -734,6 +737,11 @@ def _video_health(records: list[dict[str, Any]], reference_at: datetime) -> dict
     series_due = []
     videos_without_primary = []
     original_language_mismatches = []
+    history = Counter()
+    freshness = Counter()
+    operations = Counter()
+    dispositions = []
+    ineligible = []
     for record in records:
         videos = record.get("videos", [])
         if videos and not record.get("primary_video"):
@@ -758,6 +766,9 @@ def _video_health(records: list[dict[str, Any]], reference_at: datetime) -> dict
         planner_row = {
             **record,
             **metadata,
+            # Match CONTENT_PAGE_QUERY: existence is not inferred from status,
+            # populated fields, or truthiness of a partially populated row.
+            "has_series_metadata": record.get("series_metadata") is not None,
             "video_last_attempted_at": state.get("last_attempted_at"),
             "video_last_fetched_at": state.get("last_fetched_at"),
             "video_last_fetch_status": state.get("last_fetch_status"),
@@ -765,12 +776,62 @@ def _video_health(records: list[dict[str, Any]], reference_at: datetime) -> dict
             "video_consecutive_failure_count": state.get("consecutive_failure_count"),
         }
         video_decision = evaluate_video_refresh(planner_row, reference_at)
-        if video_decision.selected:
+        # The real runner's INNER JOIN requires external_ids.tmdb. A legacy
+        # content.tmdb_id alone does not make a title a runnable refresh target.
+        identity_eligible = record.get("external_ids", {}).get("tmdb") is not None
+        if not identity_eligible:
+            ineligible.append({"content_id": record["content_id"], "title": record["title"]})
+        status = normalize_text(state.get("last_fetch_status")) or "missing"
+        last_success = normalize_datetime(state.get("last_fetched_at"))
+        history["successful_fetch_recorded"] += int(last_success is not None)
+        history["latest_success"] += int(status == "success")
+        history["successful_empty"] += int(status == "empty")
+        history["never_attempted"] += int(not state or (
+            status == "missing" and state.get("last_attempted_at") is None and last_success is None
+        ))
+        # Data freshness follows the successful source timestamp and lifecycle
+        # cadence, independently of the latest attempt's retry/backoff state.
+        freshness_decision = evaluate_video_refresh(
+            {**planner_row, "video_last_fetch_status": "success"}, reference_at
+        ) if last_success is not None else None
+        freshness_status = (
+            "due_under_existing_cadence" if freshness_decision.selected
+            else "within_existing_cadence"
+        ) if freshness_decision else "unknown_no_success_timestamp"
+        freshness[freshness_status] += 1
+        retry_eligible = status == "failed" and video_decision.reason == "previous_transient_failure"
+        manual_review = status in {"failed", "incomplete"} and video_decision.reason in {
+            "manual_review_required", "normalization_review"
+        }
+        operations["failed"] += int(status == "failed")
+        operations["incomplete"] += int(status == "incomplete")
+        operations["automatic_retry_eligible"] += int(retry_eligible)
+        operations["automatic_retry_due"] += int(retry_eligible and video_decision.selected)
+        operations["automatic_retry_waiting"] += int(retry_eligible and not video_decision.selected)
+        operations["manual_review_required"] += int(manual_review)
+        item = {
+            "content_id": record["content_id"], "title": record["title"],
+            "content_type": record["content_type"], "fetch_status": status,
+            "last_successful_source_fetch": iso_value(last_success),
+            "freshness": freshness_status,
+            "freshness_due_at": iso_value(freshness_decision.due_at) if freshness_decision else None,
+            "refresh_identity_eligible": identity_eligible,
+            "video_selected": video_decision.selected and identity_eligible,
+            "video_reason": video_decision.reason if identity_eligible else "missing_canonical_tmdb_identity",
+            "video_due_at": iso_value(video_decision.due_at),
+            "automatic_retry_eligible": retry_eligible, "manual_review_required": manual_review,
+            "series_metadata_present": planner_row["has_series_metadata"] if record["content_type"] == "series" else None,
+            "series_selected": None, "series_reason": "not_applicable",
+        }
+        if video_decision.selected and identity_eligible:
             due.append({"content_id": record["content_id"], "title": record["title"], "reason": video_decision.reason, "due_at": iso_value(video_decision.due_at)})
         if record.get("content_type") == "series":
             series_decision = evaluate_series_refresh(planner_row, reference_at)
-            if series_decision.selected:
+            item.update(series_selected=series_decision.selected and identity_eligible,
+                        series_reason=series_decision.reason if identity_eligible else "missing_canonical_tmdb_identity")
+            if series_decision.selected and identity_eligible:
                 series_due.append({"content_id": record["content_id"], "title": record["title"], "reason": series_decision.reason, "due_at": iso_value(series_decision.due_at)})
+        dispositions.append(item)
     return {
         "titles_with_videos": sum(bool(row.get("videos")) for row in records),
         "titles_without_videos": sum(not row.get("videos") for row in records),
@@ -786,12 +847,19 @@ def _video_health(records: list[dict[str, Any]], reference_at: datetime) -> dict
         ),
         "non_english_titles_with_only_english_videos": original_language_mismatches,
         "fetch_status_distribution": dict(sorted(statuses.items())),
-        "retryable_failures": sum(bool((row.get("video_fetch_state") or {}).get("last_fetch_retryable")) for row in records),
-        "manual_review_failures": sum(
-            (row.get("video_fetch_state") or {}).get("last_fetch_status") in {"failed", "incomplete"}
-            and not (row.get("video_fetch_state") or {}).get("last_fetch_retryable")
-            for row in records
-        ),
+        "fetch_history": {key: history[key] for key in (
+            "successful_fetch_recorded", "latest_success", "successful_empty", "never_attempted"
+        )},
+        "source_freshness": {key: freshness[key] for key in (
+            "within_existing_cadence", "due_under_existing_cadence", "unknown_no_success_timestamp"
+        )},
+        "operational_health": dict(sorted(operations.items())),
+        # Compatibility keys now mean actual planner eligibility, including its
+        # retry ceiling and normalization-review exclusion.
+        "retryable_failures": operations["automatic_retry_eligible"],
+        "manual_review_failures": operations["manual_review_required"],
+        "per_title_refresh": dispositions,
+        "ineligible_missing_canonical_tmdb_identity": ineligible,
         "video_refresh_due": due,
         "series_refresh_due": series_due,
     }
@@ -857,7 +925,13 @@ def _readiness(
     sparse_filters = [row["filter"] for row in discovery if row["status"] == "too_sparse"]
     discovery_status = "pass" if not sparse_filters else ("warning" if len(sparse_filters) <= 3 else "fail")
     refresh_failures = video["fetch_status_distribution"].get("failed", 0) + video["fetch_status_distribution"].get("incomplete", 0)
-    refresh_status = "pass" if not refresh_failures else ("warning" if refresh_failures < max(3, total * 0.1) else "fail")
+    operational_status = "pass" if not refresh_failures else ("warning" if refresh_failures < max(3, total * 0.1) else "fail")
+    freshness = video["source_freshness"]
+    freshness_backlog = bool(video["video_refresh_due"] or video["series_refresh_due"]
+                             or freshness["due_under_existing_cadence"]
+                             or freshness["unknown_no_success_timestamp"]
+                             or video["ineligible_missing_canonical_tmdb_identity"])
+    refresh_status = "warning" if operational_status == "pass" and freshness_backlog else operational_status
     expansion_status = "pass" if ingestion_status == "pass" and metadata_status != "fail" else "warning"
     performance_status = "pass" if performance and performance.get("completed") else "not_evaluated"
     return [
@@ -866,8 +940,8 @@ def _readiness(
         entry("source_signal_readiness", signal_status, [f"{len(low_mapping)} titles have many keywords with low mapping coverage.", f"{keyword['titles_without_useful_signals']} titles have no useful signals."], {"low_mapping_titles": len(low_mapping), "titles_without_signals": keyword["titles_without_useful_signals"]}),
         entry("recommendation_readiness", rec_status, [f"{recommendations.get('ready', 0)} of {total} titles meet current audit candidate thresholds."], dict(recommendations)),
         entry("discovery_readiness", discovery_status, [f"Sparse supported filters: {', '.join(sparse_filters) if sparse_filters else 'none'}."], {"sparse_filters": sparse_filters}),
-        entry("refresh_readiness", refresh_status, [f"{refresh_failures} video refresh states require retry or review.", f"{len(video['video_refresh_due'])} titles are due under existing video cadence."], {"failed_or_incomplete": refresh_failures, "video_due": len(video["video_refresh_due"]), "series_due": len(video["series_refresh_due"])}),
-        entry("expansion_readiness", expansion_status, ["Expansion targets are derived from measured type, language, decade, genre, lifecycle and candidate-density gaps."], {"current_catalog_size": total}),
+        entry("refresh_readiness", refresh_status, [f"Historical video-fetch operational status: {operational_status}; {refresh_failures} failed/incomplete states.", f"{len(video['video_refresh_due'])} video targets and {len(video['series_refresh_due'])} series targets are selected by existing rules.", f"{len(video['ineligible_missing_canonical_tmdb_identity'])} titles lack the canonical identity required by the runner.", "Historical success does not establish current freshness; a due/unknown backlog is a warning, not a new failure threshold."], {"operational_status": operational_status, "failed_or_incomplete": refresh_failures, "video_due": len(video["video_refresh_due"]), "series_due": len(video["series_refresh_due"]), "ineligible_missing_canonical_tmdb_identity": len(video["ineligible_missing_canonical_tmdb_identity"]), "source_freshness": freshness}),
+        entry("expansion_readiness", expansion_status, ["Catalog-structure gate only; this is not operational approval to expand.", "Expansion targets describe composition/candidate-density gaps; provider freshness and reconciliation remain separate prerequisites."], {"current_catalog_size": total, "assessment_scope": "catalog_structure_only"}),
         entry("performance_test_readiness", performance_status, ["Read-only performance baseline completed." if performance_status == "pass" else "Run with --performance-check to evaluate query structure and current-catalog timing."], {"performance_check_requested": bool(performance)}),
     ]
 
@@ -965,7 +1039,7 @@ def build_audit(
         issues.extend(signals["warnings"])
         if record.get("videos") and not record.get("primary_video"):
             issues.append("videos_without_primary")
-        if any(issue in {"next_episode_precedes_last_episode", "ended_series_has_future_episode"} for issue in issues):
+        if any(issue in {"next_episode_precedes_last_episode", "ended_series_has_future_episode", "next_episode_date_in_past"} for issue in issues):
             lifecycle_issues.append({"content_id": record["content_id"], "title": record["title"], "issues": [issue for issue in issues if "episode" in issue or "ended_series" in issue]})
         priority = "high" if any(issue in {"tmdb_identity", "series_metadata_missing", "next_episode_precedes_last_episode", "ended_series_has_future_episode"} for issue in issues) else ("review" if issues else "normal")
         per_title.append(
@@ -1143,7 +1217,7 @@ def build_audit(
     integrity_issues = list((load_metadata or {}).get("orphan_primary_rows", []))
     readiness = _readiness(total, metadata_coverage, keyword_signal, recommendation_status, discovery, video_health, performance, integrity_issues)
     report = {
-        "audit_version": "1.0",
+        "audit_version": "1.1",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "reference_date": reference_at.isoformat(),
         "scope": {"content_type": records[0].get("_scope_content_type") if records and records[0].get("_scope_content_type") else None, "limit_applied": None},
@@ -1248,6 +1322,10 @@ def render_markdown(report: Mapping[str, Any], gap_plan: Mapping[str, Any]) -> s
     lines.extend(["", "Subgenres are reported only as a conservative proxy from active mapped `audience_expectation` and `topic_theme` signals; they are not a canonical genre taxonomy.", "", "## Video and Refresh Health", ""])
     video = report["video_and_refresh_health"]
     lines.extend([f"- Titles with videos: **{video['titles_with_videos']}**", f"- Titles with a primary video: **{video['titles_with_primary']}**", f"- Video refresh due: **{len(video['video_refresh_due'])}**", f"- Series refresh due: **{len(video['series_refresh_due'])}**"])
+    lines.extend(["", "These dimensions are independent; stored videos and historical success do not prove freshness or playable URLs.", "", "| Dimension | State | Titles |", "| --- | --- | ---: |"])
+    for dimension in ("fetch_history", "source_freshness", "operational_health"):
+        for state, count in video[dimension].items():
+            lines.append(f"| {dimension} | {state} | {count} |")
     keyword = report["keyword_and_source_signal_quality"]
     lines.extend(
         [
