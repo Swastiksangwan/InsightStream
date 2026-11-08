@@ -216,6 +216,10 @@ without credentials, and normalization issues are written to
 `content_video_review_targets.json`; that artifact is for operator review and is not
 scheduled for repeated automatic retries.
 
+The bulk fetcher's legacy cache behavior below is retained. The shared refresh
+executor uses the stricter one-hour/verified-provenance policy documented in
+[Shared content refresh orchestration](#shared-content-refresh-orchestration).
+
 Every fetched raw response has a `.meta.json` sidecar containing the source-fetch
 time, request path, normalized response-affecting parameters, and a secret-free
 SHA-256 request signature. Cache reuse requires a matching signature. Reusing a
@@ -467,6 +471,12 @@ Current behavior:
 
 ### Shared content refresh orchestration
 
+**Milestone 2C deployment prerequisite:** managed migration
+`016_series_collection_state.sql` must be separately approved and applied before
+using the updated refresh planners/executor on development. It was tested only in
+new disposable sandboxes; `insightstream_db` remains at version 0. Follow
+[the migration/backup procedure](backend_database_setup.md#milestone-2c-migration-016).
+
 The DB-backed shared planner adds video refresh readiness without replacing the
 established series rules. It paginates canonical local content/TMDb identities,
 keeps series and video reasons/timestamps separate, and writes ignored artifacts to
@@ -476,14 +486,18 @@ keeps series and video reasons/timestamps separate, and writes ignored artifacts
 # Plan all due series/video work. No provider requests or database writes.
 python3 -m analytics.scripts.refresh.run_content_refresh --plan-only --scope all
 
-# Fetch and compare one domain without writing PostgreSQL.
-python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope series_metadata
-python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope videos
+# Bounded comparison: may call TMDb and write ignored caches/previews; no DB writes.
+python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope all --limit 3
 
-# Explicit writes. Movies receive video work only.
-python3 -m analytics.scripts.refresh.run_content_refresh --apply --scope series_metadata
-python3 -m analytics.scripts.refresh.run_content_refresh --apply --scope videos
-python3 -m analytics.scripts.refresh.run_content_refresh --apply --scope all
+# Only after reviewing the plan/previews and obtaining approval: DB writes.
+# A compatible cache from the dry run is reused if still under one hour old.
+python3 -m analytics.scripts.refresh.run_content_refresh --apply --scope all --limit 3
+
+# Explicit force-network comparison (API calls, caches, no database writes).
+python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope all --limit 3 --refresh
+
+# Explicit replay: no HTTP, verified compatible cache required; source age retained.
+python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope all --limit 3 --offline
 
 # A canonical local TMDb target is forced even when not due.
 python3 -m analytics.scripts.refresh.run_content_refresh --dry-run --scope all --source-id 94997
@@ -505,13 +519,70 @@ failure, the target and current run report move to manual review. Permanent fail
 and incomplete normalization are never automatically retried; an explicit target can
 still force a reviewed retry. Successful and valid-empty snapshots reset the failure
 counter.
-Series selection continues to call the legacy `evaluate_refresh_status` rules below
-unchanged.
+Series selection uses the same seven-day/event rules below, with verified
+`content_series_fetch_state.last_successful_at` as the input timestamp. Legacy
+`content_series_metadata.last_refreshed_at` is an import/value-change timestamp,
+not proof of collection. Existing rows receive no fabricated freshness/backfill.
+Unknown active-series collection age is due; ended/cancelled exclusions remain.
+Series transient failures use the existing one-/two-day retry limit; permanent or
+normalization failures require explicit review. A persisted `started` attempt
+identifies an interruption and can be retried.
 
-Apply-mode request failures are persisted in `content_video_fetch_state`: they
+Refresh cache policy is deliberately separate from legacy bulk ingestion: normal
+online execution reuses a response only when its sidecar proves TMDb HTTP 200,
+the exact request path, normalized parameters/signature and a timezone-aware
+collection time with **0 <= age < 3,600 seconds**. Future times, missing/invalid
+sidecars, corrupt JSON, mismatched language/signature or a mismatched recorded body
+checksum trigger refetch online and rejection offline. New sidecars bind the raw
+bytes with SHA-256; older otherwise valid sidecars without that optional checksum
+are accepted. Sidecars are local provenance records, not provider-signed evidence.
+Filesystem modification time never establishes refresh freshness. `--refresh`
+always requests HTTP; `--offline` never requests HTTP and permits older verified
+responses. They are mutually exclusive. Without credentials, normal mode can
+reuse only a recent verified cache; it does not silently become offline replay.
+Cache reuse is reported as `reused`, with its original `source_fetched_at`.
+`collection_success` is true only for a new HTTP collection;
+`verified_response_available` also covers a verified cached response. Domain
+success and committed-write flags remain separate from both.
+
+Local execution preconditions are **blocked**, not provider failures: missing
+credentials, absent/invalid offline cache, expired cache without a token, or
+incompatible cached identity/signature leave both domain states completely
+unchanged. These runs exit nonzero and appear in `blocked_targets` and the
+`blocked` domain totals, rather than provider retry/manual-review lists. Correct
+the local inputs and rerun; normal planner eligibility is preserved. No new
+successful collection is invented. A series `started` row is committed only after
+local preconditions pass and immediately before an actual HTTP request. Cached
+responses record their attempt/application bookkeeping atomically when accepted.
+
+| Series state field | Meaning |
+|---|---|
+| `last_attempted_at` | Start of an accepted execution attempt: recorded before actual HTTP, or atomically with accepted cache application; local blocks/older replay leave it untouched |
+| `last_source_fetched_at`, `last_source_origin`, `last_request_signature` | Latest verified response considered, even if domain application fails; a reused response retains its source time |
+| `last_successful_at` | Verified source time successfully applied to the series domain; advances even when values are unchanged |
+| `last_applied_at` | Transaction/application time; never used as source freshness |
+| `last_changed_at`, `change_source_at` | Time persisted lifecycle values actually changed, and the responsible response's source time |
+| `last_status`, retry/error/count fields | Domain application/attempt outcome, independently of successful HTTP collection |
+
+Success and lifecycle updates commit together. Failed HTTP/application preserves
+prior values and successful collection age. An older response cannot overwrite
+newer successfully applied series data. Older compatible series/video snapshots
+are explicit `skipped` / `older_snapshot` no-ops: no metadata, video, timestamp,
+failure counter or retry disposition changes. They do not mark a new collection
+or turn a healthy title into a manual-review case. Reapplying an identical snapshot changes
+no lifecycle values or change timestamp (attempt/application bookkeeping advances).
+The legacy `last_refreshed_at` stays unchanged for unchanged imports and is no
+longer the planner's freshness input. Video success/valid-empty retains its existing
+source-time contract in `content_video_fetch_state.last_fetched_at`. Older video
+snapshots also cannot regress a newer success and leave the complete existing
+fetch state intact.
+
+Genuine apply-mode provider request failures are persisted in `content_video_fetch_state`: they
 advance `last_attempted_at`, preserve the previous successful `last_fetched_at`, and
 record a sanitized error, retryability, failure class, and consecutive failure
-count. Dry runs remain write-free. Operational runs exit non-zero when any requested
+count. Series failures are recorded independently in the new state table. Dry
+runs perform validation/comparison without persisting attempts, successes or
+failures; report fields explicitly identify database writes. Operational runs exit non-zero when any requested
 domain is failed or incomplete; a valid empty video snapshot is successful and does
 not fail the run.
 
@@ -522,8 +593,18 @@ passes that response independently through the existing series normalizer/import
 and video normalizer/importer. One domain may therefore succeed while the other is
 reported incomplete or failed. Series-metadata-only work keeps the legacy appended
 details request/cache shape but does not normalize, import, or update video state.
-No scheduler is installed; these commands are ready
-for a future external scheduler.
+No scheduler is installed. Saved plans carry selections, not collection evidence:
+execution rechecks canonical IDs and cache age/signature; duplicate titles fail
+validation. Source collection success and each domain's application outcome are
+reported separately. Review both domains after interruption; a completed domain
+does not need a second provider request when the verified cache is still recent.
+
+Before any all-catalog run: approve/apply 016; take and restore-verify a fresh backup;
+validate migration status/canonical identities; inspect a current plan; confirm
+provider permissions, token, language and request budget; perform a small dry run
+and reviewed bounded apply; inspect source times, domain failures, retry counts,
+valid-empty outcomes and audit/planner parity. Preserve before/after fingerprints.
+No all-200 refresh was performed in this milestone.
 
 Generated files:
 
@@ -531,7 +612,10 @@ Generated files:
 - `analytics/processed/tmdb/content_refresh_previews/`
 - `analytics/processed/tmdb/run_reports/content_refresh_run_report.json`
 
-The legacy workflow remains supported unchanged:
+The legacy bulk fetch/import commands remain available for their original import
+purpose, but do **not** populate the new verified series collection state. Use the
+shared executor above for freshness-aware refreshes. The legacy planner now also
+requires 016 and reads verified collection state:
 
 Use the series refresh planner for existing series already in the catalog:
 
@@ -554,7 +638,7 @@ python3 -m analytics.scripts.audits.check_ingestion_health --expect-imdb --expec
 Planner behavior:
 
 - Selects series missing lifecycle metadata.
-- Selects rows with null `last_refreshed_at`.
+- Selects active series with no verified successful source collection.
 - Selects active statuses such as `ongoing`, `upcoming`, and `unknown` when stale by the refresh window.
 - Selects active series when `next_episode_air_date` is within the next 14 days.
 - Selects active series when a stored `next_episode_air_date` has passed and the row was last refreshed before that date.

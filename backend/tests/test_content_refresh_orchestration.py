@@ -213,7 +213,7 @@ def plan_item(scopes):
 def test_video_only_uses_one_details_request_and_no_supporting_endpoints(monkeypatch):
     calls = []
 
-    def fake_fetch(path, raw_path, token, refresh, params=None, request_policy=None):
+    def fake_fetch(path, raw_path, token, refresh, params=None, request_policy=None, **cache_policy):
         calls.append((path, params))
         return {"id": 94997, "videos": {"results": []}}, {
             "status": "fetched",
@@ -241,7 +241,7 @@ def test_video_only_uses_one_details_request_and_no_supporting_endpoints(monkeyp
 def test_combined_series_uses_same_single_details_plus_videos_request(monkeypatch):
     calls = []
 
-    def fake_fetch(path, raw_path, token, refresh, params=None, request_policy=None):
+    def fake_fetch(path, raw_path, token, refresh, params=None, request_policy=None, **cache_policy):
         calls.append((path, params))
         return {"id": 94997, "videos": {"results": []}}, {
             "status": "reused",
@@ -279,7 +279,7 @@ def test_shared_series_preview_uses_existing_series_normalizer_exactly():
 def test_series_metadata_only_preserves_legacy_appended_details_request(monkeypatch):
     calls = []
 
-    def fake_fetch(path, raw_path, token, refresh, params=None, request_policy=None):
+    def fake_fetch(path, raw_path, token, refresh, params=None, request_policy=None, **cache_policy):
         calls.append((path, params))
         return {"id": 94997}, {
             "status": "fetched",
@@ -439,6 +439,12 @@ def test_domain_failures_are_isolated(monkeypatch, tmp_path):
         "id": 94997,
         "name": "Shared Request Fixture",
         "first_air_date": "2022-01-01",
+        "last_air_date": "2026-07-01",
+        "number_of_seasons": 1,
+        "number_of_episodes": 8,
+        "in_production": True,
+        "last_episode_to_air": None,
+        "next_episode_to_air": None,
         "status": "Returning Series",
         "seasons": [],
         "videos": {"results": []},
@@ -457,7 +463,7 @@ def test_domain_failures_are_isolated(monkeypatch, tmp_path):
             ("en", "ko", "null"),
         ),
     )
-    monkeypatch.setattr(executor, "process_metadata_preview", lambda *args: (_ for _ in ()).throw(ValueError("series invalid")))
+    monkeypatch.setattr(executor, "process_metadata_preview", lambda *args, **kwargs: (_ for _ in ()).throw(ValueError("series invalid")))
 
     class VideoStats:
         videos_inserted = 0
@@ -483,6 +489,12 @@ def test_video_failure_does_not_erase_successful_series_outcome(monkeypatch, tmp
         "id": 94997,
         "name": "Shared Request Fixture",
         "first_air_date": "2022-01-01",
+        "last_air_date": "2026-07-01",
+        "number_of_seasons": 1,
+        "number_of_episodes": 8,
+        "in_production": True,
+        "last_episode_to_air": None,
+        "next_episode_to_air": None,
         "status": "Returning Series",
         "seasons": [],
         "videos": {"results": []},
@@ -507,7 +519,7 @@ def test_video_failure_does_not_erase_successful_series_outcome(monkeypatch, tmp
         series_metadata_updated = 1
         series_metadata_unchanged = 0
 
-    monkeypatch.setattr(executor, "process_metadata_preview", lambda *args: SeriesStats())
+    monkeypatch.setattr(executor, "process_metadata_preview", lambda *args, **kwargs: SeriesStats())
     monkeypatch.setattr(executor, "process_video_preview", lambda *args: (_ for _ in ()).throw(ValueError("video invalid")))
     result = executor.execute_plan_item(
         plan_item(["series_metadata", "videos"]),
@@ -573,6 +585,7 @@ def test_main_returns_nonzero_for_incomplete_and_zero_for_valid_empty(
     plan_path.write_text(json.dumps({"items": [plan_item(["videos"])]}))
     monkeypatch.setattr(runner, "load_database_url", lambda value: "postgresql://unused")
     monkeypatch.setattr(runner, "load_dotenv", None)
+    monkeypatch.setattr(runner, "verify_execution_targets", lambda *args: None)
 
     def run_with(status):
         monkeypatch.setattr(
@@ -803,6 +816,7 @@ def test_series_metadata_scope_changes_only_legacy_series_domain(
         assert series_row["series_status"] == "Ended"
         assert series_row["series_status_normalized"] == "ended"
     finally:
+        db_session.execute(text("DELETE FROM content_series_fetch_state WHERE content_id = :id"), {"id": content_id})
         db_session.execute(text("DELETE FROM content WHERE id = :id"), {"id": content_id})
         db_session.execute(text("DELETE FROM genres WHERE id = :id"), {"id": genre_id})
         db_session.commit()

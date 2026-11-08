@@ -291,11 +291,19 @@ def test_bad_development_backup_is_rejected_before_connecting(tmp_path, change):
 def test_running_suite_blocks_test_schema_migration_before_ddl(db_session):
     connection = connect(db_session.get_bind().url)
     try:
-        with pytest.raises(manager.MigrationError, match="advisory lock"):
-            manager.execute(connection, "insightstream_test", "baseline", "insightstream_test", "declarative")
+        target = db_session.get_bind().url.database
         with connection.cursor() as cursor:
             cursor.execute("SELECT to_regclass('insightstream_migrations.history')")
-            assert cursor.fetchone()[0] is None
+            original_ledger = cursor.fetchone()[0]
+        connection.rollback()
+        with pytest.raises(manager.MigrationError, match="advisory lock"):
+            manager.execute(connection, target, "baseline", target, "declarative")
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT to_regclass('insightstream_migrations.history')")
+            if original_ledger is None:
+                assert cursor.fetchone()[0] is None
+            else:
+                assert cursor.fetchone()[0] == original_ledger
     finally:
         connection.rollback()
         connection.close()

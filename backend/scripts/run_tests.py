@@ -18,11 +18,17 @@ def main():
     parser.add_argument("--unit-only", action="store_true")
     parser.add_argument("--test-env", type=Path, default=PRIVATE_ENV)
     parser.add_argument("--migration-env", type=Path)
+    parser.add_argument("--migration-fixtures", action="store_true")
+    parser.add_argument("--migration-only", action="store_true")
     args, pytest_args = parser.parse_known_args()
     if args.migration_env:
         # A separate outside-repository path can otherwise influence pytest's
         # early root discovery before nested conftest options are registered.
         pytest_args.insert(0, "--migration-env=" + str(args.migration_env.expanduser()))
+    if args.migration_fixtures:
+        pytest_args.insert(0, "--migration-fixtures")
+    if args.migration_only:
+        pytest_args.insert(0, "--migration-only")
     # Nested conftest options are discovered from an explicit test path. With
     # only flags, pytest may treat an as-yet-unknown custom option as a filename.
     selected_path = False

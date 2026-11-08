@@ -119,6 +119,13 @@ class TmdbFetchError(RuntimeError):
         self.failure_class = failure_class
 
 
+class TmdbLocalPreconditionError(TmdbFetchError):
+    """No provider request was made; fix local inputs, not title retry state."""
+
+    def __init__(self, message: str) -> None:
+        super().__init__(message, failure_class="cache_incompatible")
+
+
 class TargetConfigError(RuntimeError):
     pass
 
@@ -644,6 +651,7 @@ def save_cache_metadata(
             "request_parameters": normalized_request_params(params),
             "request_signature": request_signature,
             "response_status": 200,
+            "response_sha256": hashlib.sha256(raw_path.read_bytes()).hexdigest(),
         },
     )
 
@@ -673,13 +681,28 @@ def fetch_or_reuse_json(
     refresh: bool,
     params: dict[str, Any] | None = None,
     request_policy: RequestPolicy | None = None,
+    *,
+    cache_max_age_seconds: int | None = None,
+    offline: bool = False,
+    now: datetime | None = None,
+    before_network=None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
+    # Strict policy is opt-in for refresh execution; historical ingestion keeps
+    # its existing cache contract. Offline refresh replay is explicit and strict.
+    strict = cache_max_age_seconds is not None or offline
+    if offline and refresh:
+        raise ValueError("offline replay and force-network are mutually exclusive")
+    if cache_max_age_seconds is not None and cache_max_age_seconds < 0:
+        raise ValueError("cache age must be nonnegative")
+    current = now or datetime.now(timezone.utc)
     expected_signature = build_request_signature(api_path, params)
     if raw_path.exists() and not refresh:
         try:
             cache_metadata = load_cache_metadata(raw_path)
-        except TmdbFetchError:
+        except (TmdbFetchError, OSError) as exc:
             if not token:
+                if strict:
+                    raise TmdbLocalPreconditionError("Cached response provenance cannot be verified; no HTTP was attempted.") from exc
                 raise
             cache_metadata = None
         if cache_metadata is not None:
@@ -689,25 +712,61 @@ def fetch_or_reuse_json(
             cached_signature = cache_metadata.get("request_signature")
             signature_matches = cached_signature == expected_signature
             legacy_parameterless_cache = cached_signature is None and not params
-            if signature_matches or legacy_parameterless_cache:
-                return load_cached_json(raw_path), {
-                    "path": relative_path(raw_path),
-                    "status": "reused",
-                    **cache_metadata,
-                }
-        if not token:
+            if signature_matches or (legacy_parameterless_cache and not strict):
+                try:
+                    data = load_cached_json(raw_path)
+                    reusable = True
+                    if strict:
+                        sidecar = json.loads(cache_metadata_path(raw_path).read_text())
+                        collected = normalize_aware_iso_timestamp(sidecar.get("fetched_at"))
+                        age = (current - datetime.fromisoformat(collected)).total_seconds() if collected else -1
+                        reusable = (
+                            cache_metadata.get("timestamp_valid") is True
+                            and sidecar.get("source") == "tmdb"
+                            and sidecar.get("response_status") == 200
+                            and sidecar.get("request_path") == api_path
+                            and sidecar.get("request_parameters") == normalized_request_params(params)
+                            and age >= 0
+                            and (offline or age < cache_max_age_seconds)
+                        )
+                        checksum = sidecar.get("response_sha256")
+                        if checksum is not None and checksum != hashlib.sha256(raw_path.read_bytes()).hexdigest():
+                            reusable = False
+                    if reusable:
+                        return data, {
+                            "path": relative_path(raw_path),
+                            "status": "reused",
+                            **cache_metadata,
+                            "cache_policy": "offline_replay" if offline else "recent" if strict else "legacy",
+                        }
+                except (TmdbFetchError, OSError, ValueError, TypeError):
+                    if not strict:
+                        raise
+        if not token or offline:
+            if strict:
+                reason = "Offline replay requires a verified compatible cache; no HTTP was attempted." if offline else (
+                    "Cache is expired, corrupt, or lacks compatible verified provenance; "
+                    f"set {TOKEN_ENV_VAR} for an online collection."
+                )
+                raise TmdbLocalPreconditionError(reason)
             raise TmdbFetchError(
                 "Cached raw response is incompatible with the current request "
                 f"parameters for {api_path}; set {TOKEN_ENV_VAR} to refetch it.",
                 failure_class="cache_incompatible",
             )
 
-    if not token:
+    if not token or offline:
+        if offline:
+            raise TmdbLocalPreconditionError("Offline replay cache is missing; no HTTP was attempted.")
+        if strict:
+            raise TmdbLocalPreconditionError(f"Missing {TOKEN_ENV_VAR}; no HTTP was attempted.")
         raise TmdbFetchError(
             f"Missing {TOKEN_ENV_VAR}; cannot fetch {api_path} for {relative_path(raw_path)}.",
             failure_class="cache_incompatible",
         )
 
+    if before_network is not None:
+        before_network()
     data = fetch_tmdb_json(
         api_path,
         token,

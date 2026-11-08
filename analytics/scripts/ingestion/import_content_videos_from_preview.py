@@ -601,6 +601,20 @@ def process_item(
     ) else []
     retryable = item.get("videos_retryable") is True
     failure_class = str(item.get("videos_failure_class") or "unclassified_failure")
+    previous_source_time = connection.execute(
+        text("SELECT last_fetched_at FROM content_video_fetch_state WHERE content_id=:id AND source='tmdb'"),
+        {"id": content_id},
+    ).scalar_one_or_none()
+    older_snapshot = source_fetched_at is not None and previous_source_time is not None and source_fetched_at < previous_source_time
+    if older_snapshot:
+        stats.titles_skipped += 1
+        stats.reports.append({
+            "title": title, "content_id": content_id, "tmdb_id": source_id,
+            "status": status, "effective_status": "skipped", "skipped": True,
+            "stale_cleanup_safe": False, "reason": "older_snapshot",
+            "inserted": 0, "updated": 0, "removed": 0, "primary_changed": False,
+        })
+        return
 
     preferred_language_value = item.get("videos_preferred_language")
     preferred_language = (
@@ -619,7 +633,6 @@ def process_item(
         len(videos),
     )
     error_messages.extend(snapshot_metadata_errors)
-
     stale_cleanup_safe = bool(
         status in {"success", "empty"}
         and complete

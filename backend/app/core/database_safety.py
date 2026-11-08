@@ -16,6 +16,36 @@ TEST_DATABASE = "insightstream_test"
 TEST_ROLE = "insightstream_test_runner"
 TEST_MARKER = "insightstream-disposable-test-v1"
 LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1"}
+_fixture_sandbox = None
+
+
+def authorize_fixture_sandbox(raw_url):
+    """Process-local opt-in after initialization of a NEW migration sandbox.
+
+    No environment variable can widen the ordinary test target allowlist.
+    The pytest bootstrap supplies a revalidated private migration-config entry.
+    """
+    from scripts.migration_database import SANDBOX_NAME, verify_target, verify_url
+    target = make_url(raw_url).database
+    if not SANDBOX_NAME.fullmatch(target or ""):
+        raise DatabaseSafetyError("Fixture sandbox must be a migration sandbox, never development.")
+    verify_url(raw_url, target)
+    connection = psycopg2.connect(**connection_parameters(raw_url))
+    try:
+        connection.set_session(readonly=True)
+        verify_target(connection, target)
+        from scripts.test_support import marker as fixture_marker
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT shobj_description(oid,'pg_database') FROM pg_database WHERE datname=current_database()")
+            actual = json.loads(cursor.fetchone()[0] or "{}")
+        required = json.loads(fixture_marker())
+        if any(actual.get(key) != value for key, value in required.items() if key != "purpose"):
+            raise DatabaseSafetyError("Fixture sandbox baseline marker is missing or incompatible.")
+    finally:
+        connection.rollback()
+        connection.close()
+    global _fixture_sandbox
+    _fixture_sandbox = target
 
 
 class DatabaseSafetyError(RuntimeError):
@@ -36,7 +66,8 @@ def test_database_url(environment: Mapping[str, str]) -> str:
         raise DatabaseSafetyError("Tests require the local PostgreSQL installation.")
     if url.host not in LOCAL_HOSTS or url.query:
         raise DatabaseSafetyError("Test connections require an explicit loopback host and no URL options.")
-    if url.database != TEST_DATABASE or url.username != TEST_ROLE:
+    allowed = {TEST_DATABASE} | ({_fixture_sandbox} if _fixture_sandbox else set())
+    if url.database not in allowed or url.username != TEST_ROLE:
         raise DatabaseSafetyError(
             f"Only database {TEST_DATABASE} with role {TEST_ROLE} is permitted."
         )
@@ -82,7 +113,8 @@ def verify_test_connection(connection) -> dict:
             """
         )
         row = cursor.fetchone()
-    if not row or row[0] != TEST_DATABASE or row[1] != TEST_ROLE:
+    allowed = {TEST_DATABASE} | ({_fixture_sandbox} if _fixture_sandbox else set())
+    if not row or row[0] not in allowed or row[1] != TEST_ROLE:
         raise DatabaseSafetyError("Connected database/role does not match the disposable test target.")
     try:
         local = ipaddress.ip_address((row[2] or "").split("/")[0]).is_loopback
@@ -91,7 +123,8 @@ def verify_test_connection(connection) -> dict:
         raise DatabaseSafetyError("Test server address or ownership marker is invalid.") from None
     if not local or any(row[3:8]) or row[10]:
         raise DatabaseSafetyError("Test role must be local, unprivileged and have no role memberships.")
-    if row[8] != TEST_ROLE or not isinstance(marker, dict) or marker.get("purpose") != TEST_MARKER:
+    purpose = TEST_MARKER if row[0] == TEST_DATABASE else "insightstream-migration-sandbox-v1"
+    if row[8] != TEST_ROLE or not isinstance(marker, dict) or marker.get("purpose") != purpose:
         raise DatabaseSafetyError("Test database ownership/marker is missing; run prepare-test safely.")
     return {"database": row[0], "role": row[1], "marker": marker}
 

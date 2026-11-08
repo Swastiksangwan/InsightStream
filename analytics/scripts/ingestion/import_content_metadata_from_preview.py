@@ -19,6 +19,8 @@ Apply:
 
 from __future__ import annotations
 
+from contextlib import ExitStack
+
 import argparse
 import json
 import os
@@ -1278,7 +1280,11 @@ def process_preview(
     preview_path: Path,
     database_url: str,
     apply: bool,
+    *,
+    refresh_context: Dict[str, Any] | None = None,
 ) -> ImportStats:
+    if refresh_context is not None and len(preview.get("items", [])) != 1:
+        raise ValueError("A lifecycle refresh must target exactly one existing series")
     stats = ImportStats(
         mode="APPLY" if apply else "DRY RUN",
         preview_path=relative_path(preview_path),
@@ -1289,18 +1295,31 @@ def process_preview(
     planned_genres: Dict[str, Any] = {}
     planned_content_genres: set[Tuple[int, Any]] = set()
 
-    with context as connection:
+    with ExitStack() as stack:
+        stack.callback(engine.dispose)
+        connection = stack.enter_context(context)
         for index, item in enumerate(preview.get("items", []), start=1):
             stats.items_processed += 1
             record = preview_record_from_item(item, index, stats)
             if record is None:
+                if refresh_context is not None:
+                    raise ValueError("Lifecycle refresh preview failed validation")
                 continue
 
             existing_content = resolve_content(connection, record, stats)
+            proof = None
+            if refresh_context is not None:
+                from analytics.scripts.refresh.series_refresh_state import validate_snapshot_order
+                if (not existing_content or existing_content["id"] != refresh_context["content_id"]
+                        or record.content_type != "series" or not record.series_metadata):
+                    raise ValueError("Lifecycle refresh identity or metadata is invalid")
+                proof = validate_snapshot_order(connection, existing_content["id"], refresh_context["response"])
             if existing_content:
                 content_id = existing_content["id"]
                 stats.content_matched_existing += 1
                 updates = content_update_plan(existing_content, record, stats)
+                if refresh_context is not None:
+                    updates = {key: value for key, value in updates.items() if key in {"status", "latest_activity_date"}}
                 if updates:
                     if apply:
                         update_content_fields(connection, content_id, updates)
@@ -1327,6 +1346,15 @@ def process_preview(
                     content_id if apply else None,
                     record.title,
                 )
+
+            if refresh_context is not None:
+                ensure_series_metadata(connection, content_id, record, stats, apply)
+                if apply:
+                    from analytics.scripts.refresh.series_refresh_state import record_success
+                    record_success(connection, content_id, proof,
+                                   changed=bool(updates) or bool(stats.series_metadata_inserted + stats.series_metadata_updated),
+                                   attempted_at=refresh_context.get("attempted_at"))
+                continue
 
             ensure_external_id(
                 connection,

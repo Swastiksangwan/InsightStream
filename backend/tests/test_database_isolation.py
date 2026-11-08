@@ -7,12 +7,18 @@ from scripts.local_database import assert_no_development_write_access
 from scripts.test_support import acquire_test_lock, reset_fixture
 
 
-def test_application_and_fixture_use_only_the_test_target(db_session):
+def test_application_and_fixture_use_only_the_test_target(db_session, request):
     from app.db.session import engine
 
     row = db_session.execute(text("SELECT current_database(),current_user")).one()
-    assert tuple(row) == (safety.TEST_DATABASE, safety.TEST_ROLE)
-    assert engine.url.database == safety.TEST_DATABASE
+    if request.config.getoption("--migration-fixtures"):
+        expected = request.config._migration_targets["fresh"]["database"]
+        assert expected.startswith("insightstream_migrate_")
+        assert tuple(row) == (expected, safety.TEST_ROLE)
+        assert engine.url.database == expected
+    else:
+        assert tuple(row) == (safety.TEST_DATABASE, safety.TEST_ROLE)
+        assert engine.url.database == safety.TEST_DATABASE
     assert engine.url.username == safety.TEST_ROLE
     assert db_session.execute(text("SELECT count(*) FROM content")).scalar_one() == 18
 

@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 from pathlib import Path
 
 import pytest
@@ -24,12 +25,16 @@ def pytest_addoption(parser):
     parser.addoption("--unit-only", action="store_true", help="Run tests with no database/client fixtures; no PostgreSQL required")
     parser.addoption("--run-migration-tests", action="store_true", help="Retired unsafe shared-schema replay; use --migration-env lifecycle checks instead")
     parser.addoption("--migration-env", type=Path, help="Private migration sandbox configuration from migrations prepare-tests; prepare fresh targets per lifecycle run")
+    parser.addoption("--migration-fixtures", action="store_true", help="Initialize the NEW fresh migration sandbox for the full deterministic suite; run lifecycle checks separately")
+    parser.addoption("--migration-only", action="store_true", help="Run only migration_targets lifecycle cases, without touching routine test schema/data")
 
 
 def pytest_configure(config):
     config._test_lock = None
     config._test_connection_guard = None
     config._migration_targets = {}
+    if config.getoption("--migration-only") and (not config.getoption("--migration-env") or config.getoption("--migration-fixtures") or config.getoption("--unit-only")):
+        raise pytest.UsageError("--migration-only requires --migration-env and cannot combine with fixture/unit modes")
     if config.getoption("--run-migration-tests"):
         raise pytest.UsageError("Historical replay on the routine test schema is retired; use a fresh --migration-env sandbox configuration.")
     if config.getoption("--unit-only"):
@@ -43,15 +48,44 @@ def pytest_configure(config):
         raw_url = test_database_url(os.environ)
         verify_test_target(raw_url)
         assert_no_development_write_access(raw_url)
-        lock = connect(raw_url)
-        try:
-            verify_fixture_schema(lock)
-            acquire_test_lock(lock)
-        except Exception:
-            lock.close()
-            raise
-        config._test_lock = lock
-        if config.getoption("--migration-env"):
+        if config.getoption("--migration-fixtures"):
+            if not config.getoption("--migration-env"):
+                raise DatabaseSafetyError("--migration-fixtures requires a fresh --migration-env configuration")
+            from scripts.migration_database import read_check_targets
+            from scripts import migration_management as manager
+            from scripts.test_support import marker
+            from app.core.database_safety import authorize_fixture_sandbox
+            from psycopg2 import sql
+
+            config._migration_targets = read_check_targets(config.getoption("--migration-env"))
+            entry = config._migration_targets["fresh"]
+            setup = connect(entry["url"])
+            try:
+                # initialize refuses every nonempty/reused target. No reset or
+                # migration is performed on the existing insightstream_test DB.
+                manager.execute(setup, entry["database"], "initialize", entry["database"])
+                with setup:
+                    with setup.cursor() as cursor:
+                        cursor.execute("SELECT shobj_description(oid,'pg_database') FROM pg_database WHERE datname=current_database()")
+                        metadata = json.loads(cursor.fetchone()[0])
+                        metadata.update({k: v for k, v in json.loads(marker()).items() if k != "purpose"})
+                        cursor.execute(sql.SQL("COMMENT ON DATABASE {} IS %s").format(sql.Identifier(entry["database"])), (json.dumps(metadata),))
+            finally:
+                setup.close()
+            authorize_fixture_sandbox(entry["url"])
+            raw_url = entry["url"]
+            os.environ["TEST_DATABASE_URL"] = raw_url
+            assert_no_development_write_access(raw_url)
+        if not config.getoption("--migration-only"):
+            lock = connect(raw_url)
+            try:
+                verify_fixture_schema(lock)
+                acquire_test_lock(lock)
+            except Exception:
+                lock.close()
+                raise
+            config._test_lock = lock
+        if config.getoption("--migration-env") and not config._migration_targets:
             from scripts.migration_database import read_check_targets
 
             config._migration_targets = read_check_targets(config.getoption("--migration-env"))
@@ -92,6 +126,9 @@ def pytest_unconfigure(config):
 def pytest_collection_modifyitems(config, items):
     selected, deselected = [], []
     for item in items:
+        if config.getoption("--migration-only") and "migration_targets" not in item.fixturenames:
+            deselected.append(item)
+            continue
         database = bool({"db_session", "client", "database_state", "migration_targets"} & set(item.fixturenames))
         if database:
             item.add_marker(pytest.mark.database)
@@ -136,6 +173,8 @@ def database_state(request):
 
 @pytest.fixture(scope="session")
 def migration_targets(request):
+    if request.config.getoption("--migration-fixtures"):
+        pytest.skip("Run migration lifecycle checks separately with a fresh configuration; this sandbox owns deterministic fixtures.")
     if not request.config._migration_targets:
         pytest.skip("Migration lifecycle checks require a new private --migration-env configuration.")
     return request.config._migration_targets

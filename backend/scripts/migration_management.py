@@ -350,7 +350,7 @@ def execute(connection, target, action, confirmation, profile=None, *,
         with connection:
             verify_target(connection, target, write=True)
             with connection.cursor() as cursor:
-                for key in ([TEST_LOCK_KEY, MIGRATION_LOCK_KEY] if target == "insightstream_test" else [MIGRATION_LOCK_KEY]):
+                for key in ([MIGRATION_LOCK_KEY] if target == "insightstream_db" else [TEST_LOCK_KEY, MIGRATION_LOCK_KEY]):
                     cursor.execute("SELECT pg_try_advisory_xact_lock(%s)", (key,))
                     if not cursor.fetchone()[0]:
                         raise MigrationError("Another migration/test process holds this database's advisory lock.")

@@ -220,9 +220,9 @@ historical files immutable. New work goes in a new file, for example:
 ALTER TABLE public.content ADD COLUMN example_note text;
 ```
 
-Use `backend/migrations/managed/016_description.sql`, then 017, with three-digit,
+Version 016 is now `016_series_collection_state.sql`; use version **017** next, with three-digit,
 contiguous unique versions and lowercase descriptions. The example is only
-illustrative; no business migration is shipped by Milestone 2A. Include tests and
+illustrative; Milestone 2A shipped no business migration. Include tests and
 deterministic fixture changes for the behavior being introduced. Do not edit an
 applied file to fix it: add a later reviewed migration.
 
@@ -254,7 +254,7 @@ Prepare a **new** migration test configuration for each lifecycle test invocatio
 python3 backend/scripts/local_database.py migrations prepare-tests
 # Use the private configuration path printed by that command:
 MIGRATION_CHECKS="$HOME/Library/Application Support/InsightStream/migration-checks/<run>.json"
-python3 backend/scripts/run_tests.py --migration-env "$MIGRATION_CHECKS" -q -rs
+python3 backend/scripts/run_tests.py --migration-env "$MIGRATION_CHECKS" --migration-only -q -rs
 ```
 
 This creates three unique databases owned by the existing restricted test role:
@@ -325,6 +325,54 @@ restore verification, and unchanged current data/schema/sequences/history. Missi
 stale or mismatched evidence fails closed. These checks do not replace human
 approval or prevent another operator writing after the check; use a quiet window.
 
+### Milestone 2C migration 016
+
+`016_series_collection_state.sql` adds **only**
+`public.content_series_fetch_state`: one optional row per existing series, with
+collection/application/change timestamps, response provenance and retry state.
+No UPDATE/INSERT/backfill of application records is performed; legacy
+`content_series_metadata.last_refreshed_at` cannot prove source freshness.
+The existing 28 tables, timestamps and video state remain intact. The new FK uses
+default `NO ACTION`: any future catalog-deletion tool must explicitly account for
+this state row. No deletion feature is introduced here. The four known missing
+live indexes remain unchanged.
+
+**016 was applied only to new restricted migration sandboxes during Milestone 2C.**
+Development remains version 0, and the existing routine test DB is also unchanged.
+Use [new sandbox fixtures](backend_testing.md#migration-management-checks) to test
+this branch without upgrading either existing database. Fresh initialization
+still uses the immutable declarative baseline, then applies 016 through the ledger.
+
+For later separate approval, first inspect (read-only):
+
+```bash
+python3 backend/scripts/local_database.py migrations validate --target insightstream_db
+python3 backend/scripts/local_database.py migrations preview --target insightstream_db
+```
+
+Review the exact 016 SQL and ensure it is the **only** pending version. Take a new
+restore-verified backup in a quiet window; use its printed private manifest:
+
+```bash
+python3 backend/scripts/local_database.py backup
+MIGRATION_BACKUP="$HOME/Library/Application Support/InsightStream/backups/<new-run>/manifest.json"
+# Only after explicit approval: development DDL, no catalog import/backfill.
+python3 backend/scripts/local_database.py migrations apply \
+  --target insightstream_db --confirm-target insightstream_db \
+  --approve-development --backup-manifest "$MIGRATION_BACKUP"
+python3 backend/scripts/local_database.py migrations validate --target insightstream_db
+python3 backend/scripts/local_database.py migrations status --target insightstream_db
+```
+
+Confirm applied `[16]`, no pending versions, one new empty state table, matching
+pre-migration counts/row hashes for all 28 original tables and unchanged sequence
+values. Only the expected new table/schema signature and migration ledger row may
+differ. Do not re-register baseline 0 or replay historical SQL. Then follow the
+[bounded refresh procedure](data_ingestion_pipeline.md#shared-content-refresh-orchestration).
+Migration history proves schema execution; a backup and restore verification
+protect data. Neither substitutes for the other. Catalog growth needs neither
+schema replay nor production-data copies in tests.
+
 All pending files and their ledger rows form **one transaction** under a
 database-scoped advisory lock, with two-second lock and 30-second statement
 timeouts. A failure rolls back the entire batch. Re-running with no pending files
@@ -341,6 +389,59 @@ advisory lock prevents schema changes while a suite/reset is running. The runner
 never auto-migrates an existing test database. Pending managed versions cause an
 early test safety failure; apply them explicitly before testing. New test database
 preparation includes managed versions before loading deterministic fixtures.
+
+### Later approved upgrade of insightstream_test to 016
+
+**This upgrade was not performed during Milestone 2C or its final review.**
+The existing target is the marked, restricted-role, 18-title deterministic test
+database; it is not a development-data copy. The final review verified its exact
+declarative baseline, with no ledger yet registered and only 016 pending.
+
+After separate explicit approval, stop all test/reset processes. From the
+repository root, inspect identity, development write-denial and exact schema:
+
+```bash
+python3 backend/scripts/local_database.py check-test
+python3 backend/scripts/local_database.py migrations status --target insightstream_test
+python3 backend/scripts/local_database.py migrations validate --target insightstream_test
+python3 backend/scripts/local_database.py migrations preview --target insightstream_test
+```
+
+Proceed only when the actual target is `insightstream_test`, owner/role is
+`insightstream_test_runner`, development write privileges are zero, the profile
+matches `declarative` and **016 is the only pending migration**. Any unknown drift,
+identity mismatch or extra pending file is a blocker. Inspect the 016 SQL before
+approval; never reset/rebuild the database to bypass a failure.
+
+```bash
+# Writes ONLY test migration history; does not replay historical SQL or reseed.
+# If this exact baseline is already registered, registration is idempotent.
+python3 backend/scripts/local_database.py migrations baseline \
+  --target insightstream_test --confirm-target insightstream_test --profile declarative
+
+# Writes ONLY the approved additive schema/history in the protected test target.
+python3 backend/scripts/local_database.py migrations apply \
+  --target insightstream_test --confirm-target insightstream_test
+
+python3 backend/scripts/local_database.py migrations validate --target insightstream_test
+python3 backend/scripts/local_database.py migrations status --target insightstream_test
+python3 backend/scripts/local_database.py check-test
+```
+
+Expect applied `[16]`, no pending versions and the existing fixture marker intact.
+The application tables/rows and sequences are preserved by the migration; the
+new state table is empty. No development approval/backup flags, development URL,
+restore or schema reset are needed. The same advisory lock prevents DDL during
+an active suite. Only after validation, resume the usual command:
+
+```bash
+python3 backend/scripts/run_tests.py -q -rs
+```
+
+That test run intentionally resets **test fixture data** before/after database
+cases, including the new managed table; it preserves migration history. It never
+uses or synchronizes development catalog records. Continue to run migration
+lifecycle tests separately in new sandboxes.
 
 ### Second developer, catalog growth and recovery
 

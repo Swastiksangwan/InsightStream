@@ -48,6 +48,27 @@ rules; it performed no refresh or import. See the
 [catalog diagnostics and refresh lifecycle audit](docs/catalog_diagnostics_refresh_audit_2026_11_05.md)
 for current coverage, source limitations, verification and the recovery sequence.
 
+Milestone 2C prepares reliable TMDb refresh cache/source-time handling and additive
+migration **016**. Normal refreshes reuse verified compatible cache for under one
+hour; `--refresh` forces HTTP and `--offline` replays verified cache without HTTP.
+Series collection success is tracked separately from lifecycle value changes.
+Local cache/credential preconditions report `blocked` without changing provider
+retry state; older compatible snapshot replays report `skipped` without data or
+fetch-state changes.
+**Development remains at baseline 0: approve/apply 016 before running the updated
+refresh workflow.** See [refresh commands and timestamp semantics](docs/data_ingestion_pipeline.md#shared-content-refresh-orchestration),
+[migration 016 deployment](docs/backend_database_setup.md#milestone-2c-migration-016)
+and [sandbox-backed tests](docs/backend_testing.md#migration-management-checks).
+November 7 validation passed **1,075 tests / six intentional entry-point skips**;
+all four migration lifecycle wrappers passed separately. The frontend production
+build passed and all development data/schema/history fingerprints were unchanged.
+November 8 final-review corrections passed **1,102 tests / six intentional skips**,
+plus all four separate migration lifecycle wrappers and the frontend build.
+Migration 016 also passed rollback/idempotency and preservation checks on a fresh
+declarative schema and a full restored 200-title development copy. Both existing
+databases remain unchanged; the later approved test-only upgrade is documented in
+[database setup](docs/backend_database_setup.md#later-approved-upgrade-of-insightstream_test-to-016).
+
 Completed:
 
 - 200-title imported local catalog, alongside the original canonical 15-title seed used for fresh setup and deterministic tests.
@@ -312,6 +333,8 @@ Run scripts from the repository root.
 - Video-only mode does not request credits, aggregate credits, external IDs, keywords,
   or availability. `refresh_content_videos.py` is a focused wrapper for that scope.
 - Does not install a scheduler; orchestration remains an explicit operator command.
+- Requires managed migration 016; normal cache reuse is bounded to verified source
+  collection age under one hour. `--refresh` and `--offline` are mutually exclusive.
 
 `analytics/scripts/ingestion/update_posters_from_tmdb_preview.py`
 
@@ -448,8 +471,22 @@ From the repository root, prepare the dedicated local target once:
 ```bash
 python3 backend/scripts/local_database.py prepare-test
 python3 backend/scripts/local_database.py check-test
+# Ordinary suite requires the test schema to have all approved managed versions:
 python3 backend/scripts/run_tests.py -q -rs
 ```
+
+On this Milestone 2C branch, existing databases were deliberately not migrated.
+Until a separate test-schema upgrade is approved, run the full suite in a new
+sandbox instead (use the exact private configuration path printed):
+
+```bash
+python3 backend/scripts/local_database.py migrations prepare-tests
+MIGRATION_CHECKS="$HOME/Library/Application Support/InsightStream/migration-checks/<run>.json"
+python3 backend/scripts/run_tests.py --migration-env "$MIGRATION_CHECKS" --migration-fixtures -q -rs
+```
+
+Run lifecycle tests separately with another new configuration and
+`--migration-only`; see the [testing guide](docs/backend_testing.md#migration-management-checks).
 
 Pure tests can run without PostgreSQL:
 

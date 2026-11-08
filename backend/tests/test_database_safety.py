@@ -27,6 +27,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
     {"TEST_DATABASE_URL": FIXTURE_URL.replace("127.0.0.1", "example.invalid")},
     {"TEST_DATABASE_URL": FIXTURE_URL.replace("/insightstream_test", "/insightstream_db")},
     {"TEST_DATABASE_URL": FIXTURE_URL.replace("/insightstream_test", "/unknown")},
+    {"TEST_DATABASE_URL": FIXTURE_URL.replace("/insightstream_test", "/insightstream_migrate_123456abcdef")},
+    {"TEST_DATABASE_URL": FIXTURE_URL.replace("/insightstream_test", "")},
     {"TEST_DATABASE_URL": FIXTURE_URL.replace("insightstream_test_runner:", "postgres:")},
     {"TEST_DATABASE_URL": FIXTURE_URL + "?host=example.invalid"},
     {"TEST_DATABASE_URL": FIXTURE_URL.replace(":fixture-only", "")},

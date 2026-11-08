@@ -153,7 +153,7 @@ def evaluate_series_refresh(
     refresh_window_days: int = DEFAULT_REFRESH_WINDOW_DAYS,
     recent_window_days: int = DEFAULT_RECENT_WINDOW_DAYS,
 ) -> ScopeDecision:
-    last_refreshed = _as_utc(row.get("last_refreshed_at"))
+    last_refreshed = _as_utc(row.get("series_last_successful_at", row.get("last_refreshed_at")))
     if forced:
         return ScopeDecision(True, "forced_by_cli", "high", last_refreshed, now)
 
@@ -165,6 +165,12 @@ def evaluate_series_refresh(
     )
     selected = legacy.selected or include_not_due
     reason = "; ".join(legacy.reasons)
+    if reason == "manual_review_required":
+        return ScopeDecision(False, reason, "low", last_refreshed, None)
+    if reason == "previous_transient_failure":
+        failures = max(int(row.get("series_failure_count") or 0), 1)
+        due = (_as_utc(row.get("series_last_attempted_at")) or now) + timedelta(days=min(2 ** (failures - 1), 7))
+        return ScopeDecision(selected, reason, "high", last_refreshed, due)
     cadence_due_at = (
         last_refreshed + timedelta(days=refresh_window_days)
         if last_refreshed
@@ -247,7 +253,12 @@ CONTENT_PAGE_QUERY = text("""
         csm.next_episode_air_date,
         csm.next_season_air_date,
         csm.has_announced_season,
-        csm.last_refreshed_at,
+        csfs.last_successful_at AS last_refreshed_at,
+        csfs.last_successful_at AS series_last_successful_at,
+        csfs.last_attempted_at AS series_last_attempted_at,
+        csfs.last_status AS series_last_status,
+        csfs.retryable AS series_retryable,
+        csfs.consecutive_failure_count AS series_failure_count,
         cvfs.last_attempted_at AS video_last_attempted_at,
         cvfs.last_fetched_at AS video_last_fetched_at,
         cvfs.last_fetch_status AS video_last_fetch_status,
@@ -260,6 +271,7 @@ CONTENT_PAGE_QUERY = text("""
       ON ei.content_id = c.id
      AND LOWER(ei.source_name) = 'tmdb'
     LEFT JOIN content_series_metadata csm ON csm.content_id = c.id
+    LEFT JOIN public.content_series_fetch_state csfs ON csfs.content_id = c.id
     LEFT JOIN content_video_fetch_state cvfs
       ON cvfs.content_id = c.id
      AND LOWER(cvfs.source) = 'tmdb'

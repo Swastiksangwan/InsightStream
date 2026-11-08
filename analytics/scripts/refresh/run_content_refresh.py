@@ -13,6 +13,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from sqlalchemy.exc import SQLAlchemyError
+
 try:
     from dotenv import load_dotenv
 except ImportError:  # pragma: no cover
@@ -35,6 +37,7 @@ from analytics.scripts.refresh.content_refresh_planner import (
     SERIES_SCOPE,
     VALID_SCOPES,
     VIDEO_SCOPE,
+    iter_content_rows,
 )
 
 
@@ -83,7 +86,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--concurrency", type=positive_int, default=DEFAULT_CONCURRENCY)
     parser.add_argument("--request-timeout", type=positive_float, default=DEFAULT_REQUEST_TIMEOUT)
     parser.add_argument("--max-retries", type=non_negative_int, default=DEFAULT_MAX_RETRIES)
-    parser.add_argument("--refresh", action="store_true")
+    cache = parser.add_mutually_exclusive_group()
+    cache.add_argument("--refresh", action="store_true", help="Force a network collection, ignoring cache")
+    cache.add_argument("--offline", action="store_true", help="Replay compatible verified cache only; never use HTTP")
     parser.add_argument("--language", default=os.getenv("TMDB_LANGUAGE", DEFAULT_LANGUAGE))
     parser.add_argument("--video-languages", default=os.getenv("TMDB_VIDEO_LANGUAGES", DEFAULT_VIDEO_LANGUAGES))
     parser.add_argument("--database-url")
@@ -120,7 +125,11 @@ def load_or_build_plan(args: argparse.Namespace, database_url: str, now: datetim
 
 
 def validate_plan_items(items: list[dict[str, Any]], requested_scope: str) -> None:
+    seen = set()
     for item in items:
+        if item["content_id"] in seen:
+            raise ValueError("duplicate title in refresh plan")
+        seen.add(item["content_id"])
         scopes = set(item.get("refresh_scopes") or [])
         if not scopes or not scopes.issubset({SERIES_SCOPE, VIDEO_SCOPE}):
             raise ValueError(f"invalid refresh scopes for content_id={item.get('content_id')}")
@@ -198,15 +207,16 @@ def summarize_domains(items: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
             "empty": counts["empty"],
             "incomplete": counts["incomplete"],
             "skipped": counts["skipped"],
+            "blocked": counts["blocked"],
             "no_change": counts["no_change"],
         }
     return output
 
 
 def has_operational_failures(items: list[dict[str, Any]]) -> bool:
-    """Failed/incomplete domains fail the run; valid empty snapshots do not."""
+    """Local blocks and domain failures fail the run; safe replay no-ops do not."""
     return any(
-        domain.get("status") in {"failed", "incomplete"}
+        domain.get("status") in {"failed", "incomplete", "blocked"}
         for item in items
         for domain in item.get("domains", {}).values()
     )
@@ -242,7 +252,7 @@ def execute_items(
     args: argparse.Namespace,
     database_url: str,
 ) -> list[dict[str, Any]]:
-    token = os.getenv("TMDB_READ_ACCESS_TOKEN")
+    token = None if args.offline else os.getenv("TMDB_READ_ACCESS_TOKEN")
     languages = normalize_video_languages(args.video_languages)
     policy = RequestPolicy(
         timeout_seconds=args.request_timeout,
@@ -266,6 +276,7 @@ def execute_items(
                     video_languages=languages,
                     request_policy=policy,
                     preview_dir=DEFAULT_PREVIEW_DIR,
+                    offline=args.offline,
                 ): index
                 for index, item in enumerate(batch)
             }
@@ -293,6 +304,16 @@ def execute_items(
     return results
 
 
+def verify_execution_targets(items, database_url):
+    """Saved plans are selections, never trusted source/identity evidence."""
+    current = {row["content_id"]: row for row in iter_content_rows(database_url)}
+    for item in items:
+        row = current.get(item["content_id"])
+        if (row is None or str(row["source_id"]) != str(item["tmdb_id"])
+                or row["content_type"] != item["content_type"]):
+            raise ValueError("Refresh plan identity no longer matches canonical database identity")
+
+
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     if load_dotenv is not None:
@@ -314,6 +335,9 @@ def main(argv: list[str] | None = None) -> int:
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"Could not prepare refresh plan: {exc}")
         return 1
+    except SQLAlchemyError:
+        print("Database planning failed: verify connectivity and approved migration 016; no refresh was executed.")
+        return 1
 
     if (args.content_id is not None or args.source_id is not None) and not items:
         print(
@@ -333,11 +357,17 @@ def main(argv: list[str] | None = None) -> int:
         print("Plan-only mode made no TMDb requests and no database writes.")
         return 0
 
+    try:
+        verify_execution_targets(items, database_url)
+    except Exception:
+        print("Refresh preflight failed: verify canonical targets and approved migration 016 before execution.")
+        return 1
     results = execute_items(items, args, database_url)
     retry_targets, review_targets = split_follow_up_targets(results)
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "mode": "apply" if args.apply else "dry_run",
+        "cache_policy": "offline_replay" if args.offline else "force_network" if args.refresh else "verified_under_one_hour",
         "scope": args.scope,
         "plan_items": len(items),
         "estimated_tmdb_requests": len(items),
@@ -345,6 +375,9 @@ def main(argv: list[str] | None = None) -> int:
         "scope_results": summarize_domains(results),
         "retry_targets": retry_targets,
         "review_targets": review_targets,
+        "blocked_targets": [item for item in results if any(
+            domain.get("status") == "blocked" for domain in item.get("domains", {}).values()
+        )],
         "items": results,
     }
     report_path = resolve_path(args.report)

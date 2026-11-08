@@ -413,6 +413,19 @@ def load_catalog_records(
                 if content_id in records:
                     records[content_id]["series_metadata"] = row
 
+            # Baseline-only databases remain auditable read-only. Unknown legacy
+            # source freshness is explicit; it never inherits an import timestamp.
+            for record in records.values():
+                record["series_fetch_state"] = None
+            state_available = connection.execute(text("SELECT to_regclass('public.content_series_fetch_state')")).scalar_one() is not None
+            query_count += 1
+            if state_available:
+                for row in _query_rows(connection, "SELECT * FROM public.content_series_fetch_state WHERE content_id = ANY(:ids)", ids):
+                    content_id = int(row.pop("content_id"))
+                    if content_id in records:
+                        records[content_id]["series_fetch_state"] = row
+                query_count += 1
+
             unused_genres = [
                 dict(row)
                 for row in connection.execute(
@@ -775,6 +788,15 @@ def _video_health(records: list[dict[str, Any]], reference_at: datetime) -> dict
             "video_last_fetch_retryable": state.get("last_fetch_retryable"),
             "video_consecutive_failure_count": state.get("consecutive_failure_count"),
         }
+        if "series_fetch_state" in record:
+            series_state = record.get("series_fetch_state") or {}
+            planner_row.update(
+                series_last_successful_at=series_state.get("last_successful_at"),
+                series_last_attempted_at=series_state.get("last_attempted_at"),
+                series_last_status=series_state.get("last_status"),
+                series_retryable=series_state.get("retryable"),
+                series_failure_count=series_state.get("consecutive_failure_count"),
+            )
         video_decision = evaluate_video_refresh(planner_row, reference_at)
         # The real runner's INNER JOIN requires external_ids.tmdb. A legacy
         # content.tmdb_id alone does not make a title a runnable refresh target.
@@ -828,7 +850,9 @@ def _video_health(records: list[dict[str, Any]], reference_at: datetime) -> dict
         if record.get("content_type") == "series":
             series_decision = evaluate_series_refresh(planner_row, reference_at)
             item.update(series_selected=series_decision.selected and identity_eligible,
-                        series_reason=series_decision.reason if identity_eligible else "missing_canonical_tmdb_identity")
+                        series_reason=series_decision.reason if identity_eligible else "missing_canonical_tmdb_identity",
+                        series_last_successful_source_collection=iso_value(series_decision.last_refreshed_at),
+                        series_collection_state=planner_row.get("series_last_status") or "unknown_legacy")
             if series_decision.selected and identity_eligible:
                 series_due.append({"content_id": record["content_id"], "title": record["title"], "reason": series_decision.reason, "due_at": iso_value(series_decision.due_at)})
         dispositions.append(item)

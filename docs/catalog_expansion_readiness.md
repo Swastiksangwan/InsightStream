@@ -63,6 +63,18 @@ inside an existing row are null. Runnable targets require the canonical
 Past next-episode dates are dated review observations; this does not change any
 production selection rule or establish that the provider is wrong.
 
+Milestone 2C adds `series_last_successful_source_collection` and
+`series_collection_state` to these dispositions. Production reads use
+`content_series_fetch_state.last_successful_at`, independently of legacy
+`last_refreshed_at` import/change timestamps. Before approved migration 016 the
+read-only audit still runs: series collection evidence is `unknown_legacy`, with
+no inferred success; active series are due and ended/cancelled exclusions remain.
+The execution planner requires 016. After migration, an unchanged successful
+collection can satisfy the seven-day cadence, while failed attempts preserve
+previous success age and report their own retry/manual-review disposition.
+Upcoming-event rules can still select a recently collected series; cache reuse
+does not manufacture a new collection timestamp.
+
 The previous failed/incomplete operational thresholds remain unchanged: zero
 failures passes that dimension; fewer than `max(3, titles * 0.1)` warns; at or
 above that threshold fails. Due work, unknown freshness or missing canonical

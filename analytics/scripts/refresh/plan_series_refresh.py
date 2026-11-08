@@ -265,6 +265,24 @@ def evaluate_refresh_status(
     if select_all:
         return RefreshDecision(True, ["selected by --all"])
 
+    if "series_last_successful_at" in series:
+        # Production readers always supply this key. Pure legacy callers can
+        # still evaluate the original cadence contract explicitly.
+        series = {**series, "last_refreshed_at": series["series_last_successful_at"]}
+        status = normalize_status(series.get("series_status_normalized"))
+        if status in INACTIVE_REFRESH_STATUSES and not include_ended:
+            return RefreshDecision(False, [f"{status} series skipped by default"])
+        fetch_status = series.get("series_last_status")
+        if fetch_status in {"failed", "incomplete"}:
+            failures = max(int(series.get("series_failure_count") or 0), 1)
+            if not series.get("series_retryable") or failures >= 3:
+                return RefreshDecision(False, ["manual_review_required"])
+            attempted = normalize_datetime(series.get("series_last_attempted_at")) or now
+            due = attempted + timedelta(days=min(2 ** (failures - 1), 7))
+            return RefreshDecision(due <= now, ["previous_transient_failure"])
+        if fetch_status == "started":
+            return RefreshDecision(True, ["interrupted_attempt"])
+
     has_series_metadata = bool(series.get("has_series_metadata"))
     if not has_series_metadata:
         return RefreshDecision(True, ["missing content_series_metadata row"])
@@ -349,13 +367,19 @@ def fetch_series_rows(database_url: str) -> list[dict[str, Any]]:
             csm.series_status_normalized,
             csm.last_episode_air_date,
             csm.next_episode_air_date,
-            csm.last_refreshed_at
+            csfs.last_successful_at AS last_refreshed_at,
+            csfs.last_successful_at AS series_last_successful_at,
+            csfs.last_attempted_at AS series_last_attempted_at,
+            csfs.last_status AS series_last_status,
+            csfs.retryable AS series_retryable,
+            csfs.consecutive_failure_count AS series_failure_count
         FROM content c
         JOIN external_ids ei
             ON ei.content_id = c.id
            AND LOWER(ei.source_name) = 'tmdb'
         LEFT JOIN content_series_metadata csm
             ON csm.content_id = c.id
+        LEFT JOIN public.content_series_fetch_state csfs ON csfs.content_id = c.id
         WHERE c.content_type = 'series'
         ORDER BY c.title ASC;
     """)
